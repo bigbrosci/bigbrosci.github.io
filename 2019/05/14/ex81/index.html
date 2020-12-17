@@ -406,8 +406,7 @@
 
       
         <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD<br>最近整理材料，发现遗落在角落里的一个python脚本（<code>cssm.py</code>），可以批量切常见金属稳定表面的slab模型。 <code>cssm.py</code> 是：<code>cleave_stable_surfaces_from_metals</code>的缩写。废话不多说，下面的是在天河II上运行的实例。</p>
-<a id="more"></a>
-<p>=======<br>最近整理材料，发现遗落在角落里的一个python脚本（<code>cssm.py</code>），可以批量切常见金属稳定表面的slab模型。 <code>cssm.py</code> 是：<code>cleave_stable_surfaces_from_metals</code>的缩写。废话不多说，下面是在天河II上运行的实例，大家照着敲一遍应该问题不大。</p>
+<h1 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h1><p>最近整理材料，发现遗落在角落里的一个python脚本（<code>cssm.py</code>），可以批量切常见金属稳定表面的slab模型。 <code>cssm.py</code> 是：<code>cleave_stable_surfaces_from_metals</code>的缩写。废话不多说，下面是在天河II上运行的实例，大家照着敲一遍应该问题不大。</p>
 <blockquote>
 <blockquote>
 <blockquote>
@@ -443,7 +442,7 @@
 <p>是通过ASE将结构输出到<code>vasp</code>的格式。</p>
 <p>7）ASE的输出一般没有元素行，脚本里面自动加上了：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subprocess.call([&apos;sed -i &apos; + &apos;\&apos;5a&apos; + metal + &apos;\&apos;  &apos; + name_out], shell = True)</span><br></pre></td></tr></table></figure>
-<p>8）<code>bottom(name_out)</code> 功能是把模型从中心拽到底部，输出的结果是<code>POSCAR_Ag_1_bottomed`</code>，POSCAR_Ag_2_bottomed<code>，</code>POSCAR_Ag_3_bottomed`。（个人不喜欢ASE把结构放在中间）</p>
+<p>8）<code>bottom(name_out)</code> 功能是把模型从中心拽到底部，输出的结果是<code>POSCAR_Ag_1_bottomed``，POSCAR_Ag_2_bottomed</code>，<code>POSCAR_Ag_3_bottomed</code>。（个人不喜欢ASE把结构放在中间）</p>
 <p>9) 脚本感觉有些啰嗦，欢迎有兴趣的人改进，让它变得更加简洁易懂。</p>
 <p>10）最后的bash命令，将所有的<code>bottomed</code>归类到各自对应的文件夹中,喜欢把模型放在中间的，可以不用运行<code>bottom</code>那个命令。</p>
 <p>11）期待我们中国的大牛们写出比ASE更好的软件包出来，安利一波：有问题首先尝试<code>VASPKIT</code>。</p>
@@ -570,8 +569,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -588,7 +596,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">135</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -639,6 +647,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

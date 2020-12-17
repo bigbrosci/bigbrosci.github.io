@@ -432,9 +432,15 @@
 </ul>
 <h3 id="后处理的基本公式"><a href="#后处理的基本公式" class="headerlink" title="后处理的基本公式"></a>后处理的基本公式</h3><p>一旦AIMD计算完成，大家就可以着手计算离子电导率了。本文首先先介绍以下计算过程中使用的公式，方便有兴趣的同学自己开发脚本。</p>
 <blockquote>
-<p>平均均方位移（average MSD）可以通过以下公式计算：<br>$$<br>averageMSD=\langle[\, \mathbf r(t)]^2\,\rangle=\frac{1}{N}\sum_{i}^{N}\langle[\,  \mathbf r_i(t+t_0)]\,^2 - [\,  \mathbf r_i(t_0)]\,^2\rangle<br>$$<br>$\mathbf r_i(t)$ 是第 $i$ 个离子在 $t$ 时刻的位移。</p>
-<p>自扩散系数（$D_s$）可以通过以下公式计算：<br>$$<br>D_s=\frac{averageMSD}{2dt}<br>$$<br>$d$ 是离子在材料中的扩散维度（一般地，$d=3$），$t$ 是离子扩散的时间。</p>
-<p>最后，离子电导率（$\sigma$）可以这样计算：<br>$$<br>\sigma=\frac{ne^2Z^2}{k_BT}D_s<br>$$<br>$n$ 是材料中的离子密度，$e$ 是元电荷，$Z$ 是离子的价态，$k_B$ 是玻尔兹曼常数，$T$ 是温度。</p>
+<p>平均均方位移（average MSD）可以通过以下公式计算：</p>
+<script type="math/tex; mode=display">
+averageMSD=\langle[\, \mathbf r(t)]^2\,\rangle=\frac{1}{N}\sum_{i}^{N}\langle[\,  \mathbf r_i(t+t_0)]\,^2 - [\,  \mathbf r_i(t_0)]\,^2\rangle</script><p>$\mathbf r_i(t)$ 是第 $i$ 个离子在 $t$ 时刻的位移。</p>
+<p>自扩散系数（$D_s$）可以通过以下公式计算：</p>
+<script type="math/tex; mode=display">
+D_s=\frac{averageMSD}{2dt}</script><p>$d$ 是离子在材料中的扩散维度（一般地，$d=3$），$t$ 是离子扩散的时间。</p>
+<p>最后，离子电导率（$\sigma$）可以这样计算：</p>
+<script type="math/tex; mode=display">
+\sigma=\frac{ne^2Z^2}{k_BT}D_s</script><p>$n$ 是材料中的离子密度，$e$ 是元电荷，$Z$ 是离子的价态，$k_B$ 是玻尔兹曼常数，$T$ 是温度。</p>
 </blockquote>
 <h2 id="电导率计算的例子"><a href="#电导率计算的例子" class="headerlink" title="电导率计算的例子"></a>电导率计算的例子</h2><p>现在我们通过一个 Li_Sn_S 材料的例子来详细了解一下整个计算和处理的过程。该材料的结构显示如下：</p>
 <p><img src="/2020/09/08/A18/Li_Sn_S.jpg" alt=""></p>
@@ -616,7 +622,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">135</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

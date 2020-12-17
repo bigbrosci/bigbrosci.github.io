@@ -431,23 +431,27 @@
 <p>4）  所以，大家在计算的时候，一定要把自己的计算公式标出来，此外，大家看到直接用O原子能量计算出来的吸附能，不要用O$_2$作为参考能量的结果进行对比。</p>
 <p>5） 这两个计算方法，哪个对，哪个错呢？ 答：都是对的。因为O$_2$的解离能是一个常数，加上去（用O$_2$能量作为起始）或者忽略掉（用O原子能量作为起始）得到的结果之间的区别无非也是这个常数。看下面的计算。</p>
 <hr>
-<h2 id="2-计算吸附能（单个O原子）"><a href="#2-计算吸附能（单个O原子）" class="headerlink" title="2 计算吸附能（单个O原子）"></a>2 计算吸附能（单个O原子）</h2><p>公式1:<br>$$<br>E_{ads1}(O) = E_{slab+O} – E_{slab} – E_{O_2}/2<br>$$<br>公式2:<br>$$<br>E_{ads2}(O) = E_{slab+O} – E_{slab} – E_{O}<br>$$</p>
-<p>$E_{slab+O}$ ：O 在Slab上，优化完结构的能量；</p>
+<h2 id="2-计算吸附能（单个O原子）"><a href="#2-计算吸附能（单个O原子）" class="headerlink" title="2 计算吸附能（单个O原子）"></a>2 计算吸附能（单个O原子）</h2><p>公式1: </p>
+<script type="math/tex; mode=display">
+E_{ads1}(O) = E_{slab+O} – E_{slab} – E_{O_2}/2</script><p>公式2: </p>
+<script type="math/tex; mode=display">
+E_{ads2}(O) = E_{slab+O} – E_{slab} – E_{O}</script><p>$E_{slab+O}$ ：O 在Slab上，优化完结构的能量；</p>
 <p>$E_{slab}$: 优化的slab的能量；</p>
 <p>$E_{O_2}$: O$_2$ 分子在气相中的能量；</p>
 <p>$E_{O}$: O原子在气相中的能量；</p>
 <p>带入数据后：</p>
-<p>$$<br>E_{ads1}(O) =  -17.68238420~eV – (-13.97082922~eV) – (-9.85498627~eV) = 1.216~eV<br>$$</p>
-<p>$$<br>E_{ads2}(O) =  -17.68238420~eV – (-13.97082922~eV) – (-1.89237882~eV) = -1.819~eV<br>$$</p>
-<hr>
+<script type="math/tex; mode=display">
+E_{ads1}(O) =  -17.68238420~eV – (-13.97082922~eV) – (-9.85498627~eV) = 1.216~eV</script><script type="math/tex; mode=display">
+E_{ads2}(O) =  -17.68238420~eV – (-13.97082922~eV) – (-1.89237882~eV) = -1.819~eV</script><hr>
 <p>前面我们说了，如果直接用O原子在气相中的能量，则忽略了O$_2$分子解离的能量（或者是O原子结合能）。</p>
 <p>我们知道O$_2$ 分子解离是一个吸热反应，那么，解离能可以通过以下两个方式来获取：</p>
-<p>1)     两个吸附能量相减来得到：<br>$$<br>E_{ads1}(O) - E_{ads2}(O) = 1.216~eV – (-1.819~eV) = 3.035~eV<br>$$</p>
-<p>2)    直接通过O$_2$分子和O原子的能量得到。单个O原子的结合能为：</p>
-<p>$$<br>E_{binding} = [ E_{O_2} – E_O * 2] /2，<br>$$</p>
-<p>代入数据后得到：</p>
-<p>$$<br>E_{binding} =[ -9.85498627~eV – (-1.89237882~eV *2) ] / 2 = -3.035~eV<br>$$</p>
-<hr>
+<p>1)     两个吸附能量相减来得到：</p>
+<script type="math/tex; mode=display">
+E_{ads1}(O) - E_{ads2}(O) = 1.216~eV – (-1.819~eV) = 3.035~eV</script><p>2)    直接通过O$_2$分子和O原子的能量得到。单个O原子的结合能为：</p>
+<script type="math/tex; mode=display">
+E_{binding} = [ E_{O_2} – E_O * 2] /2，</script><p>代入数据后得到：</p>
+<script type="math/tex; mode=display">
+E_{binding} =[ -9.85498627~eV – (-1.89237882~eV *2) ] / 2 = -3.035~eV</script><hr>
 <h2 id="3-思考问题："><a href="#3-思考问题：" class="headerlink" title="3 思考问题："></a>3 思考问题：</h2><p>1）  前面我们计算的$E_{ads1}(O)$ = 1.216 eV 是一个正值，为什么会这样？ 算错了吗？还是有其他物理意义？</p>
 <p>2）  如何计算H，CO，CH$_4$, CH$_3$OH 等的吸附能，把计算的公式列出来。每个能量计算的细节，注意部分有哪些？</p>
 <p>3） 如何计算脱附能？</p>
@@ -617,7 +621,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">135</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

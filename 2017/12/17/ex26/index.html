@@ -430,6 +430,7 @@
 <p>4)后面的振动模式的频率和第一个的格式一样。</p>
 <hr>
 <h2 id="2-频率单位的换算"><a href="#2-频率单位的换算" class="headerlink" title="2 频率单位的换算"></a>2 频率单位的换算</h2><p>我们先讲一下这四个单位的换算公式：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -478,7 +479,9 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>以第一个振动为例：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -505,14 +508,12 @@
 </tr>
 </tbody>
 </table>
+</div>
 <p>1） THz 和 2PiTHz 的换算： $2\pi$ 的关系：</p>
-<p>$$ 111.907230~(\rm{THz})  \times 2 \pi  = 703.133866~(\rm{2PiTHz}) $$</p>
-<p>2） THz 和 cm-1 的关系：$\nu = c / \lambda = c \tilde{\nu} $， $c$ 是光速，$\lambda$ 是波长，$\tilde{\nu}$ 是波数，单位是 $m^{-1}$。计算前先换算成标准单位： 1 THz = 1012 Hz, 1 $cm^{-1}$ = 100 $m^{-1}$，因此：</p>
-<p>$$ 111.907230 \times 1012~(\textrm{Hz}) = 299792458~(m/s) \times 3732.823294 \times 100 (m^{-1}) $$</p>
-<p>3）THz 和能量 eV 的关系：</p>
+<script type="math/tex; mode=display">111.907230~(\rm{THz})  \times 2 \pi  = 703.133866~(\rm{2PiTHz})</script><p>2） THz 和 cm-1 的关系：$\nu = c / \lambda = c \tilde{\nu} $， $c$ 是光速，$\lambda$ 是波长，$\tilde{\nu}$ 是波数，单位是 $m^{-1}$。计算前先换算成标准单位： 1 THz = 1012 Hz, 1 $cm^{-1}$ = 100 $m^{-1}$，因此：</p>
+<script type="math/tex; mode=display">111.907230 \times 1012~(\textrm{Hz}) = 299792458~(m/s) \times 3732.823294 \times 100 (m^{-1})</script><p>3）THz 和能量 eV 的关系：</p>
 <p>$ E = h\nu $， $h$ 为普朗克常数：$4.135667516 \times 10^{-15}~eV \cdot s$ <strong>(注意此时：Plank constant 的单位！！！)</strong></p>
-<p>$$ 462.811270 (meV) = 0.4628 eV = 4.135667516 \times 10^{-15} (eV<em>s) </em>  111.907230 \times 1012 (Hz) $$</p>
-<p>4） 波数（$cm^{-1}$）和能量（$meV$）的关系：<br>$E = hc / \lambda = h \tilde \nu $<br>$ 462.811270~meV = 0.4628~eV<br> = 4.135667516 \times 10^{-15}~(eV*s) \times 299792458~(m/s) \times 3732.823294 \times 100~(m^{-1}) $</p>
+<script type="math/tex; mode=display">462.811270 (meV) = 0.4628 eV = 4.135667516 \times 10^{-15} (eV*s) *  111.907230 \times 1012 (Hz)</script><p>4） 波数（$cm^{-1}$）和能量（$meV$）的关系：<br>$E = hc / \lambda = h \tilde \nu $<br>$ 462.811270~meV = 0.4628~eV<br> = 4.135667516 \times 10^{-15}~(eV*s) \times 299792458~(m/s) \times 3732.823294 \times 100~(m^{-1}) $</p>
 <p>大家根据上面的公式自己手动算一遍就明白了，还可以使用下面这个网址进行计算：<a href="http://halas.rice.edu/conversions" target="_blank" rel="noopener">http://halas.rice.edu/conversions</a> 这里就不再多说了。</p>
 <hr>
 <h2 id="3-OUTCAR频率信息的提取："><a href="#3-OUTCAR频率信息的提取：" class="headerlink" title="3  OUTCAR频率信息的提取："></a>3  OUTCAR频率信息的提取：</h2><p>我们可以使用<code>grep</code>命令提取，有以下两个方式。在进行之前，首先强调一点：下面的解释<strong>只适用于</strong>NWRITE= 0、1或者2 的时候。因为NWRITE = 3 的时候，会额外再输出一次频率的信息。</p>
@@ -715,7 +716,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">135</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>

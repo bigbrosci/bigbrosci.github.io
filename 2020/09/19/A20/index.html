@@ -436,7 +436,7 @@
 <p>1) 读取SMILES，并创建一个mol的对象（object）。</p>
 <p>2) <code>make3D</code> 通过MMFF94力场对生成的3D结构优化了100步。 </p>
 <p>3) 保存结构，这里我把它注释掉了，因为后面我们要通过ASE来生成xyz和POSCAR。</p>
-<ol start="2">
+<ol>
 <li>ASE部分，代码多一些，可能本人水平有限吧。不管怎么样，这里主要告诉大家的一点就是：我们可以将Openbabel和ASE无缝连接起来。同样，你也可以把ASE与你自己写的一些东西关联，这样就可以调用ASE的功能来快速实现一些小目标了。</li>
 </ol>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> geo = Atoms()</span><br><span class="line"><span class="number">2</span> geo.set_cell(np.array([[<span class="number">16.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>],[<span class="number">0.0</span>, <span class="number">17.0</span>, <span class="number">0.0</span>],[<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">18.0</span>]]))</span><br><span class="line"><span class="number">3</span> geo.set_pbc((<span class="keyword">True</span>,<span class="keyword">True</span>,<span class="keyword">True</span>))</span><br><span class="line"><span class="number">4</span> <span class="keyword">for</span> atom <span class="keyword">in</span> mol:</span><br><span class="line"><span class="number">5</span>    atom_type = atom.atomicnum</span><br><span class="line"><span class="number">6</span>    atom_position = np.array([float(i) <span class="keyword">for</span> i <span class="keyword">in</span> atom.coords])</span><br><span class="line"><span class="number">7</span>    geo.append(atom_type)</span><br><span class="line"><span class="number">8</span>    geo.positions[<span class="number">-1</span>] = atom_position</span><br><span class="line"><span class="number">9</span> geo.center()</span><br><span class="line"></span><br><span class="line"><span class="string">'''https://wiki.fysik.dtu.dk/ase/ase/constraints.html'''</span></span><br><span class="line"><span class="number">10</span> c = FixAtoms(indices=[atom.index <span class="keyword">for</span> atom <span class="keyword">in</span> geo <span class="keyword">if</span> atom.symbol == <span class="string">'XX'</span>])</span><br><span class="line"><span class="number">11</span> geo.set_constraint(c)</span><br><span class="line"></span><br><span class="line"><span class="number">12</span> ase.io.write(out_name + <span class="string">'_ase.xyz'</span>, geo, format=<span class="string">'xyz'</span>)</span><br><span class="line"><span class="number">13</span> ase.io.write(out_name + <span class="string">'_POSCAR'</span>, geo, format=<span class="string">'vasp'</span>, vasp5=<span class="string">'True'</span>)</span><br></pre></td></tr></table></figure>
@@ -449,7 +449,7 @@
 <p>12-13） 保存xyz和VASP的POSCAR。</p>
 <h5 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h5><p>通过SMILES来搭建结构非常方便，当然也可以通过数据库下载，可视化程序例如GaussianView等自己手动搭建。</p>
 <p>值得注意的是，不管通过什么方式搭建的结构，提交任务之前，都要尽可能保证结构的合理性。所以不要搭建完结构就立刻提交任务，先认真检查一遍，没有任何问题之后再提交。</p>
-<h5 id="打赏"><a href="#打赏" class="headerlink" title="打赏"></a>打赏</h5><p>如果感觉本文对你的相关研究有帮助，欢迎打赏，支持作者的热心付出。如果你也有自己的骚操作，热烈欢迎无私分享，可以通过QQ（122103465）或者邮件（<a href="mailto:lqcata@gmail.com" target="_blank" rel="noopener">lqcata@gmail.com</a>）联系。</p>
+<h5 id="打赏"><a href="#打赏" class="headerlink" title="打赏"></a>打赏</h5><p>如果感觉本文对你的相关研究有帮助，欢迎打赏，支持作者的热心付出。如果你也有自己的骚操作，热烈欢迎无私分享，可以通过QQ（122103465）或者邮件（lqcata@gmail.com）联系。</p>
 <p><img src="/2020/09/19/A20/打赏码.jpg" style="zoom:25%;"></p>
 
       
@@ -605,7 +605,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">135</span>
+                  <span class="site-state-item-count">134</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
