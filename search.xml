@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title></title>
+    <url>%2F2020%2F12%2F16%2FA25%2FA25%2F</url>
+    <content type="text"><![CDATA[Matminer：超好用的材料类机器学习开源软件今天向大家隆重介绍一款材料类的机器学习开源软件：Matminer！机器学习预测材料性质，乃至逆向设计材料是材料领域的热门研究话题。很多同学有心做机器学习方面的研究，奈何不知道有哪些实用的代码，从而使项目一拖再拖。材料类的机器学习软件有很多，我比较喜欢Matminer这一款，因为它是由Pymatgen开发者开发的，非常易于使用。现在就向大家介绍一下这款软件（本教程根据Matminer官网https://hackingmaterials.lbl.gov/matminer/#installing-matminer撰写）。 简介Matminer是用于材料数据挖掘的基于Python的开源软件。它可以从各种数据库获取材料属性数据，将复杂材料属性(如成分、晶体结构、能带结构)表征为与物理相关的特征量，训练机器学习模型，并分析数据挖掘的结果。 Matminer使用pandas数据格式。它还有一个进阶的自动化版本叫Automatminer，可以自动化的训练机器学习模型并得到结果。 Matminer 可以生产可交互的图像。下面的流程图生动展示了matminer的工作内容。Matminer 可以访问Citrine，Materials Project，MDF等数据库，获得材料结构、能带、力学性能等多种性质。这些性质可以被转换成数值化的、可视化的特征量，该特征量可以被用于训练机器学习模型。 安装Matminer的安装过程非常简单，大家只要安装好Anaconda3 (Python 3.6) 后，在终端输入 pip install matminer 就行了。建议大家一并安装Pymatgen。 下面以天河超算为例，展示matminer的安装过程： 12# 创建基于python 3.6 的虚拟环境，名字叫 py36(base) [test@ln0%tianhe2 ~]$ conda create -n py36 python=3.6 安装好环境后，激活该环境，并安装pymatgen 和 matminer 12345678# 激活环境用conda activate 命令(base) [test@ln0%tianhe2 ~]$ conda activate py36# 括号里的 base 就会变成 py36(py36) [test@ln0%tianhe2 ~]$ conda install -c conda-forge pymatgen# 下面这个命令为安装 matminer(py36) [test@ln0%tianhe2 ~]$ pip install matminer 下面测试安装结果，输入下列命令，如果不出错，就是安装成功了。 1234567(py36) [test@ln0%tianhe2 ~]$ pythonPython 3.6.12 |Anaconda, Inc.| (default, Sep 8 2020, 23:10:56) [GCC 7.3.0] on linuxType "help", "copyright", "credits" or "license" for more information.&gt;&gt;&gt; import pymatgen&gt;&gt;&gt; import matminer&gt;&gt;&gt; 现在可以尽情地去测试啦！后续教程将陆续分享。]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[超好用的材料类机器学习开源软件-Matminer]]></title>
+    <url>%2F2020%2F12%2F16%2FA25%2F</url>
+    <content type="text"><![CDATA[今天向大家隆重介绍一款材料类的机器学习开源软件：Matminer！机器学习预测材料性质，乃至逆向设计材料是材料领域的热门研究话题。很多同学有心做机器学习方面的研究，奈何不知道有哪些实用的代码，从而使项目一拖再拖。材料类的机器学习软件有很多，我比较喜欢Matminer这一款，因为它是由Pymatgen开发者开发的，非常易于使用。现在就向大家介绍一下这款软件（本教程根据Matminer官网https://hackingmaterials.lbl.gov/matminer/#installing-matminer撰写） 简介Matminer是用于材料数据挖掘的基于Python的开源软件。它可以从各种数据库获取材料属性数据，将复杂材料属性(如成分、晶体结构、能带结构)表征为与物理相关的特征量，训练机器学习模型，并分析数据挖掘的结果。 Matminer使用pandas数据格式。它还有一个进阶的自动化版本叫Automatminer，可以自动化的训练机器学习模型并得到结果。 Matminer 可以生产可交互的图像。下面的流程图生动展示了matminer的工作内容。Matminer 可以访问Citrine，Materials Project，MDF等数据库，获得材料结构、能带、力学性能等多种性质。这些性质可以被转换成数值化的、可视化的特征量，该特征量可以被用于训练机器学习模型。 安装Matminer的安装过程非常简单，大家只要安装好Anaconda3 (Python 3.6) 后，在终端输入 pip install matminer 就行了。建议大家一并安装Pymatgen。 下面以天河超算为例，展示matminer的安装过程： 12# 创建基于python 3.6 的虚拟环境，名字叫 py36(base) [test@ln0%tianhe2 ~]$ conda create -n py36 python=3.6 安装好环境后，激活该环境，并安装pymatgen 和 matminer 12345678# 激活环境用conda activate 命令(base) [test@ln0%tianhe2 ~]$ conda activate py36# 括号里的 base 就会变成 py36(py36) [test@ln0%tianhe2 ~]$ conda install -c conda-forge pymatgen# 下面这个命令为安装 matminer(py36) [test@ln0%tianhe2 ~]$ pip install matminer 下面测试安装结果，输入下列命令，如果不出错，就是安装成功了。 1234567(py36) [test@ln0%tianhe2 ~]$ pythonPython 3.6.12 |Anaconda, Inc.| (default, Sep 8 2020, 23:10:56) [GCC 7.3.0] on linuxType "help", "copyright", "credits" or "license" for more information.&gt;&gt;&gt; import pymatgen&gt;&gt;&gt; import matminer&gt;&gt;&gt; 现在可以尽情地去测试啦！后续教程将陆续分享。]]></content>
+      <categories>
+        <category>LVASPTHW</category>
+      </categories>
+      <tags>
+        <tag>骚操作</tag>
+        <tag>Pymatgen</tag>
+        <tag>软件</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[离子迁移概率密度可视化]]></title>
     <url>%2F2020%2F10%2F02%2FA24%2F</url>
     <content type="text"><![CDATA[大师兄在9月8日的文章中讲了如何用 Pymatgen 计算离子的电导率（该方法可以用来研究固态电解质等问题），本次，大师兄介绍一下如何使用 Pymatgen 可视化离子的迁移概率密度。 先举个例子， 在“Design principles for solid-state lithium superionic conductors”一文中（Wang et al., Nature Materials 2015, 14 , 1026–1031. ），作者用Ab Initio Molecular Dynamic （AIMD）计算了Li 离子在Li$\mathrm{_1}$$\mathrm{_0}$GeP$\mathrm{_2}$S$\mathrm{_1}$$\mathrm{_2}$， Li$\mathrm{_7}$P$\mathrm{_3}$S$\mathrm{_1}$$\mathrm{_1}$，Li$\mathrm{_2}$S，和 Li$\mathrm{_4}$GeS$\mathrm{_4}$ 四种材料中的迁移概率密度（Probability Density），结果如下图所示： 从图中可以看出Li离子在图a所示材料中主要沿c轴方向的通道迁移，而且由于这个通道连通得比较好，Li离子的迁移势垒会比较低（0.22~0.25 eV）。 Li离子在图b所示的材料的迁移路径形成了一个三维网格，而且由于这个概率密度比图b中的概率密度分布得更加均匀，Li离子的迁移势垒更低（0.18~0.19 eV）。 图b所示的材料就完全不行了，因为Li离子的概率密度仅分布在特定的位点附近，说明离子不能有效地移动。 Li离子在图d所示材料中也存在迁移局域化的行为。 作者总结说 “A general principle for the design of Li-ion conductors with low activation energy can be distilled from the above findings: all of the sites within the diffusion network should be energetically close to equivalent, with large channels connecting them.” 那么我们如何在自己的计算中画出这样的图呢？Pymatgen 举手说，它可以帮忙！ 但是在开始之前，我们要安装Pymatgen的插件：Pymatgen-diffusion（https://github.com/materialsvirtuallab/pymatgen-diffusion）。 安装 Pymatgen-diffusion推荐大家使用最新版的Anaconda安装Pymatgen及其插件。点击上面的链接，进入官网后，点击最新版本链接， 我们可以下载.zip文件， 下载完成后，大家可以解压这个文件，得到 pymatgen-diffusion-2019.8.18文件夹。 我们把其中的 pymatgen_diffusion 文件夹放到 Anaconda的site-packages文件夹下，路径是 Windows 系统：……\Anaconda\Lib\site-packages；Linux系统：……/anaconda3/lib/pythonx.x/site-packages，就算安装好了。 接下来我们可以启动python，导入这个模块，如果不报错就没有问题了。 123456[test@ln0%tianhe2 li_sn_s]$ pythonPython 3.8.3 (default, Jul 2 2020, 16:21:59) [GCC 7.3.0] :: Anaconda, Inc. on linuxType &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.&gt;&gt;&gt; import pymatgen_diffusion&gt;&gt;&gt; 学习用法我们可以在其github网站上通过例子学习这个模块的用法。 点击打开 probbility_analysis.ipynb 文件。 其内容如下（有所删减）：如果不想看的话可直接查看 开始作图 部分 1234567891011121314from pymatgen.analysis.diffusion_analyzer import DiffusionAnalyzerfrom pymatgen_diffusion.aimd.pathway import ProbabilityDensityAnalysisimport json#ProbabilityDensityAnalysis objectfilename="/Users/iekhengchu/repos/pymatgen-diffusion/pymatgen_diffusion/aimd/tests/cNa3PS4_pda.json"data = json.load(open("../pymatgen_diffusion/aimd/tests/cNa3PS4_pda.json", "r"))diff_analyzer = DiffusionAnalyzer.from_dict(data) # 初始化DiffusionAnalyzer类pda = ProbabilityDensityAnalysis.from_diffusion_analyzer(diff_analyzer, interval=0.5, species=("Na", "Li")) #可以指定离子#Save probability distribution to a CHGCAR-like filepda.to_chgcar(filename="CHGCAR_new2.vasp") #保存概率密度文件 开始作图代码（test.py）如下： 123456789from pymatgen_diffusion.aimd.pathway import ProbabilityDensityAnalysisfrom pymatgen.core.trajectory import Trajectoryfrom pymatgen.io.vasp.outputs import Xdatcarfrom pymatgen.analysis.diffusion_analyzer import DiffusionAnalyzertraj = Trajectory.from_file('XDATCAR')diff = DiffusionAnalyzer.from_structures(traj,'Li',900,2,1)pda = ProbabilityDensityAnalysis.from_diffusion_analyzer(diff,interval=0.5,species=("Li"))pda.to_chgcar(filename="pda.vasp") #保存概率密度文件 此处理过程大概耗时8分钟，因机器而异。 在VESTA中可视化如下：]]></content>
@@ -8,8 +26,8 @@
         <category>LVASPTHW</category>
       </categories>
       <tags>
-        <tag>Pymatgen</tag>
         <tag>骚操作</tag>
+        <tag>Pymatgen</tag>
         <tag>软件</tag>
       </tags>
   </entry>
@@ -199,6 +217,18 @@
       </tags>
   </entry>
   <entry>
+    <title><![CDATA[z01 分享一本葵花宝典]]></title>
+    <url>%2F2019%2F10%2F07%2FZ01%2F</url>
+    <content type="text"><![CDATA[Python现在越来越流行，连微信朋友圈都开始推广一些python培训课程广告了：俩美女一起上班，一个瞬间完成工作，另一个一脸懵逼地问道你咋这么快就干完活啦？另一个回答道：因为我学习了Python啊。是的，Python确实有这些神奇的功效，但在网络这么发达的时代，想学习python的途径有很多，参加什么割韭菜的培训班啦，找个计算机学院的男女朋友啦，向师兄师姐学习啦，自己学习琢磨啦等等。 学习Python的一个好处就是，很多懂python的都会github上分享一些自己的脚本，但这些脚本很多时候不是为你的课题量身定制的。稍微懂点可以加以修改就变成自己科研的一个利器了。更重要的好处就是广告里面所凸显的，由于计算中很多操作都是可以重复的，写个小脚本可以快速完成自己的工作任务，提高效率，省出时间该干嘛干嘛去。此外，很多复杂的任务，手动计算量很大，也得需要写点脚本来帮忙。那种瞬间完成任务的感觉，不会点程序语言的人是不会体验到的。而且，现在小学生，初中生都开始学习python了，我们也没有理由不跟上时代的潮流。 看到这里，应该能明白本文的目的。不要你交99元，也不给你优惠99元。大师兄推荐一本武林秘籍，专门针对科研人员的一本科学计算相关的Python书。里面大量例子简单易懂，解释详细，带你缓缓走入Python的程序世界，平日闲的没事加以练习，犹如武林高手给你灌输真气一般，达到计算的另一个境界，轻而易举超越那些培训班被割过的韭菜们。 获取方式，扫描右侧或者下方二维码关注公众号：大师兄科研网，回复：武林秘籍 就可以获取下载链接了。为了避免别人学会了python跟你抢男女朋友，课题组争宠，大家下载后私下练习就OK啦，有对象的，一起练习讨论效果更佳。]]></content>
+      <categories>
+        <category>杂谈</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>效率</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[硕博（后）招聘（车芳琳课题组-美国马萨诸塞大学洛厄尔分校）]]></title>
     <url>%2F2019%2F10%2F07%2Fzp01%2F</url>
     <content type="text"><![CDATA[硕博（后）招聘：美国马萨诸塞大学洛厄尔分校车芳琳课题组 （University of Massachusetts Lowell） 课题组简介 车芳琳老师课题组刚刚成立，主要研究催化以及材料科学方面的多尺度理论模拟，在多尺度范围内（从原子到反应器尺度）研究燃料电池，电催化及新型能源、光催化相关的催化剂性质，反应机理，动力学等。研究的相关课题有：轻质烷烃的活化，CO2电催化，多相催化的线性关系以及微观动力学模拟，以及多相催化反应器中的流体动力学模拟。课题组主页：http://sites.uml.edu/fanglin_che/ (或点击左下角阅读原文） 导师简介 车老师本科毕业于大连理工大学（2008-2012），博士毕业于华盛顿州立大学（2012-2016），师从J.-S. McEwen教授。分别在加拿大多伦多E. H. Sargent课题组（ 2017-2018）和美国特拉华大学Dionisios G. Vlachos课题组（2018-2019）从事博士后研究。至今以一作（含共一）在Nat. Chem. (1), Nat. communs (2), Angew. Chem. Int., Ed.(1)， ACS Catal.(3), J. Catal.(1), ACS Energy Lett.(1), Adv. Mater(1), Appl. Catal. B (2)等高水平期刊发表文章若干篇。 Googl Scholar： https://scholar.google.com/citations?hl=zh-CN&amp;user=fiRHcIQAAAAJ 申请方式 目前长期招聘硕士，博士，以及博士后。有兴趣的可以将个人简历发送至：**Fanglin_che@uml.edu**]]></content>
@@ -210,18 +240,6 @@
         <tag>硕士</tag>
         <tag>博士</tag>
         <tag>招聘</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[z01 分享一本葵花宝典]]></title>
-    <url>%2F2019%2F10%2F07%2FZ01%2F</url>
-    <content type="text"><![CDATA[Python现在越来越流行，连微信朋友圈都开始推广一些python培训课程广告了：俩美女一起上班，一个瞬间完成工作，另一个一脸懵逼地问道你咋这么快就干完活啦？另一个回答道：因为我学习了Python啊。是的，Python确实有这些神奇的功效，但在网络这么发达的时代，想学习python的途径有很多，参加什么割韭菜的培训班啦，找个计算机学院的男女朋友啦，向师兄师姐学习啦，自己学习琢磨啦等等。 学习Python的一个好处就是，很多懂python的都会github上分享一些自己的脚本，但这些脚本很多时候不是为你的课题量身定制的。稍微懂点可以加以修改就变成自己科研的一个利器了。更重要的好处就是广告里面所凸显的，由于计算中很多操作都是可以重复的，写个小脚本可以快速完成自己的工作任务，提高效率，省出时间该干嘛干嘛去。此外，很多复杂的任务，手动计算量很大，也得需要写点脚本来帮忙。那种瞬间完成任务的感觉，不会点程序语言的人是不会体验到的。而且，现在小学生，初中生都开始学习python了，我们也没有理由不跟上时代的潮流。 看到这里，应该能明白本文的目的。不要你交99元，也不给你优惠99元。大师兄推荐一本武林秘籍，专门针对科研人员的一本科学计算相关的Python书。里面大量例子简单易懂，解释详细，带你缓缓走入Python的程序世界，平日闲的没事加以练习，犹如武林高手给你灌输真气一般，达到计算的另一个境界，轻而易举超越那些培训班被割过的韭菜们。 获取方式，扫描右侧或者下方二维码关注公众号：大师兄科研网，回复：武林秘籍 就可以获取下载链接了。为了避免别人学会了python跟你抢男女朋友，课题组争宠，大家下载后私下练习就OK啦，有对象的，一起练习讨论效果更佳。]]></content>
-      <categories>
-        <category>杂谈</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>效率</tag>
       </tags>
   </entry>
   <entry>
@@ -375,10 +393,10 @@
         <category>LVASPTHW附录</category>
       </categories>
       <tags>
-        <tag>国科智算</tag>
         <tag>超算中心</tag>
         <tag>job-ID</tag>
         <tag>快速进入</tag>
+        <tag>国科智算</tag>
       </tags>
   </entry>
   <entry>
@@ -389,10 +407,10 @@
         <category>LVASPTHW附录</category>
       </categories>
       <tags>
+        <tag>国科智算</tag>
         <tag>Sbatch</tag>
         <tag>Slurm</tag>
         <tag>VASP</tag>
-        <tag>国科智算</tag>
       </tags>
   </entry>
   <entry>
@@ -600,8 +618,8 @@
       </categories>
       <tags>
         <tag>脚本</tag>
-        <tag>模型搭建</tag>
         <tag>sed</tag>
+        <tag>模型搭建</tag>
         <tag>找不同</tag>
         <tag>批量操作</tag>
       </tags>
@@ -1142,18 +1160,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[Ex19 谁偷走的我的机时？（四）]]></title>
-    <url>%2F2017%2F12%2F11%2Fex19%2F</url>
-    <content type="text"><![CDATA[模型对计算时间的影响 上一节介绍的KPOINTS对计算的影响，相信大家已经认真阅读参考书的第三章部分了。本季我们讨论一下模型的大小对计算的影响。主要体现在晶胞的尺寸，对称性以及对K点的影响上。 1 测试工作： 为了方便处理，我们把O$_2$计算的格子设置为长宽高均为8.0 $\AA$。 重复之前KPOINTS的批处理操作，我们可以获得一系列不同大小格子的文件夹。如下图： 命令： for i in $(seq 10 2 20); do cp 8 $i; sed –i &quot;3,5s/8.0/$i/g&quot; $i/POSCAR ;done 2 测试结果分析2.1 模型大小对计算时间的影响 注意：在后面加入 sort –n 后输出的变化。 从图中可以看出来，计算时间随着格子的大小，需要的计算时间增加的很快。 注意：在测试中，KPOINTS一直保持不变（因为只有一个Gamma点）。而在我们实际的计算操作中，使用1x1x1 KPOINTS的机会并不多。如果格子在某个方向增加了2倍，那么对应的改方向的K点就需要除以2。重复一下上节的经验指导。也就是在计算过程中，保持ka保持不变。当然，ka是我们提前测试好的。 举例： 一个10x10x10 $\AA^3$的体相材料，我们计算的时候K点设置为：6x6x6。 当我们将材料在x方向增加1倍，变为20x10x10 $\AA^3$。为保持一致的精确度，那么我们的K点需要设置为：3x6x6。 这是因为倒易晶格矢量和实际的晶格矢量之间存在着倒数的关系： 注： 类似的图，不加说明，均出自我们的参考书。也就是说，我们选取的晶格越大，倒易晶格矢量越小。用同等数目的K点分布到倒易晶格中，网格的密度也会越大，从而造成计算量的增加。 2.2 体系的对称性对计算速度的影响：2.2.1 K点保持不变：这一点前面关于氧原子的计算就已经介绍到了，降低体系的对称性会增加额外的计算时间。如图：将12x12x12 $\AA^3$ （计算需要186.86 s）的格子修改如下： 计算结束后，查看时间，为194.9 s, 计算时间增加了8秒。 2.2.2 对称性对K点的影响：体系的对称性不仅仅提现在前面的计算中，更可以在计算中极大地减少K点的数目，从而加快计算，节省时间。这一点我们引用参考书中的一段话： 2.3.3 模型对称性与K点对称性的关系在这里，体系的对称性与K点对称性的匹配问题，尤其是对于hexagonal的结构来说，必须要使用 gamma centered points. 也就是第三行的第一个字母必须为G或者g。我们看一下官网的原话： We strongly recommend to use only Gamma centered grids forhexagonal lattices. Many tests we have performed indicate that the energy convergessignificantly faster with centered grids than with standard Monkhorst Pack grids. Grids generated with the “M” setting in the third line, in fact do not have full hexagonal symmerty. 如果你不确定自己的体系，直接用G就可以了。 For reasons of safety it might be a good choice to use only meshes with theirorigin at (switch “G” or “g” on third line or odd divisions) if the tetrahedron method is used. 3 扩展练习： 1 认真阅读： Density Functional Theory: A Practical Introduction: 第三章的前两节； 2 VASP官网查找K点相关的说明。 4 总结： 学习完本节，大家应该掌握的内容有： 4.1 晶格大小对计算时间的影响； 4.2 体系的对称性对计算时间的影响； 4.3 掌握K点和晶格大小的经验规则； 4.4 晶格对称性和K点对称性的一致性。]]></content>
-      <categories>
-        <category>LVASPTHW</category>
-      </categories>
-      <tags>
-        <tag>机时</tag>
-        <tag>模型</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[Ex20 谁偷走的我的机时？（五）]]></title>
     <url>%2F2017%2F12%2F11%2Fex20%2F</url>
     <content type="text"><![CDATA[并行 前面几节讨论的都是一些涉及到模型以及计算细节对时间的影响。本节我们讨论一下服务器节点设置（并行）的影响。从字面上不难理解，并行就是多个节点同时计算同一个任务。好比之前用一匹马拉车，现在改用两匹，三匹或者更多的马拉同一辆车。一匹马拉车的时候，对马的要求是足够强壮，能拉得动还要跑得快。但你想跑的更快，就需要驾驭两匹或者多匹马，但这个时候对于驾驶马车的你就需要提出技术要求了：如何控制马儿之间的节奏。控制好了，并驾齐驱，得儿驾得儿驾，爽歪歪。控制不好结构，你跑你的，我跑我的，整体下来，马儿也累，马车行驶的反而更慢了，搞不好还会栽跟头。 同样的道理，如果想加快计算速度，或者在最短的时间内获取最多的计算数据，我们就需要知道并行在计算中的作用。首先我们先测试一下，不同节点同时运行O$_2$分子计算所需要的时间。注意：本练习讨论的是多个节点下的并行！ 1 测试活动：为了观测更加明显，我们使用8x8x8 $\AA^3$的格子，K点使用3x3x3， ENCUT = 400 。 测试的服务器每个节点有4个核，每个核有两个进程。 文件夹用核数命名，4,8,12,16 分别代表使用了1,2,3,4个节点进行计算。 在这里，每个节点可以看成1匹马，4个核可以看作马的四条腿。每个核的两个进程可以看做每条腿的上下两部分。 1.1 设置计算的节点数目使用多少个节点进行计算，在提交任务的脚本里面设置。每个课题组可能不太一样，也有通过命令设置的，不过都大同小异。大师兄晒一晒自己组里提交命令的脚本，如果和你们的不一样，不要纠结： 这个任务的脚本里面，我们使用32个核（32条腿），也就是8个节点（8匹马）同时计算。提交所有的测试任务后，等待结束。 2 测试结果分析：2.1 提取结果 for i in *; do echo -e $i &quot;\t&quot; $(grep Elapsed $i/OUTCAR | awk &#39;{print $4}&#39;); done 这里复习上一节： sort –n 命令的用法，将数列从小到大排列。 注意：这里我们没有用之前的User time提取时间, 而是用的Elapsed time。这一项是计算真正花费的时间。所有的时间里面：Total CPU time = User Time + System time，一般来说， Elapsed time 总会比 Total CPU time 多上那么几秒。 User time 和 System time 是干嘛的？怎么的出来的？大师兄也不知道具体的含义。希望知道的童鞋们给大师兄上上课。之前几节中，用User time的分析结果可靠吗？ 没问题的，大师兄检查了一下，前面的System time均为 2s左右，Elapsed Time 中绝大部分由User time来贡献。 2.2 作图分析 核数的单位为 个 ， 对应图中的拼音 ge（个数） 1 从4核到8核，计算时间并没有减少，反而增加了15s 2 从4核到12核，计算时间也仅仅减少了20s 3 从12核以后，增加核数，计算时间反而增加了。 从12核开始，增加的核数白白占了你的任务，缺丝毫没有提高计算速度。因此，增加核数反而成了计算的负担。这是因为并行计算的时候，不同核之间的数据传输浪费了大量的计算时间。这好比是你多安排了几匹马来拉车，但马儿们却彼此交流，各跑各的，不愿意拉车了。 2.3 既然是这样，VASP并行还有个卵用？答：并行是有用的，只不过我们需要调教这些不听话的马儿们，让他们服从我们的命令。这里我们就会需要一些其他的参数，NCORE和NPAR。 NCORE：控制多少个核同时计算；NPAR：如何把计算任务分配到计算资源上面计算。 它们之间的关系是：NCORE= 计算使用的核数 / NPAR 注意：这两个参数只能选取一个来使用: 测试数据结果（给喜欢看表格的人准备的） 图中红色部分为前面计算的结果， 蓝色为NCORE=4的结果（测试的服务器每个节点有4个核，所有的计算军用NCORE=4）； 绿色为NPAR=4的结果（所有的计算中均用的NPAR=4）； 黄色为NPAR=Core/4的结果， 根据NPAR和NCORE的关系，该设置与NCORE=4等同，但是实际测试中蓝色和黄色为什么没有完全一样，我也说不清楚。 1）使用NCORE以后，单节点运行也加快了；（单匹马儿被你调教的更听话了） 2）加入NCORE和NPAR参数后，计算时间明显提高了。在20核以后的计算中尤为明显； 3）如果你想用多个节点计算，NCORE或者NPAR，不要忘了加（二者选其一）。 ４）可以肯定的是：NPAR和NCORE的乘积就是我们计算所用的核数，这一点大家要记在心里。 5) 在本测试中（这是前提！！），增加节点个数并未实现 1+1 = 2 的效果，1+N = 2 的效果也没有实现。但在多个节点的计算中，加入NCORE或者NPAR，节点数越多，效果越明显。 手册上解释说NPAR，或者NCORE的取值可以为总核数的开方值。很多人对此会有疑虑，大师兄的建议是： 测试，测试，测试!….测试一下自己的体系这是主要的，不要完全相信本测试的结果，体系不同，结果可能会差很多！！； NPAR的取值可以设置为节点的数目，（默认值为计算的核数！） NPAR实在不懂的话，直接设置NCORE=单节点的核数，单节点的核数/2，单节点的核数/4……. 个人使用经验是：NCORE = 单个节点核数 / 2 的时候，运行最省时间，设置也最方便。 3 扩展练习：1 阅读VASP官网关于NCORE，NPAR的内容； 2 对于自己的计算体系，测试这两个参数； 3 总结前面关于计算时间的影响因素 4 总结：关于VASP计算时间的影响，我们暂且告一段落了，希望大家能在前面几节的学习中熟练掌握影响计算时间的这些因素，在实际的计算过程中合理把握，提高计算效率，节约机时。浪费的机时不仅仅属于你自己，也属于组里其他人的。]]></content>
@@ -1163,6 +1169,18 @@
       <tags>
         <tag>机时</tag>
         <tag>并行</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Ex19 谁偷走的我的机时？（四）]]></title>
+    <url>%2F2017%2F12%2F11%2Fex19%2F</url>
+    <content type="text"><![CDATA[模型对计算时间的影响 上一节介绍的KPOINTS对计算的影响，相信大家已经认真阅读参考书的第三章部分了。本季我们讨论一下模型的大小对计算的影响。主要体现在晶胞的尺寸，对称性以及对K点的影响上。 1 测试工作： 为了方便处理，我们把O$_2$计算的格子设置为长宽高均为8.0 $\AA$。 重复之前KPOINTS的批处理操作，我们可以获得一系列不同大小格子的文件夹。如下图： 命令： for i in $(seq 10 2 20); do cp 8 $i; sed –i &quot;3,5s/8.0/$i/g&quot; $i/POSCAR ;done 2 测试结果分析2.1 模型大小对计算时间的影响 注意：在后面加入 sort –n 后输出的变化。 从图中可以看出来，计算时间随着格子的大小，需要的计算时间增加的很快。 注意：在测试中，KPOINTS一直保持不变（因为只有一个Gamma点）。而在我们实际的计算操作中，使用1x1x1 KPOINTS的机会并不多。如果格子在某个方向增加了2倍，那么对应的改方向的K点就需要除以2。重复一下上节的经验指导。也就是在计算过程中，保持ka保持不变。当然，ka是我们提前测试好的。 举例： 一个10x10x10 $\AA^3$的体相材料，我们计算的时候K点设置为：6x6x6。 当我们将材料在x方向增加1倍，变为20x10x10 $\AA^3$。为保持一致的精确度，那么我们的K点需要设置为：3x6x6。 这是因为倒易晶格矢量和实际的晶格矢量之间存在着倒数的关系： 注： 类似的图，不加说明，均出自我们的参考书。也就是说，我们选取的晶格越大，倒易晶格矢量越小。用同等数目的K点分布到倒易晶格中，网格的密度也会越大，从而造成计算量的增加。 2.2 体系的对称性对计算速度的影响：2.2.1 K点保持不变：这一点前面关于氧原子的计算就已经介绍到了，降低体系的对称性会增加额外的计算时间。如图：将12x12x12 $\AA^3$ （计算需要186.86 s）的格子修改如下： 计算结束后，查看时间，为194.9 s, 计算时间增加了8秒。 2.2.2 对称性对K点的影响：体系的对称性不仅仅提现在前面的计算中，更可以在计算中极大地减少K点的数目，从而加快计算，节省时间。这一点我们引用参考书中的一段话： 2.3.3 模型对称性与K点对称性的关系在这里，体系的对称性与K点对称性的匹配问题，尤其是对于hexagonal的结构来说，必须要使用 gamma centered points. 也就是第三行的第一个字母必须为G或者g。我们看一下官网的原话： We strongly recommend to use only Gamma centered grids forhexagonal lattices. Many tests we have performed indicate that the energy convergessignificantly faster with centered grids than with standard Monkhorst Pack grids. Grids generated with the “M” setting in the third line, in fact do not have full hexagonal symmerty. 如果你不确定自己的体系，直接用G就可以了。 For reasons of safety it might be a good choice to use only meshes with theirorigin at (switch “G” or “g” on third line or odd divisions) if the tetrahedron method is used. 3 扩展练习： 1 认真阅读： Density Functional Theory: A Practical Introduction: 第三章的前两节； 2 VASP官网查找K点相关的说明。 4 总结： 学习完本节，大家应该掌握的内容有： 4.1 晶格大小对计算时间的影响； 4.2 体系的对称性对计算时间的影响； 4.3 掌握K点和晶格大小的经验规则； 4.4 晶格对称性和K点对称性的一致性。]]></content>
+      <categories>
+        <category>LVASPTHW</category>
+      </categories>
+      <tags>
+        <tag>机时</tag>
+        <tag>模型</tag>
       </tags>
   </entry>
   <entry>
