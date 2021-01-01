@@ -7,13 +7,13 @@
 <li>W3C note on Units in MathML: <a href="http://www.w3.org/TR/mathml-units/">http://www.w3.org/TR/mathml-units/</a></li>
 </ul>
 <h3 id="Using-this-extension"><a href="#Using-this-extension" class="headerlink" title="Using this extension"></a>Using this extension</h3><p>Since the shutdown of the MathJax CDN, this extension is not currently hosted on any CDN.<br>When using it in a production environment, please host it locally.<br>To try it out, you may use rawgit.<br>Then, add the extension to your configuration like any other third party extension. For example, your inline configuration might be</p>
-<pre><code> &lt;script type=&quot;text/x-mathjax-config&gt;
- MathJax.Hub.Config({
-   extensions: [&quot;tex2jax.js&quot;,&quot;[siunitx]/siunitx.js&quot;],
-   jax: [&quot;input/TeX&quot;,&quot;output/HTML-CSS&quot;],
-   tex2jax: {inlineMath: [[&quot;$&quot;,&quot;$&quot;],[&quot;\\(&quot;,&quot;\\)&quot;]]},
-   TeX: {extensions: [&quot;AMSmath.js&quot;,&quot;AMSsymbols.js&quot;, &quot;sinuitx.js&quot;]}
- });
- MathJax.Ajax.config.path[&#39;siunitx&#39;]  = &#39;http://rawgit.com/burnpanck/MathJax-siunitx/master/&#39;;
- &lt;/script&gt;
+<pre><code>&lt;script type=&quot;text/x-mathjax-config&gt;
+MathJax.Hub.Config({
+  extensions: [&quot;tex2jax.js&quot;,&quot;[siunitx]/siunitx.js&quot;],
+  jax: [&quot;input/TeX&quot;,&quot;output/HTML-CSS&quot;],
+  tex2jax: {inlineMath: [[&quot;$&quot;,&quot;$&quot;],[&quot;\\(&quot;,&quot;\\)&quot;]]},
+  TeX: {extensions: [&quot;AMSmath.js&quot;,&quot;AMSsymbols.js&quot;, &quot;sinuitx.js&quot;]}
+});
+MathJax.Ajax.config.path[&apos;siunitx&apos;]  = &apos;http://rawgit.com/burnpanck/MathJax-siunitx/master/&apos;;
+&lt;/script&gt;
 </code></pre><h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>We have a <a href="https://github.com/burnpanck/MathJax-siunitx/blob/master/examples/siunitx.dtx.html">listing of extracted code samples from the siunitx documentation</a><br>(<a href="http://rawgit.com/burnpanck/MathJax-siunitx/master/examples/siunitx.dtx.html">see it live</a>)<br>that highlight a number of uses of this extension and provides static images rendered with <code>pdflatex</code><br>and the <code>siunitx</code> package for comparison.<br>For debugging purposes, you may append <code>?unpacked</code> or <code>?modular</code> to the URL, making the page use the combined but not minified,<br>or even the modular original sources instead of the production level minified version of the extension.</p>

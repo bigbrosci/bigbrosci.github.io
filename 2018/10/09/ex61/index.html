@@ -443,7 +443,7 @@
 <h2 id="4-删除VASP乱七八糟的输出文件"><a href="#4-删除VASP乱七八糟的输出文件" class="headerlink" title="4 删除VASP乱七八糟的输出文件"></a>4 删除VASP乱七八糟的输出文件</h2><p><img src="/2018/10/09/ex61/ex61-6.png" alt=""></p>
 <p>计算完成之后，VASP会出现很多平时我们用不到的文件，<code>CHG</code> <code>CHGCAR</code> <code>WAVECAR</code> 这三个占用的空间很大，容易把应胖撑爆。</p>
 <p>由于计算目录下的存储空间有限，本人计算的时候，一般都默认VASP不写入这些文件。</p>
-<p>此外，在表面结构优化的时候，<code>EIGENCAL, IBZKPT, REPORT,DOSCAR``以及超算中心与任务相关的输出文件：slurm-XXX</code> 文件，一般来说正常计算结束后，我们也不需要。</p>
+<p>此外，在表面结构优化的时候，<code>EIGENCAL, IBZKPT, REPORT,DOSCAR`</code>以及超算中心与任务相关的输出文件：slurm-XXX` 文件，一般来说正常计算结束后，我们也不需要。</p>
 <p>因此，本人写了一个小脚本，用来删除这些乱七八糟的文件。脚本运行效果如上，脚本内容如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"><span class="keyword">for</span>  i  <span class="keyword">in</span> $(find . -name INCAR); <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">cd</span> $(dirname <span class="variable">$i</span>)</span><br><span class="line">    rm CHG  CHGCAR  job_sub  PCDAT REPORT  slurm-*.out  WAVECAR  XDATCAR -f</span><br><span class="line">    <span class="built_in">cd</span> <span class="variable">$OLDPWD</span>;</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
 <p>大家可以针对自己的计算任务，修改<code>rm XXX</code> 哪一行中的文件名。</p>
@@ -608,7 +608,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">135</span>
+                  <span class="site-state-item-count">136</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -630,7 +630,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">161</span>
+                  <span class="site-state-item-count">162</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -689,7 +689,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -429,11 +429,9 @@
 <p>如果你喜欢上下两个面都优化的话，那么这将引申出 slab 模型的两种情况，对称性和非对称性模型。前面我们讲的都是非对称的 slab 模型。那么什么是对称的 slab 模型呢？ 如下图：</p>
 <p><img src="/2018/09/02/ex48/ex48-4.png" alt=""></p>
 <p>在这个模型中，中间的三层原子被固定用来模拟体相，上下三层的原子放开用来模拟表面。此时，如果你计算表面能的时候，E<sup>rel</sup> 的数值就要除以 2 了。计算公式可以简化为：</p>
-<script type="math/tex; mode=display">\begin{align*}
-\sigma &=\frac{1}{2A}(E_{surf}-N_{atoms}\times E_{bulk}+E^{rel})\\
-&=\frac{1}{2A}(E_{surf}^{rel} -N_{atoms}\times E_{bulk})\\
-\end{align*}</script><p>其中： $E_{surf}^{rel}$ 直接就是我们优化完毕之后的对称slab模型的能量。</p>
-<p>单个表面的面积 A， slab 模型中的原子数 $N<em>{atoms}$ 和 $E</em>{bulk}$ 这些能量的获取和前面一节讲的内容一致。</p>
+<p>$$ \begin{align<em>}<br>\sigma &amp;=\frac{1}{2A}(E_{surf}-N_{atoms}\times E_{bulk}+E^{rel})\<br>&amp;=\frac{1}{2A}(E_{surf}^{rel} -N_{atoms}\times E_{bulk})\<br>\end{align</em>} $$</p>
+<p>其中： $E_{surf}^{rel}$ 直接就是我们优化完毕之后的对称slab模型的能量。</p>
+<p>单个表面的面积 A， slab 模型中的原子数 $N_{atoms}$ 和 $E_{bulk}$ 这些能量的获取和前面一节讲的内容一致。</p>
 <p>注意： 将这个公式和参考书 96 页底部的公式对比一下。然后仔细阅读参考书 97 页的公式各项的说明。</p>
 <h3 id="3-对称和非对称slab模型的区别："><a href="#3-对称和非对称slab模型的区别：" class="headerlink" title="3 对称和非对称slab模型的区别："></a>3 对称和非对称slab模型的区别：</h3><ol>
 <li>对称 slab 明显具有更多的原子数，在 z 方向更长，需要更多的真空层(上下两层)，这就不可避免地出现了计算量大的缺点，尤其是对于机时捉襟见肘的筒子们来说，这个模型就不用考虑啦；</li>
@@ -619,7 +617,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">135</span>
+                  <span class="site-state-item-count">136</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -641,7 +639,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">161</span>
+                  <span class="site-state-item-count">162</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -700,7 +698,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

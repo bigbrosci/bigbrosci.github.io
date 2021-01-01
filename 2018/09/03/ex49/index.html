@@ -429,7 +429,8 @@
 <p><img src="/2018/09/03/ex49/ex49-1.jpeg" alt=""></p>
 <p>我们再看下 <a href="https://goldbook.iupac.org/html/E/E02015.html" target="_blank" rel="noopener">IUPAC</a> 官网的解释：</p>
 <p>The minimum work needed to extract electrons from the Fermi level of a metal M across a surface carrying no net charge. It is equal to the sum of the potential energy and the kinetic Fermi energy taken with the reverse sign:</p>
-<script type="math/tex; mode=display">\phi^{M} = -(V_{e}+\varepsilon_e^ F)</script><p>where $V_{e}$ is the potential energy for electrons in metals and  $\varepsilon_e^ F$ is the kinetic energy of electrons at the Fermi level.</p>
+<p>$$\phi^{M} = -(V_{e}+\varepsilon_e^ F)$$</p>
+<p>where $V_{e}$ is the potential energy for electrons in metals and  $\varepsilon_e^ F$ is the kinetic energy of electrons at the Fermi level.</p>
 <h3 id="2-VASP-计算功函数的过程"><a href="#2-VASP-计算功函数的过程" class="headerlink" title="2 VASP 计算功函数的过程"></a>2 VASP 计算功函数的过程</h3><p>从前面的定义中可以看出，计算功函数我们只需要得到体系的费米能级和电子所处的静电势能，然后求差即可。</p>
 <h4 id="2-1-费米能级的计算："><a href="#2-1-费米能级的计算：" class="headerlink" title="2.1 费米能级的计算："></a>2.1 费米能级的计算：</h4><p>VASP 计算结束之后，通过命令：</p>
 <p>grep E-fermi OUTCAR 即可提取出来。</p>
@@ -463,7 +464,7 @@
 <li><p>Windows 下面，首先要将计算生成的 LOCPOT 文件保存到本地电脑上。</p>
 <p>注意：有时候这个文件可能会很大，下载的时候比较蛋疼，不想下载的话等待下节的讲解。</p>
 </li>
-<li><p>打开 p4vasp 并导入 LOCPOT 文件：file —&gt; loadsystem，然后找到 LOCPOT 所在的目录，点解导入，效果如下</p>
+<li><p>打开 p4vasp 并导入 LOCPOT 文件：file –&gt; loadsystem，然后找到 LOCPOT 所在的目录，点解导入，效果如下</p>
 <p><img src="/2018/09/03/ex49/ex49-2.png" alt=""></p>
 </li>
 </ol>
@@ -479,7 +480,7 @@
 <p><img src="/2018/09/03/ex49/ex49-6.png" alt=""></p>
 <p>Wow, Wonderful!!! 是不是很有成就感？</p>
 <p>But， 怎么才能获取静电势能的数值呢？ 图中的纵坐标范围太大了，目测取值的话，误差应该在 0.5 eV 左右，太大了，不行。 那么我们只能导出数据，慢慢分析了。</p>
-<h4 id="4-3-导出数据"><a href="#4-3-导出数据" class="headerlink" title="4.3 导出数据"></a>4.3 导出数据</h4><p>还记得前面我们讲的 DOS 的计算吗？我们求 <code>d band center</code>，电子数目积分的时候将数据导出来了。同样，图中组成曲线的点的坐标我们也可以导出来。<br>点击： <code>Graph</code>—&gt;<code>Export</code></p>
+<h4 id="4-3-导出数据"><a href="#4-3-导出数据" class="headerlink" title="4.3 导出数据"></a>4.3 导出数据</h4><p>还记得前面我们讲的 DOS 的计算吗？我们求 <code>d band center</code>，电子数目积分的时候将数据导出来了。同样，图中组成曲线的点的坐标我们也可以导出来。<br>点击： <code>Graph</code>–&gt;<code>Export</code></p>
 <p><img src="/2018/09/03/ex49/ex49-7.png" alt=""></p>
 <p>选择保存的目录，并给保存的文件一个名字。然后点击，<code>Export</code>， 图中的 cu.dat 就会保存你指定的目录下了。</p>
 <p><img src="/2018/09/03/ex49/ex49-8.png" alt=""></p>
@@ -668,7 +669,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">135</span>
+                  <span class="site-state-item-count">136</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -690,7 +691,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">161</span>
+                  <span class="site-state-item-count">162</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -749,7 +750,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

@@ -440,7 +440,7 @@
 <p>4)  <code>unpack=True</code> 意思是把读取的数据生成一个数列，并分配给a 和 E，具体见链接：</p>
 <p><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html" target="_blank" rel="noopener">https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html</a></p>
 <p>通过第20行，我们可以获得两个数列，第一个是 a 包含了data文件中的缩放系数， 第二个是E，包含了data文件中的能量信息</p>
-<p>C) 第22-28行，把缩放系数转换为晶格常数(a<em>2.8664)，然后平方取倒数（*</em>(-2)），用来得到我们前面讲解的x。这是因为：当我们把BM方程写成： $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $ 的形式时，前提是令 (1/a)$^2$ = x。不懂的具体见Ex33中的内容。截止到现在，我们有了三个数列： a, E 和 x</p>
+<p>C) 第22-28行，把缩放系数转换为晶格常数(a*2.8664)，然后平方取倒数（**(-2)），用来得到我们前面讲解的x。这是因为：当我们把BM方程写成： $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $ 的形式时，前提是令 (1/a)$^2$ = x。不懂的具体见Ex33中的内容。截止到现在，我们有了三个数列： a, E 和 x</p>
 <p><strong>2.3 第29-40行：拟合多项式方程</strong>： </p>
 <p><img src="/2018/02/04/ex35/ex35-5.png" alt=""></p>
 <p>A) 最小二乘法拟合 $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $这个方程，得到常数系列c，这里我们调用了<code>numpy</code> 的<code>polyfit</code>这个模块来进行拟合。具体见：</p>
@@ -455,9 +455,8 @@
 <p><strong>2.4   38-40行，获取晶格参数</strong>：</p>
 <p>到目前位置，多项式方程的常数我们已经获得了，下面就是求解问题了。</p>
 <p><img src="/2018/02/04/ex35/ex35-6.png" alt=""></p>
-<p>A)  第42行为下图中公式的代码描述，获取方程的解x，因为前面我们已经有了一个x变量了，这里方程的解用x1表示，</p>
-<script type="math/tex; mode=display">
-x x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}</script><p>B) 第43行获取晶格常数，公式为： (1/a)$^2$= x</p>
+<p>A)  第42行为下图中公式的代码描述，获取方程的解x，因为前面我们已经有了一个x变量了，这里方程的解用x1表示，<br>$$<br>x x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}<br>$$</p>
+<p>B) 第43行获取晶格常数，公式为： (1/a)$^2$= x</p>
 <p>C) 第45行，输出晶格常数的数值。</p>
 <h2 id="3-扩展练习："><a href="#3-扩展练习：" class="headerlink" title="3 扩展练习："></a>3 扩展练习：</h2><p>3.1 根据解释，重新浏览脚本，知道每一行代表的含义。</p>
 <p>3.2 本脚本使用的时候，需要自己根据data数列中的内容，设置更改一下获取 x 数列的公式（第24行）；</p>
@@ -617,7 +616,7 @@ x x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}</scrip
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">135</span>
+                  <span class="site-state-item-count">136</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -639,7 +638,7 @@ x x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}</scrip
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">161</span>
+                  <span class="site-state-item-count">162</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -698,7 +697,7 @@ x x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}</scrip
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2020</span>
+        <div class="copyright">&copy; 2018 &mdash; <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
