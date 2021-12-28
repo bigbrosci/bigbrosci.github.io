@@ -1,37 +1,480 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前面一节，我们留了一个问题：DOS为什么要算两步？ 答：可以一步直接算！也就是前面一节的问题是瞎问的。那为什么大家总是有2步计算的疑问呢？本节，我们就解释这个。 为什么算两步？官网说了，算DOS有2个方法，一个是直接进行self-consistent计算（大家常说的自洽或者静态计算。）然后处理DOSCAR和vasprun.xml文件即可，如图：  我们看一下这么做的前提：   1） 由于高质量的D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex-38 DOS 计算(二)">
+<meta property="og:url" content="http://www.bigbrosci.com/2018/02/07/ex38/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="前面一节，我们留了一个问题：DOS为什么要算两步？ 答：可以一步直接算！也就是前面一节的问题是瞎问的。那为什么大家总是有2步计算的疑问呢？本节，我们就解释这个。 为什么算两步？官网说了，算DOS有2个方法，一个是直接进行self-consistent计算（大家常说的自洽或者静态计算。）然后处理DOSCAR和vasprun.xml文件即可，如图：  我们看一下这么做的前提：   1） 由于高质量的D">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/07/ex38/ex38-5.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/07/ex38/ex38-6.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/07/ex38/ex38-7.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/07/ex38/ex38-8.png">
+<meta property="article:published_time" content="2018-02-07T20:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.825Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="DOS">
+<meta property="article:tag" content="ISMEAR">
+<meta property="article:tag" content="SIGMA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2018/02/07/ex38/ex38-5.png">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2018/02/07/ex38/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2018/02/07/ex38/","path":"2018/02/07/ex38/","title":"Ex-38 DOS 计算(二)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex-38 DOS 计算(二) | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%AE%97%E4%B8%A4%E6%AD%A5%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">为什么算两步？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E6%9E%90%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">分析：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LDOS-%E5%92%8C-PDOS"><span class="nav-number">2.</span> <span class="nav-text">LDOS 和 PDOS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WAVECAR"><span class="nav-number">3.</span> <span class="nav-text">WAVECAR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E9%98%85%E8%AF%BB"><span class="nav-number">4.</span> <span class="nav-text">扩展阅读</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/07/ex38/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex-38 DOS 计算(二)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-02-07 15:30:16" itemprop="dateCreated datePublished" datetime="2018-02-07T15:30:16-05:00">2018-02-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/02/07/ex38/" class="post-meta-item leancloud_visitors" data-flag-title="Ex-38 DOS 计算(二)" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/02/07/ex38/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/07/ex38/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前面一节，我们留了一个问题：DOS为什么要算两步？</p>
+<p>答：可以一步直接算！也就是前面一节的问题是瞎问的。那为什么大家总是有2步计算的疑问呢？本节，我们就解释这个。</p>
+<h2 id="为什么算两步？"><a href="#为什么算两步？" class="headerlink" title="为什么算两步？"></a>为什么算两步？</h2><p>官网说了，算DOS有2个方法，一个是直接进行self-consistent计算（大家常说的自洽或者静态计算。）然后处理DOSCAR和vasprun.xml文件即可，如图：</p>
+<p><img src="/2018/02/07/ex38/ex38-5.png"></p>
+<p>我们看一下这么做的前提：</p>
+<p><img src="/2018/02/07/ex38/ex38-6.png"></p>
+<ul>
+<li><p>1） 由于高质量的DOS需要精细的K点，如果我们设置的K点很多，就会造成计算上的负担，前面我们讲过K点与计算时间的关系；而很久很久以前，计算能力并不如现在这样快，因此可以通过分步计算来解决这一问题。</p>
+</li>
+<li><p>2） 另外一个原因就设计到能带的计算了，这里我们摘抄一下网上的解释：<strong>由于在能带计算时k点是一些在倒空间高对称线上的点</strong>，不能进行自洽计算。参考网址：<a target="_blank" rel="noopener" href="https://http//blog.sciencenet.cn/blog-567091-675253.html/">https://http://blog.sciencenet.cn/blog-567091-675253.html/</a> 也就是计算能带的时候，自洽计算是必须的一步；</p>
+</li>
+<li><p>3） 即使增加K点的数目，电荷密度和有效势能的收敛依然很快，也就是K点的变化对电荷密度的收敛影响不大。</p>
+</li>
+</ul>
+<h3 id="分析："><a href="#分析：" class="headerlink" title="分析："></a>分析：</h3><ul>
+<li>能带计算我们暂不考虑，综合下1 和 3 ，<strong>在结构优化完成之后</strong>，我们可以这么算DOS：</li>
+</ul>
+<ul>
+<li><p>第一步，用小的K点算个单点，生成CHGCAR文件；</p>
+</li>
+<li><p>第二步，读取上一步的CHGCAR文件（ICHARG=11）。</p>
+</li>
+</ul>
+<p>这样做就避免了直接用高K点网格所导致的计算负担。对于DOS计算的两个步骤，归根结底是节约时间的问题。因此，算2步并不是必须的！！！如果够土够豪，直接用高密度的K点，一步计算，没毛病！ <strong>但是对于能带计算</strong>， <strong>则必须算</strong>2<strong>步</strong>。</p>
+<p>此外，VASP的说明书已经很古老了，以现在的计算能力，直接使用大K点一步计算，一般来说都可以承受的。所以，当你知道了为什么要算2步的时候，再去浏览网上的相关经验帖子，就很容易知道是怎么回事了。</p>
+<h2 id="LDOS-和-PDOS"><a href="#LDOS-和-PDOS" class="headerlink" title="LDOS 和 PDOS"></a>LDOS 和 PDOS</h2><p>LORBIT = 10 把态密度分解到每个原子以及原子的spd轨道上面，称为为局域态密度，Local DOS (LDOS)</p>
+<p>LORBIT =11 在10的基础上，还进一步分解到px，py，pz等轨道上，称为投影态密度（Projected DOS）或者分波态密度(Partial DOS)，即PDOS。 </p>
+<p>所以LORBIT = 11可以提供我们更多的信息。</p>
+<h2 id="WAVECAR"><a href="#WAVECAR" class="headerlink" title="WAVECAR"></a>WAVECAR</h2><p> 那么，WAVECAR读不读呢？大师兄的观点是：有则读，无则不读。对于WAVECAR的读取，我们需要了解ISTART这个参数：</p>
+<p><img src="/2018/02/07/ex38/ex38-7.png"></p>
+<ul>
+<li><p>如果前面计算中保存了<strong>WAVECAR</strong>，且ISTART没有设置，VASP默认是读取的。</p>
+</li>
+<li><p>如果没有<strong>WAVECAR</strong>，即使你设置了ISTART=1或者2，VASP找不到可以读取的WAVECAR，也不会报错，而是继续算。</p>
+</li>
+</ul>
+<p>那么怎么控制WAVECAR的输出呢？    </p>
+<ul>
+<li>1)通过设置LWAVE这个参数</li>
+</ul>
+<p><img src="/2018/02/07/ex38/ex38-8.png"></p>
+<ul>
+<li>2)读取WAVECAR可以极大地减少自洽的时间，但是VASP的WAVECAR非常大，上百M或者几G都是很常见的。一不留神存储空间就被占满了。所以，在读取WAVECAR的时候，一定要确定自己的存储空间。</li>
+<li>3)如果前面计算步骤中（优化的过程）保存了WAVCAR，那么后面DOS计算的时候（1步计算或者2步计算均可），都可以读取，这会加快计算速度。</li>
+</ul>
+<h2 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h2><p>4.1 阅读DOS和能带计算的VASP官方手册；</p>
+<p>4.2 了解DOSCAR的内容以及各行各列所代表的含义；</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p> 结构优化完毕后：</p>
+<p>一步计算DOS必须的参数：</p>
+<ul>
+<li>1 ISMEAR = -5</li>
+<li>2 LORBIT = 11</li>
+<li>3 高密度的K点</li>
+</ul>
+<p>两步计算DOS必须的参数:</p>
+<p>第一步：</p>
+<ul>
+<li><p>ISMEAR = -5</p>
+</li>
+<li><p>LCHARG = .TRUE.</p>
+</li>
+<li><p>稍微低密度的K点</p>
+</li>
+</ul>
+<p>第二步：</p>
+<ul>
+<li><p>ISMEAR = -5</p>
+</li>
+<li><p>ICHARGE = 11</p>
+</li>
+<li><p>LORBIT = 11</p>
+</li>
+<li><p>高密度的K点</p>
+</li>
+</ul>
+<p>如果结构优化的时候，存了WAVECAR，计算DOS的时候可以读取WAVECAR，直接一步计算搞定。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/DOS/" rel="tag"># DOS</a>
+              <a href="/tags/ISMEAR/" rel="tag"># ISMEAR</a>
+              <a href="/tags/SIGMA/" rel="tag"># SIGMA</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/02/06/ex37/" rel="prev" title="Ex-37 DOS 计算(一)">
+                  <i class="fa fa-chevron-left"></i> Ex-37 DOS 计算(一)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/02/08/ex39/" rel="next" title="Ex-39 DOS 计算(三)">
+                  Ex-39 DOS 计算(三) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

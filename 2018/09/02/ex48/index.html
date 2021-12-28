@@ -1,37 +1,461 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前面一节，我们讲解了一下 VASP 官网 Hand-On-Session-III 中表面能的计算。  1 首先我们要指出一点 VASP 官网的错误 最后的表面能应该是： 0.86 - 0.015 &#x3D; 0.845 eV 而不是 0.71 eV。 2  为什么要除以 2？很多人困惑为什么我们在计算的时候，上图中要除以 2。这是因为我们的单点计算中包含有 2 个面。前一节解释说是因为把 Bulk 切成了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex48 表面能的计算（二）">
+<meta property="og:url" content="http://www.bigbrosci.com/2018/09/02/ex48/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="前面一节，我们讲解了一下 VASP 官网 Hand-On-Session-III 中表面能的计算。  1 首先我们要指出一点 VASP 官网的错误 最后的表面能应该是： 0.86 - 0.015 &#x3D; 0.845 eV 而不是 0.71 eV。 2  为什么要除以 2？很多人困惑为什么我们在计算的时候，上图中要除以 2。这是因为我们的单点计算中包含有 2 个面。前一节解释说是因为把 Bulk 切成了">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/02/ex48/ex48-1.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/02/ex48/ex48-2.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/02/ex48/ex48-3.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/02/ex48/ex48-4.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/02/ex48/ex48-5.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/02/ex48/ex48-6.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/02/ex48/ex48-7.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/02/ex48/ex48-8.jpeg">
+<meta property="article:published_time" content="2018-09-02T06:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.965Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="表面能">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2018/09/02/ex48/ex48-1.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2018/09/02/ex48/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2018/09/02/ex48/","path":"2018/09/02/ex48/","title":"Ex48 表面能的计算（二）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex48 表面能的计算（二） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%A6%96%E5%85%88%E6%88%91%E4%BB%AC%E8%A6%81%E6%8C%87%E5%87%BA%E4%B8%80%E7%82%B9-VASP-%E5%AE%98%E7%BD%91%E7%9A%84%E9%94%99%E8%AF%AF"><span class="nav-number">1.</span> <span class="nav-text">1 首先我们要指出一点 VASP 官网的错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%99%A4%E4%BB%A5-2%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">2  为什么要除以 2？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%AF%B9%E7%A7%B0%E5%92%8C%E9%9D%9E%E5%AF%B9%E7%A7%B0slab%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">3 对称和非对称slab模型的区别：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E8%A1%A8%E9%9D%A2%E8%83%BD%E8%AE%A1%E7%AE%97%E7%9A%84%E5%8F%82%E6%95%B0%E5%BD%B1%E5%93%8D%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">4 表面能计算的参数影响：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">5 扩展练习：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">6 总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/09/02/ex48/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex48 表面能的计算（二）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-02 02:06:48" itemprop="dateCreated datePublished" datetime="2018-09-02T02:06:48-04:00">2018-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/09/02/ex48/" class="post-meta-item leancloud_visitors" data-flag-title="Ex48 表面能的计算（二）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/09/02/ex48/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/09/02/ex48/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前面一节，我们讲解了一下 VASP 官网 Hand-On-Session-III 中表面能的计算。 </p>
+<h3 id="1-首先我们要指出一点-VASP-官网的错误"><a href="#1-首先我们要指出一点-VASP-官网的错误" class="headerlink" title="1 首先我们要指出一点 VASP 官网的错误"></a>1 首先我们要指出一点 VASP 官网的错误</h3><p><img src="/2018/09/02/ex48/ex48-1.jpeg"></p>
+<p>最后的表面能应该是： 0.86 - 0.015 = 0.845 eV 而不是 0.71 eV。</p>
+<h3 id="2-为什么要除以-2？"><a href="#2-为什么要除以-2？" class="headerlink" title="2  为什么要除以 2？"></a>2  为什么要除以 2？</h3><p>很多人困惑为什么我们在计算的时候，上图中要除以 2。这是因为我们的单点计算中包含有 2 个面。前一节解释说是因为把 Bulk 切成了两半，以至于把大家给弄糊涂了。为什么我们的计算中会有两个面呢？首先我们看下 Slab 模型：</p>
+<p><img src="/2018/09/02/ex48/ex48-2.jpeg"></p>
+<p>问题： 上图的结构中有几个表面呢？</p>
+<p>答案是 2 个，因为我们的 slab 模型在 z 方向上也具有周期性，虽然我们把底部的两层原子固定来模拟体相，但实际上它们还是表面。如下图：</p>
+<p><img src="/2018/09/02/ex48/ex48-3.jpeg"></p>
+<p>那么，为什么 E<sup>rel</sup> 没有除以 2 呢？</p>
+<p>这是因为我们只优化了一个表面啊。</p>
+<p>如果我们两个表面都要优化的时候，是不是 E<sup>rel</sup> 也除以 2 了呢？</p>
+<p>答：是的。</p>
+<p>如果你喜欢上下两个面都优化的话，那么这将引申出 slab 模型的两种情况，对称性和非对称性模型。前面我们讲的都是非对称的 slab 模型。那么什么是对称的 slab 模型呢？ 如下图：</p>
+<p><img src="/2018/09/02/ex48/ex48-4.png"></p>
+<p>在这个模型中，中间的三层原子被固定用来模拟体相，上下三层的原子放开用来模拟表面。此时，如果你计算表面能的时候，E<sup>rel</sup> 的数值就要除以 2 了。计算公式可以简化为：</p>
+<p>$$ \begin{align*}<br>\sigma &amp;=\frac{1}{2A}(E_{surf}-N_{atoms}\times E_{bulk}+E^{rel})\<br>&amp;=\frac{1}{2A}(E_{surf}^{rel} -N_{atoms}\times E_{bulk})\<br>\end{align*} $$</p>
+<p>其中： $E_{surf}^{rel}$ 直接就是我们优化完毕之后的对称slab模型的能量。</p>
+<p>单个表面的面积 A， slab 模型中的原子数 $N_{atoms}$ 和 $E_{bulk}$ 这些能量的获取和前面一节讲的内容一致。</p>
+<p>注意： 将这个公式和参考书 96 页底部的公式对比一下。然后仔细阅读参考书 97 页的公式各项的说明。</p>
+<h3 id="3-对称和非对称slab模型的区别："><a href="#3-对称和非对称slab模型的区别：" class="headerlink" title="3 对称和非对称slab模型的区别："></a>3 对称和非对称slab模型的区别：</h3><ol>
+<li>对称 slab 明显具有更多的原子数，在 z 方向更长，需要更多的真空层(上下两层)，这就不可避免地出现了计算量大的缺点，尤其是对于机时捉襟见肘的筒子们来说，这个模型就不用考虑啦；</li>
+<li>非对称模型由于其非对称性，在计算过程中会产生偶极矩，注意这个偶极矩是由于模型引入的，并非我们常说的分子中的偶极矩。尤其是当我们要计算一些表面吸附或者反应的时候，两个 slab 之间偶极矩的相互作用会对我们的结果产生影响。但这不是什么大问题，很多计算软件都可以通过控制计算参数来消除或者将这一影响减至最小。</li>
+<li>VASP 中可以通过设置：<ol>
+<li><code>LDIPOL=.TRUE. </code>(打开偶极校正)</li>
+<li><code>IDIPOL = 1-4 </code>来解决。 1，2，3分表代表在x，y和z 方向上进行校正。4代表在所有方向上。</li>
+</ol>
+</li>
+</ol>
+<p>注意：1 和 2 必须同时加在 INCAR 里面。详见VASP官网的解释： <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/LDIPOL">LDIPOL</a> 和 <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/IDIPOL">IDIPOL</a></p>
+<h3 id="4-表面能计算的参数影响："><a href="#4-表面能计算的参数影响：" class="headerlink" title="4 表面能计算的参数影响："></a>4 表面能计算的参数影响：</h3><p>从公式中可以看出 Slab 的能量和 Bulk 的能量是主要因素： </p>
+<ol>
+<li><p>Slab 能量：</p>
+<ul>
+<li>Slab的层数：如参考书中的结果。</li>
+</ul>
+<p><img src="/2018/09/02/ex48/ex48-5.jpeg"></p>
+<ul>
+<li>slab 表面的大小，一般来说 p(1x1) 的即可。当然啦，你可也比较下 p(1x1) 和 p(2x2) 的区别： 这里要注意的是： 改变表面的大小，KPOINTS 也要发生相应的变化，只有这样，两个计算的结果才具有可比性。 </li>
+<li>真空层的厚度 这些大家都可以测试一下。</li>
+</ul>
+</li>
+<li><p>Bulk 的能量前面一节我们已经讲过 Bulk 的能量计算了。前面有同学问到： Bulk 计算的时候，模型中应该包含多少个原子？<br>  个人认为：单胞或者原胞的计算均可，当然你也可以扩一下晶胞。但需要注意的是如果你要比较这些不同大小模型中单个原子的能量时，一定要注意 K 点的选择。如果 K 点密度不一致，导致单个原子的能量之间存在细小的差别，这会令你不知所措。有兴趣的可以测试一下。 </p>
+</li>
+<li><p>此外，大师兄还要推荐一本进阶版的参考书：Theoretical Surface Science: A Microscopic Perspective，作者是 Axel Groβ。课题组主页：<a target="_blank" rel="noopener" href="https://www.uni-ulm.de/en/nawi/institute-of-theoretical-chemistry/">https://www.uni-ulm.de/en/nawi/institute-of-theoretical-chemistry/</a></p>
+</li>
+</ol>
+<p><img src="/2018/09/02/ex48/ex48-6.jpeg"></p>
+<p>​    <img src="/2018/09/02/ex48/ex48-7.jpeg"></p>
+<p><img src="/2018/09/02/ex48/ex48-8.jpeg"></p>
+<p>本书关于表面能的介绍在第68页，具体内容大家认真阅读，必定受益匪浅。</p>
+<h3 id="5-扩展练习："><a href="#5-扩展练习：" class="headerlink" title="5 扩展练习："></a>5 扩展练习：</h3><ol>
+<li>请务必认真阅读参考书中表面能， slab 模型的相关介绍；</li>
+<li>认真测试，重复 Cu(111), Cu(110) 和 Cu(100) 面的计算；</li>
+<li>仔细阅读 Theoretical Surface Science: A Microscopic Perspective 这本书中关于表面能的内容；</li>
+<li>结合计算结果和参考书中的解释，自己参悟一下。</li>
+</ol>
+<h3 id="6-总结："><a href="#6-总结：" class="headerlink" title="6 总结："></a>6 总结：</h3><p>本节主要回复了一下大家提问的比较多的问题，简单介绍了一下对称和非对称 slab 模型以及一些影响表面能计算的因素。学习 VASP 没有捷径，大家多练习，多出错，多总结分析，时间长了就会慢慢理解了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%A1%A8%E9%9D%A2%E8%83%BD/" rel="tag"># 表面能</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/09/01/ex47/" rel="prev" title="Ex47 表面能的计算（一）">
+                  <i class="fa fa-chevron-left"></i> Ex47 表面能的计算（一）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/09/03/ex49/" rel="next" title="Ex49 功函数（work function）的计算（一）">
+                  Ex49 功函数（work function）的计算（一） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

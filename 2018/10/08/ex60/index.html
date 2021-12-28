@@ -1,37 +1,467 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前面我们发现将p(1x1)-Cu(111)的表面扩展成p(2x2)后，由于O的覆盖度降低了，O原子的吸附能能+1.2 eV降低到 0.2 eV作用，说明O原子更加容易吸附在表面上了。当你仔细观察p(2x2)的表面，你会发现，表面上不仅仅有Cu原子的上方可以放O原子，还有其他的位点。如下图：  如果我们想分析下不同位点对吸附能的影响，首先我们需要搭建模型，然后重复O原子的吸附优化步骤。本节主要简单介">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex60 吸附能的计算（五）">
+<meta property="og:url" content="http://www.bigbrosci.com/2018/10/08/ex60/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="前面我们发现将p(1x1)-Cu(111)的表面扩展成p(2x2)后，由于O的覆盖度降低了，O原子的吸附能能+1.2 eV降低到 0.2 eV作用，说明O原子更加容易吸附在表面上了。当你仔细观察p(2x2)的表面，你会发现，表面上不仅仅有Cu原子的上方可以放O原子，还有其他的位点。如下图：  如果我们想分析下不同位点对吸附能的影响，首先我们需要搭建模型，然后重复O原子的吸附优化步骤。本节主要简单介">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/10/08/ex60/ex60-1.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/10/08/ex60/ex60-2.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/10/08/ex60/ex60-3.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/10/08/ex60/ex60-4.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/10/08/ex60/ex60-5.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/10/08/ex60/ex60-6.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/10/08/ex60/ex60-7.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/10/08/ex60/ex60-8.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/10/08/ex60/ex60-9.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/10/08/ex60/ex60-10.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/10/08/ex60/ex60-11.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/10/08/ex60/ex60-12.png">
+<meta property="article:published_time" content="2018-10-08T06:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:55.205Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="p4vasp">
+<meta property="article:tag" content="模型搭建">
+<meta property="article:tag" content="吸附位点">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2018/10/08/ex60/ex60-1.png">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2018/10/08/ex60/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2018/10/08/ex60/","path":"2018/10/08/ex60/","title":"Ex60 吸附能的计算（五）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex60 吸附能的计算（五） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%B8%8D%E5%90%8C%E8%A1%A8%E9%9D%A2%E4%BD%8D%E7%82%B9%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">1 不同表面位点：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%B8%8D%E5%90%8C%E4%BD%8D%E7%82%B9%E7%9A%84%E5%90%B8%E9%99%84%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">2 不同位点的吸附模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8p4vasp%E6%90%AD%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">3 使用p4vasp搭结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E4%BB%8ETop%E5%88%B0Bri"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 从Top到Bri</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E4%BB%8EBridge-%E5%88%B0-Hcp%EF%BC%9A"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 从Bridge 到 Hcp：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E4%BB%8EHcp%E5%88%B0Fcc"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 从Hcp到Fcc</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/08/ex60/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex60 吸附能的计算（五）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-10-08 02:06:48" itemprop="dateCreated datePublished" datetime="2018-10-08T02:06:48-04:00">2018-10-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/10/08/ex60/" class="post-meta-item leancloud_visitors" data-flag-title="Ex60 吸附能的计算（五）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/10/08/ex60/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/08/ex60/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前面我们发现将p(1x1)-Cu(111)的表面扩展成p(2x2)后，由于O的覆盖度降低了，O原子的吸附能能+1.2 eV降低到 0.2 eV作用，说明O原子更加容易吸附在表面上了。当你仔细观察p(2x2)的表面，你会发现，表面上不仅仅有Cu原子的上方可以放O原子，还有其他的位点。如下图：</p>
+<p><img src="/2018/10/08/ex60/ex60-1.png"></p>
+<p>如果我们想分析下不同位点对吸附能的影响，首先我们需要搭建模型，然后重复O原子的吸附优化步骤。本节主要简单介绍一下如何快速搭建不同的吸附位点模型。</p>
+<h2 id="1-不同表面位点："><a href="#1-不同表面位点：" class="headerlink" title="1 不同表面位点："></a>1 不同表面位点：</h2><p>观察不同位点的结构特征，在面心立方金属的(111)表面上有4种不同的位点:</p>
+<ol>
+<li>Top位，前面已经花了很多时间介绍了，本节就不再啰嗦</li>
+<li>Bridge位：从名字大家就可以推断这个位点的吸附为两个Top原子的中间。</li>
+<li>Fcc位和Hcp位：这两个吸附位点都是在三个原子的中心，为hollow位。</li>
+</ol>
+<p>那么这两个位点怎么区分呢？ </p>
+<p>如果表面的Hollow位正下方（即第二层，图中黄色的）有原子，为Hcp位，在第三层的话（图中红色的），则这个hollow为Fcc位。<br>由于Fcc位点的原子在第三层，离表面最远（far），大家把英文单词的far 和 Fcc位的第一个字母关联起来即可。远的那个就是Fcc，近的是Hcp。<br>注意： Fcc 和 Hcp 分别是 face centered cubic 和  hexagonal close-packed 的缩写。</p>
+<h2 id="2-不同位点的吸附模型"><a href="#2-不同位点的吸附模型" class="headerlink" title="2 不同位点的吸附模型"></a>2 不同位点的吸附模型</h2><p>怎么搭建Bridge和Fcc，以及Hcp位的吸附模型？</p>
+<ol>
+<li>Bridge位: </li>
+</ol>
+<p>这个位点在两个原子的中心。设两个原子的坐标分别为（x1，y1， z1）和（x2， y2， z2），它们中心得坐标为： （x1+x2）/ 2， （y1+y2）/ 2， （z1+z2）/ 2。在这里，z1和z2 是相等的。所以我们可以通过两个原子的坐标，计算一下中心的坐标，然后按照之前O原子搭建的步骤，添加O原子的Bridge位的坐标即可。<br>2) Fcc位和Hcp</p>
+<ul>
+<li><p>这两个位点就更容易了，前面我们知道它们正下方分别为第三层和第二层的原子。那么我们在这两层随便取个原子，x和y 方向的坐标就确定了。</p>
+</li>
+<li><p>关于z方向的坐标，大家可以想象一下，如果O原子从Top位移到Bridge，Fcc和Hcp，由于和O成键的原子多了，也就是O和表面结合地更强了，那么它在z方向的坐标肯定比在Top位上要小。所以在这三个构型的z坐标，我们可以在Top位O的基础上稍微调小一点。那么小多少呢？ 一般来说0.1-0.2Å就可以了。</p>
+</li>
+</ul>
+<h2 id="3-使用p4vasp搭结构"><a href="#3-使用p4vasp搭结构" class="headerlink" title="3 使用p4vasp搭结构"></a>3 使用p4vasp搭结构</h2><p>前面介绍的方法是直接修改POSCAR来搭建模型，对于O原子的吸附这种简单的模型，大家都还可以胜任，但如果体系复杂了，比如一个苯环，乙醇分子等等，这样我们的计算坐标的工作量就有点大了。此时，p4vasp的优势就开始慢慢显示出来了。</p>
+<h3 id="3-1-从Top到Bri"><a href="#3-1-从Top到Bri" class="headerlink" title="3.1 从Top到Bri"></a>3.1 从Top到Bri</h3><p>1） 首先，我们要有一个O原子在Top位上的吸附结构<br>2） 然后选择Top位的原子和相邻的那个原子，（p4vasp选中的结构看起来不是很清楚，见黄圈标出来的那两个）</p>
+<p><img src="/2018/10/08/ex60/ex60-2.png"></p>
+<p>3） 选则 Edit –&gt; Move Atoms 后会弹出这样的界面：</p>
+<p><img src="/2018/10/08/ex60/ex60-3.png"></p>
+<p>按照图中的1 2 3依次点击， 你便会获得一个<code>Vector</code>。也就是从5到7号原子的一个向量。</p>
+<p>但我们如果按照这个向量平移O原子的话，只会把它从5号原子移动到7号原子上，而不是Bridge的位点。 </p>
+<p>前面我们说了，Bridge的坐标就是这两个原子连线的中心。所以，我们把Vector减小一半就可以了。</p>
+<p><img src="/2018/10/08/ex60/ex60-4.png"></p>
+<p>修改完Vector之后，我们便可以移动O原子了。</p>
+<p><strong>这里注意</strong></p>
+<p>要把前面选中的5 和 7 号原子换成 O，要不然你移动的是 5和7 号原子而不是O。最后点move，效果如下：</p>
+<p><img src="/2018/10/08/ex60/ex60-5.png"></p>
+<p>这样我们便获得了Bridge的吸附结构。</p>
+<p>前面提到，我们在搭建Bridge结构的时候，O原子的坐标可以比Top位的稍微低一些，这个操作怎么实现呢？<br>1） 首先选中氧原子，<br>2） 在Vector那一行修改移动的位置即可。如下图：</p>
+<p><img src="/2018/10/08/ex60/ex60-6.png"></p>
+<p>点击move ，保存POSCAR即可。</p>
+<h3 id="3-2-从Bridge-到-Hcp："><a href="#3-2-从Bridge-到-Hcp：" class="headerlink" title="3.2 从Bridge 到 Hcp："></a>3.2 从Bridge 到 Hcp：</h3><p>1） 选中O原子和Hcp位下面的Cu原子，并获取Vector</p>
+<p><img src="/2018/10/08/ex60/ex60-7.png"></p>
+<p>2） 修改Vector在z方向的大小。</p>
+<p><img src="/2018/10/08/ex60/ex60-8.png"></p>
+<p>点击 Move，效果如下：</p>
+<p><img src="/2018/10/08/ex60/ex60-9.png"></p>
+<p>保存成Hcp对应的POSCAR即可。</p>
+<h3 id="3-3-从Hcp到Fcc"><a href="#3-3-从Hcp到Fcc" class="headerlink" title="3.3 从Hcp到Fcc"></a>3.3 从Hcp到Fcc</h3><p>1）选中O原子和Fcc的一个原子，获取Vector：</p>
+<p><img src="/2018/10/08/ex60/ex60-10.png"></p>
+<p>2）修改Vector在z方向的大小，由于Fcc和Hcp的吸附很接近，直接平移即可，也就是z方向大小为0</p>
+<p><img src="/2018/10/08/ex60/ex60-11.png"></p>
+<p>点击move，最终的Fcc结构，如下图，保存POSCAR。</p>
+<p><img src="/2018/10/08/ex60/ex60-12.png"></p>
+<p><strong>注意：</strong></p>
+<p>保存结构的时候，可以自己建对应的文件夹，在文件夹里面将结构保存成POSCAR，也可以保存成类似<code>POSCAR-Fcc</code>， <code>POSCAR-Hcp</code>， <code>POSCAR-Top</code>这一种的名字，计算的时候，将它们重新命名为<code>POSCAR</code>就行了。</p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本节，大师兄主要给大家介绍了如何在表面上，使用<code>p4vasp</code>平移原子来搭建不同的吸附位点模型。使用p4vasp搭结构非常方便简单，也会加深你对模型结构的理解，另一方面，使用这一种操作的话准确性更高，搭建出来的模型比自己手动放原子要合理很多。所以强烈推荐大家使用<code>p4vasp</code>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/p4vasp/" rel="tag"># p4vasp</a>
+              <a href="/tags/%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/" rel="tag"># 模型搭建</a>
+              <a href="/tags/%E5%90%B8%E9%99%84%E4%BD%8D%E7%82%B9/" rel="tag"># 吸附位点</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/10/07/ex59/" rel="prev" title="Ex59 吸附能的计算（四）">
+                  <i class="fa fa-chevron-left"></i> Ex59 吸附能的计算（四）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/10/09/ex61/" rel="next" title="Ex61 吸附能的计算（六）">
+                  Ex61 吸附能的计算（六） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

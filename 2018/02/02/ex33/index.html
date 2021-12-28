@@ -1,37 +1,464 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="O$_2$分子的计算中，我们知道了，单纯从数据库中获取的结构，只能作为一个合理的初始值，与计算所得到的理论结构还有一定的差距，因此我们需要对该结构进行优化才可以获取稳定的晶格参数信息。有两个方法可以实现：  1 Birch-Murnaghan状态方程拟合,  2 VASP计算中通过调节ISIF参数直接优化Bulk。  下面两节我们先讨论一下第一个方法：BM方程拟合。 1 什么是Birch-Murn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex33 晶格参数的确定（Birch-Murnaghan状态方程-1）">
+<meta property="og:url" content="http://www.bigbrosci.com/2018/02/02/ex33/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="O$_2$分子的计算中，我们知道了，单纯从数据库中获取的结构，只能作为一个合理的初始值，与计算所得到的理论结构还有一定的差距，因此我们需要对该结构进行优化才可以获取稳定的晶格参数信息。有两个方法可以实现：  1 Birch-Murnaghan状态方程拟合,  2 VASP计算中通过调节ISIF参数直接优化Bulk。  下面两节我们先讨论一下第一个方法：BM方程拟合。 1 什么是Birch-Murn">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/02/ex33/ex33-1.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/02/ex33/ex33-2.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/02/ex33/ex33-3.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/02/ex33/ex33-6.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/02/ex33/ex33-7.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/02/ex33/ex33-8.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/02/ex33/ex33-9.jpeg">
+<meta property="article:published_time" content="2018-02-02T07:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.746Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="Bulk">
+<meta property="article:tag" content="单胞">
+<meta property="article:tag" content="BM方程">
+<meta property="article:tag" content="批量">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2018/02/02/ex33/ex33-1.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2018/02/02/ex33/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2018/02/02/ex33/","path":"2018/02/02/ex33/","title":"Ex33 晶格参数的确定（Birch-Murnaghan状态方程-1）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex33 晶格参数的确定（Birch-Murnaghan状态方程-1） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%BB%80%E4%B9%88%E6%98%AFBirch-Murnaghan%E6%96%B9%E7%A8%8B%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">1 什么是Birch-Murnaghan方程？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%A6%82%E4%BD%95%E9%80%9A%E8%BF%87BM%E6%96%B9%E7%A8%8B%E8%8E%B7%E5%8F%96%E6%99%B6%E6%A0%BC%E5%8F%82%E6%95%B0%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">2 如何通过BM方程获取晶格参数？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%8E%B7%E5%8F%96%E6%8B%9F%E5%90%88%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">3 获取拟合的数据：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0"><span class="nav-number">4.</span> <span class="nav-text">4 扩展练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">5 总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/02/ex33/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex33 晶格参数的确定（Birch-Murnaghan状态方程-1）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-02-02 02:06:48" itemprop="dateCreated datePublished" datetime="2018-02-02T02:06:48-05:00">2018-02-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/02/02/ex33/" class="post-meta-item leancloud_visitors" data-flag-title="Ex33 晶格参数的确定（Birch-Murnaghan状态方程-1）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/02/02/ex33/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/02/ex33/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>O$_2$分子的计算中，我们知道了，单纯从数据库中获取的结构，只能作为一个合理的初始值，与计算所得到的理论结构还有一定的差距，因此我们需要对该结构进行优化才可以获取稳定的晶格参数信息。有两个方法可以实现：</p>
+<ul>
+<li>1 Birch-Murnaghan状态方程拟合, </li>
+<li>2 VASP计算中通过调节ISIF参数直接优化Bulk。</li>
+</ul>
+<p>下面两节我们先讨论一下第一个方法：BM方程拟合。</p>
+<h2 id="1-什么是Birch-Murnaghan方程？"><a href="#1-什么是Birch-Murnaghan方程？" class="headerlink" title="1 什么是Birch-Murnaghan方程？"></a>1 什么是Birch-Murnaghan方程？</h2><p>BM方程为块体材料的体积随着外压变化的状态方程。大师兄参考了维基百科的说明，大家下载维基百科导出的PDF文件参考。在学习下面的内容前，请务必阅读这个文件，了解什么是Birch-Murnaghan方程。下载：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1bUSYbs">http://pan.baidu.com/s/1bUSYbs</a> </p>
+<p><img src="/2018/02/02/ex33/ex33-1.jpeg"></p>
+<p><img src="/2018/02/02/ex33/ex33-2.jpeg"></p>
+<h2 id="2-如何通过BM方程获取晶格参数？"><a href="#2-如何通过BM方程获取晶格参数？" class="headerlink" title="2 如何通过BM方程获取晶格参数？"></a>2 如何通过BM方程获取晶格参数？</h2><p>首先，我们将BM方程中的体积转化为晶格参数（a）的函数：</p>
+<p><img src="/2018/02/02/ex33/ex33-3.jpeg"></p>
+<p>其中E(a)和E$_0$是晶格参数为a和a$_0$时bulk的能量，B$_0$，B$_0$’和V$_0$这些见BM方程的维基百科介绍。令$(1/a)^2 = x$，上图中的BM方程可以写成：</p>
+<p> $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $ 的形式，</p>
+<p>E$_0$, B$_0$,B$_0$’和V$_0$等写进c$_0$,c$_1$,c$_2$,和c$_3$这些常数里面，它们的具体形式此时并不重要，我们需要做的就是拟合这样的曲线去寻找使y(x)为最小值时的x取值。对y(x)这个方程求导数，dy(x)/dx = 0 的时候，便可以获取能量最低时的x值了，再由$(1/a)^2 = x$ 获得晶格参数。</p>
+<p> dy(x)/dx = c$_1$+ 2c$_2$x + 3c$_3$x$^2$</p>
+<p>令：dy(x)/dx = 0，即 c$_1$+ 2c$_2$x + 3c$_3$x$^2$ = 0</p>
+<p>这是一个典型的二项式方程，求解很容易。</p>
+<p>$$<br>x = \frac{-2c_2\pm\sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}<br>$$<br>x有两个值，其中负值被舍弃掉，最终：</p>
+<p>$$<br>x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}<br>$$</p>
+<h2 id="3-获取拟合的数据："><a href="#3-获取拟合的数据：" class="headerlink" title="3 获取拟合的数据："></a>3 获取拟合的数据：</h2><p>经过前面的分析，我们需要的就是获得的c$_1$，c$_2$ 和c$_3$值。可以设置一系列不同的晶格常数进行计算，得到对应的能量，然后将这些数据带入下面的方程中：$y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $进行拟合。本节我们主要讨论一下如何进行该计算。看到这里，你第一反应是我们之前测试K点或者SIGMA值时的那些Linux批量操作。是的，我们也需要进行一个批量操作的计算。</p>
+<p>3.1 分数坐标</p>
+<p>如果我们改变了晶格常数，那么Fe原子的坐标也要发生相应的变化。此时，用分数坐标更加方便，VESTA中在cif转VASP格式的时候，会提醒你选择哪个形式的坐标，我们选择分数坐标：</p>
+<p><img src="/2018/02/02/ex33/ex33-6.jpeg"></p>
+<p>POSCAR如下图：</p>
+<p><img src="/2018/02/02/ex33/ex33-7.jpeg"></p>
+<p>注意：</p>
+<p> 如果前面练习中，导出的为笛卡尔坐标形式的，你有两个选择：</p>
+<p>A）重新按照前面的步骤，用VESTA导出为分数坐标形式；</p>
+<p>B）将单点计算的结果直接复制过来（<code>cp  CONTCAR  POSCAR</code>），因为VASP的输出坐标为分数坐标形式，单点计算中，晶胞原子都没有动，CONTCAR可以直接使用。复制过来的POSCAR如下：</p>
+<p><img src="/2018/02/02/ex33/ex33-8.jpeg"></p>
+<p>3.2 获得分数坐标的POSCAR后，我们可以批量对晶格常数a,b,c进行批量操作，也可以对缩放系数进行批量操作，而原子的坐标不用去管。</p>
+<p>3.3 本练习对缩放系数进行批量操作</p>
+<p>我们取10个点，将1.0 替换成0.95, 0.96, 0.97, 0.98, 0.99, 1.01, 1.02, 1.03, 1.04, 1.05。此时，晶格常数为：<code>缩放系数</code>*<code>2.8664</code>.（记住，下一节用得到）</p>
+<p>a) 准备缩放系数为1.0 的计算文件夹，命名为1.00，里面包含我们前面一节已经讲过的Bulk单点计算相关文件；</p>
+<p>b) </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> 0.95 0.96 0.97 0.98 0.99 1.01 1.02 1.03 1.04 1.05; <span class="keyword">do</span> cp 1.00 <span class="variable">$i</span> ; sed -i <span class="string">&quot;2s/1.0/<span class="variable">$i</span>/g&quot;</span> <span class="variable">$i</span>/POSCAR ; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：这里大师兄在自己电脑的<code>~/.bashrc</code>文件里面设置了：<code> alias cp=&#39;cp -r&#39;</code></p>
+<p>思考： sed 命令后面用的是双引号（为什么？）如果这里看不懂的话，建议从Ex00开始学习。</p>
+<p>d.) 批量提交命令： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *; <span class="keyword">do</span> <span class="built_in">cd</span> <span class="variable">$i</span>; qsub sub4; <span class="built_in">cd</span> <span class="variable">$OLDPWD</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>其中，qsub sub4 是大师兄提交单个任务的命令。</p>
+<p>3.4 数据提取：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *; <span class="keyword">do</span> <span class="built_in">echo</span> -e <span class="variable">$i</span> <span class="string">&quot;\t&quot;</span> $(grep <span class="string">&#x27;  without&#x27;</span> <span class="variable">$i</span>/OUTCAR | tail -n 1| awk <span class="string">&#x27;&#123;print $7&#125;&#x27;</span>);  <span class="keyword">done</span> &gt; data</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2018/02/02/ex33/ex33-9.jpeg"></p>
+<p>3.5 以上计算文件以及相关的命令已经上传到QQ群文件和百度网盘了，大家对比下计算结果。 <a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1dEJr9rb">http://pan.baidu.com/s/1dEJr9rb</a> </p>
+<h2 id="4-扩展练习"><a href="#4-扩展练习" class="headerlink" title="4 扩展练习"></a>4 扩展练习</h2><p>4.1 完成本练习中的相关操作，并学习VASP官网批量操作的例子：</p>
+<p><a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/Fcc_Si">https://cms.mpi.univie.ac.at/wiki/index.php/Fcc_Si</a></p>
+<p>注意：FCC Si的例子用的原胞，并且该网址最后图中曲线不是二次方程！！！虽然用二次方程拟合出来的结果差不多。</p>
+<p>4.2 探索学习曲线拟合的方法；</p>
+<p>4.3 学习并了解BM方程以及如何拟合，如何通过BM方程获取稳定的晶格参数；</p>
+<p>4.4 对晶格参数进行批量操作，并计算。</p>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h2><p>本节从BM方程开始，简单介绍了什么是BM方程，如何通过BM方程获取稳定晶胞对应的晶格参数，最后，又复习了一下本书前面几节的批量操作，下一节我们讲解一下如何通过python脚本对BM方程拟合。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Bulk/" rel="tag"># Bulk</a>
+              <a href="/tags/%E5%8D%95%E8%83%9E/" rel="tag"># 单胞</a>
+              <a href="/tags/BM%E6%96%B9%E7%A8%8B/" rel="tag"># BM方程</a>
+              <a href="/tags/%E6%89%B9%E9%87%8F/" rel="tag"># 批量</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/02/01/ex32/" rel="prev" title="Ex32 Bulk的单点计算（Fe 单胞）">
+                  <i class="fa fa-chevron-left"></i> Ex32 Bulk的单点计算（Fe 单胞）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/02/03/ex34/" rel="next" title="Ex34 晶格参数的确定（Birch-Murnaghan状态方程-2）">
+                  Ex34 晶格参数的确定（Birch-Murnaghan状态方程-2） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

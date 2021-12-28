@@ -1,37 +1,457 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Citrine 也是一个材料学数据库，自带了机器学习工具，大家也可以研究琢磨一下。官网是 https:&#x2F;&#x2F;citrination.com&#x2F;search&#x2F;simple?searchMatchOption&#x3D;fuzzyMatch。这里，我们将通过几个例子了解如何在这个数据库中获取数据。在Citrine中获取数据需要用到 matminer.data_retrieval.retrieve_Citrine.C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从Citrine Informatics数据库获取数据">
+<meta property="og:url" content="http://www.bigbrosci.com/2021/01/01/A27/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="Citrine 也是一个材料学数据库，自带了机器学习工具，大家也可以研究琢磨一下。官网是 https:&#x2F;&#x2F;citrination.com&#x2F;search&#x2F;simple?searchMatchOption&#x3D;fuzzyMatch。这里，我们将通过几个例子了解如何在这个数据库中获取数据。在Citrine中获取数据需要用到 matminer.data_retrieval.retrieve_Citrine.C">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2021/01/01/A27/r1.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2021/01/01/A27/r2.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2021/01/01/A27/r3.png">
+<meta property="article:published_time" content="2021-01-01T05:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.332Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="骚操作">
+<meta property="article:tag" content="软件">
+<meta property="article:tag" content="Citrine">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2021/01/01/A27/r1.png">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2021/01/01/A27/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2021/01/01/A27/","path":"2021/01/01/A27/","title":"从Citrine Informatics数据库获取数据"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>从Citrine Informatics数据库获取数据 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1%EF%BC%9A%E8%8E%B7%E5%8F%96%E5%8C%96%E5%AD%A6%E5%BC%8F%E4%B8%BA-Si-%E7%9A%84%E6%89%80%E6%9C%89%E6%9D%90%E6%96%99%E7%9A%84%E5%AE%9E%E9%AA%8C%E6%B5%8B%E5%BE%97%E7%9A%84%E8%83%BD%E5%B8%A6"><span class="nav-number">1.</span> <span class="nav-text">示例1：获取化学式为 Si 的所有材料的实验测得的能带</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B2%EF%BC%9A%E8%8E%B7%E5%8F%96%E6%9D%90%E6%96%99%E5%AF%B9-OH-%E5%92%8C-O%E7%89%A9%E7%A7%8D%E7%9A%84%E5%90%B8%E9%99%84%E8%83%BD"><span class="nav-number">2.</span> <span class="nav-text">示例2：获取材料对 *OH 和 *O物种的吸附能</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2021/01/01/A27/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          从Citrine Informatics数据库获取数据
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-01 00:30:16" itemprop="dateCreated datePublished" datetime="2021-01-01T00:30:16-05:00">2021-01-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/01/01/A27/" class="post-meta-item leancloud_visitors" data-flag-title="从Citrine Informatics数据库获取数据" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2021/01/01/A27/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2021/01/01/A27/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Citrine 也是一个材料学数据库，自带了机器学习工具，大家也可以研究琢磨一下。官网是 <a target="_blank" rel="noopener" href="https://citrination.com/search/simple?searchMatchOption=fuzzyMatch%E3%80%82%E8%BF%99%E9%87%8C%EF%BC%8C%E6%88%91%E4%BB%AC%E5%B0%86%E9%80%9A%E8%BF%87%E5%87%A0%E4%B8%AA%E4%BE%8B%E5%AD%90%E4%BA%86%E8%A7%A3%E5%A6%82%E4%BD%95%E5%9C%A8%E8%BF%99%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E3%80%82%E5%9C%A8Citrine%E4%B8%AD%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9C%80%E8%A6%81%E7%94%A8%E5%88%B0">https://citrination.com/search/simple?searchMatchOption=fuzzyMatch。这里，我们将通过几个例子了解如何在这个数据库中获取数据。在Citrine中获取数据需要用到</a> matminer.data_retrieval.retrieve_Citrine.CitrineDataRetrieval 这个工具，其跟materials project类似，也学要一个API_key。大家可以在官网注册，并记录下API_Key。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#请先在终端中输入： pip install citrination_client ； 否则会报错</span></span><br><span class="line"><span class="comment">#然后我们回到代码，导入 CitrineDataRetrieval 这个模块</span></span><br><span class="line"><span class="keyword">from</span> matminer.data_retrieval.retrieve_Citrine <span class="keyword">import</span> CitrineDataRetrieval</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例1：获取化学式为-Si-的所有材料的实验测得的能带"><a href="#示例1：获取化学式为-Si-的所有材料的实验测得的能带" class="headerlink" title="示例1：获取化学式为 Si 的所有材料的实验测得的能带"></a>示例1：获取化学式为 Si 的所有材料的实验测得的能带</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先实例化这个工具，需要提供你的API_Key</span></span><br><span class="line">cdr = CitrineDataRetrieval(api_key=<span class="string">&#x27;&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 接下来，类似从materials project获取数据，我们需要用get_dataframe函数</span></span><br><span class="line">df = cdr.get_dataframe(criteria=&#123;<span class="string">&#x27;formula&#x27;</span>:<span class="string">&#x27;Si&#x27;</span>, <span class="string">&#x27;data_type&#x27;</span>: <span class="string">&#x27;EXPERIMENTAL&#x27;</span>&#125;, </span><br><span class="line">                       properties=[<span class="string">&#x27;Band gap&#x27;</span>],</span><br><span class="line">                       secondary_fields=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  0%|                                                                                            | 0/7 [00:00&lt;?, ?it/s]d:\programs\anaconda3\envs\py36\lib\site-packages\matminer\data_retrieval\retrieve_Citrine.py:103: FutureWarning:</span><br><span class="line"></span><br><span class="line">pandas.io.json.json_normalize is deprecated, use pandas.json_normalize instead</span><br><span class="line"></span><br><span class="line">100%|████████████████████████████████████████████████████████████████████████████████████| 7/7 [00:00&lt;00:00, 87.33it/s]</span><br><span class="line"></span><br><span class="line">all available fields:</span><br><span class="line">[<span class="string">&#x27;Band gap&#x27;</span>, <span class="string">&#x27;uid&#x27;</span>, <span class="string">&#x27;Band gap-units&#x27;</span>, <span class="string">&#x27;category&#x27;</span>, <span class="string">&#x27;references&#x27;</span>, <span class="string">&#x27;chemicalFormula&#x27;</span>, <span class="string">&#x27;Crystallinity&#x27;</span>, <span class="string">&#x27;Band gap-conditions&#x27;</span>, <span class="string">&#x27;Band gap-methods&#x27;</span>, <span class="string">&#x27;Band gap-dataType&#x27;</span>]</span><br><span class="line"></span><br><span class="line">suggested common fields:</span><br><span class="line">[<span class="string">&#x27;references&#x27;</span>, <span class="string">&#x27;chemicalFormula&#x27;</span>, <span class="string">&#x27;Crystallinity&#x27;</span>, <span class="string">&#x27;Band gap&#x27;</span>, <span class="string">&#x27;Band gap-units&#x27;</span>, <span class="string">&#x27;Band gap-conditions&#x27;</span>, <span class="string">&#x27;Band gap-methods&#x27;</span>, <span class="string">&#x27;Band gap-dataType&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df <span class="comment">#查看表格</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/01/01/A27/r1.png"></p>
+<p>从上面结果可以看出，数据库里有化学式为Si的材料共7中实验测得的能带数据。这些数据来源的文献，带隙的值，实验方法都被记录了下来。</p>
+<h4 id="示例2：获取材料对-OH-和-O物种的吸附能"><a href="#示例2：获取材料对-OH-和-O物种的吸附能" class="headerlink" title="示例2：获取材料对 *OH 和 *O物种的吸附能"></a>示例2：获取材料对 *OH 和 *O物种的吸附能</h4><p>想不到citrine数据库还有各种材料对*OH 和 *O 物种的吸附能，一起来看看怎么获取把。要查询更多的数据库，请探索官网<a target="_blank" rel="noopener" href="https://citrination.com/datasets">https://citrination.com/datasets</a> </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 我们发现这里不需要指定筛选条件，只需要返回所需要的性质即可。</span></span><br><span class="line">df_OH = cdr.get_dataframe(criteria=&#123;&#125;, properties=[<span class="string">&#x27;adsorption energy of OH&#x27;</span>], secondary_fields=<span class="literal">True</span>)</span><br><span class="line">df_O = cdr.get_dataframe(criteria=&#123;&#125;, properties=[<span class="string">&#x27;adsorption energy of O&#x27;</span>], secondary_fields=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>  0%|                                                                                            | 0/9 [00:00&lt;?, ?it/s]d:\programs\anaconda3\envs\py36\lib\site-packages\matminer\data_retrieval\retrieve_Citrine.py:103: FutureWarning:
+
+pandas.io.json.json_normalize is deprecated, use pandas.json_normalize instead
+
+100%|███████████████████████████████████████████████████████████████████████████████████| 9/9 [00:00&lt;00:00, 128.63it/s]
+
+
+all available fields:
+[&#39;uid&#39;, &#39;Adsorption energy of OH&#39;, &#39;Adsorption energy of OH-units&#39;, &#39;Morphology&#39;, &#39;Surface facet&#39;, &#39;category&#39;, &#39;references&#39;, &#39;chemicalFormula&#39;, &#39;Adsorption energy of OH-conditions&#39;, &#39;Adsorption energy of OH-dataType&#39;]
+
+suggested common fields:
+[&#39;references&#39;, &#39;chemicalFormula&#39;, &#39;Surface facet&#39;, &#39;Adsorption energy of OH&#39;, &#39;Adsorption energy of OH-units&#39;, &#39;Adsorption energy of OH-dataType&#39;, &#39;Morphology&#39;, &#39;Adsorption energy of OH-conditions&#39;]
+
+
+100%|█████████████████████████████████████████████████████████████████████████████████| 21/21 [00:00&lt;00:00, 140.70it/s]
+
+all available fields:
+[&#39;uid&#39;, &#39;Surface facet&#39;, &#39;Adsorption energy of O&#39;, &#39;category&#39;, &#39;references&#39;, &#39;chemicalFormula&#39;, &#39;Reconstruction&#39;, &#39;Adsorption energy of O-units&#39;, &#39;Adsorption energy of O-conditions&#39;]
+
+suggested common fields:
+[&#39;references&#39;, &#39;chemicalFormula&#39;, &#39;Surface facet&#39;, &#39;Adsorption energy of O&#39;, &#39;Adsorption energy of O-units&#39;, &#39;Adsorption energy of O-conditions&#39;, &#39;Reconstruction&#39;]
+</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_OH.head()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/01/01/A27/r2.png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_O.head()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/01/01/A27/r3.png"></p>
+<p>大家可以看到，这些数据库里面的数据还不够丰富。大家也可以把自己计算得到的数据上传到citrine数据库中，促进科学知识的开放获取。</p>
+<ul>
+<li>实际上 citrine 数据库包含了很多实验数据，下次的分享中，我们会把citrine数据库中的实验数据和materials project中的计算数据做个对比。</li>
+<li>强烈推荐大家在学习的时候使用jupyter notebook。</li>
+<li>附上jupyter notebook文件共大家参考：【链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1W1XKj-Fnjmx1yIe2QB7_MQ">https://pan.baidu.com/s/1W1XKj-Fnjmx1yIe2QB7_MQ</a> 提取码：jvoi 】</li>
+</ul>
+<p>本次分享到此结束。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%AA%9A%E6%93%8D%E4%BD%9C/" rel="tag"># 骚操作</a>
+              <a href="/tags/%E8%BD%AF%E4%BB%B6/" rel="tag"># 软件</a>
+              <a href="/tags/Citrine/" rel="tag"># Citrine</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/22/A26/" rel="prev" title="利用matminer从数据库获取数据">
+                  <i class="fa fa-chevron-left"></i> 利用matminer从数据库获取数据
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/26/S07/" rel="next" title="Ipad 连接服务器APP">
+                  Ipad 连接服务器APP <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

@@ -1,37 +1,440 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前面一节我们讲了直接优化NH3翻转的过渡态。这一节我们继续直接优化过渡态的介绍。计算乙烷分子（CH3CH3）绕C—C键旋转的过渡态。我们知道：乙烷有交错式和重叠式构型。而重叠式能量较高。想象乙烷分子绕着C—C旋转，从交错式到重叠式，再到交错式这一个过程。很容易就得到这个结论：重叠式的结构就是过渡态。所以，如果计算这个过渡态的工作就转化成了优化重叠式的构型。这也是本节的一个主要思想。  手动搭建初始">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex71 过渡态的计算（二）">
+<meta property="og:url" content="http://www.bigbrosci.com/2018/11/09/ex71/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="前面一节我们讲了直接优化NH3翻转的过渡态。这一节我们继续直接优化过渡态的介绍。计算乙烷分子（CH3CH3）绕C—C键旋转的过渡态。我们知道：乙烷有交错式和重叠式构型。而重叠式能量较高。想象乙烷分子绕着C—C旋转，从交错式到重叠式，再到交错式这一个过程。很容易就得到这个结论：重叠式的结构就是过渡态。所以，如果计算这个过渡态的工作就转化成了优化重叠式的构型。这也是本节的一个主要思想。  手动搭建初始">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/09/ex71/ex71-1.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/09/ex71/ex71-2.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/09/ex71/ex71-3.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/09/ex71/ex71-4.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/09/ex71/ex71-5.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/09/ex71/ex71-6.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/09/ex71/ex71-7.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/09/ex71/ex71-8.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/09/ex71/ex71-9.png">
+<meta property="article:published_time" content="2018-11-09T20:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:55.422Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="POSCARtoolkit.py">
+<meta property="article:tag" content="NEB">
+<meta property="article:tag" content="过渡态">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2018/11/09/ex71/ex71-1.png">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2018/11/09/ex71/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2018/11/09/ex71/","path":"2018/11/09/ex71/","title":"Ex71 过渡态的计算（二）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex71 过渡态的计算（二） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8A%A8%E6%90%AD%E5%BB%BA%E5%88%9D%E5%A7%8B%E7%9A%84%E4%B9%99%E7%83%B7%E6%9E%84%E5%9E%8B%E3%80%82"><span class="nav-number">1.</span> <span class="nav-text">手动搭建初始的乙烷构型。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E8%BF%87%E6%B8%A1%E6%80%81%E7%9A%84%E5%88%9D%E5%A7%8B%E6%9E%84%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">搭建过渡态的初始构型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94%E4%B8%80%E4%B8%8B%E4%BA%A4%E9%94%99%E5%BC%8F%E5%92%8C%E9%87%8D%E5%8F%A0%E5%BC%8FC%E2%80%94C%E7%9A%84%E9%94%AE%E9%95%BF%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">对比一下交错式和重叠式C—C的键长：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%91%E7%8E%87%E8%AE%A1%E7%AE%97"><span class="nav-number">4.</span> <span class="nav-text">频率计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/11/09/ex71/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex71 过渡态的计算（二）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-11-09 15:30:16" itemprop="dateCreated datePublished" datetime="2018-11-09T15:30:16-05:00">2018-11-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/11/09/ex71/" class="post-meta-item leancloud_visitors" data-flag-title="Ex71 过渡态的计算（二）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/11/09/ex71/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/09/ex71/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前面一节我们讲了直接优化NH<sub>3</sub>翻转的过渡态。这一节我们继续直接优化过渡态的介绍。计算乙烷分子（CH<sub>3</sub>CH<sub>3</sub>）绕C—C键旋转的过渡态。我们知道：乙烷有交错式和重叠式构型。而重叠式能量较高。想象乙烷分子绕着C—C旋转，从交错式到重叠式，再到交错式这一个过程。很容易就得到这个结论：重叠式的结构就是过渡态。所以，如果计算这个过渡态的工作就转化成了优化重叠式的构型。这也是本节的一个主要思想。</p>
+<hr>
+<h3 id="手动搭建初始的乙烷构型。"><a href="#手动搭建初始的乙烷构型。" class="headerlink" title="手动搭建初始的乙烷构型。"></a>手动搭建初始的乙烷构型。</h3><p>首先，我们要搭建一个初始的乙烷构型。把C—C键的两个C平行于z轴。思考一下：</p>
+<p>1）  我们为什么要这样做？</p>
+<p>2）  乙烷构型网上到处都是，随便下载一个就可以直接拿来使用，如果将任意取向的结构转化为C—C 键平行于z轴的结构呢？</p>
+<p>下面是我们搭建的乙烷结构，并优化的结果。优化过程中，两个C原子在xy方向的坐标被固定住了。</p>
+<p><img src="/2018/11/09/ex71/ex71-1.png"></p>
+<p><img src="/2018/11/09/ex71/ex71-2.png"></p>
+<p>很显然，我们的初始结构经过优化后转变成了交错式的构型。</p>
+<hr>
+<h3 id="搭建过渡态的初始构型"><a href="#搭建过渡态的初始构型" class="headerlink" title="搭建过渡态的初始构型"></a>搭建过渡态的初始构型</h3><p>在重叠式的结构中，乙烷分子的两个CH<sub>3</sub>关于穿过CC轴的xy平面是对称的。所以，我们将上面CH<sub>3</sub>中H原子的xy坐标修改的和下面部分一样。</p>
+<p><strong>注意：</strong></p>
+<p>1）  只修改xy坐标，z坐标保持不变</p>
+<p>2）  观察图中：3和8， 4和7， 以及5 和6 的xy坐标。</p>
+<p>3）  固定xy坐标，直接优化z方向</p>
+<p><img src="/2018/11/09/ex71/ex71-3.png"></p>
+<p>下面是优化完的结果：计算很快就收敛了。</p>
+<p><img src="/2018/11/09/ex71/ex71-4.png"></p>
+<hr>
+<h3 id="对比一下交错式和重叠式C—C的键长："><a href="#对比一下交错式和重叠式C—C的键长：" class="headerlink" title="对比一下交错式和重叠式C—C的键长："></a>对比一下交错式和重叠式C—C的键长：</h3><p><img src="/2018/11/09/ex71/ex71-5.png"></p>
+<p><img src="/2018/11/09/ex71/ex71-6.png"></p>
+<p>在重叠式中，C—C 稍微拉长了一点。</p>
+<h3 id="频率计算"><a href="#频率计算" class="headerlink" title="频率计算"></a>频率计算</h3><p>在频率计算的时候，本人把所有的原子都放开了，如下图：</p>
+<p><img src="/2018/11/09/ex71/ex71-7.png"></p>
+<p><img src="/2018/11/09/ex71/ex71-8.png"></p>
+<p>通过命令发现，有个256 cm<sup>-1</sup>的虚频。使用Jmol可视化一下：</p>
+<p><img src="/2018/11/09/ex71/ex71-9.png"></p>
+<p>过渡态计算完毕。</p>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>大家等了很久，看完肯定会对本节失望。但过渡态计算里面的一些技巧很多都是自己琢磨出来的。比如我们将分子沿着平行z轴的方向放置，根据对称性手动搭建过渡态的结构，以及固定坐标，选择性地优化等。还是那句话：过渡态只是个结构，我们需要做的就是通过各种各样的办法来实现快速优化这个结构的目的。</p>
+<p>本节计算例子下载链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/18TdaLhWnz4_IDMjJJGBMFw">https://pan.baidu.com/s/18TdaLhWnz4_IDMjJJGBMFw</a>   密码: ugjt</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/POSCARtoolkit-py/" rel="tag"># POSCARtoolkit.py</a>
+              <a href="/tags/NEB/" rel="tag"># NEB</a>
+              <a href="/tags/%E8%BF%87%E6%B8%A1%E6%80%81/" rel="tag"># 过渡态</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/08/ex70/" rel="prev" title="Ex70 过渡态的计算（一）">
+                  <i class="fa fa-chevron-left"></i> Ex70 过渡态的计算（一）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/10/ex72/" rel="next" title="Ex72 过渡态的计算（三）">
+                  Ex72 过渡态的计算（三） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

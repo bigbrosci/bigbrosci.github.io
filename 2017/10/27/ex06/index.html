@@ -1,37 +1,514 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="上一节，我们在天河II号顺利提交了VASP的计算，并看到了一堆的输出文件。我们就从简单的开始，一步一步给大家介绍VASP的输出文件，以及里面的细节部分。由于大家还处在一个刚刚接触VASP的阶段。我们先根据目前的计算，挑容易的，重要的进行介绍。最简单的非CONTCAR莫属了。 CONTCAR 和 POSCAR的区别在VASP的输入文件中，我们用POSCAR来存储模型的结构信息。当我们使用VASP优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex06 VASP的输出文件（一）">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/10/27/ex06/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="上一节，我们在天河II号顺利提交了VASP的计算，并看到了一堆的输出文件。我们就从简单的开始，一步一步给大家介绍VASP的输出文件，以及里面的细节部分。由于大家还处在一个刚刚接触VASP的阶段。我们先根据目前的计算，挑容易的，重要的进行介绍。最简单的非CONTCAR莫属了。 CONTCAR 和 POSCAR的区别在VASP的输入文件中，我们用POSCAR来存储模型的结构信息。当我们使用VASP优化">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-10-27T19:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T04:27:22.094Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="CONTCAR">
+<meta property="article:tag" content="续算">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/10/27/ex06/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/10/27/ex06/","path":"2017/10/27/ex06/","title":"Ex06 VASP的输出文件（一）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex06 VASP的输出文件（一） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CONTCAR-%E5%92%8C-POSCAR%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">CONTCAR 和 POSCAR的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CONTCAR-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">CONTCAR 的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSZICAR-%E7%9A%84%E5%90%AB%E4%B9%89"><span class="nav-number">4.</span> <span class="nav-text">OSZICAR 的含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BC%98%E5%8C%96%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">什么是优化？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSZICAR%E6%98%AF%E5%B9%B2%E4%BB%80%E4%B9%88%E7%9A%84%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">OSZICAR是干什么的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSZICAR%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7%E5%AD%90%EF%BC%9F"><span class="nav-number">7.</span> <span class="nav-text">OSZICAR长什么样子？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSZICAR-%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">8.</span> <span class="nav-text">OSZICAR 的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-1"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/10/27/ex06/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex06 VASP的输出文件（一）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-10-27 15:30:16" itemprop="dateCreated datePublished" datetime="2017-10-27T15:30:16-04:00">2017-10-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 23:27:22" itemprop="dateModified" datetime="2021-12-27T23:27:22-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/10/27/ex06/" class="post-meta-item leancloud_visitors" data-flag-title="Ex06 VASP的输出文件（一）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/10/27/ex06/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/10/27/ex06/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>上一节，我们在天河II号顺利提交了VASP的计算，并看到了一堆的输出文件。我们就从简单的开始，一步一步给大家介绍VASP的输出文件，以及里面的细节部分。由于大家还处在一个刚刚接触VASP的阶段。我们先根据目前的计算，挑容易的，重要的进行介绍。最简单的非<code>CONTCAR</code>莫属了。</p>
+<h3 id="CONTCAR-和-POSCAR的区别"><a href="#CONTCAR-和-POSCAR的区别" class="headerlink" title="CONTCAR 和 POSCAR的区别"></a><code>CONTCAR</code> 和 <code>POSCAR</code>的区别</h3><p>在VASP的输入文件中，我们用<code>POSCAR</code>来存储模型的结构信息。当我们使用VASP优化完成之后，就会得到一个新的结构，而<code>CONTCAR</code>就是用来存储新结构的文件。当然啦，我们这里只有一个O原子，不存在优化这一说法，但VASP只要算上了，就会有CONTCAR出现，不优化的的结果就是：<code>CONTCAR</code>和<code>POSCAR</code>的结构是一模一样的。但<code>CONTCAR</code>和<code>POSCAR</code>里面的内容可以一样，也可以不一样。在这里，大师兄把自己的个人经验都写在里面，新手看不懂的话不要紧，先记住这里有<code>CONTCAR</code>的相关注意信息，以后用的时候过来直接看即可。如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ cat -n POSCAR </span><br><span class="line">     1	O atom <span class="keyword">in</span> a box </span><br><span class="line">     2	1.0            </span><br><span class="line">     3	8.0 0.0 0.0   </span><br><span class="line">     4	0.0 8.0 0.0  </span><br><span class="line">     5	0.0 0.0 8.0 </span><br><span class="line">     6	O          </span><br><span class="line">     7	1         </span><br><span class="line">     8	Cartesian</span><br><span class="line">     9	0 0 0           <span class="comment">#</span></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ cat -n CONTCAR </span><br><span class="line">     1	O atom <span class="keyword">in</span> a box                         </span><br><span class="line">     2	   1.00000000000000     </span><br><span class="line">     3	     8.0000000000000000    0.0000000000000000    0.0000000000000000</span><br><span class="line">     4	     0.0000000000000000    8.0000000000000000    0.0000000000000000</span><br><span class="line">     5	     0.0000000000000000    0.0000000000000000    8.0000000000000000</span><br><span class="line">     6	   O </span><br><span class="line">     7	     1</span><br><span class="line">     8	Direct</span><br><span class="line">     9	  0.0000000000000000  0.0000000000000000  0.0000000000000000</span><br><span class="line">    10	 </span><br><span class="line">    11	  0.00000000E+00  0.00000000E+00  0.00000000E+00</span><br></pre></td></tr></table></figure>
+
+<p>对于当前的这个例子来说，主要的不同点在于：</p>
+<ul>
+<li>坐标的小数点位数。对比<code>POSCAR</code>和<code>CONTCAR</code>中：第1-5、9行的内容。</li>
+<li>缩进部分：<ul>
+<li><code>POSCAR</code>中，我们每一行都是顶格写的。</li>
+<li><code>CONTCAR</code>中，从第二行开始，每一行的开头部分都是以空格开始的。此时，就必须要给大家强调一点：<code>CONTCAR</code>中开头的是空格，不是tab。第3-5行，你别看前面都空了那么多，都是一个个的空格，而不是tab。</li>
+<li>这个一定要死死记住：<code>CONTCAR</code>或者<code>POSCAR</code>中，每一行中只有空格可以用来分割不同的内容或者开头，绝对不要用tab。否则你任务出错，花很多天都不一定能检查出来这个原因。</li>
+</ul>
+</li>
+<li>体系的坐标系也发生了变化： 第8行。<code>POSCAR</code>中，我们使用的是笛卡尔坐标系，也就是<strong>Cartesian</strong>或者任何以大写的<code>C</code>，小写的<code>c</code>开头。但<code>CONTCAR</code>中则变成了分数坐标系，也就是<strong>Direct</strong>。 这个给我们的启示就是：<ul>
+<li>如果想把体系从<strong>Cartesian</strong>转化为<strong>Direct</strong>，我们可以算一个单点。（单点的意思不明白，不要紧，后面我们会介绍）</li>
+<li>我们的<code>POSCAR</code>可以使用<strong>Cartesian</strong>， 也可以使用<strong>Direct</strong>，这个看大家自己的习惯。本人喜欢用<strong>Cartesian</strong>，看起来更加直观一些。</li>
+<li>由于我们的<code>O</code>原子在坐标系的原点（0,0,0）的位置，所以<strong>Direct</strong>和<strong>Cartesian</strong>看不出来区别。</li>
+</ul>
+</li>
+<li>在<code>CONTCAR</code>中，还多了一行内容（第11行），这一行主要描述的是体系中原子在xyz三个方向移动相关的信息。因为我们体系只有一个原子，所以也就只多了一行。<ul>
+<li>以后当你在优化结构的时候，体系中有多少原子，就会多出多少行出来，但全部都是0。</li>
+<li>如果你跑的是分子动力学，那么这些行中就不是0了，代表的是分子移动的速度</li>
+<li>如果你用<code>dimer</code>方法算过渡态的时候，那么这些行中是与过渡态结构相关的振动方式。</li>
+<li>总结下：如果你不跑分子动力学，不用<code>dimer</code>方法算过渡态， 那么多出来的这些行都会是0，是可有可无的，对计算无任何影响。看着不爽，直接删掉即可。</li>
+</ul>
+</li>
+</ul>
+<h3 id="CONTCAR-的作用"><a href="#CONTCAR-的作用" class="headerlink" title="CONTCAR 的作用"></a><code>CONTCAR</code> 的作用</h3><p>这里新手暂时不要求，大师兄可能会将其移到其他的章节，只需要记住本书里面有<code>CONTCAR</code>的用法，以后再找下即可。通过上面的学习，我们知道，<code>CONTCAR</code>和<code>POSCAR</code>一样，就是用来保存优化结构的。可能有些地方与我们自己手动写的<code>POSCAR</code>有些不同（比如每行开始的空格），但只要你不用tab，这都是无关痛痒的事情。下面我们介绍一下<code>CONTCAR</code>的2个用法。</p>
+<p>1） 计算完成之后，<code>CONTCAR</code>中是最后一步优化的结果。我们可以通过一些可视化的软件打开<code>CONTCAR</code>，检查计算的对不对。这个也是大家以后做计算最基本的工作。</p>
+<p>2） 如果你的计算半路由于各种各样的原因给停掉了，服务器不稳定，断电，自己手欠误删任务或者将计算的文件夹位置移动了，都会导致计算失败。这个时候，我们就需要<strong>续算</strong>，<code>CONTCAR</code>的作用就展示出来了。续算又分为三种情况：</p>
+<p>A）第一个离子步没有算完，任务就挂掉了。这种情况，<code>CONTCAR</code>是不会更新的，我们再次用原来的输入文件提交一次就行了。</p>
+<p>B）我们的计算已经完成了大于或者等于1的离子步，但小于INCAR中设置的NSW的数值。这个时候CONTCAR的内容已经是离任务死掉最近的结构了。我们只需要将其复制成POSCAR，然后再次提交任务即可。具体操作如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mv POSCAR POSCAR_0</span><br><span class="line">mv OUTCAR OUTCAR_0</span><br><span class="line">cp CONTCAR POSCAR </span><br></pre></td></tr></table></figure>
+
+<p>师兄，你不是说只把CONTCAR复制成POSCAR就可以了吗？ 为什么前面还多了一个<code>mv</code>的命令?</p>
+<p>在这里，大师兄要教给你做计算一个超级重要的原则：<strong>时时刻刻都要努力提高或者保证计算可重复性。</strong></p>
+<p>因为我们的任务是从之前的<code>POSCAR</code>（标记为A）开始的，中途断掉了，直接把<code>CONTCAR</code>（标记为C_A）复制成<code>POSCAR</code>（标记为B）的话，我们就会损失掉前面优化的过程。相当于我们直接搭建了这个B这个结构进行优化计算。而实际上，我们后面的计算的性质是续算，而不是从头直接计算。虽然结果大部分情况都是一样的。所以在将<code>CONTCAR</code>复制成<code>POSCAR</code>计算之前，我们要尽可能把任务停掉前的计算过程保存记录下来。这就类似于写实验记录本，我们要从开始搭建设备到开展反应一系列的详细信息都记录在上面。而不能从半路直接跳着写。这也是很多人在做计算的时候，任务死掉后续算所忽略的一个很严肃的问题。</p>
+<p>下面是大师兄本人在续算的时候所用到的一个保存前面计算的小脚本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line">mv POSCAR POSCAR-$1</span><br><span class="line">mv OUTCAR OUTCAR-$1</span><br><span class="line">mv OSZICAR OSZICAR-$1</span><br><span class="line">mv vasprun.xml vasprun.xml-$1</span><br><span class="line">mv CONTCAR POSCAR</span><br></pre></td></tr></table></figure>
+
+<p>通过这个脚本，我们扩展到第三种情况。</p>
+<p>C）我们的计算达到的<code>INCAR</code>中所设置的<code>NSW</code>的数值。比如设置的<code>NSW = 1000</code>，实际上跑了<code>1000</code>步，任务停下来了，也就是所谓的结构优化没有收敛。这种情况我们需要做的又有2个步骤：</p>
+<p>I）首先，要检查<code>CONTCAR</code>中的结构是不是正确的，如果结构跑乱了，体系中原子乱飞，有很大可能会导致不收敛的情况。如果是结构乱了，我们就要找原因去解决。主要还是在以下三个方向下功夫：</p>
+<ul>
+<li>初始结构是否合理</li>
+<li><code>POSCAR</code>中的元素顺序与<code>POTCAR</code>中的是不是一致</li>
+<li>是不是用的<code>gamma</code>点，然后把体系放开了。</li>
+</ul>
+<p>II）如果前面检查的结构没问题，这种情况，可能是因为你设置的NSW值太小导致的，或者体系是在是太难收敛，比如过渡态优化的情况。那么我们就需要继续算了。此时，为了保证计算的可重复性，我们必须要将上一步的计算保存记录下来。比如下面，大师兄本人的一个过渡态的优化：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">qli@tekla2:~/test$ ls</span><br><span class="line">CONTCAR    DOSCAR    EIGENVAL  INCAR    OSZICAR    OSZICAR-2  OUTCAR    OUTCAR-2  PCDAT   POSCAR-1  POSCAR-3  REPORT  sub16  vasprun.xml</span><br><span class="line">CONTCAR-1  DOSCAR-1  IBZKPT    KPOINTS  OSZICAR-1  OSZICAR-3  OUTCAR-1  OUTCAR-3  POSCAR  POSCAR-2  POTCAR    sub12   sub28</span><br><span class="line">qli@tekla2:~/test$ grep NSW INCAR</span><br><span class="line">NSW = 800</span><br><span class="line">qli@tekla2:~/test$ tail OSZICAR -n 3 </span><br><span class="line">RMM:   8    -0.339073663363E+03    0.17227E-04   -0.45367E-05  3703   0.126E-02    0.104E-02</span><br><span class="line">RMM:   9    -0.339073663179E+03    0.18447E-06   -0.78164E-06  2696   0.541E-03</span><br><span class="line"> 800 F= -.34272018E+03 E0= -.34270858E+03  d E =0.159932E-02</span><br><span class="line">qli@tekla2:~/test$ ls</span><br><span class="line">CONTCAR    DOSCAR    EIGENVAL  INCAR    OSZICAR    OSZICAR-2  OUTCAR    OUTCAR-2  PCDAT   POSCAR-1  POSCAR-3  REPORT  sub16  vasprun.xml</span><br><span class="line">CONTCAR-1  DOSCAR-1  IBZKPT    KPOINTS  OSZICAR-1  OSZICAR-3  OUTCAR-1  OUTCAR-3  POSCAR  POSCAR-2  POTCAR    sub12   sub28</span><br><span class="line">qli@tekla2:~/test$ save_calculations.sh 4</span><br><span class="line">qli@tekla2:~/$ ls</span><br><span class="line">CONTCAR-1  DOSCAR-1  IBZKPT  KPOINTS    OSZICAR-2  OSZICAR-4  OUTCAR-2  OUTCAR-4  POSCAR    POSCAR-2  POSCAR-4  REPORT  sub16  vasprun.xml-4</span><br><span class="line">DOSCAR     EIGENVAL  INCAR   OSZICAR-1  OSZICAR-3  OUTCAR-1   OUTCAR-3  PCDAT     POSCAR-1  POSCAR-3  POTCAR    sub12   sub28</span><br><span class="line">qli@tekla2:~/test$ vi INCAR</span><br><span class="line">qli@tekla2:~/ru_chbr/ads/high_coverage_br/1Br/ch3br/ts_c-br/test$ qsub sub12</span><br><span class="line">Your job 215093 (&quot;freq-4B2&quot;) has been submitted</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>详解：</strong></p>
+<ul>
+<li>前面的脚本名字为： <code>save_calculations.sh</code></li>
+<li>在使用这个脚本前，大师兄已经算过3次了，每次都跑到了800步，没有收敛，而第四次依然没有收敛，就需要用脚本将当前第四次的计算记录下来下来；</li>
+<li>脚本使用方法：<code>save_calculation.sh  N</code>  N为第几次算，这里用了4，然后就会得到相应的<code>POSCAR-4</code>， <code>OSZICAR-4</code>， <code>OUTCAR-4</code>等文件，记录第四次计算的细节；</li>
+<li>保存之后，我们就可以提交任务继续苦苦等待了。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>到这里，CONTCAR的基本介绍以及作用差不多就讲完了。新手们看到后可能会很困惑，因为里面很多内容是大师兄临时加进去给有经验的人写的。只要记住一句话就完成本节的学习任务：CONTCAR的作用跟POSCAR一样，存储的是模型被优化过的结构信息。</p>
+<p>上一节，我们学习了<code>CONTCAR</code>的一些基本内容。本着从简到易，从最常用到最不常用的原则，这一节，我们学习VASP的另外一个简单，但又很重要的的输出文件：<code>OSZICAR</code>。 </p>
+<p>首先，推荐一个QE学习的视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av36194036">https://www.bilibili.com/video/av36194036</a> （用良心带人入坑）</p>
+<h3 id="OSZICAR-的含义"><a href="#OSZICAR-的含义" class="headerlink" title="OSZICAR 的含义"></a><code>OSZICAR</code> 的含义</h3><p>师兄，<code>OSZICAR</code>是什么的缩写？为什么起这么一个名字？</p>
+<p>不好意思，这个我真不知道。也没有认真去考证过。目前只能告诉大家先把这个名字记住。</p>
+<h3 id="什么是优化？"><a href="#什么是优化？" class="headerlink" title="什么是优化？"></a>什么是优化？</h3><p>在介绍<code>OSZICAR</code>的内容和功能之前，有必要先给大家澄清一个计算中常见的词：优化。</p>
+<p>计算一个体系，我们有<code>2</code>个优化过程：</p>
+<ul>
+<li>电子结构的优化： 可以理解为对某一固定的几何结构，迭代求解薛定谔方程来获得体系能量极小值的一个过程。这个迭代过程，每一次迭代求解都可以认为是电子结构的一个优化。（通常被大伙称为：电子步）</li>
+<li>几何结构的优化：可以理解为在电子结构优化的结果上，获取原子的受力情况，然后根据受力情况，调节原子的位置，再进行电子结构优化，获取新的受力情况，然后再调节原子位置，一直重复这样的过程，直至找到体系势能面上一个极小值的过程。（通常被大伙称为：离子步）</li>
+</ul>
+<p>思考一下，我们的<code>O</code>原子，我们只可能对它进行电子结构的优化，因为它的几何结构不会发生变化。</p>
+<h3 id="OSZICAR是干什么的？"><a href="#OSZICAR是干什么的？" class="headerlink" title="OSZICAR是干什么的？"></a><code>OSZICAR</code>是干什么的？</h3><p>当VASP迭代求解<code>O</code>原子电子结构的时候，整个过程就会记录在OSZICAR中。下面我们就看一下VASP官网对<code>OSZICAR</code>的解释说明：<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/OSZICAR">https://cms.mpi.univie.ac.at/wiki/index.php/OSZICAR</a></p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Information about convergence speed and about the current step is written to stdout and to the **OSZICAR** <span class="keyword">file</span>. Always keep a copy of the **OSZICAR** <span class="keyword">file</span>, it might give important information.</span><br></pre></td></tr></table></figure>
+
+<p>也就是说：<code>OSZICAR</code>是用来记录优化过程一些信息的文件。这里的优化过程既包括电子结构，又包括几何结构。</p>
+<h3 id="OSZICAR长什么样子？"><a href="#OSZICAR长什么样子？" class="headerlink" title="OSZICAR长什么样子？"></a><code>OSZICAR</code>长什么样子？</h3><p>在Linux的终端中，使用Vim打开<code>OSZICAR</code>，你会得到类似下面的信息：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">       N       E                     dE             d eps       ncg     rms          rms（c）</span><br><span class="line">DAV:   <span class="number">1</span>     <span class="number">0.324969965196E+02</span>    <span class="number">0.32497E+02</span>   -<span class="number">0.10270E+03</span>    <span class="number">48</span>   <span class="number">0.977E+01</span></span><br><span class="line">DAV:   <span class="number">2</span>     <span class="number">0.501749892771E+00</span>   -<span class="number">0.31995E+02</span>   -<span class="number">0.31995E+02</span>    <span class="number">72</span>   <span class="number">0.202E+01</span></span><br><span class="line">DAV:   <span class="number">3</span>    -<span class="number">0.182605770767E-01</span>   -<span class="number">0.52001E+00</span>   -<span class="number">0.50521E+00</span>    <span class="number">48</span>   <span class="number">0.521E+00</span></span><br><span class="line">DAV:   <span class="number">4</span>    -<span class="number">0.203547758465E-01</span>   -<span class="number">0.20942E-02</span>   -<span class="number">0.20860E-02</span>    <span class="number">96</span>   <span class="number">0.333E-01</span></span><br><span class="line">DAV:   <span class="number">5</span>    -<span class="number">0.203547873947E-01</span>   -<span class="number">0.11548E-07</span>   -<span class="number">0.11210E-07</span>    <span class="number">48</span>   <span class="number">0.844E-04</span>    <span class="number">0.307E-01</span></span><br><span class="line">DAV:   <span class="number">6</span>    -<span class="number">0.213726161828E-01</span>   -<span class="number">0.10178E-02</span>   -<span class="number">0.17884E-03</span>    <span class="number">48</span>   <span class="number">0.111E-01</span>    <span class="number">0.155E-01</span></span><br><span class="line">DAV:   <span class="number">7</span>    -<span class="number">0.214708381542E-01</span>   -<span class="number">0.98222E-04</span>   -<span class="number">0.23522E-04</span>    <span class="number">48</span>   <span class="number">0.459E-02</span></span><br><span class="line">   <span class="number">1</span> F= -<span class="number">.21470838E-01</span> E0= -<span class="number">.13757722E-01</span>  d E =-<span class="number">.154262E-01</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>第一行中各项的含义：（没汉语解释的，大师兄也翻译不出来）</p>
+<p>1） <code>N</code> 代表电子结构的迭代步数，通常被大家称为电子步。</p>
+<p>2） <code>E</code> 代表当前电子步的体系能量;</p>
+<p>3） <code>dE</code>当前电子步和上一步体系能量的差值;</p>
+<p>4） <code>d eps</code> the change in the band structure energy; </p>
+<p>5）<code>ncg</code> the number of evaluations of the Hamiltonian acting onto a wavefunction; </p>
+<p>6） <code>rms</code>  the norm of the residuum of the trialwavefunctions （i.e. their approximate error）</p>
+<p>7） <code>rms (c)</code> the difference between input and output charge density.</p>
+</li>
+<li><p>第二行中<code>DAV</code>的含义：</p>
+<p>1） <code>Blocked Davidson algorithm</code>的缩写。看不懂不要紧，简单点：就是一个电子迭代求解的自洽算法。在对电子结构迭代求解的过程，前人们发展出了很多不同的算法。就好比是，从北京到南京，有很多种出行选择一样，可以坐火车，汽车，乘飞机，也可以步行，骑马，骑驴，骑自行车，等等。每一种出行方式都是一种算法。大家可以根据自己的情况，选择适合自己的出行方式。所以，对自己的研究方向，也需要找一个适合自己体系的合适的算法。</p>
+<p>2） 除了<code>DAV</code>，今后你还会看到<code>RMM</code> （residual minimization scheme） 和 <code>CG</code> （conjugate-gradient algorithm）等等。选择不同的算法，第二行以及后面显示的也会有所区别。这点大家掌握即可。具体到每个算法怎么回事，当你计算算起来了，有余力，慢慢开始学习量化基础知识的时候再仔细琢磨。</p>
+<p>3） 前面我们说了，要找一个适合自己体系的算法，是选<code>DAV</code>，<code>RMM</code>还是<code>CG</code>，亦或是其他的呢？ 这个可以在<code>INCAR</code>中通过参数<code>ALGO</code>设置，参考链接： <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/ALGO">https://cms.mpi.univie.ac.at/wiki/index.php/ALGO</a> 。一般来说，使用<code>ALGO = Fast</code>可以满足大部分的需求。可以理解为北京到南京出行，大家最常用的火车。</p>
+<p>4） 师兄：这个氧原子的计算中，我们没有在<code>INCAR</code>中设置<code>DAV</code>这个算法相关的参数啊，为什么<code>OSZICAR</code>中还会出现<code>DAV</code>呢？</p>
+<p>原因在于：同很多软件一样，<code>VASP</code>也有很多<code>默认的参数</code>，这就避免了当你不设置某个参数的时候进行不下去的尴尬局面，当然，有些相关的参数，你不设置的时候VASP也会罢工，这个我们以后再说。此时的计算，对于电子结构收敛的算法来说，默认的是<code>DAV</code>这个方法，也就是INCAR中： <code>ALGO = N</code>。</p>
+<p>5）划重点：</p>
+<p>我们知道<code>VASP</code>的<code>INCAR</code>设置中，有很多相应的参数。而新手恰恰在学习的过程中，由于不能在短时间了解这些参数的具体含义，使用方法，从而导致了不知道怎么去选择的情况。而就是在这种情况下，选择了胡搞。也就是<code>INCAR</code>中参数，认识的写上去，不认识的也写上去。这也恰恰是新手在计算过程中容易出错的一个主要原因。前面我们说了<code>VASP</code>有很多默认的参数，而新手在学习的时候，不能图快，要一步一个脚印地走。看见一个参数，就好好琢磨琢磨，争取理解透了，或者知道这个参数大体上怎么回事。如果你不认识的参数，千万不要写上去，使用默认的就可以。</p>
+</li>
+<li><p>最后一行：</p>
+<p>1） <code>F</code>前面的 1 代表几何结构优化的次数（也称为离子步的步数），本练习只有1步。</p>
+<p>2） <code>F =</code> 是体系的总能量, 与<code>OUTCAR</code>中 <code>free energy  TOTEN</code> 后面的值相等；（<code>OUTCAR</code>还没讲，暂且记住）</p>
+<p>3） <code>E0</code> 后面的能量对应<code>OUTCAR</code>中 <code>energy (sigma-&gt;0)</code>后面的能量（下图到数第一行）。</p>
+</li>
+</ul>
+<h3 id="OSZICAR-的作用"><a href="#OSZICAR-的作用" class="headerlink" title="OSZICAR 的作用"></a><code>OSZICAR</code> 的作用</h3><p>Always keep a copy of the <strong>OSZICAR</strong> file, it might give important information. 官网既然这么说，这表明OSZICAR确实很重要，重要在哪里呢？ </p>
+<ul>
+<li><p>整个体系的优化过程都记录下来了。（当然后面我们要讲的<code>OUTCAR</code>也以更加详细的方式将优化过程记下来了）但<code>OSZICAR</code>可以更加直观地观测我们体系优化过程中能量的变化过程。</p>
+</li>
+<li><p>通过<code>OSZICAR</code>获取体系的能量，也就是<code>E0</code>后面的那一项。<strong>很多人在使用<code>VASP</code>的时候，不知道该选择哪个能量</strong>，这里大师兄就告诉你：选择<code>E0</code>后面的即可。不管你有什么疑问，不管别人怎么跟你争论，都不要管，先老老实实记住：我们选<code>E0</code>后面的这个能量。随着你的学习，很多疑问自己就解开了。命令使用方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ grep E0 OSZICAR  </span><br><span class="line">   1 F= -.21470838E-01 E0= -.13757722E-01  d E =-.154262E-01</span><br></pre></td></tr></table></figure></li>
+<li><p>后面的学习中，我们会经常讲解<code>OSZICAR</code>相关的内容，由于时间的原因，也主要是因为新手才刚刚接触计算，就不做过多的解释。</p>
+</li>
+</ul>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>这一节，我们需要了解和学习的内容主要有以下几个方面：</p>
+<p>1） <code>VASP</code>计算中的优化：几何和电子结构优化大体有个了解</p>
+<p>2）<code>OSZICAR</code>中各项的含义，争取多理解几个；</p>
+<p>3）<code>DAV</code>对应的<code>INCAR</code>中<code>ALGO</code>是怎么设置的；一般来说<code>ALGO=FAST</code>可以满足大部分人的计算需求；</p>
+<p>4）知道<code>VASP</code>有默认的参数，自己不要画蛇填足。保持<code>INCAR</code>干净整洁，不知道的，模糊不清的参数坚决不往<code>INCAR</code>里面写。</p>
+<p>5）知道怎么从<code>OSZICAR</code>中获取体系的能量。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CONTCAR/" rel="tag"># CONTCAR</a>
+              <a href="/tags/%E7%BB%AD%E7%AE%97/" rel="tag"># 续算</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/10/26/ex05/" rel="prev" title="Ex05 VASP任务的提交">
+                  <i class="fa fa-chevron-left"></i> Ex05 VASP任务的提交
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/10/29/ex07/" rel="next" title="Ex07 VASP的输出文件（三）">
+                  Ex07 VASP的输出文件（三） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

@@ -1,37 +1,457 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="我们学习完了气相分子的相关计算后，下一步就是块体计算了，这也是VASP的强项所在，但块体的计算与气体分子的非常类似，如果前面掌握好了，后面的计算对你来说也就是轻而易举的事情了。 本着从简入繁的原则，我们先学习Bulk的单点计算（以Fe的单胞为例），姑且称之为本书中级篇的开始。大家需要学习并初步了解Material Studio和VESTA这两款软件。  Material Studio下载链接：ht">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex32 Bulk的单点计算（Fe 单胞）">
+<meta property="og:url" content="http://www.bigbrosci.com/2018/02/01/ex32/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="我们学习完了气相分子的相关计算后，下一步就是块体计算了，这也是VASP的强项所在，但块体的计算与气体分子的非常类似，如果前面掌握好了，后面的计算对你来说也就是轻而易举的事情了。 本着从简入繁的原则，我们先学习Bulk的单点计算（以Fe的单胞为例），姑且称之为本书中级篇的开始。大家需要学习并初步了解Material Studio和VESTA这两款软件。  Material Studio下载链接：ht">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/01/ex32/ex32-1.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/01/ex32/ex32-2.jpeg">
+<meta property="article:published_time" content="2018-02-01T07:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.711Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="Bulk">
+<meta property="article:tag" content="单胞">
+<meta property="article:tag" content="原胞">
+<meta property="article:tag" content="单点">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2018/02/01/ex32/ex32-1.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2018/02/01/ex32/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2018/02/01/ex32/","path":"2018/02/01/ex32/","title":"Ex32 Bulk的单点计算（Fe 单胞）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex32 Bulk的单点计算（Fe 单胞） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">1 模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-VASP%E8%AE%A1%E7%AE%97%E6%96%87%E4%BB%B6%E7%9A%84%E5%87%86%E5%A4%87"><span class="nav-number">2.</span> <span class="nav-text">2 VASP计算文件的准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1"><span class="nav-number">3.</span> <span class="nav-text">3 提交任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0"><span class="nav-number">4.</span> <span class="nav-text">4 扩展练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">5 总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/01/ex32/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex32 Bulk的单点计算（Fe 单胞）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-02-01 02:06:48" itemprop="dateCreated datePublished" datetime="2018-02-01T02:06:48-05:00">2018-02-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/02/01/ex32/" class="post-meta-item leancloud_visitors" data-flag-title="Ex32 Bulk的单点计算（Fe 单胞）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/02/01/ex32/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/01/ex32/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>我们学习完了气相分子的相关计算后，下一步就是块体计算了，这也是VASP的强项所在，但块体的计算与气体分子的非常类似，如果前面掌握好了，后面的计算对你来说也就是轻而易举的事情了。</p>
+<p>本着从简入繁的原则，我们先学习Bulk的单点计算（以Fe的单胞为例），姑且称之为本书中级篇的开始。大家需要学习并初步了解Material Studio和VESTA这两款软件。</p>
+<ul>
+<li><p>Material Studio下载链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1i5or3ZR">http://pan.baidu.com/s/1i5or3ZR</a>   对于这款软件怎么安装，大师兄就不指导了，网上全是相关的资料。本节默认大家已经安装好MS软件，并且可以打开界面。</p>
+</li>
+<li><p>VESTA下载官网：<a target="_blank" rel="noopener" href="http://jp-minerals.org/vesta/en/download.html">http://jp-minerals.org/vesta/en/download.html</a> 只在官网下载，网上乱七八糟的版本不要去管！VESTA 下载后解压，直接打开就可以用了。注意：很多人问VESTA的使用说明，官网有，网上也有很多相关资料！大家耐着性子多练一天就能摸索个差不多了。</p>
+</li>
+</ul>
+<h2 id="1-模型"><a href="#1-模型" class="headerlink" title="1 模型"></a>1 模型</h2><p> 1.1 课题的第一个难点</p>
+<p>模型的选择，计算的准确性，以及结果分析的合理性，是一个课题是否成功的三个最主要的因素。Bulk的计算很简单，难点在于Bulk模型的获取。这也是一个课题最难的部分之一。很多人在计算的时候，模型不对，基本上这个课题就被一棍子打死了。这里大师兄提醒大家的是：模型，模型，模型！！！在进入计算的时候，一定要确保模型的合理性与正确性。这是计算中的第一个坎！</p>
+<p>1.2 MS搭建Fe单胞的模型</p>
+<p>A) 左上角<code>file</code>—&gt; <code>newproject</code>，输入Fe，点OK;</p>
+<p>B) <code>file</code>—&gt; <code>import</code>—&gt; <code>Structures</code>—&gt;<code>metals</code>—&gt;<code>pure-metals</code>—&gt;找到Fe，选择打开即可;</p>
+<p>C) <code>file</code>—&gt;<code>export</code>—&gt;选择cif格式 （此时导出的是Fe的单胞，conventional cell）</p>
+<p>1.3 MS导出Fe原胞的模型：</p>
+<p>A)和B)步骤与前面一样，</p>
+<p>C) <code>Build</code> —&gt; <code>Symmetry</code>—&gt; <code>选择primitive cell</code></p>
+<p>D) <code>file</code>—&gt;<code>export</code>—&gt;选择cif格式 （此时导出的是Fe的原胞，primitive cell）</p>
+<p>1.4 VESTA 转换成VASP的格式</p>
+<p>a) 打开VESTA软件，<code>file</code>—&gt;<code>open</code>—&gt;选择之前保存的cif文件</p>
+<p>b) <code>file</code>—&gt; <code>export data</code> —&gt;保存类型选择VASP</p>
+<p>c) 将保存的文件重新命名成<code>POSCAR</code>即可</p>
+<p>1.5 需要掌握的知识：</p>
+<p>a) 晶体学相关的基本知识，什么是primitive cell，什么是conventional cell?</p>
+<p>b) MS和VESTA的基本操作</p>
+<p>1.6 需要注意的部分（其他转换方法）：</p>
+<p>a）可以使用<code>openbabel</code>转换：<a target="_blank" rel="noopener" href="http://openbabel.org/wiki/Main_Page">http://openbabel.org/wiki/Main_Page</a></p>
+<p>b）可以使用MS生成的.cell文件转化，可以根据POSCAR的格式手动复制，也可以通过脚本。</p>
+<p>c）或者通过其他脚本进行转化,例如：<a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/vasp/scripts.html">VTST</a>中的cif2pos.pl。<a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/vasp/scripts.html">http://theory.cm.utexas.edu/vasp/scripts.html</a></p>
+<p>d) 使用<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/">ASE</a>: Atomic Simulation Environment的缩写。</p>
+<h2 id="2-VASP计算文件的准备"><a href="#2-VASP计算文件的准备" class="headerlink" title="2 VASP计算文件的准备"></a>2 VASP计算文件的准备</h2><p> <strong>2.1 准备好INCAR文件：</strong></p>
+<p>A）Fe带有磁性，ISPIN和MAGMOM需要设置</p>
+<p>B）Fe是金属， ISMEAR=1， SIGMA=0.1</p>
+<p>C）ENCUT=450， 统一起来，后面可能还需要计算其他元素，450是一个很安全的选择。</p>
+<p>D）EDIFF控制电子步收敛的精度</p>
+<p><img src="/2018/02/01/ex32/ex32-1.jpeg"></p>
+<p><strong>2.2 准备KPOINTS文件：</strong></p>
+<p>以单胞为例： a=b=c=2.8664 $\AA$，根据前面的经验，我们可以设置$11\times11\times11$的KPOINTS（Gamma）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">K-POINTS</span><br><span class="line"> 0</span><br><span class="line">Gamma</span><br><span class="line">  11 11 11</span><br><span class="line">  0 0 0</span><br></pre></td></tr></table></figure>
+
+<p> <img src="/2018/02/01/ex32/ex32-2.jpeg"></p>
+<p>2.3 准备好与POSCAR对应的POTCAR文件，提交任务的脚本</p>
+<h2 id="3-提交任务"><a href="#3-提交任务" class="headerlink" title="3 提交任务"></a>3 提交任务</h2><p>3.1 提交任务之前，再次检查一遍我们的所有输入文件，确保无误；</p>
+<p>3.2 提交任务进行计算；</p>
+<p>3.3 大师兄的计算已经压缩放到百度网盘了，大家计算完毕后，与大师兄的进行对比。</p>
+<p>链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1eRQHaX8">http://pan.baidu.com/s/1eRQHaX8</a></p>
+<h2 id="4-扩展练习"><a href="#4-扩展练习" class="headerlink" title="4 扩展练习"></a>4 扩展练习</h2><p>4.1 分析Fe体相的磁矩，并查找实验值；</p>
+<p>4.2 复习之前O$_2$分子的相关计算，分析实验结果；</p>
+<p>4.3 怎么在OUTCAR中查看磁矩等相关信息； （VASP 哪一个参数？）</p>
+<p>4.4 复习晶体学的相关知识；</p>
+<p>4.5 学会MS，VESTA的基本练习；</p>
+<p>4.6 掌握2种以上通过MS获取POSCAR的方法。</p>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h2><p>本节的计算我们需要掌握一定的晶体学基础知识，基本的MS和VESTA操作，计算过程和O$_2$分子的例子极为相似，大家在学习的时候，可以将这两部分相互结合。本节我们采用的Fe单胞的例子，计算本身不难。难点在于自己课题中模型的选取。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Bulk/" rel="tag"># Bulk</a>
+              <a href="/tags/%E5%8D%95%E8%83%9E/" rel="tag"># 单胞</a>
+              <a href="/tags/%E5%8E%9F%E8%83%9E/" rel="tag"># 原胞</a>
+              <a href="/tags/%E5%8D%95%E7%82%B9/" rel="tag"># 单点</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/22/A06/" rel="prev" title="VASP计算遇到错误怎么办？">
+                  <i class="fa fa-chevron-left"></i> VASP计算遇到错误怎么办？
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/02/02/ex33/" rel="next" title="Ex33 晶格参数的确定（Birch-Murnaghan状态方程-1）">
+                  Ex33 晶格参数的确定（Birch-Murnaghan状态方程-1） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

@@ -1,37 +1,464 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前面一节我们通过粗糙的方法演示了一遍怎么在超算上跑过渡态的NEB计算。一般来说，通过这一步我们可以大体上确定这个基元反应中的路径是不是靠谱的了。不论你得到一个粗糙的NEB能量曲线： 亦或者一个比较精细的：  这都表明，你快要得到这个过渡态结构了。在进行后面操作讲解之前，我们先做2个事情： 1） 由于本人也是老司机了，算过渡态的时候遇到的那些零零碎碎的问题一时也很难记起来，如果你正在算过渡态，并且遇">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex78 过渡态任务的提交与查看（二）">
+<meta property="og:url" content="http://www.bigbrosci.com/2019/02/13/ex78/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="前面一节我们通过粗糙的方法演示了一遍怎么在超算上跑过渡态的NEB计算。一般来说，通过这一步我们可以大体上确定这个基元反应中的路径是不是靠谱的了。不论你得到一个粗糙的NEB能量曲线： 亦或者一个比较精细的：  这都表明，你快要得到这个过渡态结构了。在进行后面操作讲解之前，我们先做2个事情： 1） 由于本人也是老司机了，算过渡态的时候遇到的那些零零碎碎的问题一时也很难记起来，如果你正在算过渡态，并且遇">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2019/02/13/ex78/ex78_01.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2019/02/13/ex78/ex78_02.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2019/02/13/ex78/ex78_03.png">
+<meta property="article:published_time" content="2019-02-13T20:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:55.493Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="NEB">
+<meta property="article:tag" content="过渡态">
+<meta property="article:tag" content="检查">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2019/02/13/ex78/ex78_01.png">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2019/02/13/ex78/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2019/02/13/ex78/","path":"2019/02/13/ex78/","title":"Ex78 过渡态任务的提交与查看（二）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex78 过渡态任务的提交与查看（二） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">提交任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%AE%A1%E7%AE%97%E7%BB%93%E6%9E%9C"><span class="nav-number">2.</span> <span class="nav-text">查看计算结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E8%8A%82"><span class="nav-number">3.</span> <span class="nav-text">小节</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2019/02/13/ex78/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex78 过渡态任务的提交与查看（二）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-13 15:30:16" itemprop="dateCreated datePublished" datetime="2019-02-13T15:30:16-05:00">2019-02-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2019/02/13/ex78/" class="post-meta-item leancloud_visitors" data-flag-title="Ex78 过渡态任务的提交与查看（二）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/02/13/ex78/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/13/ex78/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前面一节我们通过粗糙的方法演示了一遍怎么在超算上跑过渡态的NEB计算。一般来说，通过这一步我们可以大体上确定这个基元反应中的路径是不是靠谱的了。不论你得到一个粗糙的NEB能量曲线：<img src="/2019/02/13/ex78/ex78_01.png"></p>
+<p>亦或者一个比较精细的：</p>
+<p><img src="/2019/02/13/ex78/ex78_02.png"></p>
+<p>这都表明，你快要得到这个过渡态结构了。在进行后面操作讲解之前，我们先做2个事情：</p>
+<p>1） 由于本人也是老司机了，算过渡态的时候遇到的那些零零碎碎的问题一时也很难记起来，如果你正在算过渡态，并且遇到了问题和错误，可以将计算打包，以及遇到的问题发给我。如果本人有幸可以帮你解决问题，那么，作为交换条件，这个例子就写在后续的教程里面。有下面几点需要注意的：</p>
+<ul>
+<li><p>i）请使用邮件发送例子（<a href="mailto:&#108;&#x71;&#99;&#x61;&#116;&#x61;&#x40;&#103;&#109;&#97;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;">&#108;&#x71;&#99;&#x61;&#116;&#x61;&#x40;&#103;&#109;&#97;&#x69;&#x6c;&#46;&#x63;&#111;&#x6d;</a>），尽可能保证计算的文件完整，千万不要删掉某些文件后再打包发给我（CHG，CHGCAR，WAVECAR除外）。如果例子太大，可以上传到百度网盘，然后将链接和你遇到的问题发给我。</p>
+</li>
+<li><p>ii）本人最近很忙，可能回复有些慢，请见谅。如果你看到我在QQ群里面瞎BB的话，可以提醒下我去查看邮件。</p>
+</li>
+<li><p>iii）只想解决自己问题，不愿意分享自己例子的，请不要发邮件给我。</p>
+</li>
+</ul>
+<p>2）第二件事就是分享一个自己平时常用的脚本，这个脚本主要是将前面的计算步骤保存起来，然后将CONTCAR复制成POSCAR用以下一步的计算。脚本的名字为：<code>save_calculations.sh</code>. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash </span></span><br><span class="line"></span><br><span class="line">mv POSCAR POSCAR-<span class="variable">$1</span>  </span><br><span class="line">mv OUTCAR OUTCAR-<span class="variable">$1</span> </span><br><span class="line">mv OSZICAR OSZICAR-<span class="variable">$1</span></span><br><span class="line">mv vasprun.xml vasprun.xml-<span class="variable">$1</span></span><br><span class="line">mv EIGENVAL EIGENVAL-<span class="variable">$1</span></span><br><span class="line">mv IBZKPT IBZKPT-<span class="variable">$1</span></span><br><span class="line">cp CONTCAR CONTCAR-<span class="variable">$1</span></span><br><span class="line">mv CONTCAR POSCAR</span><br></pre></td></tr></table></figure>
+
+<p>脚本演示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/<span class="built_in">test</span>$ ls</span><br><span class="line">CONTCAR  DOSCAR  DYNMAT  IBZKPT  INCAR  KPOINTS  OSZICAR  OUTCAR  p4vasp.log  POSCAR  POTCAR  sub12  sub24  vasprun.xml</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/<span class="built_in">test</span>$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/<span class="built_in">test</span>$ save_calculations.sh  gamma</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/<span class="built_in">test</span>$ ls</span><br><span class="line">DOSCAR  DYNMAT  IBZKPT  INCAR  KPOINTS  OSZICAR-gamma  OUTCAR-gamma  p4vasp.log  POSCAR  POSCAR-gamma  POTCAR  sub12  sub24  vasprun.xml-gamma</span><br></pre></td></tr></table></figure>
+
+<p>脚本说明：</p>
+<ul>
+<li>脚本内容很粗暴直接，大家嫌不好看也可以结合下for循环改进地更加简洁些，本人也懒得改，能实现目的就OK了；</li>
+<li>效果很简单，就是把之前计算的一些结果重新命名一下，大家可以根据自己的爱好或者习惯，将gamma换成其他的。 </li>
+</ul>
+<h3 id="提交任务"><a href="#提交任务" class="headerlink" title="提交任务"></a>提交任务</h3><p>我们把参数设置地稍微精细一下，然后再跑一遍NEB。</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ ls</span><br><span class="line"><span class="number">00</span>  <span class="number">01</span>  <span class="number">02</span>  <span class="number">03</span>  <span class="number">04</span>  <span class="number">05</span>  <span class="number">06</span>  <span class="number">07</span>  <span class="number">08</span>  <span class="number">09</span>  INCAR  job_sub  KPOINTS  NEB.pdb  POTCAR  slurm-<span class="number">995085.</span><span class="keyword">out</span>  vasprun.xml</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ ls *</span><br><span class="line">INCAR  job_sub  KPOINTS  NEB.pdb  POTCAR  slurm-<span class="number">995085.</span><span class="keyword">out</span>  vasprun.xml</span><br><span class="line"></span><br><span class="line"><span class="number">00</span>:</span><br><span class="line">POSCAR</span><br><span class="line"></span><br><span class="line"><span class="number">01</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  WAVECAR  XDATCAR</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line"><span class="number">08</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">09</span>:</span><br><span class="line">POSCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ for i <span class="keyword">in</span> <span class="number">0</span>&#123;<span class="number">1.</span><span class="number">.8</span>&#125;; <span class="keyword">do</span> cd $i ; save_calculations.sh <span class="built_in">gamma</span> ; cd - ; done</span><br><span class="line">mv: cannot stat `vasprun.xml<span class="string">&#x27;: No such file or directory</span></span><br><span class="line"><span class="string">/THFS/home/iciq-lq/LVASPTHW/ex78</span></span><br><span class="line"><span class="string">.</span></span><br><span class="line"><span class="string">.</span></span><br><span class="line"><span class="string">.</span></span><br><span class="line"><span class="string">mv: cannot stat `vasprun.xml&#x27;</span>: No such <span class="keyword">file</span> or directory</span><br><span class="line">/THFS/home/iciq-lq/LVASPTHW/ex78</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ ls *</span><br><span class="line">INCAR  job_sub  KPOINTS  NEB.pdb  POTCAR  slurm-<span class="number">995085.</span><span class="keyword">out</span>  vasprun.xml</span><br><span class="line"></span><br><span class="line"><span class="number">00</span>:</span><br><span class="line">POSCAR</span><br><span class="line"></span><br><span class="line"><span class="number">01</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR-<span class="built_in">gamma</span>  DOSCAR  EIGENVAL-<span class="built_in">gamma</span>  IBZKPT-<span class="built_in">gamma</span>  OSZICAR-<span class="built_in">gamma</span>  OUTCAR-<span class="built_in">gamma</span>  PCDAT  POSCAR  POSCAR-<span class="built_in">gamma</span>  REPORT  WAVECAR  XDATCAR</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line"><span class="number">08</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR-<span class="built_in">gamma</span>  DOSCAR  EIGENVAL-<span class="built_in">gamma</span>  IBZKPT-<span class="built_in">gamma</span>  OSZICAR-<span class="built_in">gamma</span>  OUTCAR-<span class="built_in">gamma</span>  PCDAT  POSCAR  POSCAR-<span class="built_in">gamma</span>  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">09</span>:</span><br><span class="line">POSCAR</span><br><span class="line"></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ kpoints.sh <span class="number">3</span> <span class="number">3</span> <span class="number">1</span> </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ yhbatch -p gsc -N <span class="number">2</span> -J test job_sub</span><br><span class="line">Submitted batch job <span class="number">1133307</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>这里我们把01到08中的一些输出文件都保存了一下，然后将CONTCAR复制成POSCAR用来进行下一步的计算;</li>
+<li>运行的时候，会报错mv: cannot stat ‘vasprun.xml’: No such file or directory<code>，不用管就行，因为images的文件夹中没有</code>vasprun.xml`文件，嫌报错烦的可以自己加个if语句修改下脚本。</li>
+<li>我们将K点增加到331，继续计算。</li>
+</ul>
+<h3 id="查看计算结果"><a href="#查看计算结果" class="headerlink" title="查看计算结果"></a>查看计算结果</h3><p>查看结果的时候，有以下三个主要的方面：</p>
+<p>1） 看能量</p>
+<ul>
+<li>可以使用VTST的nebresults.pl 的小脚本，也可以使用自己写的小脚本（ta.sh）。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ ls</span><br><span class="line">00  01  02  03  04  05  06  07  08  09  exts.dat  INCAR  job_sub  KPOINTS  mep.eps  movie  movie.vasp  neb.dat  nebef.dat  POTCAR  slurm-1133307.out  spline.dat  vaspgr  vasprun.xml</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ nebresults.pl</span><br><span class="line"></span><br><span class="line">Unziping the OUTCARs ... done</span><br><span class="line">Do nebbarrier.pl ; nebspline.pl</span><br><span class="line">Do nebef.pl</span><br><span class="line">Do nebmovie.pl</span><br><span class="line">Do nebjmovie.pl</span><br><span class="line">Do nebconverge.pl</span><br><span class="line"></span><br><span class="line">Forces and Energy:</span><br><span class="line">   0         0.023782      -321.151800         0.000000</span><br><span class="line">   1         0.007650      -321.196900        -0.045100</span><br><span class="line">   2         0.009671      -321.160900        -0.009100</span><br><span class="line">   3         0.010446      -321.128300         0.023500</span><br><span class="line">   4         0.014498      -321.106600         0.045200</span><br><span class="line">   5         0.019054      -321.096100         0.055700</span><br><span class="line">   6         0.019424      -321.094300         0.057500</span><br><span class="line">   7         0.013325      -321.111700         0.040100</span><br><span class="line">   8         0.005225      -321.156900        -0.005100</span><br><span class="line">   9         0.011589      -321.098500         0.053300</span><br><span class="line"></span><br><span class="line">Extremum 1 found at image  0.910082 with energy: -0.046551</span><br><span class="line">Extremum 2 found at image  5.724723 with energy:  0.057913</span><br><span class="line">Extremum 3 found at image  8.102362 with energy: -0.007602</span><br><span class="line">Extremum 4 found at image  8.999187 with energy:  0.053367</span><br><span class="line"></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ ta.sh</span><br><span class="line">00       -321.15187450</span><br><span class="line">01       -321.19698136</span><br><span class="line">02       -321.16098546</span><br><span class="line">03       -321.12832705</span><br><span class="line">04       -321.10664059</span><br><span class="line">05       -321.09613563</span><br><span class="line">06       -321.09434359</span><br><span class="line">07       -321.11177677</span><br><span class="line">08       -321.15691232</span><br><span class="line">09       -321.09850728</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>看到能量的时候，前面我们粗算的时候，已经知道能量随着路径的变化是怎么样的，这里我们就脑子自动画图，从01到08，看着能量慢慢上升，在05，06左右的时候达到最高点，然后继续下降。</p>
+</li>
+<li><p>注意：我们这是接着前面一节进行的计算， 00 和 09中的能量都是551K点下的能量，因此得到的能量随路径的变化是下面这样子的。如果看到这样的图片，不要慌张，跳过第一个和最后一个点，直接看中间的部分即可。</p>
+<p><img src="/2019/02/13/ex78/ex78_03.png"></p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ grep irre */OUTCAR</span><br><span class="line"><span class="number">00</span>/OUTCAR: Found      <span class="number">9</span> irreducible k-points:</span><br><span class="line"><span class="number">01</span>/OUTCAR: Found      <span class="number">5</span> irreducible k-points:</span><br><span class="line"><span class="number">02</span>/OUTCAR: Found      <span class="number">5</span> irreducible k-points:</span><br><span class="line"><span class="number">03</span>/OUTCAR: Found      <span class="number">4</span> irreducible k-points:</span><br><span class="line"><span class="number">04</span>/OUTCAR: Found      <span class="number">4</span> irreducible k-points:</span><br><span class="line"><span class="number">05</span>/OUTCAR: Found      <span class="number">4</span> irreducible k-points:</span><br><span class="line"><span class="number">06</span>/OUTCAR: Found      <span class="number">4</span> irreducible k-points:</span><br><span class="line"><span class="number">07</span>/OUTCAR: Found      <span class="number">4</span> irreducible k-points:</span><br><span class="line"><span class="number">08</span>/OUTCAR: Found      <span class="number">5</span> irreducible k-points:</span><br><span class="line"><span class="number">09</span>/OUTCAR: Found     <span class="number">13</span> irreducible k-points:</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>2） 看计算有没有正常结束。</p>
+<p>主要是查看：i) NEB跑了多少步，ii) 自己设置了多少步，iii) 通过OUTCAR中结构收敛的特定关键词。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ ls</span><br><span class="line">00  02  04  06  08  exts.dat  job_sub  mep.eps  movie       neb.dat    POTCAR             spline.dat  vasprun.xml</span><br><span class="line">01  03  05  07  09  INCAR     KPOINTS  mep.png  movie.vasp  nebef.dat  slurm-1133307.out  vaspgr</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ tail 03/OSZICAR -n 5</span><br><span class="line">RMM:   2    -0.318010871323E+03   -0.48063E-06   -0.15546E-06   134   0.370E-03    0.397E-03</span><br><span class="line">RMM:   3    -0.318010871353E+03   -0.29988E-07   -0.12836E-08    21   0.273E-03    0.402E-03</span><br><span class="line">RMM:   4    -0.318010871104E+03    0.24867E-06    0.00000E+00    17   0.260E-03    0.157E-03</span><br><span class="line">RMM:   5    -0.318010871201E+03   -0.96799E-07   -0.11232E-08    18   0.266E-03</span><br><span class="line">  14 F= -.32114179E+03 E0= -.32112833E+03  d E =-.102536E-03</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ grep NSW INCAR</span><br><span class="line">  NSW    = 200</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ grep &#x27;reached re&#x27; 03/OUTCAR</span><br><span class="line"> reached required accuracy - stopping structural energy minimisation</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>当然你可以写一个小脚本如下来避免每次都重读在终端里面打出来。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash </span></span><br><span class="line"></span><br><span class="line">tail 03/OSZICAR -n 5</span><br><span class="line">grep NSW INCAR</span><br><span class="line">grep <span class="string">&#x27;reached re&#x27;</span> 03/OUTCAR</span><br></pre></td></tr></table></figure>
+
+<p>也可以设置下alias来判断：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> check=<span class="string">&#x27;tail 03/OSZICAR -n 5 &amp;&amp; grep NSW INCAR &amp;&amp; grep &quot;reached re&quot; 03/OUTCAR &#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>有能力的可以写一些更高级点的，加些if，for语句智能判断NEB有没有算完，有没有收敛。</p>
+<p>3） 查看NEB中各个IMAGE中的结构有没有跑乱，散架，有没有物理化学意义。前面我们讲过了几种办法，本节我们简单复习一下，就不再啰嗦了。</p>
+<p>i) 通过vaspkit 结合 vmd实现看动画的效果（Windows用户）</p>
+<p>ii）使用ASE 和 p4vasp 批量打开所有的IMAGES中的CONTCAR，挨个查看。</p>
+<h3 id="小节"><a href="#小节" class="headerlink" title="小节"></a>小节</h3><p>本节，我们主要是在前面计算的基础上，把gamma点的输出结果备份了一下，在此基础上，增加K点（提高精度）继续优化。最近瞎忙了很多事情，让很多人等急了，给大家拜个晚年，祝大伙猪年都学会麻溜滴算过渡态。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/NEB/" rel="tag"># NEB</a>
+              <a href="/tags/%E8%BF%87%E6%B8%A1%E6%80%81/" rel="tag"># 过渡态</a>
+              <a href="/tags/%E6%A3%80%E6%9F%A5/" rel="tag"># 检查</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/12/15/A12/" rel="prev" title="A12 通过job-ID快速进入计算目录">
+                  <i class="fa fa-chevron-left"></i> A12 通过job-ID快速进入计算目录
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/03/22/A13/" rel="next" title="ASE的安装">
+                  ASE的安装 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

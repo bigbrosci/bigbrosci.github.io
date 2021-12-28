@@ -1,37 +1,489 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="https:&#x2F;&#x2F;nbviewer.jupyter.org&#x2F;github&#x2F;hackingmaterials&#x2F;matminer_examples&#x2F;blob&#x2F;master&#x2F;matminer_examples&#x2F;data_retrieval-nb&#x2F;data_retrieval_basics.ipynb 从Materials Project 数据库获取从Materials Project数据库获取数据得用到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用matminer从数据库获取数据">
+<meta property="og:url" content="http://www.bigbrosci.com/2020/12/22/A26/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="https:&#x2F;&#x2F;nbviewer.jupyter.org&#x2F;github&#x2F;hackingmaterials&#x2F;matminer_examples&#x2F;blob&#x2F;master&#x2F;matminer_examples&#x2F;data_retrieval-nb&#x2F;data_retrieval_basics.ipynb 从Materials Project 数据库获取从Materials Project数据库获取数据得用到">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2020/12/22/A26/re1.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2020/12/22/A26/re2.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2020/12/22/A26/re3.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2020/12/22/A26/re4.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2020/12/22/A26/r5.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2020/12/22/A26/r6.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2020/12/22/A26/r7.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2020/12/22/A26/r8.png">
+<meta property="article:published_time" content="2020-12-22T05:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.327Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="Pymatgen">
+<meta property="article:tag" content="骚操作">
+<meta property="article:tag" content="软件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2020/12/22/A26/re1.png">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2020/12/22/A26/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2020/12/22/A26/","path":"2020/12/22/A26/","title":"利用matminer从数据库获取数据"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>利用matminer从数据库获取数据 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8EMaterials-Project-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%8E%B7%E5%8F%96"><span class="nav-number">1.</span> <span class="nav-text">从Materials Project 数据库获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1%EF%BC%9A%E8%8E%B7%E5%8F%96%E6%89%80%E6%9C%89%E5%8D%95%E5%85%83%E7%B4%A0%E6%9D%90%E6%96%99%E7%9A%84%E5%AF%86%E5%BA%A6"><span class="nav-number">2.</span> <span class="nav-text">示例1：获取所有单元素材料的密度</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B2%EF%BC%9A%E8%8E%B7%E5%8F%96%E6%89%80%E6%9C%89%E5%B8%A6%E9%9A%99%E5%A4%A7%E4%BA%8E-4-0-eV%E7%9A%84%E6%9D%90%E6%96%99"><span class="nav-number">2.1.</span> <span class="nav-text">示例2：获取所有带隙大于 4.0 eV的材料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B3%EF%BC%9A%E8%8E%B7%E5%8F%96-VRH-%E5%89%AA%E5%88%87%E6%A8%A1%E9%87%8F%E5%92%8C%E4%BD%93%E7%A7%AF%E6%A8%A1%E9%87%8F%C2%B6"><span class="nav-number">2.2.</span> <span class="nav-text">示例3：获取 VRH 剪切模量和体积模量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E5%B0%BE"><span class="nav-number">3.</span> <span class="nav-text">结尾</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2020/12/22/A26/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          利用matminer从数据库获取数据
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-12-22 00:30:16" itemprop="dateCreated datePublished" datetime="2020-12-22T00:30:16-05:00">2020-12-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2020/12/22/A26/" class="post-meta-item leancloud_visitors" data-flag-title="利用matminer从数据库获取数据" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/12/22/A26/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/12/22/A26/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="https://nbviewer.jupyter.org/github/hackingmaterials/matminer_examples/blob/master/matminer_examples/data_retrieval-nb/data_retrieval_basics.ipynb">https://nbviewer.jupyter.org/github/hackingmaterials/matminer_examples/blob/master/matminer_examples/data_retrieval-nb/data_retrieval_basics.ipynb</a></p>
+<h2 id="从Materials-Project-数据库获取"><a href="#从Materials-Project-数据库获取" class="headerlink" title="从Materials Project 数据库获取"></a>从Materials Project 数据库获取</h2><p>从Materials Project数据库获取数据得用到 matminer.data_retrieval.retrieve_MP.MPDataRetrieval 功能。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先导入模块</span></span><br><span class="line"><span class="keyword">from</span> matminer.data_retrieval.retrieve_MP <span class="keyword">import</span> MPDataRetrieval</span><br><span class="line"><span class="comment"># 实例化 MPDataRetrieval 这个类</span></span><br><span class="line">mpdr = MPDataRetrieval(api_key=<span class="string">&#x27;your_own_api_key&#x27;</span>) </span><br><span class="line"><span class="comment"># 在实例化 MPDataRetrieval 时需要输入用户在 Material Project 网站的 API Key.</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="示例1：获取所有单元素材料的密度"><a href="#示例1：获取所有单元素材料的密度" class="headerlink" title="示例1：获取所有单元素材料的密度"></a>示例1：获取所有单元素材料的密度</h2><p>上一次的介绍说到，matminer 处理的数据跟 pandas 库一样，是 dataframe，所以我们要用 get_dataframe 方法获取数据; dataframe 看起来就像excel 表格一样。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df = mpdr.get_dataframe(criteria=&#123;<span class="string">&quot;nelements&quot;</span>: <span class="number">1</span>&#125;, properties=[<span class="string">&#x27;density&#x27;</span>, <span class="string">&#x27;pretty_formula&#x27;</span>])</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;There are &#123;&#125; entries on MP with 1 element&quot;</span>.<span class="built_in">format</span>(df[<span class="string">&#x27;density&#x27;</span>].count())) <span class="comment"># 计算有多少材料</span></span><br><span class="line"><span class="comment">#请自行关注 df[&#x27;density&#x27;].count() 语句</span></span><br></pre></td></tr></table></figure>
+
+<p>criteria 是搜索条件，它是一个字典，字典里面可以有多个键值对; properties 是想要获取的材料性质，它是个列表，里面可以有多个性质。其实criteria 也是材料的性质。想知道所有可用的性质，请参考 <a target="_blank" rel="noopener" href="https://github.com/materialsproject/pymatgen/blob/master/pymatgen/ext/matproj.py">https://github.com/materialsproject/pymatgen/blob/master/pymatgen/ext/matproj.py</a></p>
+<p>上述代码意味着 我们想在数据库中搜索材料，这些材料元素种类为1，对于这些材料，我们想得到它们的密度和化学式信息。</p>
+<p>结果如下：</p>
+<img src="/2020/12/22/A26/re1.png" style="zoom:80%;">
+
+<p>让我们看一下这个 dataframe 表格长什么样</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.head()  <span class="comment"># 这个语句会显示 df 这个表格的前几行，可以看到，我们获得了 716 个单元素材料。</span></span><br><span class="line">           <span class="comment"># 表格里记录了我们需要的密度 和 化学式的性质，以及它们的ID</span></span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<img src="/2020/12/22/A26/re2.png" style="zoom: 80%;">
+
+
+
+<h3 id="示例2：获取所有带隙大于-4-0-eV的材料"><a href="#示例2：获取所有带隙大于-4-0-eV的材料" class="headerlink" title="示例2：获取所有带隙大于 4.0 eV的材料"></a>示例2：获取所有带隙大于 4.0 eV的材料</h3><p>方法挺简单的，就是在上个例子的 get_dataframe 方法中设置新的搜索条件: 带隙大于4.0 eV.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 带隙是 band_gap，大于4怎么写呢？ 是 greater than, 缩写成 gt. 在 matminer中要写成 $gt </span></span><br><span class="line"><span class="comment"># 大家注意体会 criteria 的字典形式。criteria=, properties= 可以省略不写。</span></span><br><span class="line">df = mpdr.get_dataframe(&#123;<span class="string">&quot;band_gap&quot;</span>: &#123;<span class="string">&quot;$gt&quot;</span>: <span class="number">4.0</span>&#125;&#125;, [<span class="string">&#x27;pretty_formula&#x27;</span>, <span class="string">&#x27;band_gap&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;There are &#123;&#125; entries on MP with a band gap larger than 4.0&quot;</span>.<span class="built_in">format</span>(df[<span class="string">&#x27;band_gap&#x27;</span>].count()))</span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<img src="/2020/12/22/A26/re3.png" style="zoom:80%;">
+
+<p>再看一下表格长什么样子</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<img src="/2020/12/22/A26/re4.png" style="zoom:80%;">
+
+<p>如果想把表格保存成excel可读写的格式，可以用下面的语句：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.to_csv(<span class="string">&#x27;materials_bg_gt_4.csv&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="示例3：获取-VRH-剪切模量和体积模量¶"><a href="#示例3：获取-VRH-剪切模量和体积模量¶" class="headerlink" title="示例3：获取 VRH 剪切模量和体积模量¶"></a>示例3：获取 VRH 剪切模量和体积模量<a target="_blank" rel="noopener" href="http://localhost:8888/notebooks/get_data_from_pymatgen.ipynb#%E7%A4%BA%E4%BE%8B3%EF%BC%9A%E8%8E%B7%E5%8F%96-VRH-%E5%89%AA%E5%88%87%E6%A8%A1%E9%87%8F%E5%92%8C%E4%BD%93%E7%A7%AF%E6%A8%A1%E9%87%8F">¶</a></h3><p>首先得要求这些材料存在弹性的性质，其次，我们还想要求这些弹性数据没有警告信息</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 存在弹性常数信息用 &quot;elasticity&quot;: &#123;&quot;$exists&quot;: True&#125; 表示，没有警告信息用 一个空列表表示：&quot;elasticity.warnings&quot;: []</span></span><br><span class="line"></span><br><span class="line">df = mpdr.get_dataframe(&#123;<span class="string">&quot;elasticity&quot;</span>: &#123;<span class="string">&quot;$exists&quot;</span>: <span class="literal">True</span>&#125;, <span class="string">&quot;elasticity.warnings&quot;</span>: []&#125;,</span><br><span class="line">                        [<span class="string">&#x27;pretty_formula&#x27;</span>, <span class="string">&#x27;elasticity.K_VRH&#x27;</span>, <span class="string">&#x27;elasticity.G_VRH&#x27;</span>])</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;There are &#123;&#125; elastic entries on MP with no warnings&quot;</span>.<span class="built_in">format</span>(df[<span class="string">&#x27;elasticity.K_VRH&#x27;</span>].count()))</span><br></pre></td></tr></table></figure>
+
+<p>搜索结果如下：</p>
+<img src="/2020/12/22/A26/r5.png" style="zoom:80%;">
+
+<p>我们想统计一下这些数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.describe() <span class="comment"># 该语句可以很方便地对表格中的每一列数据进行统计，给出数量，平均数，方差，最小、最大值等信息</span></span><br></pre></td></tr></table></figure>
+
+<p>得到：</p>
+<img src="/2020/12/22/A26/r6.png" style="zoom:80%;">
+
+
+
+<p><strong>接下来看一个更复杂的例子</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">除了上次的搜索条件外，我们想搜索包含 Pb 和 Te 的材料：&quot;elements&quot;: &#123;&quot;$all&quot;: [&quot;Pb&quot;, &quot;Te&quot;]&#125; </span></span><br><span class="line"><span class="string">材料的稳定性也在考虑之中，energy above hull 必须在1e-6以下：&quot;e_above_hull&quot;: &#123;&quot;$lt&quot;: 1e-6&#125;</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">df = mpdr.get_dataframe(criteria=&#123;<span class="string">&quot;elasticity&quot;</span>: &#123;<span class="string">&quot;$exists&quot;</span>: <span class="literal">True</span>&#125;, </span><br><span class="line">                         <span class="string">&quot;elasticity.warnings&quot;</span>: [],</span><br><span class="line">                         <span class="string">&quot;elements&quot;</span>: &#123;<span class="string">&quot;$all&quot;</span>: [<span class="string">&quot;Pb&quot;</span>, <span class="string">&quot;Te&quot;</span>]&#125;,</span><br><span class="line">                         <span class="string">&quot;e_above_hull&quot;</span>: &#123;<span class="string">&quot;$lt&quot;</span>: <span class="number">1e-6</span>&#125;&#125;, <span class="comment"># to limit the number of hits for the sake of time</span></span><br><span class="line">                        properties = [<span class="string">&quot;elasticity.K_VRH&quot;</span>, <span class="string">&quot;elasticity.G_VRH&quot;</span>, <span class="string">&quot;pretty_formula&quot;</span>, </span><br><span class="line">                                      <span class="string">&quot;e_above_hull&quot;</span>, <span class="string">&quot;bandstructure&quot;</span>, <span class="string">&quot;dos&quot;</span>])</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;There are &#123;&#125; elastic entries on MP with no warnings that contain &quot;</span></span><br><span class="line">      <span class="string">&quot;Pb and Te with energy above hull ~ 0.0 eV&quot;</span>.<span class="built_in">format</span>(df[<span class="string">&#x27;elasticity.K_VRH&#x27;</span>].count()))</span><br></pre></td></tr></table></figure>
+
+<p>结果是：</p>
+<p>There are 3 elastic entries on MP with no warnings that contain Pb and Te with energy above hull ~ 0.0 eV</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/12/22/A26/r7.png"></p>
+<p>下面来查看一下其中一个材料的能带和DOS图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pymatgen.electronic_structure.plotter <span class="keyword">import</span> BSDOSPlotter <span class="comment"># 调用 Pymatgen 作图</span></span><br><span class="line"></span><br><span class="line">mpid = <span class="string">&#x27;mp-20740&#x27;</span></span><br><span class="line">idx = df.index[df.index==mpid][<span class="number">0</span>]  <span class="comment"># 获取 mp-20740 这个材料所在的行数</span></span><br><span class="line">plt = BSDOSPlotter().get_plot(bs=df.loc[idx, <span class="string">&#x27;bandstructure&#x27;</span>], dos=df.loc[idx, <span class="string">&#x27;dos&#x27;</span>]);</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<img src="/2020/12/22/A26/r8.png" style="zoom:80%;">
+
+
+
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><ul>
+<li><p>matminer获得的数据(本教程保存在 df 变量中)可以可视化，也可以直接用来做机器学习。有兴趣的同学请自学 pandas 这个 python 库，学习 dataframe 数据的处理方法。</p>
+</li>
+<li><p>Pymatgen 做的能带和DOS图不够美观。大家可以留言，我有机会可以跟大家分享修改pymatgen代码来美化这些图。</p>
+</li>
+<li><p>官网的教程是基于 jupyter notebook的。jupyter notebook 的好处是既能运行代码，又能自由地给代码加注释，公式，图片。所得到的文档便于阅读和理解。希望大家也能学会这个python 库。</p>
+</li>
+<li><p>如果想调用 jupyter notebook来运行上述代码，建议大家在具有图形界面的终端上试验。以windows 系统为例，再按照上篇教程创建好 py36 虚拟环境后，需要</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install jupyter <span class="comment"># 具体的使用方法请参考其它网络教程</span></span><br></pre></td></tr></table></figure></li>
+<li><p>本文还附带jupyter notebook 版本的文档供大家阅读和使用 【链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/153PcfiM3vaAG71MCCTFuCQ">https://pan.baidu.com/s/153PcfiM3vaAG71MCCTFuCQ</a><br>提取码：w4us 】</p>
+</li>
+</ul>
+<p>本次的教程到这就结束了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Pymatgen/" rel="tag"># Pymatgen</a>
+              <a href="/tags/%E9%AA%9A%E6%93%8D%E4%BD%9C/" rel="tag"># 骚操作</a>
+              <a href="/tags/%E8%BD%AF%E4%BB%B6/" rel="tag"># 软件</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/12/16/A25/" rel="prev" title="超好用的材料类机器学习开源软件-Matminer">
+                  <i class="fa fa-chevron-left"></i> 超好用的材料类机器学习开源软件-Matminer
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/01/01/A27/" rel="next" title="从Citrine Informatics数据库获取数据">
+                  从Citrine Informatics数据库获取数据 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

@@ -1,37 +1,523 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本节推荐一款可视化程序：Jmol，可以用来看分子结构以及振动频率。Jmol 是一款Java语言编写的，开源，Linux，Windows均可的使用的可视化软件。还记的我们从ChemSpider获取乙醇分子的情景吗？   对了！RSC的网页版中，乙醇分子的3D结构就是通过 Jmol 展示给大家的（3D图上方），并且我们下载的结构也是jmol格式的文件！可以通过 Jmol 直接打开。现在我们通过在电脑上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex25 乙醇分子的振动频率计算(三)">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/12/16/ex25/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="本节推荐一款可视化程序：Jmol，可以用来看分子结构以及振动频率。Jmol 是一款Java语言编写的，开源，Linux，Windows均可的使用的可视化软件。还记的我们从ChemSpider获取乙醇分子的情景吗？   对了！RSC的网页版中，乙醇分子的3D结构就是通过 Jmol 展示给大家的（3D图上方），并且我们下载的结构也是jmol格式的文件！可以通过 Jmol 直接打开。现在我们通过在电脑上">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-1.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-2.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-3.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-4.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-5.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-6.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-7.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-8.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-9.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-10.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-12.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-13.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-14.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-15.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-16.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-17.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-18.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-19.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-20.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-21.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-22.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-23.jpeg">
+<meta property="article:published_time" content="2017-12-16T07:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.685Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="乙醇">
+<meta property="article:tag" content="振动频率">
+<meta property="article:tag" content="Jmol">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2017/12/16/ex25/ex25-1.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/12/16/ex25/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/12/16/ex25/","path":"2017/12/16/ex25/","title":"Ex25 乙醇分子的振动频率计算(三)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex25 乙醇分子的振动频率计算(三) | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Jmol%E5%9C%A8windows%E5%92%8Clinux%E4%B8%8B%E7%9A%84%E5%AE%89%E8%A3%85%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">1. Jmol在windows和linux下的安装：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%AE%89%E8%A3%85%E5%89%8D%E5%87%86%E5%A4%87%EF%BC%88Java%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83%E7%9A%84%E5%AE%89%E8%A3%85%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 安装前准备（Java运行环境的安装）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Jmol%E8%BD%AF%E4%BB%B6%E7%9A%84%E4%B8%8B%E8%BD%BD%E5%92%8C%E5%AE%89%E8%A3%85"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 Jmol软件的下载和安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BD%BF%E7%94%A8Jmol%E5%8F%AF%E8%A7%86%E5%8C%96%E5%88%86%E5%AD%90%E6%8C%AF%E5%8A%A8"><span class="nav-number">2.</span> <span class="nav-text">2 使用Jmol可视化分子振动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E8%BD%BD%E5%85%A5%E6%8C%AF%E5%8A%A8%E6%96%87%E4%BB%B6%E5%88%B0-Jmol"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 载入振动文件到 Jmol</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E9%80%89%E6%8B%A9%E6%8C%AF%E5%8A%A8%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 选择振动模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E5%BC%80%E5%90%AF%E6%8C%AF%E5%8A%A8"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 开启振动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E6%9F%A5%E7%9C%8B%E4%B8%8D%E5%90%8C%E6%8C%AF%E5%8A%A8"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 查看不同振动</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">3 扩展练习：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">4 总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/16/ex25/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex25 乙醇分子的振动频率计算(三)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-16 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-16T02:06:48-05:00">2017-12-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/16/ex25/" class="post-meta-item leancloud_visitors" data-flag-title="Ex25 乙醇分子的振动频率计算(三)" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/12/16/ex25/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/16/ex25/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本节推荐一款可视化程序：<strong>Jmol</strong>，可以用来看分子结构以及振动频率。<strong>Jmol</strong> 是一款<code>Java</code>语言编写的，开源，<code>Linux</code>，<code>Windows</code>均可的使用的可视化软件。还记的我们从<code>ChemSpider</code>获取乙醇分子的情景吗？</p>
+<p><img src="/2017/12/16/ex25/ex25-1.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-2.jpeg"></p>
+<p>对了！RSC的网页版中，乙醇分子的3D结构就是通过 <strong>Jmol</strong> 展示给大家的（3D图上方），并且我们下载的结构也是jmol格式的文件！可以通过 <strong>Jmol</strong> 直接打开。现在我们通过在电脑上运行Jmol，并查看分子的结构和振动频率。</p>
+<hr>
+<h2 id="1-Jmol在windows和linux下的安装："><a href="#1-Jmol在windows和linux下的安装：" class="headerlink" title="1. Jmol在windows和linux下的安装："></a>1. Jmol在windows和linux下的安装：</h2><h3 id="1-1-安装前准备（Java运行环境的安装）"><a href="#1-1-安装前准备（Java运行环境的安装）" class="headerlink" title="1.1 安装前准备（Java运行环境的安装）"></a>1.1 安装前准备（Java运行环境的安装）</h3><p><code>Windows</code>下：直接百度<code>Java Runtime Environment（JRE）</code>，安装软件。</p>
+<p><img src="/2017/12/16/ex25/ex25-3.jpeg"></p>
+<p>也可以官网下载：<a target="_blank" rel="noopener" href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html">http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html</a></p>
+<p><img src="/2017/12/16/ex25/ex25-4.jpeg"></p>
+<p>注意两点：</p>
+<p>1： 接受许可，</p>
+<p>2：64位系统下载箭头所指的文件，然后安装即可。</p>
+<p><code>Linux</code>下<code>Java</code>运行环境安装移步下方链接：</p>
+<p><a target="_blank" rel="noopener" href="https://linux.cn/article-3792-1.html">怎样在Ubuntu 14.04中安装Java</a>： <a target="_blank" rel="noopener" href="https://linux.cn/article-3792-1.html">https://linux.cn/article-3792-1.html</a> </p>
+<p>或者直接使用命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install default-jre</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="1-2-Jmol软件的下载和安装"><a href="#1-2-Jmol软件的下载和安装" class="headerlink" title="1.2 Jmol软件的下载和安装"></a>1.2 Jmol软件的下载和安装</h3><ul>
+<li>Windows：</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://sourceforge.net/projects/jmol/files/Jmol/">https://sourceforge.net/projects/jmol/files/Jmol/</a></p>
+<p>打开链接后，图中箭头指的地方下载最新版的（<code>Linux</code>其实和<code>Windows</code>下载的文件一模一样，见后面说明），也可以任选版本进行下载。</p>
+<p><img src="/2017/12/16/ex25/ex25-5.jpeg"></p>
+<p>等待几秒后会弹出下载的窗口，其他浏览器也应该一样。</p>
+<p><img src="/2017/12/16/ex25/ex25-6.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-7.jpeg"></p>
+<p>解压缩后就算安装好了，可以直接运行。</p>
+<hr>
+<p>运行 <strong>Jmol</strong> 程序：</p>
+<p><img src="/2017/12/16/ex25/ex25-8.jpeg"></p>
+<p>上图中 <code>箭头1</code>所指为 <code>jmol.bat</code> 文件，<code>箭头2</code>所指为 <code>Java</code>的可执行文件：<code>jmol.jar</code>。在<code>Windows</code>下任选一个双击即可打开 <strong>Jmol</strong> 程序。建议将解压缩之后文件夹中的<code>jmol.bat</code>或者<code>jmol.jar</code> 文件右键发送到桌面快捷方式。打开后如下图：</p>
+<p><img src="/2017/12/16/ex25/ex25-9.jpeg"></p>
+<hr>
+<ul>
+<li><code>Linux</code>下安装 <strong>Jmol</strong> 的方法:</li>
+</ul>
+<p>在 <a target="_blank" rel="noopener" href="https://sourceforge.net/projects/jmol/files/Jmol/">https://sourceforge.net/projects/jmol/files/Jmol/</a>下载 <strong>Jmol</strong>（和前面介绍的<code>Windows</code>下载的文件一模一样），解压后的文件复制到<code>usr/bin</code>中，打开文件时在命令行输入<code>jmol.sh 文件名</code>即可（<strong>注意</strong>，<code>jmol.sh</code>和<code>文件名</code>之间 <strong>有空格！</strong>）。将解压目录加入<code>.bashrc</code>路径中也可以实现，同时需要给<code>jmol.sh</code>加上可执行权限，即<code>chmod u+x jmol.sh</code>，打开文件的方法仍用<code>jmol.sh 文件名</code>。(QQ群友：连赞提供！)</p>
+<p>大师兄在<code>Linux</code>系统下的操作如下：</p>
+<p>a）下载和<code>Windows</code>版的过程一样，下载完毕后，解压，</p>
+<p>b）终端里面进入解压后的文件夹：</p>
+<p><img src="/2017/12/16/ex25/ex25-10.jpeg"></p>
+<p>注意一下几点：</p>
+<p>b.1) <code>jmol.sh</code>就是我们在<code>Linux</code>系统下面的命令（<code>Windows</code>里面我们用<code>jmol.bat</code> 和 <code>jmol.jar</code>）；</p>
+<p>b.2) 首先赋予它可执行的权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u+x  jmol.sh</span><br></pre></td></tr></table></figure>
+<p>相反地，取消权限：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u-x jmol.sh</span><br></pre></td></tr></table></figure>
+
+<p>b.3) 这里大师兄电脑下，<code>jmol.sh</code>变成绿色的了（不同电脑显示会不同，不要纠结）</p>
+<p>b.4) 尝试运行一下： <code>./jmol.sh  OK</code></p>
+<p>b.5) 下面设置环境变量：打开 <code>~/.bashrc</code> 文件，并加入这一行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:~/Downloads/jmol-14.20.2:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong></p>
+<ul>
+<li>等号=前后没有空格, 后面紧跟着<code>$PATH</code>；</li>
+<li>再往后是一个冒号，冒号前后也不能有空格，填上Jmol的解压目录！！！</li>
+</ul>
+<p>b.6) 保存<code>.bashrc</code> 文件并<code>source</code>一下:   <code>.  ~/.bashrc</code>  （注意前面的 <code>.</code> ）或者使用命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span>  ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>c） 进入其他目录，运行 <strong>Jmol</strong> 命令：下图中<code>~/Destkop/freq</code> 目录下有我们关于乙醇频率的计算结果。</p>
+<p><img src="/2017/12/16/ex25/ex25-12.jpeg"></p>
+<p>大功告成！！！</p>
+<p>此外，<code>sudo apt-get install jmol </code>这样安装的是<strong>旧版本</strong>，强烈不建议，原因如下：</p>
+<p><strong>可能图片有些模糊，但不重要！旧版本的不支持 OUTCAR…安了也是白搞！！！</strong></p>
+<p><img src="/2017/12/16/ex25/ex25-13.jpeg"></p>
+<hr>
+<h2 id="2-使用Jmol可视化分子振动"><a href="#2-使用Jmol可视化分子振动" class="headerlink" title="2 使用Jmol可视化分子振动"></a>2 使用Jmol可视化分子振动</h2><h3 id="2-1-载入振动文件到-Jmol"><a href="#2-1-载入振动文件到-Jmol" class="headerlink" title="2.1 载入振动文件到 Jmol"></a>2.1 载入振动文件到 Jmol</h3><p><code>Windows</code>：直接将频率计算得到的<code>OUTCAR</code>拖到<code>jmol.bat</code>就可以了</p>
+<p><code>Linux</code>：直接 <code>jmol 文件名</code></p>
+<p>两个系统下面均可使用左上角的 文件à打开à选择<code>OUTCAR</code>导入。</p>
+<p>得到如下界面。但是分子并没有开始振动，只是显示了其结构。</p>
+<p><img src="/2017/12/16/ex25/ex25-14.jpeg"></p>
+<p>（该结构和<code>ChemSpider</code>上的一样！）</p>
+<p>要查看振动模型，需要以下两步，<strong>选中振动模型</strong>和<strong>开启振动</strong>。这两步有多种方法可以实现，总结如下。</p>
+<hr>
+<h3 id="2-2-选择振动模型"><a href="#2-2-选择振动模型" class="headerlink" title="2.2 选择振动模型"></a>2.2 选择振动模型</h3><p>A）可以在工具–&gt;原子库选择器中选中要查看的振动模型</p>
+<p><img src="/2017/12/16/ex25/ex25-15.jpeg"></p>
+<p><strong>注意，先把右边的按钮拉倒底，然后双击Frequencies展开频率信息，</strong> 如下:</p>
+<p><img src="/2017/12/16/ex25/ex25-16.jpeg"></p>
+<p>B) 也可以直接右键–&gt;模型中选中</p>
+<p><img src="/2017/12/16/ex25/ex25-17.jpeg"></p>
+<hr>
+<h3 id="2-3-开启振动"><a href="#2-3-开启振动" class="headerlink" title="2.3 开启振动"></a>2.3 开启振动</h3><p>A) 原子库选择器中<strong>最下方</strong>: <strong>振动–&gt;振动开</strong> 可实现， 点击后，原子就开始振动了。</p>
+<p><img src="/2017/12/16/ex25/ex25-18.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-19.jpeg"></p>
+<p>B) 在<strong>菜单栏–&gt;工具–&gt;震动</strong> 中开启（原子库选择器选中时采用这种方式，需要先开启再选中）</p>
+<p><img src="/2017/12/16/ex25/ex25-20.jpeg"></p>
+<p>C) 也可以<strong>右键 –&gt; 振动 –&gt; 开启</strong></p>
+<p><img src="/2017/12/16/ex25/ex25-21.jpeg"></p>
+<hr>
+<h3 id="2-4-查看不同振动"><a href="#2-4-查看不同振动" class="headerlink" title="2.4 查看不同振动"></a>2.4 查看不同振动</h3><p>A) 原子集选择器中的频率列表，双击其中的一个就显示其振动方式了。</p>
+<p><img src="/2017/12/16/ex25/ex25-22.jpeg"></p>
+<p>B) 要查看下一个振动还可以通过点击向右的这个箭头就可以了。</p>
+<p><img src="/2017/12/16/ex25/ex25-23.jpeg"></p>
+<p>以上就是本节关于 <strong>Jmol</strong> 可视化的介绍了，更多信息，请查看 <strong>Jmol</strong> 的<code>wiki</code>：<br><a target="_blank" rel="noopener" href="http://wiki.jmol.org/index.php/Main_Page">http://wiki.jmol.org/index.php/Main_Page</a></p>
+<h2 id="3-扩展练习："><a href="#3-扩展练习：" class="headerlink" title="3 扩展练习："></a>3 扩展练习：</h2><p>3.1 熟练掌握 <strong>Jmol</strong> 的软件安装，查看频率的基本操作。</p>
+<p>3.2 通过在<code>Linux</code>系统下面安装 <strong>Jmol</strong>，尝试着安装其他软件；</p>
+<p>3.3 分析各项频率值对应的分子或者原子的移动。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><p>本节主要介绍给大家一款除了 <strong>p4vasp</strong> 之外的另一款 <strong>VASP</strong> 可视化的软件，不仅仅局限在频率振动分析方面，查看<code>POSCAR</code>，<code>CONTCAR</code>也可以直接使用 <strong>Jmol</strong> 打开。该软件由连赞小朋友推荐，并编辑文中大部分内容，在此表示衷心的感谢。希望大家都可以熟练掌握这款软件。<code>Linux</code>下面可以直接用命令： <code>jmol 文件名</code>，打开查看结构，非常方便。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%B9%99%E9%86%87/" rel="tag"># 乙醇</a>
+              <a href="/tags/%E6%8C%AF%E5%8A%A8%E9%A2%91%E7%8E%87/" rel="tag"># 振动频率</a>
+              <a href="/tags/Jmol/" rel="tag"># Jmol</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/15/ex23/" rel="prev" title="Ex23 乙醇分子的振动频率计算(一)">
+                  <i class="fa fa-chevron-left"></i> Ex23 乙醇分子的振动频率计算(一)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/17/ex26/" rel="next" title="Ex26 乙醇分子的振动频率计算(四)">
+                  Ex26 乙醇分子的振动频率计算(四) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

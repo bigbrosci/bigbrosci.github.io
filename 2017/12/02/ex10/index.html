@@ -1,37 +1,545 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前面O原子的能量计算已经告一段落，下面我们把体系变得更加复杂些：O${_2}$分子。扩展练习已经做的同学，相信现在已经完成了O${_2}$分子的静态计算。本节我们主要介绍一下:  O${_2}$分子模型搭建的细节; POTCAR和POSCAR的对应关系，注意事项。  搭建模型O${_2}$分子模型的搭建其实很简单，将两个原子在一个直线上连起来就行了。 键长大小可以书本上查， 数据库里找，也可以去网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex10 O$_2$结构搭建以及POTCAR注意部分">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/12/02/ex10/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="前面O原子的能量计算已经告一段落，下面我们把体系变得更加复杂些：O${_2}$分子。扩展练习已经做的同学，相信现在已经完成了O${_2}$分子的静态计算。本节我们主要介绍一下:  O${_2}$分子模型搭建的细节; POTCAR和POSCAR的对应关系，注意事项。  搭建模型O${_2}$分子模型的搭建其实很简单，将两个原子在一个直线上连起来就行了。 键长大小可以书本上查， 数据库里找，也可以去网">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/02/ex10/ex10-1.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/02/ex10/ex10-2.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/02/ex10/ex10-3.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/02/ex10/ex10-4.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/02/ex10/ex10-5.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/02/ex10/ex10-6.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/02/ex10/ex10-7.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/02/ex10/ex10-8.jpeg">
+<meta property="article:published_time" content="2017-12-02T07:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.384Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="POTCAR">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="O2">
+<meta property="article:tag" content="Google">
+<meta property="article:tag" content="VASP找错">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2017/12/02/ex10/ex10-1.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/12/02/ex10/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/12/02/ex10/","path":"2017/12/02/ex10/","title":"Ex10 O$_2$结构搭建以及POTCAR注意部分"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex10 O$_2$结构搭建以及POTCAR注意部分 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">搭建模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA"><span class="nav-number">2.</span> <span class="nav-text">模型搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8EPOTCAR"><span class="nav-number">3.</span> <span class="nav-text">关于POTCAR</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%BB%E5%8A%A8%E5%87%BA%E9%94%99%EF%BC%9A"><span class="nav-number">3.0.1.</span> <span class="nav-text">主动出错：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98"><span class="nav-number">3.0.2.</span> <span class="nav-text">解决问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#POTCAR-%E7%9A%84%E5%88%B6%E5%A4%87"><span class="nav-number">4.</span> <span class="nav-text">POTCAR 的制备</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E6%93%8D%E4%BD%9C%EF%BC%9A"><span class="nav-number">4.0.0.1.</span> <span class="nav-text">具体操作：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0"><span class="nav-number">5.</span> <span class="nav-text">扩展练习:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/02/ex10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex10 O$_2$结构搭建以及POTCAR注意部分
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-02 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-02T02:06:48-05:00">2017-12-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/02/ex10/" class="post-meta-item leancloud_visitors" data-flag-title="Ex10 O$_2$结构搭建以及POTCAR注意部分" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/12/02/ex10/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/02/ex10/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前面O原子的能量计算已经告一段落，下面我们把体系变得更加复杂些：O${_2}$分子。扩展练习已经做的同学，相信现在已经完成了O${_2}$分子的静态计算。本节我们主要介绍一下:</p>
+<ul>
+<li>O${_2}$分子模型搭建的细节;</li>
+<li>POTCAR和POSCAR的对应关系，注意事项。</li>
+</ul>
+<h3 id="搭建模型"><a href="#搭建模型" class="headerlink" title="搭建模型"></a>搭建模型</h3><p>O${_2}$分子模型的搭建其实很简单，将两个原子在一个直线上连起来就行了。 键长大小可以书本上查， 数据库里找，也可以去网上找些参考资料。大师兄推荐常见常用的数据库:</p>
+<p>1）<a target="_blank" rel="noopener" href="http://hbcponline.com/">CRC hand book</a>:  </p>
+<ul>
+<li>网页版:  <a target="_blank" rel="noopener" href="http://hbcponline.com/faces/contents/ContentsSearch.xhtml">http://hbcponline.com/faces/contents/ContentsSearch.xhtml</a>  </li>
+</ul>
+<p><img src="/2017/12/02/ex10/ex10-1.jpeg"></p>
+<ul>
+<li>PDF 电子书，这个网上到处都有，大家自己搜搜就能找见。具体在1403 页(本书有2661页，建议大家查询的时候先把左侧的目录展开，要不然实在是太痛苦!)</li>
+</ul>
+<p><img src="/2017/12/02/ex10/ex10-2.jpeg"></p>
+<p><img src="/2017/12/02/ex10/ex10-3.jpeg"></p>
+<p>2） NIST 数据库: <a target="_blank" rel="noopener" href="http://cccbdb.nist.gov/exp2x.asp">http://cccbdb.nist.gov/exp2x.asp</a></p>
+<p><img src="/2017/12/02/ex10/ex10-4.jpeg"></p>
+<ol start="3">
+<li>Wikipedia，谷歌和百度:</li>
+</ol>
+<p>在谷歌或者百度里面直接搜索O$_2$、键长这两个关键词，就可以得出很多的链接，比如下面两个。</p>
+<p><a target="_blank" rel="noopener" href="https://zhidao.baidu.com/question/101615129.html">https://zhidao.baidu.com/question/101615129.html</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.science.uwaterloo.ca/~cchieh/cact/c120/bondel.html">http://www.science.uwaterloo.ca/~cchieh/cact/c120/bondel.html</a> </p>
+<p>大师兄你特么在逗我嘛？</p>
+<p>氧气原子这么简单的分子，随便一翻，当然到处都能得到结果啦!</p>
+<p>哈哈，没有逗你。在这里，大师兄想要告诉你的是：</p>
+<ul>
+<li>搜索的时候尽量用谷歌，而不用百度；</li>
+<li>尽量搜英文，不要输汉语，这样你得到的信息会相对多一些。</li>
+</ul>
+<p>师兄，你又在逗我，谷歌我们访问不了，怎么用啊？ </p>
+<p>没有逗你，现实是残酷的，没有google，科研会被百度严重拖后腿。虽然我也不想批评国产，谁让它不争气呢？</p>
+<p>所以，科学上网的技巧，你要get到。</p>
+<p><strong>划重点：</strong></p>
+<p>前面介绍了一堆，主要目的有3个：</p>
+<ol>
+<li><p>给大家提供一个数据查询手册(CRC handbook)和数据库(NIST)。当然根据自己的研究方向，还有其他更加专业的数据库，随着学习的深入，后面会讲解。 此外，写论文的时候，如果实在不想找相关的参考文献，可以直接引用CRC hand book这本书（前提是你在这本书里面找到了相关的数据）</p>
+</li>
+<li><p>查找数据库另一个重要的原因是：如果你的初始结构，比较理想，这会大大加速你的计算过程，还会避免一些意想不到的计算错误（后面的章节会具体介绍到）。</p>
+</li>
+</ol>
+<p>3）除了查找数据库，别人发的文章也是初始结构的重要或者主要来源。</p>
+<h3 id="模型搭建"><a href="#模型搭建" class="headerlink" title="模型搭建"></a>模型搭建</h3><p>知道了键长信息后，开始结构搭建O$_2$的模型，我们知道它是直线型分子（算大师兄没说），其中一个原子在原点的位置上了，那么我们在三个方向上随便找个坐标就可以了。修改POSCAR如下:</p>
+<p><img src="/2017/12/02/ex10/ex10-5.jpeg"></p>
+<p>两点要注意：</p>
+<ul>
+<li><p>第7行原子个数：把1改成2 ，表示氧元素有2个原子。</p>
+</li>
+<li><p>第10行添加第二个氧原子的坐标：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方向</th>
+<th>坐标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>沿x轴</td>
+<td>1.2074   0.0   0.0</td>
+</tr>
+<tr>
+<td>沿y轴</td>
+<td>0.0   1.2074   0.0</td>
+</tr>
+<tr>
+<td>沿z轴</td>
+<td>0.0  0.0  1.2074</td>
+</tr>
+</tbody></table>
+<p>上图中为沿着z轴方向。<strong>注意</strong>： </p>
+<ul>
+<li>xyz三个方向的数值之间可以有1个或者若干个空格，不要用tab分割数字；</li>
+<li>在搭建模型的时候，脑子里要有一个立体的概念，原子在三维方向上的排列，移动变化等。 </li>
+</ul>
+<h3 id="关于POTCAR"><a href="#关于POTCAR" class="headerlink" title="关于POTCAR"></a>关于POTCAR</h3><p>大师兄，氧原子多了一个，POTCAR怎么办？是不是每个原子对应一个POTCAR啊?</p>
+<p>不是的。POTCAR 是根据POSCAR中的元素顺序创建的(第6行)，与原子数目无关。</p>
+<p>第6行是体系中的元素，只有O元素，所以我们的POTCAR还是用之前O原子练习的那个;</p>
+<p>第7行是与上一行相对应的体系中元素的原子数。</p>
+<p>但是！在你的POSCAR中，如果把O写了两遍，如下图：</p>
+<p><img src="/2017/12/02/ex10/ex10-6.jpeg"></p>
+<p>此时，第6行中有2个O，且第7行中有两个O的原子数目分别为1。 POTCAR中就要对应的两个O原子的Potentials!</p>
+<h5 id="主动出错："><a href="#主动出错：" class="headerlink" title="主动出错："></a>主动出错：</h5><p>如果我们使用上图的POSCAR（O元素写了2次），且POTCAR中只有1个O原子的Potential。</p>
+<p>提交任务后，瞬间完成。这么快就算完肯定不是因为你的服务器多么的牛逼! 而是因为出错了!!</p>
+<p>那么我们需要找到错误的原因，怎么去找错误信息呢? </p>
+<ol>
+<li>查看OUTCAR</li>
+</ol>
+<p><img src="/2017/12/02/ex10/ex10-7.jpeg"></p>
+<p>VASP就这么几行，从这里看不出来是哪里错了。</p>
+<ol start="2">
+<li>一般来说，VASP计算的时候，会生成两个额外的文件，一个是关于服务器集群计算error的，另一个是VASP运行的out文件。这个out和OUTCAR不太一样，记录着VASP的运行过程和出错信息。看大师兄的文件目录:</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/test$ ls</span><br><span class="line">CHGCAR   DOSCAR   e_Single.142845   INCAR   o_Single.142845  OUTCAR  POSCAR  PROCAR  sub12    WAVECAR  CHG      CONTCAR  EIGENVAL  IBZKPT   KPOINTS  OSZICAR   PCDAT   POTCAR  REPORT  vasprun.xml  XDATCAR</span><br><span class="line">qli@bigbro:~/test$ cat e_Single.142845</span><br><span class="line">qli@bigbro:~/test$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>不同的组可能命名不一样，但一般都会有这两个文件。这里的e对应的是服务器的出错信息，o对应的是VASP的out文件。 首先打开查看下服务器出错文件：(图中cat 命令) 发现什么都没有输出，说明服务器没有出错。那我们打开一下 o_Single.142845 文件，如下图</p>
+<p><img src="/2017/12/02/ex10/ex10-8.jpeg"></p>
+<p>在这个文件里面最后一行，给出了错误的信息：</p>
+<p>一般出现这个错误的时候，你就要去检查POSCAR和POTCAR中的元素是否对应了。</p>
+<h5 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h5><p>本例中的错误该怎么解决呢？ 既然POSCAR和POTCAR不一致，解决的话，有2个办法：要么变POSCAR，要么变POTCAR。</p>
+<p>1）变POSCAR：</p>
+<ul>
+<li> 第六行中：把<code>O O</code>换成<code>O</code>; </li>
+<li>第七行：氧原子数目改成2，就如刚开始的POSCAR。</li>
+<li>POTCAR保持不变即可（POTCAR中只有1个O的Potential）:</li>
+</ul>
+<p>2）变POTCAR</p>
+<ul>
+<li>使其中的元素与POSCAR中的一致，也就是有两个氧元素的Potentials！</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/test2$ grep TIT POTCAR</span><br><span class="line">   TITEL  = PAW_PBE O 08Apr2002</span><br><span class="line">qli@bigbro:~/test2$ mv POTCAR POTCAR1</span><br><span class="line">qli@bigbro:~/test2$ cat POTCAR1 POTCAR1  &gt; POTCAR</span><br><span class="line">qli@bigbro:~/test2$ grep TIT POTCAR</span><br><span class="line">   TITEL  = PAW_PBE O 08Apr2002</span><br><span class="line">   TITEL  = PAW_PBE O 08Apr2002</span><br></pre></td></tr></table></figure>
+
+<p> 这样，再运行就不会出错了。</p>
+<h3 id="POTCAR-的制备"><a href="#POTCAR-的制备" class="headerlink" title="POTCAR 的制备"></a>POTCAR 的制备</h3><p>前面的演示中，大师兄教给你了POTCAR的制备方法: 使用cat 命令将2个POTCAR1 连在一起然后输出新的POTCAR。如果看不明白，继续看下面的操作：</p>
+<p>如果你的体系中含有其他的元素，比如: Fe C H O</p>
+<p>那么你就要先准备这四个元素的POTCAR：POTCAR-Fe、POTCAR-C、POTCAR-H、POTCAR-O，</p>
+<p>然后运行命令:cat POTCAR-Fe POTCAR-C POTCAR-H POTCAR-O &gt; POTCAR  就可以了。</p>
+<h6 id="具体操作："><a href="#具体操作：" class="headerlink" title="具体操作："></a>具体操作：</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/test2$ ls</span><br><span class="line">POTCAR-C  POTCAR-Fe  POTCAR-H  POTCAR-O </span><br><span class="line">qli@bigbro:~/test2$ grep TIT POTCAR*</span><br><span class="line">POTCAR-C:   TITEL  = PAW_PBE C 08Apr2002</span><br><span class="line">POTCAR-Fe:   TITEL  = PAW_PBE Fe 06Sep2000</span><br><span class="line">POTCAR-H:   TITEL  = PAW_PBE H 15Jun2001</span><br><span class="line">POTCAR-O:   TITEL  = PAW_PBE O 08Apr2002</span><br><span class="line">qli@bigbro:~/test2$ cat POTCAR-Fe POTCAR-C POTCAR-H POTCAR-O &gt; POTCAR</span><br><span class="line">qli@bigbro:~/test2$ grep TIT POTCAR</span><br><span class="line">POTCAR:   TITEL  = PAW_PBE Fe 06Sep2000</span><br><span class="line">POTCAR:   TITEL  = PAW_PBE C 08Apr2002</span><br><span class="line">POTCAR:   TITEL  = PAW_PBE H 15Jun2001</span><br><span class="line">POTCAR:   TITEL  = PAW_PBE O 08Apr2002</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这四个元素POTCAR数据从哪里找，在哪个目录下面？</p>
+<p>这就得问问你们组里的师兄师姐们，或者老师了，网上也有很多。</p>
+<h3 id="扩展练习"><a href="#扩展练习" class="headerlink" title="扩展练习:"></a>扩展练习:</h3><p>1 正确运行O$_2$分子的静态计算;</p>
+<p>2 查找相关的O$_2$分子的轨道排布，并分析结果的合理性;</p>
+<p>3 主动制作错误的POSCAR和POTCAR文件，运行查看结果和错误。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>1 整理自己研究方向相关的数据库资料；知道去哪里查询信息；</p>
+<p>2 学会怎么根据已知的结构参数搭一些简单的分子模型: CO，H$_2$O， N$_2$， H$_2$ 等;</p>
+<p>3 知道去哪里找出错文件;</p>
+<p>4 熟练掌握通过 cat命令制备POTCAR的方法;</p>
+<p>5 必须掌握POSCAR和POTCAR的对应关系。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/POTCAR/" rel="tag"># POTCAR</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+              <a href="/tags/O2/" rel="tag"># O2</a>
+              <a href="/tags/Google/" rel="tag"># Google</a>
+              <a href="/tags/VASP%E6%89%BE%E9%94%99/" rel="tag"># VASP找错</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/02/ex09/" rel="prev" title="Ex09 学会收敛点!">
+                  <i class="fa fa-chevron-left"></i> Ex09 学会收敛点!
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/02/ex00/" rel="next" title="ex00 为什么是"The Hard Way"">
+                  ex00 为什么是"The Hard Way" <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

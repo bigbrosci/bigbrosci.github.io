@@ -1,37 +1,543 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本节提要前面的扩展练习中,要求大家结合自己的化学知识,判断计算结果是否正确。相比很多同学已经知道了氧原子含有磁性,我们在计算用需要考虑进去。在本节练习中,大师兄教给你如何分分析氧原子在轨道中的占据情况,判断计算是否合理,并正确进行氧原子能量的计算。 氧原子轨道氧原子的电子构型是 $1s^2 2s^2 2p^4$ ,轨道占据情况如图:  所以氧原子含有两个单电子,具有磁性,且磁矩为2 $μ_B$。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex08 氧原子能量的正确计算">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/10/30/ex08/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="本节提要前面的扩展练习中,要求大家结合自己的化学知识,判断计算结果是否正确。相比很多同学已经知道了氧原子含有磁性,我们在计算用需要考虑进去。在本节练习中,大师兄教给你如何分分析氧原子在轨道中的占据情况,判断计算是否合理,并正确进行氧原子能量的计算。 氧原子轨道氧原子的电子构型是 $1s^2 2s^2 2p^4$ ,轨道占据情况如图:  所以氧原子含有两个单电子,具有磁性,且磁矩为2 $μ_B$。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/10/30/ex08/oxygen_occupation.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/10/30/ex08/OSZICAR.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/10/30/ex08/TOTEN.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/10/30/ex08/occupation.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/10/30/ex08/OSZICAR_2.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/10/30/ex08/OUTCAR_2.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/10/30/ex08/occupation_2.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/10/30/ex08/spin_2.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/10/30/ex08/OUTCAR_3.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/10/30/ex08/OSZICAR_3.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/10/30/ex08/OUTCAR_4.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/10/30/ex08/TOTEN_4.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/10/30/ex08/occupation_4.jpg">
+<meta property="article:published_time" content="2017-10-31T01:41:12.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.366Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="单点能">
+<meta property="article:tag" content="磁性">
+<meta property="article:tag" content="轨道占据">
+<meta property="article:tag" content="氧">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2017/10/30/ex08/oxygen_occupation.jpg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/10/30/ex08/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/10/30/ex08/","path":"2017/10/30/ex08/","title":"Ex08 氧原子能量的正确计算"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex08 氧原子能量的正确计算 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%AC%E8%8A%82%E6%8F%90%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">本节提要</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B0%A7%E5%8E%9F%E5%AD%90%E8%BD%A8%E9%81%93"><span class="nav-number">2.</span> <span class="nav-text">氧原子轨道</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E7%BB%93%E6%9E%9C"><span class="nav-number">3.</span> <span class="nav-text">计算结果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OSZICAR"><span class="nav-number">3.1.</span> <span class="nav-text">OSZICAR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%BD%E9%87%8F%E4%BF%A1%E6%81%AF"><span class="nav-number">3.2.</span> <span class="nav-text">能量信息:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%B5%E5%AD%90%E5%8D%A0%E6%8D%AE%E6%83%85%E5%86%B5-OUTCAR-%E4%B8%AD%E6%9F%A5%E7%9C%8B"><span class="nav-number">3.3.</span> <span class="nav-text">电子占据情况: (OUTCAR 中查看)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E4%B8%A4%E6%AD%A5%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98"><span class="nav-number">4.</span> <span class="nav-text">分两步解决问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5"><span class="nav-number">4.1.</span> <span class="nav-text">第一步:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E6%97%8B%E6%9E%81%E5%8C%96%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E8%AF%A5%E5%8A%A0%E5%91%A2"><span class="nav-number">4.2.</span> <span class="nav-text">自旋极化什么时候该加呢?</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%8B%E8%AF%952%E4%B8%AD%E2%80%99OUTCAR%E7%9A%84%E6%9C%AB%E5%B0%BE%E4%BC%9A%E8%BE%93%E5%87%BA%E5%90%84%E4%B8%AA%E5%8E%9F%E5%AD%90%E7%9A%84%E7%A3%81%E7%9F%A9%E4%BF%A1%E6%81%AF%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">测试2中’OUTCAR的末尾会输出各个原子的磁矩信息：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#INCAR"><span class="nav-number">5.0.1.</span> <span class="nav-text">INCAR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSZICAR-1"><span class="nav-number">5.0.2.</span> <span class="nav-text">OSZICAR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OUITCAR-%E4%B8%AD%E7%9A%84%E8%83%BD%E9%87%8F%E4%BF%A1%E6%81%AF"><span class="nav-number">5.0.3.</span> <span class="nav-text">OUITCAR 中的能量信息:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#POSCAR"><span class="nav-number">5.0.4.</span> <span class="nav-text">POSCAR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#POSCAR-1"><span class="nav-number">5.0.5.</span> <span class="nav-text">POSCAR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSZICAR-2"><span class="nav-number">5.0.6.</span> <span class="nav-text">OSZICAR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OSZICAR-3"><span class="nav-number">5.0.7.</span> <span class="nav-text">OSZICAR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TOTEN"><span class="nav-number">5.0.8.</span> <span class="nav-text">TOTEN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OUTCAR"><span class="nav-number">5.0.9.</span> <span class="nav-text">OUTCAR</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">6.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E9%98%85%E8%AF%BB"><span class="nav-number">7.</span> <span class="nav-text">扩展阅读</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/10/30/ex08/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex08 氧原子能量的正确计算
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-10-30 21:41:12" itemprop="dateCreated datePublished" datetime="2017-10-30T21:41:12-04:00">2017-10-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/10/30/ex08/" class="post-meta-item leancloud_visitors" data-flag-title="Ex08 氧原子能量的正确计算" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/10/30/ex08/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/10/30/ex08/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="本节提要"><a href="#本节提要" class="headerlink" title="本节提要"></a>本节提要</h1><p>前面的扩展练习中,要求大家结合自己的化学知识,判断计算结果是否正确。相比很多同学已经知道了氧原子含有磁性,我们在计算用需要考虑进去。在本节练习中,大师兄教给你如何分分析氧原子在轨道中的占据情况,判断计算是否合理,并正确进行氧原子能量的计算。</p>
+<h1 id="氧原子轨道"><a href="#氧原子轨道" class="headerlink" title="氧原子轨道"></a>氧原子轨道</h1><p>氧原子的电子构型是 $1s^2 2s^2 2p^4$ ,轨道占据情况如图:</p>
+<p><img src="/2017/10/30/ex08/oxygen_occupation.jpg"></p>
+<p>所以氧原子含有两个单电子,具有磁性,且磁矩为2 $μ_B$。</p>
+<h1 id="计算结果"><a href="#计算结果" class="headerlink" title="计算结果"></a>计算结果</h1><p>我们看一下前面的计算结果:</p>
+<h2 id="OSZICAR"><a href="#OSZICAR" class="headerlink" title="OSZICAR"></a>OSZICAR</h2><p><img src="/2017/10/30/ex08/OSZICAR.jpg" alt="OSZICAR"></p>
+<h2 id="能量信息"><a href="#能量信息" class="headerlink" title="能量信息:"></a>能量信息:</h2><p><img src="/2017/10/30/ex08/TOTEN.jpg" alt="能量信息"></p>
+<h2 id="电子占据情况-OUTCAR-中查看"><a href="#电子占据情况-OUTCAR-中查看" class="headerlink" title="电子占据情况: (OUTCAR 中查看)"></a>电子占据情况: (OUTCAR 中查看)</h2><p><img src="/2017/10/30/ex08/occupation.jpg" alt="电子占据情况"></p>
+<ul>
+<li>Band1 含有两个电子, 对应的 $2s^2$ ;</li>
+<li>Band 2-4 为三个简并态,每个能带上有 1.33 个电子, 对应的 $2p^4$ 。</li>
+</ul>
+<p>但在这里,电子的占据是不正确的:</p>
+<ul>
+<li>因为 $2p_x$ 轨道上含有两个电子, 而不是把 $2p_x$ 上的一个电子平均分配到 3 个 p 轨道上;</li>
+<li>此外,通过这个电子的占据情况,我们不能正确得到氧原子的磁矩信息。</li>
+</ul>
+<p>那么怎么解决这个问题呢?</p>
+<h1 id="分两步解决问题"><a href="#分两步解决问题" class="headerlink" title="分两步解决问题"></a>分两步解决问题</h1><h2 id="第一步"><a href="#第一步" class="headerlink" title="第一步:"></a>第一步:</h2><p>由于氧原子具有磁性, 自旋极化计算要进行考虑, 在 VASP 计算中, 需要在 <code>INCAR</code> 中添加一项: <code>ISPIN = 2</code></p>
+<p><code>ISPIN</code> 的取值为 <code>1</code> 或 <code>2</code>:<br>​    1. 代表不考虑自旋极化,是VASP的默认值;<br>​    2. 代表打开自旋极化该选项,计算中考虑。</p>
+<h2 id="自旋极化什么时候该加呢"><a href="#自旋极化什么时候该加呢" class="headerlink" title="自旋极化什么时候该加呢?"></a>自旋极化什么时候该加呢?</h2><p>需要考虑自旋极化一般来说有以下几种：（新手记住前面4个即可。）</p>
+<ul>
+<li>单原子的计算,</li>
+<li>O$_2$ 分子(基态为三重态)</li>
+<li>自由基相关的计算</li>
+<li>含Fe,Co, Ni 的体系</li>
+<li>要计算的体系具有磁性：顺磁，铁磁，反铁磁等，要打开自旋极化。</li>
+<li>当关注体系的电子性质时，且自己不知道加或者不加的时候，建议加上。</li>
+</ul>
+<p>如果你不知道自己的体系是否要考虑自旋极化，可以简单做这样的一个测试：</p>
+<ul>
+<li>测试1：不加自旋极化，正常算，得到结果1；</li>
+<li>测试2：加上自旋极化，并在INCAR中添加： <code>LORBIT = 11</code><br>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</li>
+<li><h1 id="测试2中’OUTCAR的末尾会输出各个原子的磁矩信息："><a href="#测试2中’OUTCAR的末尾会输出各个原子的磁矩信息：" class="headerlink" title="测试2中’OUTCAR的末尾会输出各个原子的磁矩信息："></a>测试2中’<code>OUTCAR</code>的末尾会输出各个原子的磁矩信息：</h1></li>
+<li>测试2中OUTCAR的末尾会输出各个原子的磁矩信息：<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>6e2ce84518e1be61c275fe32fa33a1df18c0c4c7</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<ul>
+<li>如果体系中原子的磁矩不为0，那么需要考虑自旋极化，</li>
+<li>如果体系所有原子的磁矩都为0，那么就不需要考虑自旋极化，而且此时，你会发现测试1 和 2的结果中：结构和能量是一样的。</li>
+</ul>
+</li>
+</ul>
+<p>添加该选项后,重新计算,结果如下:</p>
+<h3 id="INCAR"><a href="#INCAR" class="headerlink" title="INCAR"></a>INCAR</h3><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SYSTEM = O</span><br><span class="line">ISMEAR = <span class="number">0</span></span><br><span class="line">SIGMA = <span class="number">0.01</span></span><br><span class="line">ISPIN = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="OSZICAR-1"><a href="#OSZICAR-1" class="headerlink" title="OSZICAR"></a>OSZICAR</h3><p><img src="/2017/10/30/ex08/OSZICAR_2.jpg" alt="OSZICAR"></p>
+<p>可以看出, 加了自旋极化后, <strong>电子迭代步数增加了</strong>, 这是因为体系中的电子被强制分成了 $\alpha$ 和 $\beta$ 两种, 并分别进行计算, 因此增加了计算量。</p>
+<p>体系的磁矩大小在 $OSZICAR$ 中查看, 对应右下角的 <code>mag=</code>  该项, 从这里我们可以看到, 磁矩信息与我们已知的 2 $\mu_B$ 吻合, 这一点是合理的, 正确的。</p>
+<h3 id="OUITCAR-中的能量信息"><a href="#OUITCAR-中的能量信息" class="headerlink" title="OUITCAR 中的能量信息:"></a>OUITCAR 中的能量信息:</h3><p><img src="/2017/10/30/ex08/OUTCAR_2.jpg" alt="OUTCAR"></p>
+<p> 考虑自旋极化后,体系的能量降低了。</p>
+<hr>
+<p> 我们重点通过查看体系的电子占据情况, 判断该计算是否合理: </p>
+<p><img src="/2017/10/30/ex08/occupation_2.jpg" alt="OUTCAR"></p>
+<p>从图中可以看出,结果由两个 <code>spin</code> 组成: spin component 1 和 2:<br>spin component 1 中含有 4 个电子, 另一个中含有 2 个电子:</p>
+<p><img src="/2017/10/30/ex08/spin_2.png" alt="OUTCAR"></p>
+<p>参考该图,可以看出 spin component 1 为自旋向上的 $\alpha$ 电子, 另一个是自旋向下的 $\beta$ 电子。</p>
+<p>但是:</p>
+<pre><code>1. Spincomponent 1中,能带2-4中3个alpha 电子的能量是一样的。这不正确，因为其中一个2px轨道中的alpha电子已经成对,能量要比py 和 pz 低;描述失败!
+2. spincomponent 2 中,另一个beta电子还是平均分配在了三个能带上面。
+</code></pre>
+<p>电子占据依然不合理。</p>
+<p>上面的结果是由于体系的高对称性导致的简并所造成的。 $8 \times 8 \times 8$ 的立方体格子, 在这里具有高阶的点群对称性: $O_h$, 见 <code>OUTCAR</code></p>
+<p><img src="/2017/10/30/ex08/OUTCAR_3.jpg" alt="OUTCAR"></p>
+<p>在 GGA 泛函中, 为了获得体系更低的能量,对于原子来说,通常会采用一种 <code>symmetry broken solution</code> 的处理方法。 但是在 VASP 计算中, 体系的对称性则是通过晶胞来获得, 即把这个晶胞当成一个原子来处理, 因此我们需要手动改变晶胞的形状来消除对称性造成的简并结果。 (此处的解释可能有些牵强, 有兴趣的可以查找与 symmetry broken solution 相关的文献)</p>
+<hr>
+<p>INCAR, KPOINTS, POTCAR等均保持不变。修改POSCAR, 如下:</p>
+<h3 id="POSCAR"><a href="#POSCAR" class="headerlink" title="POSCAR"></a>POSCAR</h3><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">O</span><br><span class="line"><span class="number">1.0</span></span><br><span class="line"><span class="number">7.5</span> <span class="number">0.0</span> <span class="number">0.0</span></span><br><span class="line"><span class="number">0.0</span> <span class="number">8.0</span> <span class="number">0.0</span></span><br><span class="line"><span class="number">0.0</span> <span class="number">0.0</span> <span class="number">8.9</span></span><br><span class="line">O</span><br><span class="line"><span class="number">1</span></span><br><span class="line">Cartesian</span><br><span class="line"><span class="number">0.0</span> <span class="number">0.0</span> <span class="number">0.0</span></span><br></pre></td></tr></table></figure>
+
+<p>通过改变格子在三个方向的大小, 降低对称性。 大师兄还尝试了三斜的格子, 结果和这个是一致的。 (有兴趣的可以尝试下)</p>
+<h3 id="POSCAR-1"><a href="#POSCAR-1" class="headerlink" title="POSCAR"></a>POSCAR</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">O</span><br><span class="line"><span class="number">1.0</span></span><br><span class="line">	<span class="number">7.5</span>		<span class="number">7.6</span>		<span class="number">0.0</span></span><br><span class="line">	<span class="number">0.0</span>		<span class="number">8.2564</span>		<span class="number">8.2</span></span><br><span class="line">	<span class="number">8.5</span>		<span class="number">0.0</span>		<span class="number">8.9</span></span><br><span class="line">O</span><br><span class="line">	<span class="number">1</span></span><br><span class="line">Cartesian</span><br><span class="line">	<span class="number">0.0</span>		<span class="number">0.0</span>		<span class="number">0.0</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>下面我们看一下改变晶胞为7.5 x 8.0 x 8.9后的计算结果:</p>
+<h3 id="OSZICAR-2"><a href="#OSZICAR-2" class="headerlink" title="OSZICAR"></a>OSZICAR</h3><p><img src="/2017/10/30/ex08/OSZICAR_3.jpg" alt="OSZICAR"></p>
+<p><code>OSZICAR</code> 中电子迭代步数又增加了, 这是因为对称性的降低增加了计算量。</p>
+<p>磁矩为 $2\mu_B$ ,这一点跟前面一样,正确!</p>
+<hr>
+<p>体系的对称性: 从 $O_h$ 降低到了 $D_{2h}$</p>
+<h3 id="OSZICAR-3"><a href="#OSZICAR-3" class="headerlink" title="OSZICAR"></a>OSZICAR</h3><p><img src="/2017/10/30/ex08/OUTCAR_4.jpg" alt="OSZICAR"></p>
+<hr>
+<p>能量信息:</p>
+<h3 id="TOTEN"><a href="#TOTEN" class="headerlink" title="TOTEN"></a>TOTEN</h3><p><img src="/2017/10/30/ex08/TOTEN_4.jpg" alt="TOTEN"></p>
+<p>跟前面能量相比, 可以看出, 对称性降低后, <strong>体系的能量进一步降低了</strong>。</p>
+<hr>
+<p>电子占据情况:</p>
+<h3 id="OUTCAR"><a href="#OUTCAR" class="headerlink" title="OUTCAR"></a>OUTCAR</h3><p><img src="/2017/10/30/ex08/occupation_4.jpg" alt="TOTEN"></p>
+<hr>
+<h1 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h1><ol>
+<li>在 $\alpha$ 电子(spin component 1)中, 能带1 是 $2s$ 中的 $\alpha$ 电子; 能带2-3为两个简并轨道, 对应 $p_y$ 和 $p_z$ 电子, 能带 4 位于 $p_x$ 中的 $\alpha$ 电子。 这里能带 4 的能量应该比 2 和 3 要低, 但结果恰恰相反, 描述不合理;</li>
+<li>在 $\beta$ 电子(spin component 2)中, 能带 1 是 $2s$ 的 $\beta$ 电子, 能带 2 为 $p_x$ 中的 $\beta$ 电子, 此时该 $\beta$ 电子占据了一个轨道, 而不是分布在三个 $p$ 轨道上, 结果是合理的。</li>
+</ol>
+<ul>
+<li><p>计算到这里, 已经是 VASP 官网对于单原子能量最为完整和准确的计算了。 虽然上面 $p_x$ 的 $\alpha$ 电子比 $p_y$ 和 $p_z$能量高, 至少电子的轨道电子占据情况是正确的, 且磁矩和简并的错误已经消除。 由此可见, VASP对于单原子的电子占据情况(至少对于 O 原子来说), 虽然取得了部分理想结果, 但还是有不足的地方。</p>
+</li>
+<li><p>此外,体系的对称性可以通过 <code>ISYM</code> 来控制( 扩展阅读 <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node115.html">ISYM</a> ), <code>ISYM = 0</code> 的时候, 不考虑对称性进行计算.</p>
+</li>
+<li><p>大师兄也尝试过了将 <code>ISYM = 0</code> 应用在 $8 \times 8 \times 8$ (test3)以及 $7.5 \times 8.0 \times 8.9$ (test4) 的格子里进行计算。 对于电子占据情况来说, 均得到了与前面 $7.5 \times 8.0 \times 8.9$ 一致的结果。 但是使用 $7.5 \times 8.0 \times 8.9$ 所得到的能量更低(test4 的能量比 test3 低)。</p>
+</li>
+<li><p>使用 $7.5 \times 8.0 \times 8.9$ 格子时, <code>ISYM = 0</code> (test4) 和采用默认值, 得到的能量结果是相同的, 因此, 改变晶胞的对称性在计算单原子能量的时候是必须的, 单独通过 <code>ISYM</code> 这一项不考虑对称性是远远不够的。</p>
+</li>
+</ul>
+<h1 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h1><ol>
+<li><code>ISYM</code>: <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node115.html">http://cms.mpi.univie.ac.at/vasp/guide/node115.html</a></li>
+<li>重现本节所有练习, 并自己认真分析结果, 查看电子占据情况, 体系的磁性, 以及能量信息。</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+<li>知道什么时候使用自旋极化计算,怎么进行自旋极化计算;</li>
+<li>知道为什么自旋极化后计算量增加了;</li>
+<li>知道在哪里查看体系的磁性信息;</li>
+<li>知道为什么对称性降低后计算量增加了;</li>
+<li>会分析单原子中电子轨道的占据情况;判断结果是否合理;</li>
+<li>知道通过改变晶格大小调节体系的对称性从而消除简并对能量的影响;</li>
+<li>知道ISYM这一个参数,在计算单原子能量中,ISYM的作用远远不及改变晶格大小;</li>
+<li>知道vasp也存在自己局限性,不要完全相信。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8D%95%E7%82%B9%E8%83%BD/" rel="tag"># 单点能</a>
+              <a href="/tags/%E7%A3%81%E6%80%A7/" rel="tag"># 磁性</a>
+              <a href="/tags/%E8%BD%A8%E9%81%93%E5%8D%A0%E6%8D%AE/" rel="tag"># 轨道占据</a>
+              <a href="/tags/%E6%B0%A7/" rel="tag"># 氧</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/10/29/ex07/" rel="prev" title="Ex07 VASP的输出文件（三）">
+                  <i class="fa fa-chevron-left"></i> Ex07 VASP的输出文件（三）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/11/18/A01/" rel="next" title="通过Ubuntu连接国科智算的方法">
+                  通过Ubuntu连接国科智算的方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

@@ -1,37 +1,487 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="继续前面的计算，这一节我们主要讲一下表面能的计算过程。 1 表面能定义首先，我们先介绍一下表面能的定义。为了偷懒，本人直接摘抄的维基百科的解释，如下： 表面能是创造物质表面时，破坏分子间化学键所需消耗的能量。在固体物理理论中，表面原子比物质内部的原子具有更多的能量，因此，根据能量最低原理，原子会自发的趋于物质内部而不是表面。表面能的另一种定义是，材料表面相对于材料内部所多出的能量。把一个固体材料分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex47 表面能的计算（一）">
+<meta property="og:url" content="http://www.bigbrosci.com/2018/09/01/ex47/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="继续前面的计算，这一节我们主要讲一下表面能的计算过程。 1 表面能定义首先，我们先介绍一下表面能的定义。为了偷懒，本人直接摘抄的维基百科的解释，如下： 表面能是创造物质表面时，破坏分子间化学键所需消耗的能量。在固体物理理论中，表面原子比物质内部的原子具有更多的能量，因此，根据能量最低原理，原子会自发的趋于物质内部而不是表面。表面能的另一种定义是，材料表面相对于材料内部所多出的能量。把一个固体材料分">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/01/ex47/ex47-2.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/01/ex47/ex47-3.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/01/ex47/ex47-4.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/01/ex47/ex47-5.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/01/ex47/ex47-6.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/01/ex47/ex47-7.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/01/ex47/ex47-8.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/01/ex47/ex47-9.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/09/01/ex47/ex47-10.jpeg">
+<meta property="article:published_time" content="2018-09-01T06:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.930Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="表面能">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2018/09/01/ex47/ex47-2.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2018/09/01/ex47/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2018/09/01/ex47/","path":"2018/09/01/ex47/","title":"Ex47 表面能的计算（一）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex47 表面能的计算（一） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%A1%A8%E9%9D%A2%E8%83%BD%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">1 表面能定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-VASP%E8%AE%A1%E7%AE%97"><span class="nav-number">2.</span> <span class="nav-text">2 VASP计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%B8%8B%E9%9D%A2%E6%88%91%E4%BB%AC%E7%9C%8B%E4%B8%80%E4%B8%8B%E8%BF%99%E7%AF%87%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%E4%B8%AD%E7%9A%84%E8%AE%A1%E7%AE%97%E4%BB%8B%E7%BB%8D%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">3 下面我们看一下这篇参考文献中的计算介绍：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">4 扩展练习：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">5 总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/09/01/ex47/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex47 表面能的计算（一）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-01 02:06:48" itemprop="dateCreated datePublished" datetime="2018-09-01T02:06:48-04:00">2018-09-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/09/01/ex47/" class="post-meta-item leancloud_visitors" data-flag-title="Ex47 表面能的计算（一）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/09/01/ex47/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/09/01/ex47/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>继续前面的计算，这一节我们主要讲一下表面能的计算过程。</p>
+<h3 id="1-表面能定义"><a href="#1-表面能定义" class="headerlink" title="1 表面能定义"></a>1 表面能定义</h3><p>首先，我们先介绍一下表面能的定义。为了偷懒，本人直接摘抄的<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Surface_energy">维基百科</a>的解释，如下：</p>
+<p>表面能是创造物质表面时，破坏分子间化学键所需消耗的能量。在固体物理理论中，表面原子比物质内部的原子具有更多的能量，因此，根据能量最低原理，原子会自发的趋于物质内部而不是表面。表面能的另一种定义是，材料表面相对于材料内部所多出的能量。把一个固体材料分解成小块需要破坏它内部的化学键，所以需要消耗能量。如果这个分解的过程是可逆的，那么把材料分解成小块所需要的能量就和小块材料表面所增加的能量相等。但事实上，只有在真空中刚刚形成的表面才符合上述能量守恒。因为新形成的表面是非常不稳定的，它们通过表面原子重组和相互间的反应，或者对周围其他分子或原子的吸附，从而使表面能量降低。</p>
+<h3 id="2-VASP计算"><a href="#2-VASP计算" class="headerlink" title="2 VASP计算"></a>2 VASP计算</h3><p>具体到VASP的计算中，表面能是怎么算出来的呢？ 下面我们看一下VASP官网的表面能的计算过程。</p>
+<p><img src="/2018/09/01/ex47/ex47-2.jpeg"></p>
+<p>公式先大体浏览一遍，我们分析下里面的各项所表示的内容：</p>
+<ul>
+<li>E<sup>rel</sup>： Relaxation energy， 即弛豫能量。这个前面一节我们已经讲过了，从刚刚切好的表面优化到稳定的表面所释放的热量。图中的第一个点就是刚刚切好表面的能量（E<sup>surf</sup>），最后一个点就是优化完成之后的能量。这个相信大家现在都能理解了。</li>
+<li>σ： 在handonsession-III里面，这个用来表示表面能。</li>
+<li>E<sup>surf</sup>：刚刚切好的 slab 能量；可以直接算个单点，也可以取优化过程中第一个离子步的能量。</li>
+<li>N<sub>atoms</sub>： Slab 中的原子数目</li>
+<li>E<sub>bulk</sub>： Bulk结构中单个原子的能量。</li>
+</ul>
+<p><strong>注意1：</strong></p>
+<p>前面说的最后一点。E<sub>bulk</sub>， 这个不是指的体相的能量，而是体相中单个原子能量。即体相的能量除以原子数目。我们顺便回顾一下前面单胞的优化：</p>
+<ol>
+<li>获取稳定的晶格常数，两个方法：</li>
+</ol>
+<pre><code>* ISIF + Large ENCUT
+* 通过计算不同的晶格常数的晶胞能量，用BM方程拟合
+</code></pre>
+<ol start="2">
+<li>得到稳定的晶格常数之后，如果用的 ISIF= 3 这个方法，则将 CONTCAR 复制成 POSCAR ，然后在 INCAR 中设置： ISIF = 2 + 正常的 ENCUT ，做个单算，算下计算晶胞的能量。</li>
+<li>用晶胞的能量除以晶胞中的原子数目，就得到了这里的 E<sub>bulk</sub>。比如前面 Cu 的单胞中有4个原子，我们则用计算后体系的能量除以4。</li>
+</ol>
+<p><strong>注意2：</strong></p>
+<p>Handonsession-III 里面的表面能，严格来说，这个定义其实是不对的。因为表面能，从字面上理解，它的单位应该是： 能量/面积。而图中只有能量，没有面积。所以，图中的表面能指的是纯能量。</p>
+<ol>
+<li>σ<sup>unrel</sup>： 将块体直接切开所用的功，因为是切成了2份，公式中除以2。  </li>
+</ol>
+<pre><code>注意，在这个计算里面，暂且不考虑表面的弛豫，单纯从体相切成2个表面的过程。
+能量是刚刚切出来的slab的能量： -25.560
+</code></pre>
+<ol start="2">
+<li>从体相到切开表面直至达到稳定状态，总的能量变化为：<br>$$<br>\sigma = \sigma^{unrel + E^{rel}}<br>$$</li>
+</ol>
+<p><strong>注意3：</strong></p>
+<p>E<sup>rel</sup> 这里没有除以2。为什么呢？ 这是因为我们只放开了上面的两层原子。也就是只优化了一个表面。<br>至此，从体相切成表面，然后直至表面稳定，这一个过程的能量就算完了。<br>既然前面说了，表面能里面有面积，那么面积指的是什么面积？怎么求面积呢？</p>
+<ol>
+<li>面积就是你计算的slab的那一层表面积，很多人问我这个问题，我也是无语了！</li>
+<li>怎么求呢? 我们先看一下Slab模型(Notepad++这个软件打开的！没有的话赶紧去安装一个)</li>
+</ol>
+<p><img src="/2018/09/01/ex47/ex47-3.png"></p>
+<p>前面几行放大一下，看看晶格尺寸。</p>
+<p><img src="/2018/09/01/ex47/ex47-4.png"></p>
+<p>如果面积用A来表示， 则： </p>
+<p>A = 2.57170 * 2.22716 – 0.000 * (-1.28585) </p>
+<p><strong>注意4：</strong></p>
+<p>这里的单位是 Å<sup>2</sup><br>原理如下图：(自画自拍，不喜勿喷!)</p>
+<p><img src="/2018/09/01/ex47/ex47-5.jpeg"></p>
+<p>菱形的面积等于： x1 * y2<br>如果坐标系不是那么正儿八经对在一起的时候，如下图：</p>
+<p><img src="/2018/09/01/ex47/ex47-6.jpeg"></p>
+<p>则面积等于：x1 * y2 – y1 * x2<br>Handonsession-III 中 Ni(100) 表面的面积为：</p>
+<p><img src="/2018/09/01/ex47/ex47-7.png"></p>
+<p>A = (0.5*0.5– 0.5 * (-0.5)) = 0.5 Å<sup>2</sup><br>这里我们还忘了乘以前面的缩放系数：所以，<br>A = 0.5 * 3.53 * 3.53 = 6.23045 Å<sup>2</sup><br>最终表面能为： 0.71 eV / 6.23045 Å<sup>2</sup> = 0.114 eV/Å<sup>2</sup><br>一般来说表面能的单位为： J/m<sup>2</sup><br>换算系数为： 1 eV/Å<sup>2</sup> = 16.02 J/m<sup>2</sup><br>换算完毕后，表面能为： σ = 0.114 * 16.02 J/m<sup>2</sup> = 1.826 J/m<sup>2</sup> 。</p>
+<p><strong>注意5</strong>： 我们的参考书中(第97页中)给弄反了。</p>
+<p><img src="/2018/09/01/ex47/ex47-8.jpeg"></p>
+<p>这是因为：<br>1 eV = 1.602176487<em>10<sup>-19</sup> J<br>1 Å<sup>2</sup> = (1</em>10<sup>-10</sup>)* (1*10<sup>-10</sup>) m<sup>2</sup><br>大家自己算算就知道了。讲到这里，相信金属表面能，大家都可以照着去算一遍了。</p>
+<p><strong>注意6：</strong></p>
+<p>获取E<sup>surf</sup> 的时候，一定要检查：1） 单点计算是不是收敛了？或者2） 第一个离子步是不是收敛了？</p>
+<p>如果没有收敛的话，表面能的计算就是错的。σ<sup>unrel</sup>和E<sup>rel</sup>都跟这个量密切相关。</p>
+<h3 id="3-下面我们看一下这篇参考文献中的计算介绍："><a href="#3-下面我们看一下这篇参考文献中的计算介绍：" class="headerlink" title="3 下面我们看一下这篇参考文献中的计算介绍："></a>3 下面我们看一下这篇参考文献中的计算介绍：</h3><p>Shapecontrol in concave metal nanoparticles by etching<br>Nanoscale, 2017,9, 13089-13094 </p>
+<p><img src="/2018/09/01/ex47/ex47-9.jpeg"></p>
+<p>这是本人博士期间的一个工作，主要讨论了不同盐酸浓度下Pt纳米颗粒的成长，腐蚀过程以及形貌的预测。有兴趣的可以看看，当然啦，本人也希望大家多多引用。对于表面能的计算，大家可以参考支持信息中的公式1，如下图： </p>
+<p><img src="/2018/09/01/ex47/ex47-10.jpeg"></p>
+<p>相信到这里，大家可以完全明白这段话的意思，以及计算的整个流程了。</p>
+<h3 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h3><ol>
+<li>重复一下 Hand on Session -III 中 Ni(100)  表面能的计算;</li>
+<li>计算下我们前面的 Cu(111) 表面能的计算;</li>
+<li>计算下 Cu(100), Cu(110) 的表面能。</li>
+<li>对比 Cu(111), Cu(110) 和 Cu(100) 的表面能，分析下规律。</li>
+<li>思考1：表面能的计算有什么需要注意的， 请公众号留言回答！</li>
+<li>思考2：表面能能用来干什么？请公众号留言回答！</li>
+</ol>
+<h3 id="5-总结："><a href="#5-总结：" class="headerlink" title="5 总结："></a>5 总结：</h3><p>本节，我们主要讲了表面能的计算，参考的资料有：</p>
+<ol>
+<li>VASP 官网的 Hand on session (如果你自己下载不到，请认真反思自己！)</li>
+<li>我们的参考书： Density Functional Theory: A Practical Inroduction</li>
+<li>以及本人发表的文章一篇。 </li>
+<li>希望大家可以认真学习，不要急躁！！！</li>
+</ol>
+<p>本书中只要是用到的，提到的资料，本人都已经明确说明出处，获取方式以及下载链接了，请认真浏览，不要再浪费时间找我索要！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%A1%A8%E9%9D%A2%E8%83%BD/" rel="tag"># 表面能</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/08/30/ex46/" rel="prev" title="Ex46 表面弛豫的计算结果分析以及Direct坐标转换脚本">
+                  <i class="fa fa-chevron-left"></i> Ex46 表面弛豫的计算结果分析以及Direct坐标转换脚本
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/09/02/ex48/" rel="next" title="Ex48 表面能的计算（二）">
+                  Ex48 表面能的计算（二） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

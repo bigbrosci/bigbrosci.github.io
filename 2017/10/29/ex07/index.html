@@ -1,37 +1,462 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="CONTCAR、OSZICAR我们已经大体了解了一下，这一节我们我们学习VASP的另一个极其重要的输出文件：OUTCAR。前面我们介绍到OSZICAR中包含了体系结构优化，电子结构迭代收敛的简单信息。OUTCAR中也包含这些信息，而且比OSZICAR的内容更加详细。此外，计算的参数设置（INCAR中有的，以及默认的），K点的设置，赝势的基本信息，VASP的版本，体系的几何结构以及电子性质相关的内容">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex07 VASP的输出文件（三）">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/10/29/ex07/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="CONTCAR、OSZICAR我们已经大体了解了一下，这一节我们我们学习VASP的另一个极其重要的输出文件：OUTCAR。前面我们介绍到OSZICAR中包含了体系结构优化，电子结构迭代收敛的简单信息。OUTCAR中也包含这些信息，而且比OSZICAR的内容更加详细。此外，计算的参数设置（INCAR中有的，以及默认的），K点的设置，赝势的基本信息，VASP的版本，体系的几何结构以及电子性质相关的内容">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-10-29T22:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.356Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="OUTCAR">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/10/29/ex07/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/10/29/ex07/","path":"2017/10/29/ex07/","title":"Ex07 VASP的输出文件（三）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex07 VASP的输出文件（三） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/10/29/ex07/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex07 VASP的输出文件（三）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-10-29 18:30:16" itemprop="dateCreated datePublished" datetime="2017-10-29T18:30:16-04:00">2017-10-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/10/29/ex07/" class="post-meta-item leancloud_visitors" data-flag-title="Ex07 VASP的输出文件（三）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/10/29/ex07/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/10/29/ex07/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><code>CONTCAR</code>、<code>OSZICAR</code>我们已经大体了解了一下，这一节我们我们学习VASP的另一个极其重要的输出文件：<code>OUTCAR</code>。前面我们介绍到<code>OSZICAR</code>中包含了体系结构优化，电子结构迭代收敛的简单信息。<code>OUTCAR</code>中也包含这些信息，而且比<code>OSZICAR</code>的内容更加详细。此外，计算的参数设置（<code>INCAR</code>中有的，以及默认的），K点的设置，赝势的基本信息，<code>VASP</code>的版本，体系的几何结构以及电子性质相关的内容，计算的时间等，也都包含在<code>OUTCAR</code>中。所以说，<code>OUTCAR</code>是关于我们当前计算的一个非常全面的，多方位的信息汇总。</p>
+<p>信息太多，VASP官网也没有对<code>OUTCAR</code>一个很详细地描述，大部分都是穿插在INCAR的计算参数中介绍的。这是因为（本人自己瞎猜的）：</p>
+<ul>
+<li><code>VASP</code>可以计算的性质很多，每一个特定的任务都有其对应的输出内容，这就导致了<code>OUTCAR</code>的复杂多样性，比如说优化结构、频率、声子谱，能带、<code>DOS</code>等计算等，这些都会有特定的输出，需要用户根据自己的计算内容去学习；</li>
+<li>另外一个原因就是里面的条目太多了，每一项单独解释都需要花费大量的时间。</li>
+</ul>
+<p>信息多，就会容易让人眼花缭乱，不知所措。本节，我们就理一理思路，揭开<code>OUTCAR</code>神秘的面纱，让大家心里不至于那么恐慌。之前我们说过，<code>VASP</code>有很多输出文件，日常用的也就那么几个，有些估计等你文章发表了都不一定能用上。这也同样适用于<code>OUTCAR</code>中的信息，虽然多，但大部分基本用不到。</p>
+<p>首先要告诉大家的是，<code>VASP</code>各个输出部分之间用很长的横杠分割（———————），当你看到横杠的时候，就知道要进入结果的下一个部分内容了。举个<code>OUTCAR开头</code>的例子。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> vasp.5.4.4.18Apr17-6-g9f103f2a35 (build Sep 22 2017 10:53:27) complex</span><br><span class="line"></span><br><span class="line"> executed on             LinuxIFC date 2018.11.12  03:58:57</span><br><span class="line"> running on   24 total cores</span><br><span class="line"> distrk:  each k-point on   24 cores，    1 groups</span><br><span class="line"> distr:  one band on NCORES_PER_BAND=   1 cores，   24 groups</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+
+<p><code>VASP</code>的版本信息，在多少个核上运行。所以，如果你不知道，自己的任务是VASP哪个版本计算的，也不知道如何去<code>VASP</code>的安装目录查找版本信息，可以运行一下，然后在<code>OUTCAR</code>的开头去找。可以看到，后跟着一堆<code>-</code>，说明要进入下一部分内容（计算体系，参数）的描述了。分别是：<code>POTCAR</code>，<code>POSCAR</code>，<code>KPOINTS</code>，以及<code>INCAR</code>的信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"> -----------------------------------------------------------------------------</span><br><span class="line">|                                                                             |</span><br><span class="line">|           W    W    AA    RRRRR   N    N  II  N    N   GGGG   !!!           |</span><br><span class="line">|           W    W   A  A   R    R  NN   N  II  NN   N  G    G  !!!           |</span><br><span class="line">|           W    W  A    A  R    R  N N  N  II  N N  N  G       !!!           |</span><br><span class="line">|           W WW W  AAAAAA  RRRRR   N  N N  II  N  N N  G  GGG   !            |</span><br><span class="line">|           WW  WW  A    A  R   R   N   NN  II  N   NN  G    G                |</span><br><span class="line">|           W    W  A    A  R    R  N    N  II  N    N   GGGG   !!!           |</span><br><span class="line">|                                                                             |</span><br><span class="line">|      For optimal performance we recommend to set                            |</span><br><span class="line">|        NCORE= 4 - approx SQRT( number of cores)                             |</span><br><span class="line">|      NCORE specifies how many cores store one orbital (NPAR=cpu/NCORE).     |</span><br><span class="line">|      This setting can  greatly improve the performance of VASP for DFT.     |</span><br><span class="line">|      The default，   NCORE=1            might be grossly inefficient         |</span><br><span class="line">|      on modern multi-core architectures or massively parallel machines.     |</span><br><span class="line">|      Do your own testing !!!!                                               |</span><br><span class="line">|      Unfortunately you need to use the default for GW and RPA calculations. |</span><br><span class="line">|      (for HF NCORE is supported but not extensively tested yet)             |</span><br><span class="line">|                                                                             |</span><br><span class="line"> -----------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"> POTCAR:    PAW_PBE O 08Apr2002</span><br><span class="line">   VRHFIN =O: s2p4</span><br><span class="line">   LEXCH  = PE</span><br><span class="line">   EATOM  =   432.3788 eV，   31.7789 Ry</span><br><span class="line"></span><br><span class="line">   TITEL  = PAW_PBE O 08Apr2002</span><br><span class="line">   LULTRA =        F    use ultrasoft PP ?</span><br><span class="line">   IUNSCR =        1    unscreen: 0-lin 1-nonlin 2-no</span><br><span class="line">   RPACOR =    1.200    partial core radius</span><br><span class="line">   POMASS =   16.000; ZVAL   =    6.000    mass and valenz</span><br><span class="line">   RCORE  =    1.520    outmost cutoff radius</span><br><span class="line">   RWIGS  =    1.550; RWIGS  =    0.820    wigner-seitz radius (au A)</span><br><span class="line">   ENMAX  =  400.000; ENMIN  =  300.000 eV</span><br><span class="line">   ICORE  =        2    local potential</span><br><span class="line">   LCOR   =        T    correct aug charges</span><br><span class="line">   LPAW   =        T    paw PP</span><br><span class="line">   EAUG   =  605.392</span><br><span class="line">   DEXC   =    0.000</span><br><span class="line">   RMAX   =    1.553    core radius for proj-oper</span><br><span class="line">   RAUG   =    1.300    factor for augmentation sphere</span><br><span class="line">   RDEP   =    1.550    radius for radial grids</span><br><span class="line">   RDEPT  =    1.329    core radius for aug-charge</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>基本上每次运行的时候，（即使你的输入是正确的），<code>VASP</code>都会输出一个大大的<code>WARNING</code>来吓唬你，不用担心，无视即可。但如果你的计算失败了，这个警告信息<strong>或许</strong>（个人感觉基本没用）对你排查错误可能会有所帮助。 <code>WARNING</code>下面是<code>POTCAR</code>的基本信息，如果你想通过<code>OUTCAR</code>查看<code>POTCAR中</code>的元素时，可以使用下面的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grep POTCAR OUTCAR</span><br><span class="line">grep TIT OUTCAR</span><br><span class="line">grep ENMAX OUTCAR</span><br><span class="line">grep ZVAL OUTCAR # </span><br></pre></td></tr></table></figure>
+
+<p><code>ZVAL</code>是该<code>POTCAR</code>中对应元素的价电子，这里氧原子含有6个外层价电子。你可以自行对比下<code>POTCAR</code>中的内容。再往下，就是<code>POSCAR</code>的内容：坐标格式，原子位置，以及晶胞的形状大小。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> ion  position               nearest neighbor table</span><br><span class="line">   1  0.000  0.000  0.000-</span><br><span class="line"></span><br><span class="line">  LATTYP: Found a simple cubic cell.</span><br><span class="line"> ALAT       =     8.0000000000</span><br><span class="line"></span><br><span class="line">  Lattice vectors:</span><br><span class="line"></span><br><span class="line"> A1 = (   8.0000000000，   0.0000000000，   0.0000000000)</span><br><span class="line"> A2 = (   0.0000000000，   8.0000000000，   0.0000000000)</span><br><span class="line"> A3 = (   0.0000000000，   0.0000000000，   8.0000000000)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Analysis of symmetry for initial positions (statically):</span><br><span class="line">=====================================================================</span><br><span class="line"> Subroutine PRICEL returns:</span><br><span class="line"> Original cell was already a primitive cell.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> Routine SETGRP: Setting up the symmetry group for a</span><br><span class="line"> simple cubic supercell.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> Subroutine GETGRP returns: Found 48 space group operations</span><br><span class="line"> (whereof 48 operations were pure point group operations)</span><br><span class="line"> out of a pool of 48 trial point group operations.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">The static configuration has the point symmetry O_h .</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Analysis of symmetry for dynamics (positions and initial velocities):</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>体系的对称性以及点群操作相关的信息，在这里我们的体系是立方体，为<code>O_h</code>的点群，有48个对称操作。群论的知识大师兄早已原封不动地还给老师了，在这里就不再详细介绍了…</p>
+<p>K点信息：想查看K点个数：<code>grep irreducible OUTCAR</code>  或者 <code>grep irre OUTCAR</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> Subroutine IBZKPT returns following result:</span><br><span class="line"> ===========================================</span><br><span class="line"></span><br><span class="line"> Found      1 irreducible k-points:</span><br><span class="line"></span><br><span class="line"> Following reciprocal coordinates:</span><br><span class="line">            Coordinates               Weight</span><br><span class="line">  0.000000  0.000000  0.000000      1.000000</span><br><span class="line"></span><br><span class="line"> Following cartesian coordinates:</span><br><span class="line">            Coordinates               Weight</span><br><span class="line">  0.000000  0.000000  0.000000      1.000000</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>下一部分就是<code>INCAR</code>的参数：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">SYSTEM =  O atom</span><br><span class="line">POSCAR =  O atom in a box</span><br><span class="line"></span><br><span class="line">Startparameter for this run:</span><br><span class="line">  NWRITE =      2    write-flag &amp; timer</span><br><span class="line">  PREC   = normal    normal or accurate (medium， high low for compatibility)</span><br><span class="line">  ISTART =      0    job   : 0-new  1-cont  2-samecut</span><br><span class="line">  ICHARG =      2    charge: 1-file 2-atom 10-const</span><br><span class="line">  ISPIN  =      1    spin polarized calculation?</span><br><span class="line">  LNONCOLLINEAR =      F non collinear calculations</span><br><span class="line">  LSORBIT =      F    spin-orbit coupling</span><br><span class="line">  INIWAV =      1    electr: 0-lowe 1-rand  2-diag</span><br><span class="line">  LASPH  =      F    aspherical Exc in radial PAW</span><br><span class="line">  METAGGA=      F    non-selfconsistent MetaGGA calc.</span><br><span class="line"></span><br><span class="line">Electronic Relaxation 1</span><br><span class="line">  ENCUT  =  400.0 eV  29.40 Ry    5.42 a.u.  13.05 13.05 13.05*2*pi/ulx，y，z</span><br><span class="line">  ENINI  =  400.0     initial cutoff</span><br><span class="line">  ENAUG  =  605.4 eV  augmentation charge cutoff</span><br><span class="line">  NELM   =     60;   NELMIN=  2; NELMDL= -5     # of ELM steps</span><br><span class="line">  EDIFF  = 0.1E-03   stopping-criterion for ELM</span><br><span class="line">  LREAL  =      F    real-space projection</span><br><span class="line">  NLSPLINE    = F    spline interpolate recip. space projectors</span><br><span class="line">  LCOMPAT=      F    compatible to vasp.4.4</span><br><span class="line">  GGA_COMPAT  = T    GGA compatible to vasp.4.4-vasp.4.6</span><br><span class="line">  LMAXPAW     = -100 max onsite density</span><br><span class="line">  LMAXMIX     =    2 max onsite mixed and CHGCAR</span><br><span class="line">  VOSKOWN=      0    Vosko Wilk Nusair interpolation</span><br><span class="line">  ROPT   =    0.00000</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>计算参数详情（默认的参数值以及代表的意义也列出来了，这个地方大家仔细看下， 一些不常见的参数，<code>VASP</code>会自动采用默认值。上面给我们的启示就是：不懂就不要写，默认就可，很多默认的参数也没必要在<code>INCAR</code>里面再额外写一遍！<strong>强调一下</strong>，不知道的参数，不要瞎往<code>INCAR</code>里面放！新手的话经常会加一些乱七八糟的参数，导致计算错误。）</p>
+<p>在统计完任务的基本输入后，<code>VASP</code>会总结一下本计算的文字描述，任务类型，体系大小，K点数目，计算所需的内存等信息。然后开始进入正式的计算部分：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> Static calculation</span><br><span class="line"> charge density and potential will be updated during run</span><br><span class="line"> non-spin polarized calculation</span><br><span class="line"> Variant of blocked Davidson</span><br><span class="line"> Davidson routine will perform the subspace rotation</span><br><span class="line"> perform sub-space diagonalisation</span><br><span class="line">    after iterative eigenvector-optimisation</span><br><span class="line"> modified Broyden-mixing scheme， WC =      100.0</span><br><span class="line"> initial mixing is a Kerker type mixing with AMIX =  0.4000 and BMIX =      1.0000</span><br><span class="line"> Hartree-type preconditioning will be used</span><br><span class="line"> using additional bands           21</span><br><span class="line"> reciprocal scheme for non local part</span><br><span class="line"> use partial core corrections</span><br><span class="line"> calculate Harris-corrections to forces</span><br><span class="line">   (improved forces if not selfconsistent)</span><br><span class="line"> use gradient corrections</span><br><span class="line"> use of overlap-Matrix (Vanderbilt PP)</span><br><span class="line"> Gauss-broadening in eV      SIGMA  =   0.01</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  energy-cutoff  :      400.00</span><br><span class="line">  volume of cell :      512.00</span><br><span class="line">      direct lattice vectors                 reciprocal lattice vectors</span><br><span class="line">     8.000000000  0.000000000  0.000000000     0.125000000  0.000000000  0.000000000</span><br><span class="line">     0.000000000  8.000000000  0.000000000     0.000000000  0.125000000  0.000000000</span><br><span class="line">     0.000000000  0.000000000  8.000000000     0.000000000  0.000000000  0.125000000</span><br><span class="line"></span><br><span class="line">  length of vectors</span><br><span class="line">     8.000000000  8.000000000  8.000000000     0.125000000  0.125000000  0.125000000</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> k-points in units of 2pi/SCALE and weight: K-POINTS</span><br><span class="line">   0.00000000  0.00000000  0.00000000       1.000</span><br><span class="line"></span><br><span class="line"> k-points in reciprocal lattice and weights: K-POINTS</span><br><span class="line">   0.00000000  0.00000000  0.00000000       1.000</span><br><span class="line"></span><br><span class="line"> position of ions in fractional coordinates (direct lattice)</span><br><span class="line">   0.00000000  0.00000000  0.00000000</span><br><span class="line"></span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line"></span><br><span class="line"> total amount of memory used by VASP MPI-rank0    35846. kBytes</span><br><span class="line">=======================================================================</span><br><span class="line"></span><br><span class="line">   base      :      30000. kBytes</span><br><span class="line">   nonl-proj :        746. kBytes</span><br><span class="line">   fftplans  :       1114. kBytes</span><br><span class="line">   grid      :       3834. kBytes</span><br><span class="line">   one-center:          3. kBytes</span><br><span class="line">   wavefun   :        149. kBytes</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>对于O原子的计算来说，就是一个离子步内，电子步的迭代。这里我们只展示一个电子步的迭代信息即可，剩下的格式是一样的。大家在自己查看的时候注意能量在不同迭代步数中的变化。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">--------------------------------------- Iteration      1(   1)  ---------------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    POTLOK:  cpu time    0.0240: real time    0.0324</span><br><span class="line">    SETDIJ:  cpu time    0.0030: real time    0.0040</span><br><span class="line">     EDDAV:  cpu time    0.0320: real time    0.0397</span><br><span class="line">       DOS:  cpu time    0.0020: real time    0.0020</span><br><span class="line">    --------------------------------------------</span><br><span class="line">      LOOP:  cpu time    0.0610: real time    0.0781</span><br><span class="line"></span><br><span class="line"> eigenvalue-minimisations  :    48</span><br><span class="line"> total energy-change (2. order) : 0.3249700E+02  (-0.1026971E+03)</span><br><span class="line"> number of electron       6.0000000 magnetization</span><br><span class="line"> augmentation part        6.0000000 magnetization</span><br><span class="line"></span><br><span class="line"> Free energy of the ion-electron system (eV)</span><br><span class="line">  ---------------------------------------------------</span><br><span class="line">  alpha Z        PSCENC =         0.27139542</span><br><span class="line">  Ewald energy   TEWEN  =       -91.92708002</span><br><span class="line">  -Hartree energ DENC   =      -281.84385743</span><br><span class="line">  -exchange      EXHF   =         0.00000000</span><br><span class="line">  -V(xc)+E(xc)   XCENC  =        26.06853627</span><br><span class="line">  PAW double counting   =       346.54947689     -348.34814756</span><br><span class="line">  entropy T*S    EENTRO =        -0.00000000</span><br><span class="line">  eigenvalues    EBANDS =       -50.53652309</span><br><span class="line">  atomic energy  EATOM  =       432.26319604</span><br><span class="line">  Solvation  Ediel_sol  =         0.00000000</span><br><span class="line">  ---------------------------------------------------</span><br><span class="line">  free energy    TOTEN  =        32.49699652 eV</span><br><span class="line"></span><br><span class="line">  energy without entropy =       32.49699652  energy(sigma-&gt;0) =       32.49699652</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>每一电子步完成后，输出结果同时在<code>OSZICAR</code>中更新一行。</p>
+<p>其中各项的具体含义：</p>
+<p>alpha Z and the Ewald energy define the electrostatic  interaction of the ions in a compensating electron gas. The alpha Z component deals with the divergent parts (G=0). The following parts are the Hartree and exchange correlation energy as defined in the Kohn-Sham Hamiltonian. The entropy part stems from the smearing (using the free energy as variational parameter， electronic entropy)， EBANDS from Kohn-Sham eigenvalues， and EATOM is the reference energy for the potential (which is defined in the POTCAR file). </p>
+<p>（摘自：<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/vasp-forum/viewtopic.php?t=273%EF%BC%89">https://cms.mpi.univie.ac.at/vasp-forum/viewtopic.php?t=273）</a></p>
+<p>迭代结束，输出主要的结果：费米能级以及能带信息。</p>
+<p><code>Band 1</code> 对应的是2个 2s 电子，</p>
+<p><code>Band 2-4</code> 对应的是4个2p电子。固体物理中，费米能级对应的是最高电子占据轨道的能量，也就是<code>HOMO</code>，大家可以对比下<code>band 2-4</code>的能量和费米能级的能量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> average (electrostatic) potential at core</span><br><span class="line">  the test charge radii are     0.7215</span><br><span class="line">  (the norm of the test charge is              1.0000)</span><br><span class="line">       1 -83.5438</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> E-fermi :  -8.9011     XC(G=0):  -0.8049     alpha+bet : -0.1463</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> k-point     1 :       0.0000    0.0000    0.0000</span><br><span class="line">  band No.  band energies     occupation</span><br><span class="line">      1     -23.8440      2.00000</span><br><span class="line">      2      -8.9041      1.33333</span><br><span class="line">      3      -8.9041      1.33333</span><br><span class="line">      4      -8.9041      1.33333</span><br><span class="line">      5      -0.4682      0.00000</span><br><span class="line">      6       1.8628      0.00000</span><br><span class="line">      7       1.8628      0.00000</span><br><span class="line">      8       1.8628      0.00000</span><br><span class="line">      9       1.9954      0.00000</span><br><span class="line">     10       2.0322      0.00000</span><br><span class="line">     11       2.0322      0.00000</span><br><span class="line">     12       4.0245      0.00000</span><br><span class="line">     13       4.0245      0.00000</span><br><span class="line">     14       4.0245      0.00000</span><br><span class="line">     15       4.1983      0.00000</span><br><span class="line">     16       4.1983      0.00000</span><br><span class="line">     17       4.1983      0.00000</span><br><span class="line">     18       4.4039      0.00000</span><br><span class="line">     19       4.4039      0.00000</span><br><span class="line">     20       4.4555      0.00000</span><br><span class="line">     21       4.4555      0.00000</span><br><span class="line">     22       4.4555      0.00000</span><br><span class="line">     23       4.7550      0.00000</span><br><span class="line">     24       6.4902      0.00000</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>费米能级的获取：<code>grep E-fermi OUTCAR</code></p>
+<p>各个方向力的大小，体系的坐标（和<code>CONTCAR</code>是一样的），以及体系的能量。下面第一行的意思是达到了我们设置的收敛标准，迭代停止了。（后面我们会详细介绍收敛相关的事项，大家先有个印象。）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">------------------------ aborting loop because EDIFF is reached ----------------------------------------</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line"></span><br><span class="line">  FORCE on cell =-STRESS in cart. coord.  units (eV):</span><br><span class="line">  Direction    XX          YY          ZZ          XY          YZ          ZX</span><br><span class="line">  --------------------------------------------------------------------------------------</span><br><span class="line">  Alpha Z     0.27140     0.27140     0.27140</span><br><span class="line">  Ewald     -30.64236   -30.64236   -30.64236     0.00000     0.00000     0.00000</span><br><span class="line">  Hartree    93.90340    93.90340    93.90340    -0.00000    -0.00000    -0.00000</span><br><span class="line">  E(xc)     -27.94710   -27.94710   -27.94710     0.00000     0.00000     0.00000</span><br><span class="line">  Local    -147.84573  -147.84573  -147.84573     0.00000    -0.00000     0.00000</span><br><span class="line">  n-local   -20.54959   -20.54959   -20.54959    -0.00000    -0.00000    -0.00000</span><br><span class="line">  augment     5.55385     5.55385     5.55385    -0.00000     0.00000    -0.00000</span><br><span class="line">  Kinetic   126.51138   126.51138   126.51138     0.00000     0.00000     0.00000</span><br><span class="line">  Fock        0.00000     0.00000     0.00000     0.00000     0.00000     0.00000</span><br><span class="line">  -------------------------------------------------------------------------------------</span><br><span class="line">  Total      -0.74475    -0.74475    -0.74475     0.00000    -0.00000     0.00000</span><br><span class="line">  in kB      -2.33051    -2.33051    -2.33051     0.00000    -0.00000     0.00000</span><br><span class="line">  external pressure =       -2.33 kB  Pullay stress =        0.00 kB</span><br><span class="line"></span><br><span class="line"> VOLUME and BASIS-vectors are now :</span><br><span class="line"> -----------------------------------------------------------------------------</span><br><span class="line">  energy-cutoff  :      400.00</span><br><span class="line">  volume of cell :      512.00</span><br><span class="line">      direct lattice vectors                 reciprocal lattice vectors</span><br><span class="line">     8.000000000  0.000000000  0.000000000     0.125000000  0.000000000  0.000000000</span><br><span class="line">     0.000000000  8.000000000  0.000000000     0.000000000  0.125000000  0.000000000</span><br><span class="line">     0.000000000  0.000000000  8.000000000     0.000000000  0.000000000  0.125000000</span><br><span class="line"></span><br><span class="line">  length of vectors</span><br><span class="line">     8.000000000  8.000000000  8.000000000     0.125000000  0.125000000  0.125000000</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  FREE ENERGIE OF THE ION-ELECTRON SYSTEM (eV)</span><br><span class="line">  ---------------------------------------------------</span><br><span class="line">  free  energy   TOTEN  =        -0.02147084 eV</span><br><span class="line"></span><br><span class="line">  energy  without entropy=       -0.00604461  energy(sigma-&gt;0) =       -0.01375772</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>上面的能能量有好几个，很多人不知道该用哪一个。前面我们讲解<code>OSZICAR</code>的时候，告诉大家要使用E0后面的那个数值，那么在<code>OUTCAR</code>中与<code>E0</code>对应（相同）的是<code>energy(sigma-&gt;0) =</code> 后面的那个。所以，在今后的学习中，我们不要再提问使用OUTCAR中的哪个能量的问题了。提取能量的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grep  without OUTCAR | tail -n 1</span><br><span class="line">grep &#x27;  without&#x27; OUTCAR | tail -n 1  # 本人常用的是这个</span><br><span class="line">grep sigma OUTCAR | tail -n 1 </span><br></pre></td></tr></table></figure>
+
+<p>之所以用<code>tail -n 1</code>是为了保证我们取的是最后一步的能量。O原子肯定就一步，但以后优化结构的时候，就有很多步了。这里有一点需要注意的是：前面出现了一个<code>entropy</code>，也就是熵。但这个<code>Entropy</code>是采用<code>ISMEAR</code>方法而导致的，与物理化学中的熵这个概念不一样，如果你要计算熵，则需要通过计算频率，然后通过公式求解。看不懂不要紧：记住这里的<code>Entropy</code>不是物化书中的就OK。</p>
+<p>再往下是实际计算的内存和时间等信息，看到下面，说明计算正常结束了。 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> writing wavefunctions</span><br><span class="line">     LOOP+:  cpu time    2.0037: real time    2.1098</span><br><span class="line">    4ORBIT:  cpu time    0.0000: real time    0.0000</span><br><span class="line"></span><br><span class="line"> total amount of memory used by VASP MPI-rank0    35846. kBytes</span><br><span class="line">=======================================================================</span><br><span class="line"></span><br><span class="line">   base      :      30000. kBytes</span><br><span class="line">   nonl-proj :        746. kBytes</span><br><span class="line">   fftplans  :       1114. kBytes</span><br><span class="line">   grid      :       3834. kBytes</span><br><span class="line">   one-center:          3. kBytes</span><br><span class="line">   wavefun   :        149. kBytes</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> General timing and accounting informations for this job:</span><br><span class="line"> ========================================================</span><br><span class="line"></span><br><span class="line">                  Total CPU time used (sec):        5.492</span><br><span class="line">                            User time (sec):        1.991</span><br><span class="line">                          System time (sec):        3.501</span><br><span class="line">                         Elapsed time (sec):        5.931</span><br><span class="line"></span><br><span class="line">                   Maximum memory used (kb):      104300.</span><br><span class="line">                   Average memory used (kb):           0.</span><br><span class="line"></span><br><span class="line">                          Minor page faults:         8571</span><br><span class="line">                          Major page faults:            0</span><br><span class="line">                 Voluntary context switches:         3090</span><br></pre></td></tr></table></figure>
+
+<p>分析完前面的内容，大家会发现：具体到里面各项的含义以及各个细节上，还有很多值得讨论的地方，比如群论，薛定谔方程求解过程，<code>POTCAR</code>的相关信息等。对于新手来说，看完本节，能大体浏览下来，知道各个部分包含什么内容就很不错了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本练习中，带领大家粗略浏览了一遍<code>OUTCAR</code>各部分的信息。大家在浏览的时候时刻要思考：</p>
+<ul>
+<li>这部分包含的什么内容，具有什么物理或者化学意义？  </li>
+<li>怎么用<code>grep 关键词</code>获取有用的信息等。 </li>
+<li>怎么获取体系的能量；知道用众多能量中的哪一个。</li>
+<li>如何将<code>OUTCAR</code>的内容与计算的输入和输出文件关联起来。</li>
+<li>由于计算内容的多样性，对于<code>OUTCAR</code>的详细解释，需要很多的时间和精力去完成补充。一次性解释清楚是不可能的事情，所以在后续的计算过程中，我们还会结合具体的例子进行讲解。</li>
+</ul>
+<p> 一般来说，等你计算上手之后，<code>OUTCAR</code>里面的很多内容，可能等课题结束或者毕业了，都不会用到。更进一步说，你可能都不需要打开<code>OUTCAR</code>了。因此，完全不用担心里面的很多内容不理解。但，这不是我们偷懒的理由，如果你想把<code>VASP</code>学好，学精，这些都需要自己下功夫去琢磨，理解。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/OUTCAR/" rel="tag"># OUTCAR</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/10/27/ex06/" rel="prev" title="Ex06 VASP的输出文件（一）">
+                  <i class="fa fa-chevron-left"></i> Ex06 VASP的输出文件（一）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/10/30/ex08/" rel="next" title="Ex08 氧原子能量的正确计算">
+                  Ex08 氧原子能量的正确计算 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

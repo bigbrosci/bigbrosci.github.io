@@ -1,37 +1,504 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前面几节，我们讲解完成了表面上吸附的计算细节。学习到现在，表面吸附的具体流程，如何简化计算，如何判断优化的结构正确与否，这些都是你应该掌握，并且时刻保持思考的事情。尤其是计算存在N种可能性的时候。当你优化出来最稳定的结构，一定要认真琢磨一番，为什么这个结构比其他的构型稳定？是什么因素导致了这个结构最稳定？ 从本人多年老司机的经验，简单来说：最稳定的结构从骨子里都透着美的气质，也就是比其他结构看起来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex68 频率，零点能，吉布斯自由能的计算">
+<meta property="og:url" content="http://www.bigbrosci.com/2018/11/06/ex68/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="前面几节，我们讲解完成了表面上吸附的计算细节。学习到现在，表面吸附的具体流程，如何简化计算，如何判断优化的结构正确与否，这些都是你应该掌握，并且时刻保持思考的事情。尤其是计算存在N种可能性的时候。当你优化出来最稳定的结构，一定要认真琢磨一番，为什么这个结构比其他的构型稳定？是什么因素导致了这个结构最稳定？ 从本人多年老司机的经验，简单来说：最稳定的结构从骨子里都透着美的气质，也就是比其他结构看起来">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/06/ex68/ex68-1.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/06/ex68/ex68-2.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/06/ex68/ex68-3.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/06/ex68/ex68-4.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/06/ex68/ex68-5.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/06/ex68/ex68-6.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/06/ex68/ex68-7.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/06/ex68/ex68-8.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/06/ex68/ex68-9.png">
+<meta property="article:published_time" content="2018-11-06T20:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:55.364Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="频率">
+<meta property="article:tag" content="零点能">
+<meta property="article:tag" content="吉布斯自由能">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2018/11/06/ex68/ex68-1.png">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2018/11/06/ex68/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2018/11/06/ex68/","path":"2018/11/06/ex68/","title":"Ex68 频率，零点能，吉布斯自由能的计算"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex68 频率，零点能，吉布斯自由能的计算 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/11/06/ex68/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex68 频率，零点能，吉布斯自由能的计算
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-11-06 15:30:16" itemprop="dateCreated datePublished" datetime="2018-11-06T15:30:16-05:00">2018-11-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/11/06/ex68/" class="post-meta-item leancloud_visitors" data-flag-title="Ex68 频率，零点能，吉布斯自由能的计算" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/11/06/ex68/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/06/ex68/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前面几节，我们讲解完成了表面上吸附的计算细节。学习到现在，表面吸附的具体流程，如何简化计算，如何判断优化的结构正确与否，这些都是你应该掌握，并且时刻保持思考的事情。尤其是计算存在N种可能性的时候。当你优化出来最稳定的结构，一定要认真琢磨一番，为什么这个结构比其他的构型稳定？是什么因素导致了这个结构最稳定？ 从本人多年老司机的经验，简单来说：最稳定的结构从骨子里都透着美的气质，也就是比其他结构看起来更加顺眼。</p>
+<hr>
+<p>一旦我们获得了最稳定的结构，就可以进行后面的其他计算了，比如相关的过渡态，与其他分子的吸附能进行对比，与已有的参考文献进行对比，等等。<strong>应公众号阅读和分享冠军的要求</strong>，我们本节以及后面两节要讲解一下吉布斯自由能的计算，这也是物理化学、化学反应中最常见的一个物理量，尤其是对做电化学的筒子们来说，吉布斯自由能的计算是大家都需要牢牢掌握的。物理化学中，我们学到了：G = H – TS。 而对于G的计算，大家普遍卡在S的这个部分。<strong>再次强调</strong>，VASP不可以直接算熵，因此我们需要通过频率来自己计算，而OUTCAR里面的那个entropy不是我们物理化学的熵。本节我们简单介绍一下表面吸附物种的频率计算的一些注意事项，以及气相分子的S的获取以及G的计算</p>
+<hr>
+<p><strong>1 准备频率计算：</strong></p>
+<p>回顾前面我们讲解的乙醇分子的计算例子，然后进行如下的步骤：</p>
+<p>1） 修改INCAR的参数</p>
+<p>IBRION = 5</p>
+<p>POTIM = 0.015 或者0.01-0.02范围的值都可，闲的没事也可以测试下。</p>
+<p>NFREE = 2</p>
+<p>NSW = 1  1-10000的值均可，没事也可以测试下。</p>
+<p>2） POSCAR: 将表面的原子固定住，使用sed命名，或者自己写个小脚本来处理。</p>
+<p>3） KPOINTS，一般来说，很多人都使用和优化过程一样的KPOINTS，但从我个人的经验来看，使用更小的K点来计算则是一个更加有效，节约机时的做法。但前提是你要做足够的测试</p>
+<p>4） POTCAR保持不变 （废话，等于没说）</p>
+<hr>
+<p><strong>2 K点的测试：</strong></p>
+<p>回顾前面谁偷了我的机时系列，思考下面的计算，学会分析节约机时，省钱省力省时间。</p>
+<p>1） 我们首先使用111, 221, 331, 441进行测试，然后对比振动频率的不同。EDIFFG 对于所有的计算均为 1E-7。</p>
+<p>小技巧1）： 提取频率的波数，对应的能量，使用 grep  cm-1 OUTCAR 这个命令</p>
+<p>小技巧2）： 只提取虚频，使用 grep  f/i OUTCAR</p>
+<p>下面是我们测试的结果。H<sub>2</sub>O为三原子非线性的分子，振动的自由度为：3N - 6 = 3; 也就是有三个振动方式。减去的那6个分别为平动和转动。</p>
+<p>对比下不同K点振动波数的区别，都在下面图里了，大家自己看下。</p>
+<p><img src="/2018/11/06/ex68/ex68-1.png"></p>
+<p>上面图中，前三个为振动的一些能量信息，通过对比可以发现：</p>
+<p>i）使用 111 的KPOINTS的时候，我们得到了一个虚频，而其他的KPOINTS没有。</p>
+<p>ii）对于振动来说，所有的KPOINTS的结果基本保持不变。</p>
+<hr>
+<ol start="2">
+<li>看下不同K值对计算时间的影响。</li>
+</ol>
+<p><img src="/2018/11/06/ex68/ex68-2.png"></p>
+<p>啥也不想说了，111所花的时间也仅仅是441的一个零头。如果你是个糙哥，111的结果完全够用。如果你是个细心的软男，不敢用111，但又害怕浪费机时，221则是个很好地选择。</p>
+<hr>
+<p>**3 EDIFFG的测试 **</p>
+<p>这里之所以测试EDIFFG这个参数，是因为它决定了每一个离子步中电子步的步数。收敛条件越苛刻，需要的时间也就越多。</p>
+<p>1） 下面是EDIFFG分别为1E-5，1E-6和1E-7的结果， 所有的计算中：KPOINTS为441</p>
+<p><img src="/2018/11/06/ex68/ex68-3.png"></p>
+<p>通过上面，你可以发现：EDIFFG  从1E-5到1E-7，振动频率变化很小。这个给我们的启示是，1E-5够用了。</p>
+<p>2） 我们看一下时间：</p>
+<p><img src="/2018/11/06/ex68/ex68-4.png"></p>
+<p>K点都为441的时候，1E-5所花的时间是1E-7的一半。</p>
+<hr>
+<p><strong>4  思考与测试</strong></p>
+<p>i) 通过前面的测试结果, 是不是就可以说我们可以使用gamma点和EDIFFG = 1E-5结合进行计算呢？</p>
+<p>2）测试不同的KPOINTS + EDIFFG， 并且与 441 + EDIFFG = 1E-7的结果进行对比，筛选出最佳的节约机时，而又保证结果准确的参数。</p>
+<hr>
+<p><strong>5 总结一下表面上频率的计算：</strong></p>
+<p>1） POSCAR， 固定表面</p>
+<p>2） 修改INCAR： IBRION， POTIM， NFREE， 以及NSW（可有可无）</p>
+<p>3） Play with KPOINTS + EDIFFG，节约机时，省时间去做其他的事情，给老板省钱。</p>
+<p>4） 如果收敛困难的体系，可以保存优化步骤的WAVECAR用于下一步的频率计算。</p>
+<hr>
+<p><strong>6  零点能的计算：</strong></p>
+<p>频率计算完成之后，我们便可以计算零点能了。回顾前面乙醇的例子。这里的振动零点能等于前三个振动模式能量之和，（EDIFFG = 1E-7， KPOINTS=441）的结果为：</p>
+<p>（462.8 meV + 449.4 meV + 193.1 meV）/ 2000 = 0.55 eV。</p>
+<hr>
+<p><strong>7  熵的计算</strong></p>
+<p> 零点能算完之后，我们还可以继续算以算熵。通过振动频率计算熵的做法我们下一节具体讨论。本节先介绍一下气相分子熵的获取。对于H<sub>2</sub>O来说，有3个平动和3个转动，而VASP在这方面做的实在是太差了。如果你有兴趣，可以翻阅一下<strong>Gaussian</strong>对于熵的计算细节：（<strong>下载链接</strong>：<a target="_blank" rel="noopener" href="http://gaussian.com/thermo/">http://gaussian.com/thermo/</a> ）</p>
+<p><img src="/2018/11/06/ex68/ex68-5.png"></p>
+<p>我们可以根据这个，手动去计算平动和转动对熵的贡献，但相信大部分人不知道怎么去计算。庆幸的是，气相分子的熵值有热力学数据可以查。这里大师兄推荐2个数据库：</p>
+<p><strong>1）CRC Handbook</strong></p>
+<p>这是本人使用频率最高的数据库了。只要数据库里有的东西，写文章的时候直接引用这本书即可，非常方便。</p>
+<p>如果有师弟师妹再问你类似相关的问题，也可以用这本书直接砸砸砸！真可谓是绝世好板砖！</p>
+<p><img src="/2018/11/06/ex68/ex68-6.jpeg"></p>
+<hr>
+<p>**2) NIST 数据库 ** </p>
+<p>网址： <a target="_blank" rel="noopener" href="https://janaf.nist.gov/">https://janaf.nist.gov/</a> </p>
+<p>如果你看一些原子热力学或者其他相关的计算，你会发现很多人在这个数据库里面获取熵值。很多人不仔细阅读文献，经常给我抱怨说找不到别人怎么算的。是的，你肯定不知道别人怎么算的，因为人家直接查的表，没有算。下面是这个数据库的简单用法：</p>
+<p>1）点击红圈中的箭头： </p>
+<p><img src="/2018/11/06/ex68/ex68-7.png"></p>
+<p>2） 出来的下拉菜单中，点下H，然后找到H<sub>2</sub>O</p>
+<p><img src="/2018/11/06/ex68/ex68-8.png"></p>
+<p>3） 点view ，你会得到下面的界面：</p>
+<p>-</p>
+<p><img src="/2018/11/06/ex68/ex68-9.png"></p>
+<p>不同温度下的熵值已经在表中了。直接拿过来用，气相的T*S到手！</p>
+<hr>
+<p><strong>8 吉布斯自由能的计算(气相分子)</strong></p>
+<p>气相分子的吉布斯自由能为： G = H - TS = U + PV - TS = E_DFT + E_ZPE + nRT - TS  （n=1）</p>
+<p>i） E_DFT就是我们直接提取的OUTCAR的能量。</p>
+<p>ii） E_ZPE 我们计算的气相分子的零点能。（<strong>注意</strong>：是气相的，不是本节中我们算的表面的零点能）</p>
+<p>iii）TS 查表获取</p>
+<p>iV) 注意单位要统一。</p>
+<hr>
+<p>**9 总结: **</p>
+<p>通过本节，你应该学会</p>
+<p>1）怎么计算表面吸附物种的振动；</p>
+<p>2）计算零点能；</p>
+<p>3）知道频率计算中KPONTS和EDIFFG对计算时间和结果的影响；</p>
+<p>4）知道怎么去测试它们的影响，并筛选出合理的参数，节约机时；</p>
+<p>5）知道气相分子的熵怎么获取；</p>
+<p>6）知道气相分子吉布斯自由能的计算。</p>
+<p>7） 关于数据库：如果你是</p>
+<p>i) 单身狗：如果有心仪的女生问你怎么算气相分子的熵，请一定不要告诉她这两个数据库。自己查了以后告诉她，没准儿她下次还会来问你。大师兄也只能帮到这儿了，剩下的就看你们自己的发挥啦！</p>
+<p>ii）单身的小姐姐或者小妹妹：有了这两个数据库就完全掌握了主动权，剩下的就看个人的心情喽。</p>
+<p>iii）老板的话，请直接拿板砖砸！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%A2%91%E7%8E%87/" rel="tag"># 频率</a>
+              <a href="/tags/%E9%9B%B6%E7%82%B9%E8%83%BD/" rel="tag"># 零点能</a>
+              <a href="/tags/%E5%90%89%E5%B8%83%E6%96%AF%E8%87%AA%E7%94%B1%E8%83%BD/" rel="tag"># 吉布斯自由能</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/05/ex67/" rel="prev" title="Ex67 H$_2$O在Cu(111)表面上的吸附能">
+                  <i class="fa fa-chevron-left"></i> Ex67 H$_2$O在Cu(111)表面上的吸附能
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/07/ex69/" rel="next" title="Ex69 表面吸附物种的熵">
+                  Ex69 表面吸附物种的熵 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

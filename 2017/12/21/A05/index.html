@@ -1,37 +1,499 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前面我们介绍了KPOINTS的小脚本的写法，本节我们主要讲解一下生成POTCAR的脚本。学习完本节，脚本的神秘色彩基本烟消云散，大家都可以尝试写自己的脚本了。再强调说明三点： 1）Windows用户不要用记事本写脚本; 2）Windows用户写完脚本后，在服务器上先运行：dos2unix XXX  (XXX 是你的脚本名) 3）Windows用户，如果计算出错，第一个要排除的是自己提交任务前有没有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自动生成POTCAR的脚本">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/12/21/A05/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="前面我们介绍了KPOINTS的小脚本的写法，本节我们主要讲解一下生成POTCAR的脚本。学习完本节，脚本的神秘色彩基本烟消云散，大家都可以尝试写自己的脚本了。再强调说明三点： 1）Windows用户不要用记事本写脚本; 2）Windows用户写完脚本后，在服务器上先运行：dos2unix XXX  (XXX 是你的脚本名) 3）Windows用户，如果计算出错，第一个要排除的是自己提交任务前有没有">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-21T07:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.207Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="脚本">
+<meta property="article:tag" content="Bash">
+<meta property="article:tag" content="POTCAR">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/12/21/A05/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/12/21/A05/","path":"2017/12/21/A05/","title":"自动生成POTCAR的脚本"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>自动生成POTCAR的脚本 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/21/A05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          自动生成POTCAR的脚本
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-21 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-21T02:06:48-05:00">2017-12-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW%E9%99%84%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW附录</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/21/A05/" class="post-meta-item leancloud_visitors" data-flag-title="自动生成POTCAR的脚本" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/12/21/A05/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/21/A05/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前面我们介绍了KPOINTS的小脚本的写法，本节我们主要讲解一下生成POTCAR的脚本。学习完本节，脚本的神秘色彩基本烟消云散，大家都可以尝试写自己的脚本了。再强调说明三点：</p>
+<p>1）Windows用户不要用记事本写脚本;</p>
+<p>2）Windows用户写完脚本后，在服务器上先运行：<code>dos2unix XXX</code>  (<code>XXX</code> 是你的脚本名)</p>
+<p>3）Windows用户，如果计算出错，第一个要排除的是自己提交任务前有没有运行：<code>dos2unix</code>.</p>
+<p><strong>1</strong> <strong>手动示例：</strong></p>
+<p>比如我们POSCAR中包含有Cu C H O 四种种元素，那么我们就需要按照顺序生成一个对应的POTCAR。首先回顾一下前面介绍的POTCAR的制备方法：</p>
+<p>1.1）获取这四个元素各自的POTCAR：并命名成<code>POTCAR_Cu</code>,<code>POTCAR_C</code>,<code>POTCAR_H</code>,<code>POTCAR_O</code></p>
+<p>1.2）使用cat 命令将这四个POTCAR合并在一起：<code>cat POTCAR_Cu  POTCAR_C POTCAR_H POTCAR_O &gt; POTCAR</code></p>
+<p>前面我们学过了 <code>&gt;</code> 的使用。分步练习：第一步将这些元素的POTCAR全部打印出来：</p>
+<p><code>cat  POTCAR_Cu  POTCAR_C POTCAR_H POTCAR_O</code></p>
+<p>第二步：将打印出来的内容通过 <code>&gt;</code>  保存到最终的POTCAR里面。</p>
+<p><strong>脚本目的：</strong></p>
+<p>自动从赝势库中提取所需元素的POTCAR并将它们合并在一起。我们赝势库的目录为：<code>/THFS/home/iciq-lq/bin/pot</code> 这个pot文件夹（我自己随便命名的）就包含了VASP的所有元素的POTCAR，最好放在一个不经常变动的地方，这里我们放到了<code>~/bin</code>目录里面。</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/bin/pot$ ls</span><br><span class="line">Ac At_sv_GW  Bi_sv_GW  C_GW  C_s ....</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/bin/pot$ ls B*</span><br><span class="line">B:</span><br><span class="line">POTCAR  PSCTR</span><br><span class="line"></span><br><span class="line">Ba_sv:</span><br><span class="line">POTCAR  PSCTR</span><br><span class="line"></span><br><span class="line">Ba_sv_GW:</span><br><span class="line">POTCAR  PSCTR</span><br><span class="line"></span><br><span class="line">Be:</span><br><span class="line">POTCAR  PSCTR</span><br><span class="line"></span><br><span class="line">Be_GW:</span><br><span class="line">POTCAR  PSCTR</span><br></pre></td></tr></table></figure>
+
+<p>所以我们可以使用下面的命令生成POTCAR：(不将这几个POTCAR先保存到当前目录下，直接调用赝势库中的POTCAR)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$ cat /THFS/home/iciq-lq/bin/pot/Cu/POTCAR  /THFS/home/iciq-lq/bin/pot/C/POTCAR /THFS/home/iciq-lq/bin/pot/H/POTCAR  /THFS/home/iciq-lq/bin/pot/O/POTCAR  &gt; POTCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$ grep TIT POTCAR</span><br><span class="line">   TITEL  = PAW_PBE Cu 22Jun2005</span><br><span class="line">   TITEL  = PAW_PBE C 08Apr2002</span><br><span class="line">   TITEL  = PAW_PBE H 15Jun2001</span><br><span class="line">   TITEL  = PAW_PBE O 08Apr2002</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>但这样子也很麻烦。</p>
+<p><strong>2</strong> <strong>脚本预览：</strong></p>
+<p>首先看下自动生成POTCAR的脚本，大家尽量先不看下面的解释，自己理解一下脚本的整个框架和运行的流程;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"><span class="comment"># Create a GGA_PAW POTCAR file</span></span><br><span class="line"><span class="comment"># by BigBro  </span></span><br><span class="line"><span class="comment"># To Use it： potcar.sh Cu C H O</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Define local potpaw_GGA pseudopotentialrepository:</span></span><br><span class="line">repo=<span class="string">&quot;/THFS/home/iciq-lq/bin/pot&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Check if older version of POTCAR ispresent</span></span><br><span class="line"><span class="keyword">if</span> [ -f POTCAR ] ; <span class="keyword">then</span></span><br><span class="line"> mv -f POTCAR old-POTCAR</span><br><span class="line"> <span class="built_in">echo</span> <span class="string">&quot; ** Warning: old POTCAR file found and renamed to &#x27;old-POTCAR&#x27;.&quot;</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Main loop - concatenate the appropriatePOTCARs (or archives)</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $*</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"> <span class="keyword">if</span> <span class="built_in">test</span> -f <span class="variable">$repo</span>/<span class="variable">$i</span>/POTCAR ; <span class="keyword">then</span></span><br><span class="line">  cat <span class="variable">$repo</span>/<span class="variable">$i</span>/POTCAR&gt;&gt; POTCAR</span><br><span class="line"> <span class="keyword">else</span></span><br><span class="line"> <span class="built_in">echo</span> <span class="string">&quot; ** Warning: No suitable POTCAR for element &#x27;<span class="variable">$i</span>&#x27; found!! Skipped thiselement.&quot;</span></span><br><span class="line"> <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>讲解，这个脚本里面：</p>
+<p>1）首先我们先设定赝势库的目录;<code>repo=&quot;/THFS/home/iciq-lq/bin/pot&quot;</code> <strong>等号前后不能有空格</strong>！！！</p>
+<p>2）然后我们检查一下当前目录下是否存在POTCAR，如果存在的话，将其重命名为：<code>POTCAR-old</code>, 并输出警告信息。这里我们学到的是 <code>if</code> 句型：<code>if [ ] ; then; fi</code> 。<code>[]</code> 中间是if判断的条件，如果成立，则继续执行<code>then</code>后面的动作。</p>
+<p><strong>if [ -f POTCAR ]; then</strong>  意思是如果存在POTCAR这个文件，那么… <strong>注意：</strong></p>
+<p>a）<code>[ ]</code> 和里面的内容 <strong>–f POTCAR</strong> 要通过空格分开。所以：</p>
+<ul>
+<li><p><code>if [-f POTCAR ]</code>（<code>[</code> 和<code>-f</code>之间没有空格）</p>
+</li>
+<li><p><code>if [ -f POTCAR]</code> (<code>POTCAR</code> 和<code>]</code> 之间没有空格)</p>
+</li>
+<li><p><code>if [-f POTCAR]</code>（<code>-f</code>，<code>POTCAR</code>和 <code>[]</code> 之间都没有空格）</p>
+</li>
+</ul>
+<p>这三种写法都是错误的;<strong>if [  -f POTCAR  ]</strong> 是正确的</p>
+<p>b）<code>then</code> 后面如果另起一行的话，分号 （**;**） 可加可不加<code>;</code></p>
+<p>c）<code>then</code> 后面的内容如果和then 在同一行，必须加上分号（**;**） ，前后有无空格均可，建议加上，这样语言会很清晰;</p>
+<p>d）<code>then</code> 后面的命令执行完毕后，要加上 <code>fi</code> 结束。同理，如果<code>fi</code> 另起一行，则前面可以不加<code>;</code>如果<code>fi</code> 和 <code>then</code> 后面执行的命令在一行，前面需要加上分号（**;**）。</p>
+<p>3）生成新的POTCAR文件; 这里我们用到的是一个<code>for</code>循环：</p>
+<p>a)  <code>for i in $*</code></p>
+<p>这一行的意思是，对于命令后面的所有参数（arguments），前面一节我们已经学过了<code>$1 $2 ...</code> 的含义，这里用的<code>$*</code> 可以让我们在命令后面加任意数目的参数<code>;</code>因为另起了一行，后面加不加分号（<code>;</code>）不重要。</p>
+<p>b） <code>do</code>  执行的意思</p>
+<p>c）<code>do</code>后面有个<code>if</code> 语句，如果目录下面是POTCAR的话，那么使用<code>cat</code> 命令将所有<code>$*</code>对应的POTCAR输出到最新的POTCAR中，注意，这里我们用到的是<code>&gt;&gt;</code>; 因为<code>for</code>循环是对于后面的参数挨个执行的。</p>
+<p>d) 有两个<code>elif</code>，判断目录下的另外两个POTCAR文件的格式，如果是POTCAR.Z 文件的话，则使用<code>zcat</code> 将其输出到最新的POTCAR<code>;</code>如果是POTCAR.gz 文件的话，则使用gunzip –c 命令。</p>
+<p>e）<code>else</code> 指的是除了前面三种以外的情况，如果POTCAR，POTCAR.Z或者POTCAR.gz都不存在，那么使用<code>echo</code>命令，输出警告，提醒用户检查。</p>
+<p>f）使用<code>fi</code> 结束<code>if</code> 语句</p>
+<p>g）使用 <code>done</code> 结束 <code>for</code> 循环。</p>
+<p><strong>3</strong> <strong>运行脚本：</strong> </p>
+<p>3.1）赋予脚本可执行权限，然后将其转移到主目录下的bin文件夹中，前面几节已经讲过了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod u+x potcar.sh</span><br><span class="line">mv potcar.sh ~/bin</span><br></pre></td></tr></table></figure>
+
+<p>3.2 运行实例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$ ls</span><br><span class="line">bin  LVASPTHW  old-POTCAR  POTCAR  potcar.sh  test_jobs</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$ potcar.sh Cu C H O</span><br><span class="line"> ** Warning: old POTCAR file found and renamed to <span class="string">&#x27;old-POTCAR&#x27;</span>.</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$ ls</span><br><span class="line">bin  LVASPTHW  old-POTCAR  POTCAR  potcar.sh  test_jobs</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$ grep TIT POTCAR</span><br><span class="line">   TITEL  = PAW_PBE Cu 22Jun2005</span><br><span class="line">   TITEL  = PAW_PBE C 08Apr2002</span><br><span class="line">   TITEL  = PAW_PBE H 15Jun2001</span><br><span class="line">   TITEL  = PAW_PBE O 08Apr2002</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$ potcar.sh BigBro</span><br><span class="line"> ** Warning: old POTCAR file found and renamed to <span class="string">&#x27;old-POTCAR&#x27;</span>.</span><br><span class="line"> ** Warning: No suitable POTCAR <span class="keyword">for</span> element <span class="string">&#x27;BigBro&#x27;</span> found!! Skipped thiselement.</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>当前目录下存在POTCAR，脚本会给出警告，将其重命名为old-POTCAR，然后生成新的POTCAR文件，包含Cu C H O 这四种元素。如果有一个元素不存在（上面实例总的BigBro），potcar库里找不到，则输出错误提示。</p>
+<p><strong>注意！注意！注意！</strong></p>
+<p>上面例子中的错误，还可能是因为：</p>
+<ul>
+<li><p>1） 你的POSCAR的格式有问题（Windows用户常见的问题），如果发现这个错误，先运行下：<code>dos2unix POSCAR</code> 这个命令排除是Windows的格式问题。</p>
+</li>
+<li><p>2） 如果还不能解决，去你的POTCAR库里面找找，是不是真的没有这个元素的POTCAR文件。</p>
+</li>
+</ul>
+<p><strong>4</strong> <strong>脚本分析：</strong> </p>
+<p>4.1）生成一些特殊的POTCAR文件：</p>
+<p>我们知道，每一个元素存在好几个不同的POTCAR，如图：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/bin/pot$ ls Cu*</span><br><span class="line">Cu:</span><br><span class="line">POTCAR  PSCTR</span><br><span class="line"></span><br><span class="line">Cu_GW:</span><br><span class="line">POTCAR  PSCTR</span><br><span class="line"></span><br><span class="line">Cu_pv:</span><br><span class="line">POTCAR  PSCTR</span><br><span class="line"></span><br><span class="line">Cu_sv_GW:</span><br><span class="line">POTCAR  PSCTR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/bin/pot$ ls H</span><br><span class="line">H/        H1<span class="number">.33</span>/    H1<span class="number">.66</span>/    H<span class="number">.25</span>/     H<span class="number">.42</span>/     H<span class="number">.58</span>/     H<span class="number">.75</span>/     He/       He_GW/    Hf_pv/    Hf_sv_GW/ Hg_sv_GW/ H_h/      Ho/       H_s/</span><br><span class="line">H1<span class="number">.25</span>/    H1<span class="number">.5</span>/     H1<span class="number">.75</span>/    H<span class="number">.33</span>/     H<span class="number">.5</span>/      H<span class="number">.66</span>/     H_AE/     He_AE/    Hf/       Hf_sv/    Hg/       H_GW/     H_h_GW/   Ho_3/</span><br></pre></td></tr></table></figure>
+
+
+
+<p>当我们需要使用 Cu_pv, C，H1.25，和O对应的POTCAR时，我们需要这样执行命令： </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$ ls</span><br><span class="line">bin  LVASPTHW  test_jobs</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$ potcar.sh Cu_pv C H1.25 O</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$ ls</span><br><span class="line">bin  LVASPTHW  POTCAR  test_jobs</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$ grep TIT POTCAR</span><br><span class="line">   TITEL  = PAW_PBE Cu_pv 06Sep2000</span><br><span class="line">   TITEL  = PAW_PBE C 08Apr2002</span><br><span class="line">   TITEL  = PAW_PBE H1.25 07Sep2000</span><br><span class="line">   TITEL  = PAW_PBE O 08Apr2002</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq$</span><br></pre></td></tr></table></figure>
+
+<p>因此，如果我们使用脚本的时候直接输入元素符号，默认读取的是与该元素符号相对应文件下的POTCAR。 </p>
+<p><strong>5 读取POSCAR，自动生成POTCAR （防止出错的一个秘诀）</strong> </p>
+<p>在我们的计算中，可以通过读取POSCAR中的元素信息，生成对应的POTCAR文件，这样可以避免POSCAR中元素和POTCAR中不一致的情况。那么我们需要怎么做呢？</p>
+<p>5.1 首先我们要获取POSCAR中的元素信息： 查看一下POSCAR文件,发现元素信息在第6行，因此加了一个tail命令提取出来：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/potcar$ ls</span><br><span class="line">POSCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/potcar$ head -n 6 POSCAR</span><br><span class="line">Ru   H</span><br><span class="line">   1.00000000000000</span><br><span class="line">   8.1377999784000004   0.0000000000000000   0.0000000000000000</span><br><span class="line">   4.0688999892000002   7.0475415119999996   0.0000000000000000</span><br><span class="line">   0.0000000000000000   0.0000000000000000  21.5631999968999999</span><br><span class="line">Ru   H</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/potcar$ head -n 6 POSCAR  | tail -n 1</span><br><span class="line">Ru   H</span><br></pre></td></tr></table></figure>
+
+
+
+<p>5.2 使用我们刚刚写出来的脚本，通过使用<code>$()</code>调用前面命令的结果: （将获取的元素信息作为脚本命令的参数） </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/potcar$  potcar.sh  $(head -n 6  POSCAR | tail -n 1)</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/potcar$ grep TIT POTCAR</span><br><span class="line">   TITEL  = PAW_PBE Ru 04Feb2005</span><br><span class="line">   TITEL  = PAW_PBE H 15Jun2001</span><br></pre></td></tr></table></figure>
+
+<p><strong>大功告成！！！！</strong> </p>
+<p>5.3 不想每次输入这么长的命令：可以将其写进 ~/.bashrc文件中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias pos2pot=&quot;potcar.sh  $(head -n 6 POSCAR  | tail -n 1)&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/potcar$ ls</span><br><span class="line">POSCAR  POTCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/potcar$ vi ~/.bashrc</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/potcar$ . ~/.bashrc</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/potcar$ pos2pot</span><br><span class="line"> ** Warning: old POTCAR file found and renamed to &#x27;old-POTCAR&#x27;.</span><br></pre></td></tr></table></figure>
+
+<p>5.4 看完上面的部分，相信大家已经可以掌握很多内容了，额外福利，大师兄本人并没有使用<code>head -n 6 POSCAR  | tail -n 1</code> 来获取POSCAR中的元素信息。而是使用的sed命令： </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/potcar$ sed -n 6p POSCAR</span><br><span class="line">Ru   H</span><br></pre></td></tr></table></figure>
+
+<p><strong>6</strong> <strong>扩展练习：</strong> </p>
+<p>6.1）手动将这个脚本打一遍，理解里面的内容，如果出错了，对比我的脚本，进行改正，直至可以正确运行为止;</p>
+<p>6.2）去官网查看POTCAR相关的内容，了解每一个元素不同的POTCAR之间的区别，例如：Cu 和 Cu_pv</p>
+<p>6.3) 复习<code>alias</code>，学习本文第5节的方法，思考一下，如何通过操控脚本，避免计算中的一些失误，有了自己的想法后，通过脚本付诸实践。</p>
+<p><strong>7</strong> <strong>总结：</strong></p>
+<p>写到这里，相信大家对于Linux系统下的一些基本操作已经熟练掌握了，脚本的怎么写，怎么去运行，心里也有了一个大致的了解，至少不会感觉写脚本是多么牛逼的工作了。这些内容都是我们保证计算准确，高效的很重要的一个因素。希望大家可以熟练掌握，最关键的是，要硬着头皮去练习，脚本看起来简单，等你写的时候就会出现各种各样的错误，只有不断练习，才能写出漂亮的脚本，提高自己的工作效率。 脚本已经上传至QQ群文件，也可百度网盘下载：链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1eqeVVOo5nzGJsfPgClNJDg">https://pan.baidu.com/s/1eqeVVOo5nzGJsfPgClNJDg</a>  </p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%84%9A%E6%9C%AC/" rel="tag"># 脚本</a>
+              <a href="/tags/Bash/" rel="tag"># Bash</a>
+              <a href="/tags/POTCAR/" rel="tag"># POTCAR</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/20/A03/" rel="prev" title="Linux命令之cd使用心得">
+                  <i class="fa fa-chevron-left"></i> Linux命令之cd使用心得
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/21/A04/" rel="next" title="自动生成KPOINTS的脚本">
+                  自动生成KPOINTS的脚本 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

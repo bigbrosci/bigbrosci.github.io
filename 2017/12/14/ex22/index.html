@@ -1,37 +1,538 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前面我们终于讲完了 $\rm{O_2}$ 分子优化的例子。相信大家对 VASP 计算已经有了一个初步的理解。这一节我们继续学习气相分子的优化。为了让大家进一步了解计算的过程，我们选取一个稍微复杂的分子作为例子：乙醇（$\rm{CH_3CH_2OH}$）。  问：把大象装进冰箱需要几步？  大师兄，这个问题我早就知道答案了。为啥还问这样低智商的问题？ 大师兄要求的不是让你回答开冰箱门，装进去，关门的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex22 乙醇气相分子的优化">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/12/14/ex22/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="前面我们终于讲完了 $\rm{O_2}$ 分子优化的例子。相信大家对 VASP 计算已经有了一个初步的理解。这一节我们继续学习气相分子的优化。为了让大家进一步了解计算的过程，我们选取一个稍微复杂的分子作为例子：乙醇（$\rm{CH_3CH_2OH}$）。  问：把大象装进冰箱需要几步？  大师兄，这个问题我早就知道答案了。为啥还问这样低智商的问题？ 大师兄要求的不是让你回答开冰箱门，装进去，关门的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-1.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-2.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-3.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-4.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-5.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-7.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-8.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-9.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-10.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-11.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-12.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-13.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-14.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-15.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-16.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-17.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-18.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-19.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-20.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-21.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-22.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-23.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-24.jpeg">
+<meta property="article:published_time" content="2017-12-14T07:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.591Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="优化">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="乙醇">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2017/12/14/ex22/ex22-1.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/12/14/ex22/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/12/14/ex22/","path":"2017/12/14/ex22/","title":"Ex22 乙醇气相分子的优化"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex22 乙醇气相分子的优化 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%89%93%E5%BC%80%E5%86%B0%E7%AE%B1%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">1. 打开冰箱：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E5%A4%8D%E4%B9%A0%E4%B8%80%E4%B8%8B%E5%89%8D%E9%9D%A2%E5%AD%A6%E5%88%B0%E7%9A%84INCAR%E5%92%8CKPOINTS%E7%9A%84%E5%86%85%E5%AE%B9%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 复习一下前面学到的INCAR和KPOINTS的内容：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%8A%8A%E5%A4%A7%E8%B1%A1%E5%A1%9E%E5%88%B0%E5%86%B0%E7%AE%B1%E9%87%8C%E9%9D%A2-POSCAR%E7%9A%84%E5%87%86%E5%A4%87%EF%BC%88%E6%9C%AC%E8%8A%82%E9%87%8D%E7%82%B9%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">2 把大象塞到冰箱里面 :POSCAR的准备（本节重点）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%89%93%E5%BC%80%E7%BD%91%E7%AB%99"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 打开网站</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#POTCAR"><span class="nav-number">2.1.1.</span> <span class="nav-text">POTCAR</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1"><span class="nav-number">3.</span> <span class="nav-text">3 提交任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">4 扩展练习：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">5 总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/14/ex22/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex22 乙醇气相分子的优化
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-14 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-14T02:06:48-05:00">2017-12-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/14/ex22/" class="post-meta-item leancloud_visitors" data-flag-title="Ex22 乙醇气相分子的优化" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/12/14/ex22/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/14/ex22/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前面我们终于讲完了 $\rm{O_2}$ 分子优化的例子。相信大家对 <strong>VASP</strong> 计算已经有了一个初步的理解。这一节我们继续学习气相分子的优化。为了让大家进一步了解计算的过程，我们选取一个稍微复杂的分子作为例子：乙醇（$\rm{CH_3CH_2OH}$）。</p>
+<hr>
+<p>问：把大象装进冰箱需要几步？</p>
+<p><img src="/2017/12/14/ex22/ex22-1.jpeg"></p>
+<p>大师兄，这个问题我早就知道答案了。为啥还问这样低智商的问题？</p>
+<p>大师兄要求的不是让你回答开冰箱门，装进去，关门的这三步。而是让你尝试回想一下：当你第一次接触这个问题的时候，你的反应是什么？</p>
+<p>大师兄比较笨，我的第一反应是，这怎么可能？  冰箱那么点，大象那么大。</p>
+<p><img src="/2017/12/14/ex22/ex22-2.jpeg"></p>
+<p>当朋友告诉我答案的时候，才恍然大悟，这跟大小没关系。</p>
+<p><img src="/2017/12/14/ex22/ex22-3.jpeg"></p>
+<hr>
+<p>同样的，怎么用 <strong>VASP</strong> 计算乙醇分子？很多童鞋就如同第一次被问到大象这个问题一样不知所措。答，也是三步！</p>
+<p>1） 打开冰箱：准备 <strong>VASP</strong> 文件</p>
+<p>2） 把大象塞进去：准备乙醇分子模型</p>
+<p>3）关上冰箱：运行 <strong>VASP</strong></p>
+<h2 id="1-打开冰箱："><a href="#1-打开冰箱：" class="headerlink" title="1. 打开冰箱："></a>1. 打开冰箱：</h2><p>我们可以直接用O$_2$分子计算的输入文件，</p>
+<h3 id="1-1-复习一下前面学到的INCAR和KPOINTS的内容："><a href="#1-1-复习一下前面学到的INCAR和KPOINTS的内容：" class="headerlink" title="1.1 复习一下前面学到的INCAR和KPOINTS的内容："></a>1.1 复习一下前面学到的<code>INCAR</code>和<code>KPOINTS</code>的内容：</h3><p>1）乙醇分子是闭壳层的分子，没有磁性，不需要<code>ISPIN=2</code></p>
+<p>2）气相分子计算，我们要用<code>ISMEAR=0</code>，<code>SIGMA</code>取值要小，<code>SIGMA=0.02</code>；</p>
+<p><img src="/2017/12/14/ex22/ex22-4.jpeg"></p>
+<p> <strong>#</strong> 表示注释，这个符号后面的内容，VASP在运行的时候不考虑。</p>
+<hr>
+<p><strong>示例 1 ：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ENCUT = 400</span><br><span class="line"><span class="comment"># ENCUT = 500</span></span><br></pre></td></tr></table></figure>
+<p>和</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ENCUT = 400</span><br></pre></td></tr></table></figure>
+<p>效果是一样的。</p>
+<hr>
+<p><strong>示例 2：# 的用法：</strong></p>
+<p><img src="/2017/12/14/ex22/ex22-5.jpeg"></p>
+<p><strong>VASP</strong> 计算中一些常见的错误，以及注意事项，你可以通过 # 写在<code>INCAR</code>里面，方便计算的时候进行设置。可以 # 开头，单起一行，也可以在参数的最后面加上注释。新手们刚刚开始，可以结合 <strong>VASP</strong> 官网参考书，把用到的INCAR参数注释下来，时间长了慢慢就掌握了。</p>
+<p>3）气相分子计算，<code>K</code>点使用<code>Gamma</code>点就够了；</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">K-POINTS</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="built_in">Gamma</span></span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">1</span> </span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">0</span> </span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h2 id="2-把大象塞到冰箱里面-POSCAR的准备（本节重点）"><a href="#2-把大象塞到冰箱里面-POSCAR的准备（本节重点）" class="headerlink" title="2 把大象塞到冰箱里面 :POSCAR的准备（本节重点）"></a>2 把大象塞到冰箱里面 :POSCAR的准备（本节重点）</h2><p>前面我们学习到，一个好的初始结构会加快计算，获取准确的计算结果。因此我们需要去找一个合理的模型。对于气相分子的结构，一是手动搭建，大师兄推荐用 <code>GaussView</code>，另一个办法就是找数据库，大师兄推荐英国皇家学会的 <strong>ChemScpider</strong>。网址：<a target="_blank" rel="noopener" href="http://www.chemspider.com/">http://www.chemspider.com</a> </p>
+<p><img src="/2017/12/14/ex22/ex22-7.jpeg"></p>
+<p>下面我们把手动搭建乙醇分子的模型具体解释一下：</p>
+<h3 id="2-1-打开网站"><a href="#2-1-打开网站" class="headerlink" title="2.1 打开网站"></a>2.1 打开网站</h3><p><img src="/2017/12/14/ex22/ex22-8.jpeg"></p>
+<p>搜索框中输入： 分子名称<code>Ethanol</code> 或者 分子式<code>C2H6O</code>…. 点击搜索，等待结果：</p>
+<p><img src="/2017/12/14/ex22/ex22-9.jpeg"></p>
+<p>上面箭头指的两个地方随便点，效果是一样的，如下：</p>
+<p><img src="/2017/12/14/ex22/ex22-10.jpeg"></p>
+<p>分子默认显示 <code>2D</code> 的结构，点击箭头指的 <code>3D</code>，切换。第二个箭头所指的有对应结构的维基百科链接，翻墙的筒子们可以查阅下相关结构的知识。选择<code>3D</code>后，如下：</p>
+<p><img src="/2017/12/14/ex22/ex22-11.jpeg"></p>
+<p>点击箭头指的地方保存，浏览器会下载对应的 .mol 文件，文件名为该结构在数据库中的编号。</p>
+<hr>
+<p><code>.mol</code>文件也是纯文本，使用<code>Notepad++</code> 打开如下：看到这么多内容，不要害怕！</p>
+<p><img src="/2017/12/14/ex22/ex22-12.jpeg"></p>
+<p><strong>注： 不仅仅是 <code>.mol</code> 文件，很多结构文件都是文本格式，直接打开就是。</strong></p>
+<p>从里面找到乙醇结构的 $x, y, z$ 坐标信息</p>
+<p><img src="/2017/12/14/ex22/ex22-13.jpeg"></p>
+<p>删除上图中除红色框之外的所有行，1-4行，以及 14 至最后一行，只保留 $x, y, z$ 坐标信息的那几行。</p>
+<p><img src="/2017/12/14/ex22/ex22-14.jpeg"></p>
+<p>手动写<code>POSCAR</code>，首先你要熟记的格式，知道<code>POSCAR</code>从头开始，往下每一行代表的内容。</p>
+<p>我们的模型是把乙醇分子放到一个 $ 20 \times 20 \times 20~A^3 $ 的格子里面。输入完之后，坐标后面的元素符号以及那些 $0$ $0$ $0$ 可以删掉，也可以不管。</p>
+<p><img src="/2017/12/14/ex22/ex22-15.jpeg"></p>
+<p><strong>关键点1： .mol文件中，坐标那几行中的第 4 列写到<code>POSCAR</code>中的第 6, 7行！</strong></p>
+<p><strong>关键点2： 注意坐标为 <code>Cartesian</code> 或者是 <code>Direct</code>. <code>Direct</code> 是分数坐标，其 $x, y, z$ 值都小于 1.</strong></p>
+<hr>
+<p>如果你想删掉图中坐标第3列后面的内容：大师兄推荐notepad++里面的列块模式：如下：</p>
+<p><img src="/2017/12/14/ex22/ex22-16.jpeg"></p>
+<p>点击之后，可能会弹出对话框，告诉你如何使用，列块模式</p>
+<p><img src="/2017/12/14/ex22/ex22-17.jpeg"></p>
+<hr>
+<p><strong>方法1：</strong></p>
+<p> 摁住 <code>Alt</code> 键，然后用鼠标选择文本，不同电脑可能不一样，大师兄这边同时摁住 <code>Ctrl</code> 和 <code>Alt</code> 两个键，然后用鼠标选择的。</p>
+<hr>
+<p><strong>方法2：</strong></p>
+<p>同时摁住 <code>Alt</code>和<code>Shift</code>键，通过键盘上前后左右的箭头选择文本</p>
+<p>大家可以尝试下，选中效果如图：</p>
+<p><img src="/2017/12/14/ex22/ex22-18.jpeg"></p>
+<p>然后点键盘上的<code>Delete</code>键删除.</p>
+<p><img src="/2017/12/14/ex22/ex22-19.jpeg"></p>
+<p>然后另存为<code>POSCAR</code>即可。</p>
+<hr>
+<p>我们可以使用 <strong>p4vasp</strong> 来查看一下模型的结构：如下图</p>
+<p><img src="/2017/12/14/ex22/ex22-20.jpeg"></p>
+<p>我靠，师兄，结构怎么跑到格子外面啦？前面 $\rm{O_2}$ 分子的学习中，你已经知道了这是因为周期性导致的显示问题。对计算不会产生影响。这个结构可以拿来直接用。</p>
+<p>如果感觉不爽，想把结构放到中间，可以这么做：</p>
+<p>数学上，把 $x, y, z$ 坐标<strong>统统加上 $10$ 即可</strong>；</p>
+<p>软件使用上，我们讲一下 <strong>p4vasp</strong> 的操作方法：</p>
+<p><img src="/2017/12/14/ex22/ex22-21.jpeg"></p>
+<p>选择 <code>edit</code> –&gt; <code>Move atoms</code></p>
+<p><img src="/2017/12/14/ex22/ex22-22.jpeg"></p>
+<p><code>Move group</code> 是你要移动的原子，这里大师兄直接输入了 C H O 三个元素符号（中间有空格）表示选择所有元素的原子。然后在 <code>Vector</code> 中选择 $x, y, z$ 三个方向上移动的大小。你也可以写 $1$ $1$ $1$，然后点击 <code>Move</code> 按钮 $10$ 次。</p>
+<p>如果你想通过选择原子来实现移动的话(不直接在 <code>Move group</code> 里面输入 C H O)，需要按照大师兄说的步骤走：</p>
+<p><img src="/2017/12/14/ex22/ex22-23.jpeg"></p>
+<ol>
+<li><p>空格键结合鼠标选中所有的原子；鼠标指到原子上就点一下空格键</p>
+</li>
+<li><p>选中原子后，主界面会显示一些数字，这些数字和 <code>POSCAR</code> 中元素的顺序是一致的；</p>
+</li>
+<li><p>所有原子选中后，左下角的框中点击 <code>Get group</code>，会显示选择的那些原子；</p>
+</li>
+<li><p>在 <code>Vector</code> 中选择 $x, y, z$ 三个方向上移动的大小，然后点击 <code>Move</code> 按钮。</p>
+</li>
+</ol>
+<p>上面一堆废话就此打住，结果就是这样子的：</p>
+<p><img src="/2017/12/14/ex22/ex22-24.jpeg"></p>
+<p>然后点击 file -&gt; Save system as -&gt; 选择目录 -&gt; 保存成<code>POSCAR</code></p>
+<hr>
+<h4 id="POTCAR"><a href="#POTCAR" class="headerlink" title="POTCAR"></a>POTCAR</h4><p><strong>POSCAR</strong> 讲完了，我们就要按照里面的元素顺序制备<code>POTCAR</code>了。</p>
+<p>首先: 我们要准备 O C H 三个元素的<code>POTCAR</code>，去<code>POTCAR</code>的数据库中去找：</p>
+<p>然后复制到当前目录下，三个元素的<code>POTCAR</code>分别命名为：<code>POTCAR-O</code>, <code>POTCAR-C</code>和 <code>POTCAR-H</code>， 把三个元素的<code>POTCAR</code>合并在一起，命令就是</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat POTCAR-O POTCAR-C POTCAR-H &gt;&gt; POTCAR</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-提交任务"><a href="#3-提交任务" class="headerlink" title="3 提交任务"></a>3 提交任务</h2><p>提交任务之前，需要再次检查自己的输入文件一遍，没有问题，提交直至结束。</p>
+<h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h2><p>4.1 从头到尾，认真重复本节中大师兄的操作；</p>
+<p>4.2 记住本节讲解的内容，自己重复一遍操作，直至自己通过文本编辑器会搭建结构模型；</p>
+<p>4.3 运行乙醇计算的例子；</p>
+<p>4.4 尝试使用 <strong>GaussView</strong>，**Materials Studio (MS)**，以及其他可视化界面搭建模型；</p>
+<p>4.5 学会使用 <strong>VESTA</strong> 导出<code>POTCAR</code>格式的结构数据。</p>
+<h2 id="5-总结："><a href="#5-总结：" class="headerlink" title="5 总结："></a>5 总结：</h2><p>本节，我们主要讨论了一下分子模型的数据库搜索和搭建工作。希望大家能够完全掌握本节的所有内容和细节。在计算中，你会遇到各种各样的结构文件，其实都是$xyz$坐标的衍生物而已。不要害怕，直接打开它们，学会提取里面有价值的信息。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BC%98%E5%8C%96/" rel="tag"># 优化</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+              <a href="/tags/%E4%B9%99%E9%86%87/" rel="tag"># 乙醇</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/11/ex19/" rel="prev" title="Ex19 谁偷走的我的机时？（四）">
+                  <i class="fa fa-chevron-left"></i> Ex19 谁偷走的我的机时？（四）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/15/ex24/" rel="next" title="Ex24 乙醇分子的振动频率计算(二)">
+                  Ex24 乙醇分子的振动频率计算(二) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

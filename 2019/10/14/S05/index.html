@@ -1,37 +1,426 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="在上文中，我们介绍了用于解释Hall Petch关系的位错阻塞模型和晶界位错源模型。两种理论都是较为早期出现的模型，原理上相对简单，因此文章中仔细介绍了相对应的推导过程。本文将继续介绍剩下的相关模型，由于推理过程相对复杂，读者如果对具体推导过程有兴趣可以阅读对应参考文献。 上文介绍的两种模型都未在公式中直接体现材料变形中塑性应变对Hall Petch系数的影响。因此，位错阻塞模型和晶界位错源模型仅">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浅谈Hall Petch关系(二)">
+<meta property="og:url" content="http://www.bigbrosci.com/2019/10/14/S05/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="在上文中，我们介绍了用于解释Hall Petch关系的位错阻塞模型和晶界位错源模型。两种理论都是较为早期出现的模型，原理上相对简单，因此文章中仔细介绍了相对应的推导过程。本文将继续介绍剩下的相关模型，由于推理过程相对复杂，读者如果对具体推导过程有兴趣可以阅读对应参考文献。 上文介绍的两种模型都未在公式中直接体现材料变形中塑性应变对Hall Petch系数的影响。因此，位错阻塞模型和晶界位错源模型仅">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2019/10/14/S05/share05/share051.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2019/10/14/S05/share05/share052.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2019/10/14/S05/share05/share053.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2019/10/14/S05/share05/share054.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2019/10/14/S05/share05/share055.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2019/10/14/S05/share05/share056.png">
+<meta property="article:published_time" content="2019-10-14T22:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:29:41.721Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="Hall Petch">
+<meta property="article:tag" content="ponychen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2019/10/14/S05/share05/share051.png">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2019/10/14/S05/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2019/10/14/S05/","path":"2019/10/14/S05/","title":"浅谈Hall Petch关系(二)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>浅谈Hall Petch关系(二) | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2019/10/14/S05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          浅谈Hall Petch关系(二)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-10-14 18:30:16" itemprop="dateCreated datePublished" datetime="2019-10-14T18:30:16-04:00">2019-10-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:29:41" itemprop="dateModified" datetime="2021-12-27T22:29:41-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Share/" itemprop="url" rel="index"><span itemprop="name">Share</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2019/10/14/S05/" class="post-meta-item leancloud_visitors" data-flag-title="浅谈Hall Petch关系(二)" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/10/14/S05/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/14/S05/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>在上文中，我们介绍了用于解释Hall Petch关系的位错阻塞模型和晶界位错源模型。两种理论都是较为早期出现的模型，原理上相对简单，因此文章中仔细介绍了相对应的推导过程。本文将继续介绍剩下的相关模型，由于推理过程相对复杂，读者如果对具体推导过程有兴趣可以阅读对应参考文献。</p>
+<p>上文介绍的两种模型都未在公式中直接体现材料变形中塑性应变对Hall Petch系数的影响。因此，位错阻塞模型和晶界位错源模型仅仅只能描述多晶材料在屈服极限之下的情况。我们知道，当多晶材料所受应变超过其屈服极限，材料由于位错的交截和阻碍出现了加工硬化。加工硬化势必会影响Hall Petch系数的数值。在Meakin和Petch（文献1）提出的work haraening（加工硬化）模型中，Hall Petch系数被看成是一个与应变有关的因变量。</p>
+<p><img src="/2019/10/14/S05/share05/share051.png"></p>
+<p>由于Hall Petch系数中包含了应变，该模型同时成功预测了材料中的加工硬化行为。如果我们将晶粒尺寸d固定，可以发现该模型描述了一种应力与应变成抛物线形状的加工硬化关系，这与很多实验是相符合的。</p>
+<p>目前为止介绍的所有模型都默认认为位错来自于位错源的开动。然而实际上，当晶体被弯曲，或者在晶粒之间的交叠以及孔洞处，由于非均匀变形，晶体为了降低变形带来的巨大应力，会自发形成一些几何必须位错来释放应力。下图展示:</p>
+<p><img src="/2019/10/14/S05/share05/share052.png"></p>
+<p>当晶体被弯曲时，晶体中自发在易滑移面上出现的几何必须位错林。在Ashby（文献2）等提出的几何必须位错模型中，作者认为晶界作为晶体中的应力协调区，其上的位错类型主要为几何必须位错主导，并且晶体中绝大部分的几何必须位错都位于晶界上，因此材料的强度由晶界上的几何必须位错密度决定。而平衡位错密度又由晶粒尺寸决定，通过结合加工硬化模型，作者获得了如下的Hall Petch关系式。</p>
+<p><img src="/2019/10/14/S05/share05/share053.png"></p>
+<p>位错阻塞模型将材料的强度归功于晶粒内部位错源开动的位错受阻，而目前介绍的其他模型则都将材料的强度归功于晶界处的位错密度受阻。在这两种极端情况的基础上，Meyersm（文献3）等人认为（复合模型），一个多晶材料应该被分为两部分：连续的拥有较高流变强度的晶界部分以及被晶界包围的离散的拥有较低流变强度的块体部分（见下图4，t为晶界厚度）。</p>
+<p><img src="/2019/10/14/S05/share05/share054.png"></p>
+<p>当材料承受外力时，晶界部分首先发生变形，形成大量几何必须位错；随着进一步变形，晶界首先发生局部屈服形成加工硬化层，并形核大量位错向晶粒内运动；最后，随着晶粒内位错密度的上升，晶粒部分发生屈服。至此，材料整体完成了整个塑性变形过程。基于这一过程假设，作者得出了如下关系。</p>
+<p><img src="/2019/10/14/S05/share05/share055.png"></p>
+<p>可以发现，该关系式并非符合正常的Hall Petch关系，式子中同时出现了一次方和二次方项。作者进一步假设随着晶粒尺寸的增大，其容纳几何必须位错的数量也在上升，因此其厚度t也在上升。基于这一假设，作者得到了下图的强度与晶粒尺寸的关系。</p>
+<p><img src="/2019/10/14/S05/share05/share056.png"></p>
+<p>可以发现，复合模型在晶粒尺寸较大的时候可以较好的匹配Hall Petch关系，而当晶粒尺寸小到纳米级的时候，复合模型成功预测了超细晶材料的强度反常降低现象的存在。这是之前所有的理论模型都无法给出的结果。</p>
+<p>实际上，在复合模型之后材料学家依旧提出了大量的理论模型，其目的也不仅仅是在于解释Hall Petch关系。由于篇幅所限，本文仅仅介绍了一些具有代表性的模型。实际上，从实验的角度来说，很多材料也并非严格遵循Hall Petch关系中-1/2指数，该指数存在一个很大的范围。对于我们来说，-1/2只是代表材料强度与晶粒尺寸联系的一个优美符号。</p>
+<ol>
+<li>Meakin, J., and N. J. Petch. “Report ASD-TDR-63-324.” <em>Symposium on the Role of Substructure in the Mechanical Behavior of Metals,(ASD-7DR-63-324, Orlando, 1963) pp</em>. 1963.</li>
+<li>Ashby, M. F. “The deformation of plastically non-homogeneous materials.” <em>The Philosophical Magazine: A Journal of Theoretical Experimental and Applied Physics</em>21.170 (1970): 399-424.</li>
+<li>Meyersm, Marc A., and E. Ashworth. “A model for the effect of grain size on the yield stress of metals.” <em>Philosophical Magazine A</em> 46.5 (1982): 737-759.</li>
+<li>Kato, Masaharu. “Hall–Petch relationship and dislocation model for deformation of ultrafine-grained and nanocrystalline metals.” <em>Materials Transactions</em> 55.1 (2014): 19-24.</li>
+</ol>
+<p>本文经ponychen授权发布，版权属于ponychen。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Hall-Petch/" rel="tag"># Hall Petch</a>
+              <a href="/tags/ponychen/" rel="tag"># ponychen</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/10/13/S04/" rel="prev" title="浅谈Hall Petch关系(一)">
+                  <i class="fa fa-chevron-left"></i> 浅谈Hall Petch关系(一)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/10/15/S06/" rel="next" title="高阶弹性常数计算的一点建议">
+                  高阶弹性常数计算的一点建议 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

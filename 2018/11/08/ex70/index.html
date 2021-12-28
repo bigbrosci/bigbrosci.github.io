@@ -1,37 +1,496 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="从本节起，我们开始学习下过渡态相关的计算。在进行下面的讲解之前，大家务必要记住这两点：  1） 过渡态只是一个结构而已，过渡态的计算并不是你想象的那么神秘；也就是计算很容易。  2）物理化学，结构化学书中的过渡态相关的基本知识要掌握，也就是你的理论基础要扎实。感觉基础不好的，认真看书。   过渡态计算的例子我们遵循一个从简单到复杂的顺序，慢慢介绍一下表面化学中过渡态的一般计算思路和方法。简单的例子">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex70 过渡态的计算（一）">
+<meta property="og:url" content="http://www.bigbrosci.com/2018/11/08/ex70/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="从本节起，我们开始学习下过渡态相关的计算。在进行下面的讲解之前，大家务必要记住这两点：  1） 过渡态只是一个结构而已，过渡态的计算并不是你想象的那么神秘；也就是计算很容易。  2）物理化学，结构化学书中的过渡态相关的基本知识要掌握，也就是你的理论基础要扎实。感觉基础不好的，认真看书。   过渡态计算的例子我们遵循一个从简单到复杂的顺序，慢慢介绍一下表面化学中过渡态的一般计算思路和方法。简单的例子">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-1.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-2.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-3.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-4.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-5.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-6.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-7.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-8.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-9.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-10.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-11.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-12.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-13.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-14.png">
+<meta property="article:published_time" content="2018-11-08T20:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:55.412Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="NEB">
+<meta property="article:tag" content="过渡态">
+<meta property="article:tag" content="NH3">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2018/11/08/ex70/ex70-1.png">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2018/11/08/ex70/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2018/11/08/ex70/","path":"2018/11/08/ex70/","title":"Ex70 过渡态的计算（一）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex70 过渡态的计算（一） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%B8%A1%E6%80%81%E8%AE%A1%E7%AE%97%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">1.</span> <span class="nav-text">过渡态计算的例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E6%B8%A1%E6%80%81%E8%AE%A1%E7%AE%97%EF%BC%9A%E5%88%9D%E6%9C%AB%E6%80%81%E7%BB%93%E6%9E%84%E7%9A%84%E4%BC%98%E5%8C%96%E3%80%82"><span class="nav-number">2.</span> <span class="nav-text">过渡态计算：初末态结构的优化。</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E6%80%81%E7%BB%93%E6%9E%84%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-number">2.1.</span> <span class="nav-text">初态结构的优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AB%E6%80%81%E7%BB%93%E6%9E%84%E7%9A%84%E6%90%AD%E5%BB%BA%E4%BC%98%E5%8C%96"><span class="nav-number">2.2.</span> <span class="nav-text">末态结构的搭建优化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E6%B8%A1%E6%80%81%E7%BB%93%E6%9E%84%E7%9A%84%E4%BC%98%E5%8C%96"><span class="nav-number">2.3.</span> <span class="nav-text">过渡态结构的优化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%91%E7%8E%87%E8%AE%A1%E7%AE%97%EF%BC%9A%EF%BC%88%E8%BF%87%E6%B8%A1%E6%80%81%E7%9A%84%E9%AA%8C%E8%AF%81%E5%8A%9E%E6%B3%95%E4%B9%8B%E4%B8%80%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">频率计算：（过渡态的验证办法之一）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/11/08/ex70/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex70 过渡态的计算（一）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-11-08 15:30:16" itemprop="dateCreated datePublished" datetime="2018-11-08T15:30:16-05:00">2018-11-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/11/08/ex70/" class="post-meta-item leancloud_visitors" data-flag-title="Ex70 过渡态的计算（一）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/11/08/ex70/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/08/ex70/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>从本节起，我们开始学习下过渡态相关的计算。在进行下面的讲解之前，大家务必要记住这两点：</p>
+<ul>
+<li><p>1） 过渡态只是一个结构而已，过渡态的计算并不是你想象的那么神秘；也就是计算很容易。</p>
+</li>
+<li><p>2）物理化学，结构化学书中的过渡态相关的基本知识要掌握，也就是你的理论基础要扎实。感觉基础不好的，认真看书。</p>
+</li>
+</ul>
+<h3 id="过渡态计算的例子"><a href="#过渡态计算的例子" class="headerlink" title="过渡态计算的例子"></a>过渡态计算的例子</h3><p>我们遵循一个从简单到复杂的顺序，慢慢介绍一下表面化学中过渡态的一般计算思路和方法。简单的例子，本节我们选取的是VASP官网的经典计算：NH<sub>3</sub>的翻转，如下图：</p>
+<p><img src="/2018/11/08/ex70/ex70-1.png"></p>
+<p>如果你不太懂这个过程，可以把NH<sub>3</sub>看做一把雨伞。翻转的过程，就相当于大风把伞吹翻。</p>
+<p><img src="/2018/11/08/ex70/ex70-2.jpeg"></p>
+<p>对于这个计算的一些参考资料，大家可以点下面这两个链接：</p>
+<p>1） <a target="_blank" rel="noopener" href="http://www.vasp.at/vasp-workshop/tutorials/tutorial_ammonia_flipping.pdf">http://www.vasp.at/vasp-workshop/tutorials/tutorial_ammonia_flipping.pdf</a></p>
+<p>Vasp官网的一个PPT介绍，这个PPT有些年头了，不过对于我们学习还是很有帮助的。建议看完PPT里面的内容（最好是自己练习一遍后），再继续下面的学习。</p>
+<p>2） <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/Category:Examples">https://cms.mpi.univie.ac.at/wiki/index.php/Category:Examples</a></p>
+<p>VASP wiki网页中关于过渡态计算的例子。</p>
+<hr>
+<h3 id="过渡态计算：初末态结构的优化。"><a href="#过渡态计算：初末态结构的优化。" class="headerlink" title="过渡态计算：初末态结构的优化。"></a>过渡态计算：初末态结构的优化。</h3><p>过渡态计算的第一步：我们要知道自己想算什么，需要准备什么？</p>
+<p>算过渡态，肯定指的是某一个反应或者过程的过渡态。过渡态的两边也分别对应着反应物和反应产物。所以，算一个反应的过渡态，不管计算过程如何，我们最终都会有三个结构：初始和末态结构，以及过渡态。初末态的结构和前我们已经讲过的优化过程是一样的，我们先回顾一番。</p>
+<hr>
+<h4 id="初态结构的优化"><a href="#初态结构的优化" class="headerlink" title="初态结构的优化"></a>初态结构的优化</h4><p><strong>1）搭建结构（POSCAR）</strong></p>
+<p><img src="/2018/11/08/ex70/ex70-3.jpeg"></p>
+<p>该图中的三个结构分别对应的是NH3翻转的初始，过渡态以及末态结构。这里反应物和产物都是NH3。首先，我们肯定要有一个NH3的结构。这里大师兄就直接复制PPT里面的坐标快速制备一个POSCAR。</p>
+<p><img src="/2018/11/08/ex70/ex70-4.png"></p>
+<p>注意： PPT里面没有写元素符号，大家记得自己加上。下图是本人复制后制作的POSCAR。 （添加了元素行，Cartesian坐标。）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ammonia flipping</span><br><span class="line">1.0</span><br><span class="line"> +9.0000000000  +0.0000000000  +0.0000000000</span><br><span class="line"> +0.0000000000 +10.0000000000  +0.0000000000</span><br><span class="line"> +0.0000000000  +0.0000000000 +11.0000000000</span><br><span class="line">H N</span><br><span class="line"> 3 1</span><br><span class="line">Selective</span><br><span class="line">Cartesian</span><br><span class="line"> +3.8185740000  +3.9721220000  +4.3936400000  T T T</span><br><span class="line"> +3.0000000000  +2.5542720000  +4.3936400000  T T T</span><br><span class="line"> +2.1814260000  +3.9721220000  +4.3936400000  T T T</span><br><span class="line"> +3.0000000000  +3.5000000000  +4.0000000000  F F F</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2018/11/08/ex70/ex70-5.png"></p>
+<hr>
+<p><strong>2） 准备输入文件（INCAR）</strong></p>
+<p>优化NH$_3$的初始结构：(回顾气相分子计算需要注意的地方)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">System = NH3</span><br><span class="line">ISMEAR = 0</span><br><span class="line">SIMGA = 0.01</span><br><span class="line"></span><br><span class="line">ALGO = FAST</span><br><span class="line">ENCUT = 450</span><br><span class="line">EDIFF = 1E-5</span><br><span class="line"></span><br><span class="line">NWRITE = 0</span><br><span class="line">LWAVE = .FALSE.</span><br><span class="line">LCHARG = .FALSE.</span><br><span class="line"></span><br><span class="line">IBRION = 2</span><br><span class="line">POTIM = 0.1</span><br><span class="line">EDIFFG = -0.02</span><br><span class="line">NSW = 100</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>3） 准备输入文件（KPOINTS）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">K-POINTS</span><br><span class="line"> 0</span><br><span class="line">Gamma</span><br><span class="line"> 1 1 1</span><br><span class="line"> 0 0 0</span><br></pre></td></tr></table></figure>
+
+<p><strong>4） 准备POTCAR 并提交任务</strong></p>
+<p><strong>5) 优化完的结构：</strong></p>
+<p><img src="/2018/11/08/ex70/ex70-6.png"></p>
+<p>只需要几步优化就完成了。这是因为我们复制的别人的（VASP官网例子）结构，因为这些结构已经被优化过了。即我们优化过程有一个很好的猜测结构。</p>
+<p>这给我们的启发就是：在你开始计算的时候，一定要善于利用前人的或者自己前面的计算结构。这会大大节省我们的计算工作量。</p>
+<hr>
+<h4 id="末态结构的搭建优化"><a href="#末态结构的搭建优化" class="headerlink" title="末态结构的搭建优化"></a>末态结构的搭建优化</h4><p>在上面结构的基础上，我们很容易搭建初末态的结构。仔细观察这个图，我们可以保持H原子的坐标不变，只需要将N原子的坐标修改一下。初始结构里面，三个H原子在xy平面上，</p>
+<p>N与H原子z方向的距离为0.3929 Å。如果N原子翻转过去，那么它的坐标将会是：</p>
+<p>4.3929 + 0.3929  = 4.7858 Å。</p>
+<p><img src="/2018/11/08/ex70/ex70-7.jpeg"></p>
+<p><strong>自行将这个图顺时针旋转90°</strong></p>
+<p><img src="/2018/11/08/ex70/ex70-8.png"></p>
+<p>然后跟前面同样的方法，优化一下就可以了。</p>
+<h4 id="过渡态结构的优化"><a href="#过渡态结构的优化" class="headerlink" title="过渡态结构的优化"></a>过渡态结构的优化</h4><p><img src="/2018/11/08/ex70/ex70-9.jpeg"></p>
+<p>上图中，我们可以发现，过渡态是一个平面的结构，我们可以按照前面末态结构搭建的思想弄一个初始的过渡态结构出来。即直接将N原子的z方向坐标修改成H原子的。如下图：</p>
+<p><img src="/2018/11/08/ex70/ex70-10.png"></p>
+<p>对比下前面初末态结构的坐标，你会发现Z 方向上被固定住了（最后一列SZ没有选择）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">+3.8177218605  +3.9717738141  +4.3929644172  T T F</span><br><span class="line">+3.0000000000  +2.5559112549  +4.3926756556  T T F</span><br><span class="line">+2.1822781395  +3.9717738141  +4.3929644172  T T F</span><br><span class="line">+3.0000000000  +3.5000000000  +4.3929644172  F F F</span><br></pre></td></tr></table></figure>
+
+<p>这样做是强制优化过程中，所有的原子都在xy平面上。我们只优化H原面的坐标。原因如下：</p>
+<p><img src="/2018/11/08/ex70/ex70-11.png"></p>
+<p>这个三角形对应的就是我们从初始结构（IS）搭建过渡态结构（TS）的过程。在初始结构里面，N在三角形最下面，H在右边的点上，当我们人为把N原子放到H平面上的时候，N从下面的点移动到上面，导致N—H 键变短（从1.022 减小到0.944 Å）。但这个变短的过程是我们人为搭建结构所导致的。所以我们要把H原子在xy表面上放开，继续优化一下。参数（ICNAR，POTCAR， KPOINTS）保持不变，提交优化任务，最终我们的过渡态结构如下：</p>
+<p><img src="/2018/11/08/ex70/ex70-12.png"></p>
+<p>N, H 在同一平面内，N—H 键长为：1.004 Å</p>
+<hr>
+<h3 id="频率计算：（过渡态的验证办法之一）"><a href="#频率计算：（过渡态的验证办法之一）" class="headerlink" title="频率计算：（过渡态的验证办法之一）"></a>频率计算：（过渡态的验证办法之一）</h3><p>验证一个算完的过渡态是不是真正过渡态的时候，我们需要用到频率计算。因为过渡态只有一个虚频。（自己看书去学习为什么只有一个虚频？）复习下前面我们讲过的频率计算的细节：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">IBRION = 5</span><br><span class="line">POTIM = 0.015</span><br><span class="line">EDIFF = 1E-6</span><br><span class="line">NFREE = 2</span><br><span class="line">NSW = 1</span><br></pre></td></tr></table></figure>
+
+
+
+<p>5）此外，我们需要另外加一个无关痛痒的参数：NWRITE = 2 （或者不设置，默认值是2）</p>
+<p>大师兄本人喜欢用NWRITE = 0 。但当参数为0，使用Jmol可视化频率计算结果的时候：你会发现所有的原子都是同一个颜色，如下图：</p>
+<p><img src="/2018/11/08/ex70/ex70-13.png"></p>
+<p>当使用NWRITE的默认值2的时候，则是正常的：这是因为NWRITE = 0 写入的OUTCAR的数据太少，Jmol无法获取元素相关的参数用来可视化。此处，特别感谢群里的：<strong>连赞小朋友</strong>帮忙分析.</p>
+<p><img src="/2018/11/08/ex70/ex70-14.png"></p>
+<p>提取频率相关的参数，可以使用下面的命令：</p>
+<p>grep cm-1 OUTCAR 提取所有的频率（检查频率结果推荐使用）</p>
+<p>grep ‘i=’  OUTCAR  提取所有的虚频 （基本没啥用）</p>
+<p>grep ‘f  =’ OUTCAR 提取所有的非虚频 （计算零点能推荐使用）</p>
+<p>Jmol中所有的虚频都在最下面，大家可以根据前面的grep命令的结果和Jmol的界面对比下。本计算一共有3个虚频： 5.7, 10.2和806.8 cm<sup>-1</sup> 。前面2个虚频很小，直接不管就可以了。</p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>算到这里，NH<sub>3</sub>翻转的过渡态我们就已经讲完了。本节采用的是直接优化的方法获取过渡态的结构，适用于一些非常简单的体系或者你已经非常熟悉的过渡态结构。回到开头我们讲的那句话，过渡态只是一个结构而已，我们需要做的就是如何通过一些计算的技巧和方法来获取这些结构。很多人一提到过渡态就会想到使用VTST编译的VASP程序算NEB（Nudged Elastic Band method）以及CI-NEB (Climbing Image NEB)，其实NEB和CI-NEB也仅仅是大家常用的一个方法而已，除此之外，还有很多。</p>
+<p><strong>最关键的</strong>就是通过结构化学的基础知识来搭建、计算并判断这些过渡态结构背后的物理化学意义，通俗点说就是：算的对不对，你要自己心里有个数。</p>
+<p>很多人会说算过渡态要通过频率来验证，其实这一步只是前面一步的副产物而已。只要你的化学基本功底深厚，加以训练，就可以准确判断反应的路径。</p>
+<p>本节计算例子的下载： 链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1hHGhrOlxMik8NBUqEzolwQ">https://pan.baidu.com/s/1hHGhrOlxMik8NBUqEzolwQ</a>   密码：2dw5</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/NEB/" rel="tag"># NEB</a>
+              <a href="/tags/%E8%BF%87%E6%B8%A1%E6%80%81/" rel="tag"># 过渡态</a>
+              <a href="/tags/NH3/" rel="tag"># NH3</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/07/ex69/" rel="prev" title="Ex69 表面吸附物种的熵">
+                  <i class="fa fa-chevron-left"></i> Ex69 表面吸附物种的熵
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/09/ex71/" rel="next" title="Ex71 过渡态的计算（二）">
+                  Ex71 过渡态的计算（二） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

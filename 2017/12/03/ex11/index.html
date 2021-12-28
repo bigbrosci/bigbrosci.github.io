@@ -1,37 +1,514 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前面几节，我们讲解了O分子单点计算和O$_2$的POSCAR和POTCAR的准备。这一节我们主要讲解一下： 1）O$_2$的分子结构分析 2）如何初步进行构型优化计算。 O$_2$ 的单点计算首先解释下什么是单点计算：顾名思义就是不优化结构，直接算个能量，电子相关的性质。你也可能会听到很多人说静态计算，或者自冾计算。其实都一样的：几何结构计算前后不发生变化。 首先提交O$_2$ 静态计算任务，运行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex11 O$_2$单点计算和优化结果分析">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/12/03/ex11/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="前面几节，我们讲解了O分子单点计算和O$_2$的POSCAR和POTCAR的准备。这一节我们主要讲解一下： 1）O$_2$的分子结构分析 2）如何初步进行构型优化计算。 O$_2$ 的单点计算首先解释下什么是单点计算：顾名思义就是不优化结构，直接算个能量，电子相关的性质。你也可能会听到很多人说静态计算，或者自冾计算。其实都一样的：几何结构计算前后不发生变化。 首先提交O$_2$ 静态计算任务，运行">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-1.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-2.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-3.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-4.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-5.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-6.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-7.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-8.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-10.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-11.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-12.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-13.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-14.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-15.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-16.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-17.jpeg">
+<meta property="article:published_time" content="2017-12-03T07:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.402Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="磁性">
+<meta property="article:tag" content="MAGMOM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2017/12/03/ex11/ex11-1.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/12/03/ex11/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/12/03/ex11/","path":"2017/12/03/ex11/","title":"Ex11 O$_2$单点计算和优化结果分析"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex11 O$_2$单点计算和优化结果分析 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#O-2-%E7%9A%84%E5%8D%95%E7%82%B9%E8%AE%A1%E7%AE%97"><span class="nav-number">1.</span> <span class="nav-text">O$_2$ 的单点计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VASP-%E4%BC%98%E5%8C%96%E5%88%86%E5%AD%90%E7%BB%93%E6%9E%84"><span class="nav-number">2.</span> <span class="nav-text">VASP 优化分子结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#p4vasp%E7%9A%84%E5%AE%89%E8%A3%85"><span class="nav-number">2.1.</span> <span class="nav-text">p4vasp的安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%AF%E8%A7%86%E5%8C%96%E7%95%8C%E9%9D%A2%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-number">2.1.1.</span> <span class="nav-text">可视化界面的基本操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93%E4%B8%80%E4%B8%8B%EF%BC%9A"><span class="nav-number">2.1.2.</span> <span class="nav-text">小结一下：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">扩展练习：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/03/ex11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex11 O$_2$单点计算和优化结果分析
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-03 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-03T02:06:48-05:00">2017-12-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/03/ex11/" class="post-meta-item leancloud_visitors" data-flag-title="Ex11 O$_2$单点计算和优化结果分析" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/12/03/ex11/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/03/ex11/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前面几节，我们讲解了O分子单点计算和O$_2$的POSCAR和POTCAR的准备。这一节我们主要讲解一下：</p>
+<p>1）O$_2$的分子结构分析</p>
+<p>2）如何初步进行构型优化计算。</p>
+<h3 id="O-2-的单点计算"><a href="#O-2-的单点计算" class="headerlink" title="O$_2$ 的单点计算"></a>O$_2$ 的单点计算</h3><p>首先解释下什么是单点计算：顾名思义就是不优化结构，直接算个能量，电子相关的性质。你也可能会听到很多人说静态计算，或者自冾计算。其实都一样的：几何结构计算前后不发生变化。</p>
+<p>首先提交O$_2$ 静态计算任务，运行，等待结束。如果你的任务出错，请跟大师兄的输入文件进行对比、改正，直至计算正常结束。如下图：</p>
+<p><img src="/2017/12/03/ex11/ex11-1.jpeg"></p>
+<p>任务结束后查看OSZICAR:</p>
+<p>从OSZICAR最后，得到体系的磁矩为2μB，你应该知道这个磁矩是怎么回事，由哪两个电子贡献。</p>
+<p><img src="/2017/12/03/ex11/ex11-2.jpeg"></p>
+<p>如果不知道，看下图O$_2$的分子轨道结构：</p>
+<p><img src="/2017/12/03/ex11/ex11-3.jpeg"></p>
+<p>看完该图，相信大家对于O$_2$的成键方式有了一个更加深刻的印象。我们对比下VASP的输出结果。首先分析α电子的排布情况：</p>
+<p> <img src="/2017/12/03/ex11/ex11-4.jpeg"></p>
+<p>在这里，你会发现能带3和4 是简并的，应该是π(p2x）和π(p2y） 轨道中的α电子。能带 5 对应的应该是σ(2pz) 的电子。在O$_2$分子的电子构型中，两个O原子的2pz轨道以头碰头的方式形成一个σ键，其能量要比2px（2py）以肩并肩方式形成的π键能量要低。但是，能带5的能量（-13.3126）比3和4的（-13.3870）要高些，这与O$_2$的电子构型不一致，表明VASP的单点计算结果是不可靠的。</p>
+<p>再看一下β电子的排布情况：</p>
+<p><img src="/2017/12/03/ex11/ex11-5.jpeg"></p>
+<p>能带4和5对应的是应该是π（2px） 和π（2py） 轨道中的β电子。且总的轨道能量与前面图中一致，这说明VASP对β电子的描述是合理的。</p>
+<p>为什么出现这样的情况呢？难道跟前面O原子的计算一样，VASP又算不准啦？</p>
+<p>不是的，VASP怎么着也是个老牌的，响当当的计算程序，总不能让人每天指着鼻子骂算不准！</p>
+<p>这里的主要原因是：来自于实验的键长值未必就是计算程序所认可的。也就是说，实验值和理论值之间存在偏差，实验的结构不能直接用来计算其性质，只可以作为一个理想的初始值。所以，O$_2$的分子结构需要优化一下。</p>
+<h3 id="VASP-优化分子结构"><a href="#VASP-优化分子结构" class="headerlink" title="VASP 优化分子结构"></a>VASP 优化分子结构</h3><p>VASP优化分子结构的时候，需要用到一个参数：<code>IBRION</code>。引用官网的话：IBRION determines how the ions are updated and moved. 也就是说IBRION 这个参数决定了结构的优化过程。当你去官网查看的时候（google 搜索VASP IBRION这两个关键词），会发现IBRION有很多值。</p>
+<p><img src="/2017/12/03/ex11/ex11-6.jpeg"></p>
+<p>想要正确进行计算，你就需要去硬着头皮去了解各个值的含义了，这个过程必须自己去做，只听别人的建议去设置参数，而不自己去主动学习的，你的能力永远不会得到提升！！！</p>
+<p>一般来说，优化结构的时候有3个选择：</p>
+<p>IBRION=3：你的初始结构很差的时候；</p>
+<p>IBRION=2：共轭梯度算法，很可靠的一个选择，一般来说用它基本没什么问题。</p>
+<p>IBRION=1：用于小范围内稳定结构的搜索。</p>
+<p>如果你的体系遇到结构不收敛的时候，首先检查自己的结构是否合理，也就是物理化学意义是否清晰。如果结构没问题，可以尝试下换下IBRION的参数。</p>
+<p> 下面，我们在INCAR中加上IBRION参数（IBRION=2），其他输入文件保持不变，重新进行计算：</p>
+<p><img src="/2017/12/03/ex11/ex11-7.jpeg"></p>
+<p>如果是用上图中的INCAR，你会发现任务很快就算完了。而且只有一步，难道输入的结构就是VASP计算出来的的稳定结构吗？有这种可能，但几率极低。</p>
+<p>如果我们仔细查看下OUTCAR中的电子构型，发现它的信息和前面的单点计算一样。这说明，vasp并没有优化，而是又运行了一次单点计算。</p>
+<p>为什么呢？ 这是因为另一个参数：<code>NSW</code>。</p>
+<p>NSW 控制几何结构优化的步数。也就是VASP进行多少离子步。</p>
+<p>官网查看下NSW选项，发现默认值是0，也就是没有进行优化。（默认值，也叫缺省值，英文里面是 Default。 意思是，如果你不输入这个参数，程序将默认使用XXX的数值）</p>
+<p><img src="/2017/12/03/ex11/ex11-8.jpeg"></p>
+<p>现在原因找到了，继续进行优化任务。问题来了：NSW怎么设置呢？</p>
+<ul>
+<li>首先，它必须是大于等于0的整数。</li>
+<li>其次，一般来说，简单的体系200步内就可以正常结束。</li>
+<li>不知道什么时候收敛，初始结构很差，或者设置了很严格的收敛标准，那么你就要增大一下NSW的取值了，比如NSW=500或者更大。</li>
+<li>我们的这个O$_2$例子很简单，设置了NSW=10（你也可以设置为100,200或者500，不会影响计算结果的。）</li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">System = O</span><br><span class="line">ISMEAR = <span class="number">0</span></span><br><span class="line">SIGMA  = <span class="number">0.01</span></span><br><span class="line">ISPIN  = <span class="number">2</span></span><br><span class="line">MAGMOM = <span class="number">2</span>*<span class="number">2</span></span><br><span class="line"></span><br><span class="line">IBRION = <span class="number">2</span></span><br><span class="line">NSW = <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>计算完成后，打开OSZICAR：</p>
+<p><img src="/2017/12/03/ex11/ex11-10.jpeg"></p>
+<p>可以看到，结构优化进行了3步便停止了（如果你设置了NSW=1000，那么也是3步后就结束）。其中，每一步内又包含了若干电子步。此时的你应该知道是什么参数控制优化的结束，如果不知道请查看前面Ex09中关于收敛的文章。思考一下： 同样优化200步，设置EDIFF=1E-7和EDIFF=1E-4会有什么区别呢？ </p>
+<p>查看下OUTCAR： </p>
+<p> <img src="/2017/12/03/ex11/ex11-11.jpeg"></p>
+<p>你会发现，优化过后，OUTCAR中α电子的占据状态调整过来了，β电子的保持不变。这说明计算成功了，优化起作用了。</p>
+<p>那么优化过后的结构怎么查看呢？键长又是多少呢？</p>
+<p>下面我们要开始真正掌握VASP的输出文件了：CONTCAR。 CONTCAR是VASP的一个输出文件，它包含了VASP计算中最后一步几何优化的结构信息，也就是优化完的结果。它也是文本格式，可以直接打开查看，如图：</p>
+<p><img src="/2017/12/03/ex11/ex11-12.jpeg"></p>
+<p> 怎么才能知道优化完的<code>O-O</code>键长是多少呢？</p>
+<p>1）通过坐标直接算：</p>
+<p>此时，要注意CONTCAR输出的是Direct坐标，也就是分数坐标，需要转换成笛卡尔坐标。</p>
+<p>xy两个方向不用考虑（都是0），z方向的坐标相减即可：键长保留四位就足够了。</p>
+<p>(0.136785-( -0.001953))*8.9 = 1.2348 （$\AA$）</p>
+<ol start="2">
+<li> 使用可视化软件测量：</li>
+</ol>
+<p>这样手动算，简单来说还可以，等复杂了就麻烦了，幸运的是，常用的建模软件中：p4vasp，VESTA，VMD，MS，ASE-gui等，都有测量键长的办法。这里简单讲解一下p4vasp 的用法。</p>
+<h4 id="p4vasp的安装"><a href="#p4vasp的安装" class="headerlink" title="p4vasp的安装"></a>p4vasp的安装</h4><p>这个详见本书的附录2：<a href="https://www.bigbrosci.com/2017/11/18/A02/">https://www.bigbrosci.com/2017/11/18/A02/</a></p>
+<p>1） Ubuntu 系统： <code>sudo apt-get install  p4vasp</code></p>
+<p>2） Windows系统： 下载p4vasp的安装包，解压后直接打开即可。</p>
+<p>下面是Windows下通过p4vasp读取CONTCAR的方法。Linux的也可以这样做，但终端里面：<code>p4v CONTCAR</code> 更高效直接。打开VASP后的界面如下： 注意图中： <code>System：</code>后面的三个问号部分，后面会进行对比：</p>
+<p><img src="/2017/12/03/ex11/ex11-13.jpeg"></p>
+<p>点击左侧栏中的 <code>Open</code> 选项。下图中，左侧点击进入CONTCAR所在的目录，进入后，在右侧会显示CONTCAR</p>
+<p><img src="/2017/12/03/ex11/ex11-14.jpeg"></p>
+<p><img src="/2017/12/03/ex11/ex11-15.jpeg"></p>
+<p>双击右侧的CONTCAR, 你会发现之前的三个问号？？？部分发生了变化：</p>
+<p>显示的 O 表明VASP读取CONTCAR成功。</p>
+<p><img src="/2017/12/03/ex11/ex11-16.jpeg"></p>
+<p>点击左侧的Show按钮，就可以查看结构了。</p>
+<h5 id="可视化界面的基本操作"><a href="#可视化界面的基本操作" class="headerlink" title="可视化界面的基本操作"></a>可视化界面的基本操作</h5><p>鼠标左键按住不放，可以3维空间旋转结构；</p>
+<p>鼠标中间摁住不放，可以上下，左右移动结构：</p>
+<p>鼠标右键摁住不敢，动动鼠标可以缩放结构；</p>
+<p>选择合适的观察位置：</p>
+<p>1 把鼠标移动到你要选中的原子上，</p>
+<p>2 通过空格（键盘上最长的键）用来选择或者取消选择原子：</p>
+<p>3 选中两个氧原子后，如下图：</p>
+<p><img src="/2017/12/03/ex11/ex11-17.jpeg"></p>
+<p> 选中之后，点<code>Structure</code> –&gt;<code>Measure</code> 显示键长为1.234774 Å，和我们手动计算的结果一样。</p>
+<p> 当然，也可以先点击：<code>Structure</code> –&gt;<code>Measure</code>，然后再选择感兴趣的原子。</p>
+<h5 id="小结一下："><a href="#小结一下：" class="headerlink" title="小结一下："></a>小结一下：</h5><p>实验值为1.2075 Å，VASP计算结果为1.2348 Å。两者之间的差值为： 0.0289 Å，偏差为：(1.2348-1.2075)/1.2075 = 2.26%。对于理论和实验之间的偏差，如果小于5%，我们一般可以认为吻合的很好。有时候很多同学揪着VASP的计算结果与实验值的偏差不放，误差已经千分之几了，感觉心里还是不放心，有着一种不完全匹配不罢休的冲动。这大可不必放在心上，如果你的结果偏离实验值千分之几，直接用就可以了。</p>
+<p> “To err is human; to describe the error properly is sublime.”<br>– Cliff Swartz, Physics Today 37 (1999),388.</p>
+<p>对于其他的软件程序（MS，VESTA，VMD等），大家下载安装后，百度里面搜一搜教程，基本操作应该很快就能掌握。</p>
+<h3 id="扩展练习："><a href="#扩展练习：" class="headerlink" title="扩展练习："></a>扩展练习：</h3><p>1 IBRION：<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/vasp/vasp/IBRION_tag_NFREE_tag.html">https://cms.mpi.univie.ac.at/vasp/vasp/IBRION_tag_NFREE_tag.html</a></p>
+<p>2 NSW：<a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node108.html">http://cms.mpi.univie.ac.at/vasp/guide/node108.html</a></p>
+<p>3 CONTCAR：<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/CONTCAR">https://cms.mpi.univie.ac.at/wiki/index.php/CONTCAR</a></p>
+<p>4 从头开始重现本节的所有操作；</p>
+<p>5 尝试不同的初始键长，运行vasp，查看输出结果。</p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>1）学会结合自己所学的化学知识，分析双原子的电子构型；</p>
+<p>2）知道IBRION + NSW进行结构优化；</p>
+<p>3）知道什么参数控制结构优化的停止，以及单个离子步内电子步数；</p>
+<p>4）学会使用可视化软件查看输出的几何结构；</p>
+<p>5）知道理论结果和实验值之间没有100%吻合。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%A3%81%E6%80%A7/" rel="tag"># 磁性</a>
+              <a href="/tags/MAGMOM/" rel="tag"># MAGMOM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/02/ex00/" rel="prev" title="ex00 为什么是"The Hard Way"">
+                  <i class="fa fa-chevron-left"></i> ex00 为什么是"The Hard Way"
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/04/ex12/" rel="next" title="Ex12 VASP中MAGMOM的简单设定">
+                  Ex12 VASP中MAGMOM的简单设定 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

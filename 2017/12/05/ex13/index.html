@@ -1,37 +1,530 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前面我们学会了O$_2$分子的优化，分析了其电子构型，并且知道了理论结果和实验结果间存在的偏差。这一节我们依然研究O$_2$分子的结构优化，虽然模型简单，但熟练掌握其中的技巧，对今后的计算工作，意义重大。 测试Bad 结构首先，我们将O$_2$的初始键长设置为：1.5 Å。其他文件与Ex11中的保持不变。  12345678910O1.07.5 0.0 0.00.0 8.0 0.00.0 0.0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex13 论合理结构的重要性（一）">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/12/05/ex13/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="前面我们学会了O$_2$分子的优化，分析了其电子构型，并且知道了理论结果和实验结果间存在的偏差。这一节我们依然研究O$_2$分子的结构优化，虽然模型简单，但熟练掌握其中的技巧，对今后的计算工作，意义重大。 测试Bad 结构首先，我们将O$_2$的初始键长设置为：1.5 Å。其他文件与Ex11中的保持不变。  12345678910O1.07.5 0.0 0.00.0 8.0 0.00.0 0.0">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/05/ex13/ex13-03.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/05/ex13/ex13-04.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/05/ex13/ex13-06.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/05/ex13/ex13-07.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/05/ex13/ex13-08.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/05/ex13/ex13-09.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/05/ex13/ex13-10.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/05/ex13/ex13-11.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/05/ex13/ex13-12.jpeg">
+<meta property="article:published_time" content="2017-12-05T07:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.418Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="alias">
+<meta property="article:tag" content="合理结构">
+<meta property="article:tag" content="grep">
+<meta property="article:tag" content="bashrc">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2017/12/05/ex13/ex13-03.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/12/05/ex13/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/12/05/ex13/","path":"2017/12/05/ex13/","title":"Ex13 论合理结构的重要性（一）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex13 论合理结构的重要性（一） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95Bad-%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">测试Bad 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E7%9A%84%E5%B0%8F%E6%80%9D%E8%80%83"><span class="nav-number">2.</span> <span class="nav-text">优化的小思考</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%9D%E8%80%831%EF%BC%9A"><span class="nav-number">2.0.1.</span> <span class="nav-text">思考1：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%9D%E8%80%832%EF%BC%9A"><span class="nav-number">2.0.2.</span> <span class="nav-text">思考2：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bashrc"><span class="nav-number">3.</span> <span class="nav-text">~&#x2F;.bashrc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">扩展练习：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/05/ex13/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex13 论合理结构的重要性（一）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-05 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-05T02:06:48-05:00">2017-12-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/05/ex13/" class="post-meta-item leancloud_visitors" data-flag-title="Ex13 论合理结构的重要性（一）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/12/05/ex13/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/05/ex13/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前面我们学会了O$_2$分子的优化，分析了其电子构型，并且知道了理论结果和实验结果间存在的偏差。这一节我们依然研究O$_2$分子的结构优化，虽然模型简单，但熟练掌握其中的技巧，对今后的计算工作，意义重大。</p>
+<h3 id="测试Bad-结构"><a href="#测试Bad-结构" class="headerlink" title="测试Bad 结构"></a>测试Bad 结构</h3><p>首先，我们将O$_2$的初始键长设置为：1.5 Å。其他文件与Ex11中的保持不变。 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">O</span><br><span class="line">1.0</span><br><span class="line">7.5 0.0 0.0</span><br><span class="line">0.0 8.0 0.0</span><br><span class="line">0.0 0.0 8.9</span><br><span class="line">O</span><br><span class="line">2</span><br><span class="line">Cartesian</span><br><span class="line">0.0 0.0 0.0</span><br><span class="line">0.0 0.0 1.5</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p>然后提交命令进行计算，等待结束后。查看结果，并对比前面Ex11练习的结果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13$ tail OSZICAR</span><br><span class="line">DAV:   1    -0.985412177027E+01   -0.57432E-02   -0.12528E+00   144   0.457E+00    0.433E-01</span><br><span class="line">DAV:   2    -0.985315825637E+01    0.96351E-03   -0.76431E-03   144   0.367E-01    0.166E-01</span><br><span class="line">DAV:   3    -0.985344344928E+01   -0.28519E-03   -0.78039E-04   120   0.129E-01    0.707E-02</span><br><span class="line">DAV:   4    -0.985368960614E+01   -0.24616E-03   -0.14892E-04   144   0.510E-02    0.268E-02</span><br><span class="line">DAV:   5    -0.985378634076E+01   -0.96735E-04   -0.12727E-05    96   0.167E-02</span><br><span class="line">   8 F= -.98537863E+01 E0= -.98537863E+01  d E =-.142913E+01  mag=     2.0000</span><br><span class="line">       N       E                     dE             d eps       ncg     rms          rms(c)</span><br><span class="line">DAV:   1    -0.985528191871E+01   -0.15923E-02   -0.11782E-01   168   0.140E+00    0.130E-01</span><br><span class="line">DAV:   2    -0.985521232023E+01    0.69598E-04   -0.82384E-04   120   0.126E-01</span><br><span class="line">   9 F= -.98552123E+01 E0= -.98552123E+01  d E =-.143055E+01  mag=     2.0000</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13$ tail ../ex11/opt/OSZICAR</span><br><span class="line">DAV:   8    -0.985382407600E+01   -0.31391E-03   -0.20867E-05   120   0.151E-02    0.891E-03</span><br><span class="line">DAV:   9    -0.985418412704E+01   -0.36005E-03   -0.33607E-05   120   0.162E-02    0.520E-03</span><br><span class="line">DAV:  10    -0.985440719048E+01   -0.22306E-03   -0.20675E-05   120   0.115E-02    0.367E-03</span><br><span class="line">DAV:  11    -0.985450935523E+01   -0.10216E-03   -0.85511E-06   120   0.750E-03    0.174E-03</span><br><span class="line">DAV:  12    -0.985454505708E+01   -0.35702E-04   -0.14739E-06   120   0.339E-03</span><br><span class="line">   3 F= -.98545451E+01 E0= -.98545451E+01  d E =-.451963E-01  mag=     2.0000</span><br><span class="line">       N       E                     dE             d eps       ncg     rms          rms(c)</span><br><span class="line">DAV:   1    -0.985517058251E+01   -0.66123E-03   -0.43217E-02    96   0.851E-01    0.792E-02</span><br><span class="line">DAV:   2    -0.985515527518E+01    0.15307E-04   -0.49070E-04   168   0.969E-02</span><br><span class="line">   4 F= -.98551553E+01 E0= -.98551553E+01  d E =-.458065E-01  mag=     2.0000</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在本练习中，我们设置了键长为：1.5 $\AA$，距离稳定结构较大，用了9个离子步才收敛。在Ex11练习中，我们使用的是数据库中O$_2$的键长，只优化了4步就收敛了。由此可见，一个好的初始结构可以加快我们的计算。那么有多快呢？ 我们看一下OUTCAR中的时间信息，对比看下一目了然。</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13$ tail OUTCAR</span><br><span class="line">                            User time (sec):       <span class="number">20.196</span></span><br><span class="line">                          System time (sec):        <span class="number">7.877</span></span><br><span class="line">                         Elapsed time (sec):      <span class="number">144.523</span></span><br><span class="line"></span><br><span class="line">                   Maximum memory used (kb):      <span class="number">116704.</span></span><br><span class="line">                   Average memory used (kb):           <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">                          Minor page faults:        <span class="number">72067</span></span><br><span class="line">                          Major page faults:            <span class="number">0</span></span><br><span class="line">                 Voluntary context switches:         <span class="number">3191</span></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13$ tail ../ex11/opt/OUTCAR</span><br><span class="line">                            User time (sec):        <span class="number">8.387</span></span><br><span class="line">                          System time (sec):        <span class="number">7.789</span></span><br><span class="line">                         Elapsed time (sec):       <span class="number">17.433</span></span><br><span class="line"></span><br><span class="line">                   Maximum memory used (kb):      <span class="number">114276.</span></span><br><span class="line">                   Average memory used (kb):           <span class="number">0.</span></span><br><span class="line"></span><br><span class="line">                          Minor page faults:        <span class="number">26287</span></span><br><span class="line">                          Major page faults:            <span class="number">3</span></span><br><span class="line">                 Voluntary context switches:         <span class="number">3202</span></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>判断计算是否结束以及结构是否收敛：上面大师兄用了2个命令：</p>
+<p>1） tail OSZICAR</p>
+<p>左下角显示了结构优化进行了多少步，这里是9步！注意，我们的INCAR 里面设置的NSW = 10。如果优化的步数小于我们设置的，说明结构已经收敛到了我们所期望的标准。</p>
+<p>2） tail OUTCAR</p>
+<p>会显示：VASP结束后计算的内存，时间等信息，如果你看到与上图中类似的信息，说明计算结束了。</p>
+<h3 id="优化的小思考"><a href="#优化的小思考" class="headerlink" title="优化的小思考"></a>优化的小思考</h3><h5 id="思考1："><a href="#思考1：" class="headerlink" title="思考1："></a>思考1：</h5><p>上面的计算中，我们在INCAR中设置的<code>NSW =10</code>，实际计算用了9步，说明计算刚刚收敛了。但是：如果结构优化的步数等于NSW设置的步数，说明了什么，是什么原因？又该怎么办？</p>
+<p>出现这种情况，说明可能还没有达到我们的收敛标准，可能是以下几个原因造成的： </p>
+<ol>
+<li><p>NSW设置的偏小； 如果我们在本节例子中设置了<code>NSW=8</code>;</p>
+</li>
+<li><p>初始结构不合理，计算需要更多的离子驰豫过程； </p>
+</li>
+<li><p>设置的收敛标准太严格， 比如：-0.01 或者 -0.001； </p>
+</li>
+<li><p>结构很复杂，每一离子步中的电子步骤收敛很困难。</p>
+</li>
+</ol>
+<p>除此之外，还有一种可能，即刚刚进行到NSW设置的步数时，计算恰好收敛了。比如本例中，我们设置了<code>NSW = 9</code>。但这种可能几率很低，但如果你计算的足够多，还是有机会碰到的。（碰到这种情况时，一定不要慌张，要立马出门去买彩票，中了奖后要记得和大师兄平分！）</p>
+<h5 id="思考2："><a href="#思考2：" class="headerlink" title="思考2："></a>思考2：</h5><p>怎么判断上述这种特殊情况呢？</p>
+<p>首先，我们要知道计算收敛结束后VASP所输出的内容，也要知道未收敛时VASP结束后输出的内容。目前，现在我们知道进行了9步的时候，该计算正常结束。那我们就可以设置NSW为一个较小的值（比如 NSW=5），然后查看下未收敛时候的结果，并进行对比分析！</p>
+<p>结构收敛OUTCAR （NSW=10）：</p>
+<p><img src="/2017/12/05/ex13/ex13-03.jpeg"></p>
+<p>结构未收敛OUTCAR （NSW=2）：</p>
+<p> <img src="/2017/12/05/ex13/ex13-04.jpeg"></p>
+<p>通过对比，我们可以发现，结构收敛的结果里面多了这一行：　 </p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reached required accuracy - stopping structural energy minimisation</span><br></pre></td></tr></table></figure>
+
+<p>因此我们在今后的计算中，可以通过这一行来判断计算是否收敛结束。怎么判断呢？前面我们讲到了通过分析OUTCAR并结合grep命令来提取信息的方法，这里我们稍微复习一遍。下图中大师兄尝试了几个grep命令： </p>
+<p>看下输出结果:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$ grep accuracy   OUTCAR</span><br><span class="line"> reached required accuracy - stopping structural energy minimisation</span><br><span class="line"> iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$ grep stopping OUTCAR</span><br><span class="line">   EDIFF  = 0.1E-03   stopping-criterion <span class="keyword">for</span> ELM</span><br><span class="line">   EDIFFG = 0.1E-02   stopping-criterion <span class="keyword">for</span> IOM</span><br><span class="line"> reached required accuracy - stopping structural energy minimisation</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$ grep structural OUTCAR</span><br><span class="line">Analysis of structural, dynamic, and magnetic symmetry:</span><br><span class="line"> reached required accuracy - stopping structural energy minimisation</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$ grep <span class="string">&#x27;reached required accuracy&#x27;</span> OUTCAR</span><br><span class="line"> reached required accuracy - stopping structural energy minimisation</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$ grep <span class="string">&#x27;reached required accuracy - stopping structural energy minimisation&#x27;</span> OUTCAR</span><br><span class="line"> reached required accuracy - stopping structural energy minimisation</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$ grep reached OUTCAR</span><br><span class="line">------------------------ aborting loop because EDIFF is reached ----------------------------------------</span><br><span class="line">------------------------ aborting loop because EDIFF is reached ----------------------------------------</span><br><span class="line">------------------------ aborting loop because EDIFF is reached ----------------------------------------</span><br><span class="line">------------------------ aborting loop because EDIFF is reached ----------------------------------------</span><br><span class="line">------------------------ aborting loop because EDIFF is reached ----------------------------------------</span><br><span class="line">------------------------ aborting loop because EDIFF is reached ----------------------------------------</span><br><span class="line">------------------------ aborting loop because EDIFF is reached ----------------------------------------</span><br><span class="line">------------------------ aborting loop because EDIFF is reached ----------------------------------------</span><br><span class="line">------------------------ aborting loop because EDIFF is reached ----------------------------------------</span><br><span class="line"> reached required accuracy - stopping structural energy minimisation</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>从图中可以看出来，选择不同的grep 参数，会得到不同的输出结果。一般来说，grep后面的内容越详细，得到的输出结果也就会越匹配。我们提取信息的首要原则是：<strong>精确匹配并提取最有价值的信息</strong>！</p>
+<p>其中：grep ‘reached required accuracy’ OUTCAR 是大师兄常用的一个命令。</p>
+<p>（要提取的内容通过单引号扩起来了。）</p>
+<h3 id="bashrc"><a href="#bashrc" class="headerlink" title="~/.bashrc"></a>~/.bashrc</h3><p>那么你会问道：“大师兄，你是不是傻X啊，这么长的命令，光输入就费老大劲了，不嫌麻烦么？”</p>
+<p>哈哈，大师兄不仅傻，更喜欢偷懒。每次检查的时候这样子输入肯定麻烦。但在linux下面，有个小窍门，可以极大极大极大地提高你的工作效率，那就是<code>~/.bashrc</code> 文件中的 <code>alias</code>：（注意前面的点 . ）</p>
+<p>.bashrc 文件怎么用呢？它在哪里？ 怎么打开？</p>
+<p>答：在home目录下，</p>
+<p>1） 终端（terminal）里面直接输入 cd 这个命令，会自动返回到home 目录下面：</p>
+<p>然后运行命令：<code> vi .bashrc</code></p>
+<p>2） 当然，如果你不想跳转回去，也可以这样：vi  ~/.bashrc  波浪号代表home</p>
+<p><img src="/2017/12/05/ex13/ex13-06.jpeg"></p>
+<p>它怎么用?</p>
+<p><a target="_blank" rel="noopener" href="http://www.linuxidc.com/Linux/2015-02/113310.htm">http://www.linuxidc.com/Linux/2015-02/113310.htm</a>   （参考网址）</p>
+<p>1）打开 .bashrc 文件：（大师兄的bashrc文件为例：）</p>
+<p><img src="/2017/12/05/ex13/ex13-07.jpeg"></p>
+<p>2） 将前面我们用到的命令写进 .bashrc 文件：</p>
+<p><img src="/2017/12/05/ex13/ex13-08.jpeg"></p>
+<p>注意的部分： </p>
+<p>A) alias 和 gr 之间有空格；</p>
+<p>B) gr 是大师兄随便想的，你也可以用自己想的其他字母；</p>
+<p>C) gr之间没有空格；</p>
+<p>D) gr后面紧跟着等号 = ， 中间没有空格；</p>
+<p>E) 等号 = 后面紧跟着双引号，且等号= 和双引号之间没有空格；</p>
+<p>F) 双引号之间，把我们的命令放进去，一定要确保命令在引号里面；</p>
+<p>G)等号 = 后面可以用单引号，也可以用双引号，因为我们的命令中已经有单引号了，这里我们用的双引号，下面两者效果是一样的；</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alias gr=&quot;grep &#x27;reached required accuracy&#x27; OUTCAR&quot;</span><br><span class="line">alias gr=&#x27;grep &quot;reached required accuracy&quot; OUTCAR&#x27;</span><br></pre></td></tr></table></figure>
+
+
+<p>注意：上图中两者任选一个即可，不要都放进去，否则会乱套。保存后退出。</p>
+<p><img src="/2017/12/05/ex13/ex13-09.jpeg"></p>
+<ol start="3">
+<li> source 一下 .bashrc 文件。下图中的几个命令效果是一样的！ </li>
+</ol>
+<p><img src="/2017/12/05/ex13/ex13-10.jpeg"></p>
+<p>在这里点 <code>.</code> 和 <code>source</code> 命令的效果一样。</p>
+<p>4 运行命令：（敲一下gr，回车即可）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$ ls</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  INCAR  job_sub  KPOINTS  OSZICAR  OUTCAR  PCDAT  POSCAR  POTCAR  REPORT  slurm-1023075.out  vasprun.xml  WAVECAR  XDATCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$ gr</span><br><span class="line"> reached required accuracy - stopping structural energy minimisation</span><br></pre></td></tr></table></figure>
+
+<p>当你看到这个信息的时候，说明优化任务就已经算完了。  在这里gr 命令就是前面 .bashrc 文件中alias 后面的那个命令。如果还不明白，看下面的例子。大师兄把.bashrc 文件中的 gr 替换成了bigbro , source 了一下后，运行 bigbro命令，得到了和前面一样的结果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias bigbro=&#x27;grep &quot;reached required accuracy&quot; OUTCAR&#x27;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex13/nsw10$ bigbro</span><br><span class="line"> reached required accuracy - stopping structural energy minimisation</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2017/12/05/ex13/ex13-11.jpeg"></p>
+<p>5 ）注意：</p>
+<p>避免你自己定义的命令名字和linux下面自带的命令重复。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias  cd=&quot;grep &#x27;reached required accuracy&#x27; OUTCAR&quot;</span><br></pre></td></tr></table></figure>
+
+<p>但是可以这样设置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias  cd=&quot;cd &amp;&amp; ls &quot;</span><br></pre></td></tr></table></figure>
+
+<p>比如：在linux系统下，使用cp命令复制文件夹的时候，需要用到 cp -r A B 。有时候会忘记加 -r而出错，我们可以这样设置，<code>alias cp=&#39;cp -r &#39;</code>来避免出错。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ cp ex13 ex14</span><br><span class="line">cp: omitting directory `ex13&#x27;</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ cp ex13 ex14 -r</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ vi ~/.bashrc</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ .  ~/.bashrc</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ cp ex13 ex15</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果你极其地讨厌一个人，可以在他的服务器下面这样设置！！！ 建议大家报复的时候可以采用这样温柔点的设置，这样，他每敲一次命令就会被你骂一次。（史上最狠报复，只适用于对付那些深深伤害了你的人！）大家只可以感受下这把刀的威力，切不可自作孽!</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">alias cd=&#x27;cd  ~&#x27;</span><br><span class="line">alias cp=&#x27;echo &quot;You are a XXX&quot; &#x27;</span><br><span class="line">alias ls=&#x27;echo &quot;You are a XXX&quot; &#x27;</span><br></pre></td></tr></table></figure>
+
+<h3 id="扩展练习："><a href="#扩展练习：" class="headerlink" title="扩展练习："></a>扩展练习：</h3><p>1 分别设置O$_2$的初始键长为1.5和 0.9 Å，运行任务；</p>
+<p>2 查看收敛情况；</p>
+<p>3 查看结构信息和能量信息；</p>
+<p>4 如果有不合理的地方，自己尝试解决。</p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>本节讲解了</p>
+<ol>
+<li><p>查看任务计算完成的日常做法，</p>
+</li>
+<li><p>一个在日常计算中极为重要的处理问题的方法，以及简化日常命令的方式。</p>
+</li>
+</ol>
+<p>通过设置.bashrc文件中的alias 命令,我们便可以自己随心所欲地将计算中的长命令、复杂的命令转化为简单的命令,从而极大地提高了我们的工作效率,尤其是适用于那些:使用频繁的但又很复杂的命令。</p>
+<ol start="3">
+<li>一个思想：如果我们已知一个结果，那么便可以通过调控不同的参数，然后再与已知结果进行对比，从而分析不同参数在计算中的作用。</li>
+</ol>
+<p>这一个思想贯穿了本书的写作过程，对于大家加深对VASP的理解以及练习意义非凡。熟练运用这一种方法，你的洞察力和判断力会得到极大地提升。希望大家能认真思考下本节中提出的处理问题的思想，以及熟练运行alias简化自己的命令。</p>
+<p> 4） 为了锻炼大家的判断力，请做下题：以最快的速度找到图中的小猫：</p>
+<p><img src="/2017/12/05/ex13/ex13-12.jpeg"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/alias/" rel="tag"># alias</a>
+              <a href="/tags/%E5%90%88%E7%90%86%E7%BB%93%E6%9E%84/" rel="tag"># 合理结构</a>
+              <a href="/tags/grep/" rel="tag"># grep</a>
+              <a href="/tags/bashrc/" rel="tag"># bashrc</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/04/ex12/" rel="prev" title="Ex12 VASP中MAGMOM的简单设定">
+                  <i class="fa fa-chevron-left"></i> Ex12 VASP中MAGMOM的简单设定
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/06/ex14/" rel="next" title="Ex14 论合理结构的重要性（二）">
+                  Ex14 论合理结构的重要性（二） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

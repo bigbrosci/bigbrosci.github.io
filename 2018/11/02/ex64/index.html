@@ -1,37 +1,454 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前面我们讲解了一堆单原子的吸附计算和一些日常的操作，现在是时候来点复杂的操练了。这次，我们拿CO开刷，计算它在Cu(111)表面上的吸附。由于CO比前面的O多了一个原子，复杂性稍微提高了些，但也不是太复杂。作为一个由简单向复杂体系的过渡，是一个很好地例子。 在计算CO的吸附之前，我们首先要了解以下3点：（都是教科书里面的经典内容，下面只列出来，不再细说，如果不懂的话，找本结构化学书好好啃一啃。）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex64 吸附能的计算（九）">
+<meta property="og:url" content="http://www.bigbrosci.com/2018/11/02/ex64/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="前面我们讲解了一堆单原子的吸附计算和一些日常的操作，现在是时候来点复杂的操练了。这次，我们拿CO开刷，计算它在Cu(111)表面上的吸附。由于CO比前面的O多了一个原子，复杂性稍微提高了些，但也不是太复杂。作为一个由简单向复杂体系的过渡，是一个很好地例子。 在计算CO的吸附之前，我们首先要了解以下3点：（都是教科书里面的经典内容，下面只列出来，不再细说，如果不懂的话，找本结构化学书好好啃一啃。）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/02/ex64/ex64-00.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/02/ex64/ex64-01.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/02/ex64/ex64-02.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/02/ex64/ex64-03.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/02/ex64/ex64-04.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/02/ex64/ex64-05.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/02/ex64/ex64-06.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/02/ex64/ex64-07.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/02/ex64/ex64-08.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/02/ex64/ex64-09.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/02/ex64/ex64-10.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/02/ex64/ex64-11.png">
+<meta property="article:published_time" content="2018-11-02T19:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:55.288Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="模型搭建">
+<meta property="article:tag" content="吸附能">
+<meta property="article:tag" content="CO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2018/11/02/ex64/ex64-00.png">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2018/11/02/ex64/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2018/11/02/ex64/","path":"2018/11/02/ex64/","title":"Ex64 吸附能的计算（九）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex64 吸附能的计算（九） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-CO%E5%88%86%E5%AD%90%E4%BF%A1%E6%81%AF%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">1. CO分子信息：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89CO%E7%9A%84%E5%88%86%E5%AD%90%E7%BB%93%E6%9E%84%EF%BC%8C%E5%A6%82%E4%B8%8B%E5%9B%BE%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">1）CO的分子结构，如下图：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89-CO%E7%9A%84%E5%87%A0%E4%BD%95%E7%BB%93%E6%9E%84%EF%BC%9A%EF%BC%88%E7%94%A8%E6%9D%A5%E6%90%AD%E5%BB%BA%E5%90%B8%E9%99%84%E5%92%8C%E6%B0%94%E7%9B%B8%E7%9A%84%E6%A8%A1%E5%9E%8B%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">2） CO的几何结构：（用来搭建吸附和气相的模型）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89-CO%E4%B8%8E%E9%87%91%E5%B1%9E%E7%9A%84%E6%88%90%E9%94%AE%E6%96%B9%E5%BC%8F-%EF%BC%88%E7%94%A8%E6%9D%A5%E6%90%AD%E5%BB%BA%E5%90%B8%E9%99%84%E6%A8%A1%E5%9E%8B%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">3） CO与金属的成键方式 （用来搭建吸附模型）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%90%AD%E5%BB%BACO%E5%90%B8%E9%99%84%E7%9A%84%E6%A8%A1%E5%9E%8B%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">2. 搭建CO吸附的模型：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89-%E5%B0%86%E4%B8%8A%E4%B8%80%E8%8A%82%E4%B8%AD-C-%E5%8E%9F%E5%AD%90%E5%90%B8%E9%99%84%E7%9A%84%E9%82%A3%E5%87%A0%E4%B8%AA%E6%A8%A1%E5%9E%8B%E5%A4%8D%E5%88%B6%E8%BF%87%E6%9D%A5%EF%BC%8C%E8%BF%9B%E8%A1%8C%E4%BF%AE%E6%94%B9%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">1） 将上一节中 C 原子吸附的那几个模型复制过来，进行修改：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%83%8C%E4%B8%80%E9%81%8DVASP%E7%9A%84%E8%BE%93%E5%85%A5%E6%96%87%E4%BB%B6%EF%BC%8C%E6%A3%80%E6%9F%A5%E8%BF%98%E6%9C%89%E9%82%A3%E4%BA%9B%E9%9C%80%E8%A6%81%E4%BF%AE%E6%94%B9%E7%9A%84%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">3. 背一遍VASP的输入文件，检查还有那些需要修改的：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">4. 提交任务：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%80%9D%E8%80%83%E4%B8%8B%E5%90%B8%E9%99%84%E8%83%BD%E7%9A%84%E8%AE%A1%E7%AE%97%E5%85%AC%E5%BC%8F%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">5. 思考下吸附能的计算公式：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89-%E6%B0%94%E7%9B%B8%E5%88%86%E5%AD%90%E7%9A%84%E7%BB%93%E6%9E%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E3%80%82"><span class="nav-number">5.1.</span> <span class="nav-text">1） 气相分子的结构模型搭建。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89-INCAR%EF%BC%9A%E7%9B%B4%E6%8E%A5%E6%8B%BFCu-111-%E5%90%B8%E9%99%84%E7%9A%84%E4%BF%AE%E6%94%B9%E4%B8%8B%E3%80%82"><span class="nav-number">5.2.</span> <span class="nav-text">2） INCAR：直接拿Cu(111)吸附的修改下。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89-KPOINTS%EF%BC%9A-gamma-%E7%82%B9%E5%8D%B3%E5%8F%AF%E3%80%82"><span class="nav-number">5.3.</span> <span class="nav-text">3） KPOINTS： gamma 点即可。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89-%E8%BF%99%E9%87%8C%E6%88%91%E4%BB%AC%E6%B2%A1%E6%9C%89%E6%89%B9%E9%87%8F%E6%8F%90%E4%BA%A4%EF%BC%8C%E6%89%8B%E5%8A%A8%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%8B%EF%BC%9Apospot-sh%E8%84%9A%E6%9C%AC%EF%BC%8C%E7%94%9F%E6%88%90%E5%AF%B9%E5%BA%94%E7%9A%84POTCAR%E3%80%82"><span class="nav-number">5.4.</span> <span class="nav-text">4） 这里我们没有批量提交，手动运行一下：pospot.sh脚本，生成对应的POTCAR。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89-%E4%BD%BF%E7%94%A8%E6%8F%90%E4%BA%A4%E5%8D%95%E4%B8%AA%E4%BB%BB%E5%8A%A1%E7%9A%84%E8%84%9A%E6%9C%AC%EF%BC%9A-qsub-%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%E3%80%82%E5%85%B7%E4%BD%93%E6%93%8D%E4%BD%9C%E5%A6%82%E4%B8%8B%E5%9B%BE%EF%BC%9A"><span class="nav-number">5.5.</span> <span class="nav-text">5） 使用提交单个任务的脚本： qsub  提交任务。具体操作如下图：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">6. 扩展练习：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">7.</span> <span class="nav-text">7. 总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/11/02/ex64/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex64 吸附能的计算（九）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-11-02 15:30:16" itemprop="dateCreated datePublished" datetime="2018-11-02T15:30:16-04:00">2018-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/11/02/ex64/" class="post-meta-item leancloud_visitors" data-flag-title="Ex64 吸附能的计算（九）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/11/02/ex64/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/02/ex64/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="/2018/11/02/ex64/ex64-00.png"></p>
+<p>前面我们讲解了一堆单原子的吸附计算和一些日常的操作，现在是时候来点复杂的操练了。这次，我们拿CO开刷，计算它在Cu(111)表面上的吸附。由于CO比前面的O多了一个原子，复杂性稍微提高了些，但也不是太复杂。作为一个由简单向复杂体系的过渡，是一个很好地例子。</p>
+<p>在计算CO的吸附之前，我们首先要了解以下3点：（都是教科书里面的经典内容，下面只列出来，不再细说，如果不懂的话，找本结构化学书好好啃一啃。）</p>
+<h2 id="1-CO分子信息："><a href="#1-CO分子信息：" class="headerlink" title="1. CO分子信息："></a>1. CO分子信息：</h2><h3 id="1）CO的分子结构，如下图："><a href="#1）CO的分子结构，如下图：" class="headerlink" title="1）CO的分子结构，如下图："></a>1）CO的分子结构，如下图：</h3><p><img src="/2018/11/02/ex64/ex64-01.png"></p>
+<h3 id="2）-CO的几何结构：（用来搭建吸附和气相的模型）"><a href="#2）-CO的几何结构：（用来搭建吸附和气相的模型）" class="headerlink" title="2） CO的几何结构：（用来搭建吸附和气相的模型）"></a>2） CO的几何结构：（用来搭建吸附和气相的模型）</h3><p><img src="/2018/11/02/ex64/ex64-02.png"><br><img src="/2018/11/02/ex64/ex64-03.png"></p>
+<h3 id="3）-CO与金属的成键方式-（用来搭建吸附模型）"><a href="#3）-CO与金属的成键方式-（用来搭建吸附模型）" class="headerlink" title="3） CO与金属的成键方式 （用来搭建吸附模型）"></a>3） CO与金属的成键方式 （用来搭建吸附模型）</h3><p><img src="/2018/11/02/ex64/ex64-04.png"></p>
+<h2 id="2-搭建CO吸附的模型："><a href="#2-搭建CO吸附的模型：" class="headerlink" title="2. 搭建CO吸附的模型："></a>2. 搭建CO吸附的模型：</h2><p>上一节我们学到了闭着眼操作的一些方式，这一节我们继续闭着眼搭结构。操作流程如下：</p>
+<h3 id="1）-将上一节中-C-原子吸附的那几个模型复制过来，进行修改："><a href="#1）-将上一节中-C-原子吸附的那几个模型复制过来，进行修改：" class="headerlink" title="1） 将上一节中 C 原子吸附的那几个模型复制过来，进行修改："></a>1） 将上一节中 C 原子吸附的那几个模型复制过来，进行修改：</h3><ul>
+<li>i) 修改POSCAR中的元素（第6行）和原子数目部分（第七行），添加O原子。</li>
+</ul>
+<p><img src="/2018/11/02/ex64/ex64-05.png"></p>
+<ul>
+<li>iii）在POSCAR的尾部，添加O原子的坐标：</li>
+</ul>
+<p><img src="/2018/11/02/ex64/ex64-06.png"></p>
+<p>可以看到上图中，最后两行的坐标一模一样，这是因为CO在表面上吸附的时候，我们假定的是直立吸附。所以C 和 O原子的坐标在x和y方向上一样。不同的区别在z方向上，即CO的键长。CO如果吸附在表面上，肯定会和表面原子有作用，也就是所谓的活化，如果原子被活化了，那么CO键就会被削弱，具体体现在键长上。与气相的键长相比，表面上CO的键长数值更大一些。前面我们查数据库得到CO键长为：1.138A.这里我们不妨设置成1.2A。根据这些，我们设置O原子的坐标，如下：</p>
+<p><img src="/2018/11/02/ex64/ex64-07.png"></p>
+<p>同样，我们可以对其他吸附位点的坐标进行类似的修改，结果如下图：</p>
+<p><img src="/2018/11/02/ex64/ex64-08.png"></p>
+<h2 id="3-背一遍VASP的输入文件，检查还有那些需要修改的："><a href="#3-背一遍VASP的输入文件，检查还有那些需要修改的：" class="headerlink" title="3. 背一遍VASP的输入文件，检查还有那些需要修改的："></a>3. 背一遍VASP的输入文件，检查还有那些需要修改的：</h2><ul>
+<li>i） INCAR： 跟之前保持一致；</li>
+<li>ii）KPOINTS：跟之前保持一致；</li>
+<li>iii） POSCAR： 已经修改完毕；</li>
+<li>iV） POTCAR：提交任务的脚本里面自动生成</li>
+<li>V）提交任务命令： qsuball （前面已经讲解过了）</li>
+</ul>
+<h2 id="4-提交任务："><a href="#4-提交任务：" class="headerlink" title="4. 提交任务："></a>4. 提交任务：</h2><p><img src="/2018/11/02/ex64/ex64-09.png"></p>
+<p>上图，我们删除了slab的计算，因为前面我们已经计算过了，没有必要浪费机时再算一遍。</p>
+<h2 id="5-思考下吸附能的计算公式："><a href="#5-思考下吸附能的计算公式：" class="headerlink" title="5. 思考下吸附能的计算公式："></a>5. 思考下吸附能的计算公式：</h2><p>$$<br>E_{ads}(CO) = E_{slab+CO} - E_{slab} - E_{CO^{gas}}<br>$$</p>
+<p>前面我们还忘记了CO的气相结构优化。现在我们回忆一下前面所讲的气相分子的优化：</p>
+<h3 id="1）-气相分子的结构模型搭建。"><a href="#1）-气相分子的结构模型搭建。" class="headerlink" title="1） 气相分子的结构模型搭建。"></a>1） 气相分子的结构模型搭建。</h3><p>直接将一个Cu(111)表面上吸附的POSCAR拿过来修改一下即可：</p>
+<p><img src="/2018/11/02/ex64/ex64-10.png"></p>
+<h3 id="2）-INCAR：直接拿Cu-111-吸附的修改下。"><a href="#2）-INCAR：直接拿Cu-111-吸附的修改下。" class="headerlink" title="2） INCAR：直接拿Cu(111)吸附的修改下。"></a>2） INCAR：直接拿Cu(111)吸附的修改下。</h3><p>对于气相分子的优化来说：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ISMEAR = 0 </span><br><span class="line">SIGMA = 0.01</span><br></pre></td></tr></table></figure>
+
+<h3 id="3）-KPOINTS：-gamma-点即可。"><a href="#3）-KPOINTS：-gamma-点即可。" class="headerlink" title="3） KPOINTS： gamma 点即可。"></a>3） KPOINTS： gamma 点即可。</h3><h3 id="4）-这里我们没有批量提交，手动运行一下：pospot-sh脚本，生成对应的POTCAR。"><a href="#4）-这里我们没有批量提交，手动运行一下：pospot-sh脚本，生成对应的POTCAR。" class="headerlink" title="4） 这里我们没有批量提交，手动运行一下：pospot.sh脚本，生成对应的POTCAR。"></a>4） 这里我们没有批量提交，手动运行一下：<code>pospot.sh</code>脚本，生成对应的POTCAR。</h3><h3 id="5）-使用提交单个任务的脚本：-qsub-提交任务。具体操作如下图："><a href="#5）-使用提交单个任务的脚本：-qsub-提交任务。具体操作如下图：" class="headerlink" title="5） 使用提交单个任务的脚本： qsub  提交任务。具体操作如下图："></a>5） 使用提交单个任务的脚本： qsub  提交任务。具体操作如下图：</h3><p><img src="/2018/11/02/ex64/ex64-11.png"></p>
+<h2 id="6-扩展练习："><a href="#6-扩展练习：" class="headerlink" title="6. 扩展练习："></a>6. 扩展练习：</h2><ul>
+<li>1）完成CO吸附的计算；</li>
+<li>2）进一步熟练简单模型的闭着眼操作方式；</li>
+<li>3）复习分子气相结构的优化过程。</li>
+</ul>
+<h2 id="7-总结："><a href="#7-总结：" class="headerlink" title="7. 总结："></a>7. 总结：</h2><p>本节，通过CO的吸附模型搭建，带领大家走出简单的单原子吸附，开始逐渐接触复杂的吸附计算。如果前面内容掌握了，本节就是一个水到渠成的事情。在多原子分子的吸附计算中，首先我们要知道分子的电子和几何结构，分子哪一部分（这里的C原子）和表面成键。在本节的例子中，如果你不知道C和金属作用，你还需要计算Metal-O-C这样的结构。可能还会计算CO横着吸附的结构，任务无形中就会增加一倍或者更多，从而造成机时的浪费。退一步来说，如果你真的不知道吸附是以什么方式进行的，想尝试N种初始的结构，我的建议是：把slab的原子全部固定住，然后用gamma点算一下它们的吸附能，先大体上判断一下，把那些吸附特别强的结构筛选出来，用作下一步的计算。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/" rel="tag"># 模型搭建</a>
+              <a href="/tags/%E5%90%B8%E9%99%84%E8%83%BD/" rel="tag"># 吸附能</a>
+              <a href="/tags/CO/" rel="tag"># CO</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/10/11/ex63/" rel="prev" title="Ex63 吸附能的计算（八）">
+                  <i class="fa fa-chevron-left"></i> Ex63 吸附能的计算（八）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/03/ex65/" rel="next" title="Ex65 p4vasp 的旋转操作">
+                  Ex65 p4vasp 的旋转操作 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

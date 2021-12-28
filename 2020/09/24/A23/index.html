@@ -1,37 +1,455 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="前面一节我们介绍了Ubuntu虚拟机的安装，今天就介绍一些Ubuntu常用软件的软装。大部分极其简单，敲个命令，输入下密码就能解决。少部分非常简单，设置下环境变量就可以解决。有些安装比较蛋疼的可以借助第三方平台比如Anaconda等来安装，也可以归纳到非常简单的行列中。所以，So easy！！！ 1  第一件事：打开终端（CONTROL + ALT + T），创建~&#x2F;bin 文件夹。 1qli@b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu常用软件的安装">
+<meta property="og:url" content="http://www.bigbrosci.com/2020/09/24/A23/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="前面一节我们介绍了Ubuntu虚拟机的安装，今天就介绍一些Ubuntu常用软件的软装。大部分极其简单，敲个命令，输入下密码就能解决。少部分非常简单，设置下环境变量就可以解决。有些安装比较蛋疼的可以借助第三方平台比如Anaconda等来安装，也可以归纳到非常简单的行列中。所以，So easy！！！ 1  第一件事：打开终端（CONTROL + ALT + T），创建~&#x2F;bin 文件夹。 1qli@b">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2020/09/24/A23/打赏码.jpg">
+<meta property="article:published_time" content="2020-09-24T04:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.304Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="Ubuntu">
+<meta property="article:tag" content="安装">
+<meta property="article:tag" content="软件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2020/09/24/A23/打赏码.jpg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2020/09/24/A23/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2020/09/24/A23/","path":"2020/09/24/A23/","title":"Ubuntu常用软件的安装"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ubuntu常用软件的安装 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E7%AC%AC%E4%B8%80%E4%BB%B6%E4%BA%8B%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">1  第一件事：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E5%91%BD%E4%BB%A4%E5%AE%89%E8%A3%85%E7%A8%8B%E5%BA%8F"><span class="nav-number">2.</span> <span class="nav-text">2 命令安装程序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E5%AE%89%E8%A3%85Anaconda"><span class="nav-number">3.</span> <span class="nav-text">3  安装Anaconda</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E5%85%B6%E4%BB%96%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9A%84%E7%A8%8B%E5%BA%8F"><span class="nav-number">4.</span> <span class="nav-text">4 其他可执行的程序</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-Ubuntu%E7%9A%84%E5%A4%87%E4%BB%BD"><span class="nav-number">5.</span> <span class="nav-text">5 Ubuntu的备份</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-%E6%89%93%E8%B5%8F"><span class="nav-number">6.</span> <span class="nav-text">6 打赏</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2020/09/24/A23/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ubuntu常用软件的安装
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-09-24 00:30:16" itemprop="dateCreated datePublished" datetime="2020-09-24T00:30:16-04:00">2020-09-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2020/09/24/A23/" class="post-meta-item leancloud_visitors" data-flag-title="Ubuntu常用软件的安装" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/09/24/A23/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/09/24/A23/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>前面一节我们介绍了Ubuntu虚拟机的安装，今天就介绍一些Ubuntu常用软件的软装。大部分极其简单，敲个命令，输入下密码就能解决。少部分非常简单，设置下环境变量就可以解决。有些安装比较蛋疼的可以借助第三方平台比如Anaconda等来安装，也可以归纳到非常简单的行列中。所以，So easy！！！</p>
+<h5 id="1-第一件事："><a href="#1-第一件事：" class="headerlink" title="1  第一件事："></a>1  第一件事：</h5><p>打开终端（<code>CONTROL</code> + <code>ALT</code> + <code>T</code>），创建<code>~/bin</code> 文件夹。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbrosci:~$ mkdir ~/bin</span><br></pre></td></tr></table></figure>
+
+<p>这个文件夹用于存储一些日常的脚本文件，可执行的小程序。 平时勤备份也不会占用太大空间。</p>
+<h5 id="2-命令安装程序"><a href="#2-命令安装程序" class="headerlink" title="2 命令安装程序"></a>2 命令安装程序</h5><p>复制下面的<code>sudo apt-get</code>命令，输入到<code>Terminal</code>中，回车，输入密码即可。 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install python3-pip</span><br><span class="line">sudo apt-get install curl</span><br><span class="line">curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py</span><br><span class="line">sudo python get-pip.py</span><br><span class="line"></span><br><span class="line">sudo apt-get install vim </span><br><span class="line">sudo apt-get install vim-gtk</span><br><span class="line">sudo apt-get install sshfs</span><br><span class="line">sudo apt-get install rename </span><br><span class="line">sudo apt-get install xclip </span><br><span class="line">sudo apt-get install git </span><br><span class="line">sudo apt-get install gnuplot</span><br><span class="line">sudo apt-get install xcrysden</span><br><span class="line">sudo apt-get tree</span><br><span class="line">sudo apt-get install inkscape  </span><br><span class="line"></span><br><span class="line">sudo apt-get install fish </span><br><span class="line">sudo apt-get install tmux </span><br><span class="line">sudo apt-get install texlive-full</span><br><span class="line">sudo apt-get install kile  </span><br></pre></td></tr></table></figure>
+
+
+
+<p>pip 用来安装python程序；</p>
+<p>vim就不介绍了；</p>
+<p>sshfs 用来把服务器挂载到本地电脑，方便传输数据；</p>
+<p>rename 可以很方便批量命名；</p>
+<p>xclip 可以把命令的输出复制到剪切板里面，方便鼠标粘贴；</p>
+<p>git 用来从git-hub下载，上传，管理一些脚本程序等， </p>
+<p>gnuplot 画图用的</p>
+<p>xcrysden 可视化软件</p>
+<p>tree 方便显示文件目录</p>
+<p>inkscape 一款非常好用的做图软件</p>
+<p>fish，tmux 装逼效果明显，没对象的重点关注下，好好学习一番，当然功能没的说，很强大。</p>
+<p>Latex 写文章的可以使用最后两个命令安装。</p>
+<p>其他的暂时也想不起来，如果你有推荐的，可以发邮件给我，后面再添上去。（<a href="mailto:&#108;&#113;&#x63;&#97;&#116;&#x61;&#64;&#103;&#109;&#x61;&#105;&#108;&#46;&#99;&#111;&#109;">&#108;&#113;&#x63;&#97;&#116;&#x61;&#64;&#103;&#109;&#x61;&#105;&#108;&#46;&#99;&#111;&#109;</a>）</p>
+<h5 id="3-安装Anaconda"><a href="#3-安装Anaconda" class="headerlink" title="3  安装Anaconda"></a>3  安装Anaconda</h5><p>它可以帮助你节省很多时间和精力去安装软件。下载后，按照下面命令，然后一路狂摁回车或者输入<code>yes</code>即可，官网也有安装教程，这里就不累赘了。通过Anaconda安装其他软件，可以参考前面的教程：<a href="https://www.bigbrosci.com/2020/09/19/A20/">https://www.bigbrosci.com/2020/09/19/A20/</a> </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbrosci:~/Downloads$ ls</span><br><span class="line">Anaconda3-2020.07-Linux-x86_64.sh  p4vasp-0.3.30.tgz </span><br><span class="line">qli@bigbrosci:~/Downloads$ bash Anaconda3-2020.07-Linux-x86_64.sh </span><br><span class="line">Welcome to Anaconda3 2020.07</span><br><span class="line"></span><br><span class="line">In order to <span class="built_in">continue</span> the installation process, please review the license</span><br><span class="line">agreement.</span><br><span class="line">Please, press ENTER to <span class="built_in">continue</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; </span><br></pre></td></tr></table></figure>
+
+
+
+<p>Anaconda安装的软件可以通过<a target="_blank" rel="noopener" href="https://anaconda.org/">https://anaconda.org</a> 来查询，都会列出来安装的命令，比如RDkit：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install -c rdkit rdkit</span><br></pre></td></tr></table></figure>
+
+
+
+<p>另一个需要注意的是，Anaconda安装后，最喜爱的<code>p4vasp</code>不能正常使用了。解决办法如下：</p>
+<p>1） 找到p4v的目录，一般在<code>/usr/bin/</code></p>
+<p>2）将<code>p4v</code>中的<code>python</code> 全部改为<code>python2</code></p>
+<ol start="3">
+<li> 将<code>p4v.py</code> 第一行中的<code>python</code>改为<code>python2</code>。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">(base) qli@bigbrosci:~$ p4v </span><br><span class="line">  File <span class="string">&quot;/usr/bin/p4v.py&quot;</span>, line 9</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;&quot;</span><span class="string">&quot;You need to get version 2.0 (or later) of PyGTK for this to work. You</span></span><br><span class="line"><span class="string">             can get source code from http://www.pygtk.org &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">          ^</span><br><span class="line">SyntaxError: invalid syntax</span><br><span class="line">(base) qli@bigbrosci:~$ <span class="built_in">which</span> p4v </span><br><span class="line">/usr/bin/p4v</span><br><span class="line">(base) qli@bigbrosci:~$ sudo vi /usr/bin/p4v</span><br><span class="line">[sudo] password <span class="keyword">for</span> qli: </span><br><span class="line">(base) qli@bigbrosci:~$ sudo vi /usr/bin/p4v.py </span><br><span class="line">(base) qli@bigbrosci:~$ grep python  /usr/bin/p4v</span><br><span class="line"><span class="built_in">export</span> PYTHONPATH=<span class="variable">$PYTHONPATH</span>:/usr/lib/python2.7/dist-packages</span><br><span class="line"><span class="built_in">exec</span> python2 /usr/bin/p4v.py <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span><br><span class="line">(base) qli@bigbrosci:~$ grep python  /usr/bin/p4v.py </span><br><span class="line"><span class="comment">#!/usr/bin/env python2</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="4-其他可执行的程序"><a href="#4-其他可执行的程序" class="headerlink" title="4 其他可执行的程序"></a>4 其他可执行的程序</h5><p>这里我们以VESTA为例，这种方法非常简单实用。</p>
+<p>4.1） 下载解压VESTA程序包。（<a target="_blank" rel="noopener" href="https://jp-minerals.org/vesta/en/%EF%BC%89">https://jp-minerals.org/vesta/en/）</a> 直接通过官网下载即可，没必要去群里面求助，也没必要往群里面上传。</p>
+<p>4.2） 本人习惯性地将其解压到<code>/home/qli/Documents/VESTA-gtk3</code></p>
+<p>4.3)   设置环境变量，将下面的<code>export</code> 两行复制到<code>~/.bashrc</code> 文件中， <code>source</code> 下 <code>.bashrc</code> 文件，然后直接敲命令<code>VESTA</code>即可打开可视化界面。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbrosci:~/Documents/VESTA-gtk3$ ls</span><br><span class="line">asfdc           Library_License  RIETAN.sh          style         VESTA-core</span><br><span class="line">bvparm2016.cif  libVESTA.so      spgra.dat          style.ini     VESTA_def.ini</span><br><span class="line">elements        LICENSE          spgro.dat          template.ins  VESTA-gui</span><br><span class="line">elements.ini    mspgr.dat        STRUCTURE_TIDY     tmp           VESTA.ini</span><br><span class="line">img             PowderPlot       STRUCTURE_TIDY.sh  VESTA         wyckoff.dat</span><br><span class="line">qli@bigbrosci:~/Documents/VESTA-gtk3$ <span class="built_in">pwd</span></span><br><span class="line">/home/qli/Documents/VESTA-gtk3</span><br><span class="line">qli@bigbrosci:~/Documents/VESTA-gtk3$ <span class="built_in">cd</span> </span><br><span class="line">qli@bigbrosci:~$ vi .bashrc</span><br><span class="line"><span class="built_in">export</span> VESTA=<span class="string">&#x27;/home/qli/Documents/VESTA-gtk3&#x27;</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$VESTA</span></span><br><span class="line">qli@bigbrosci:~$ <span class="built_in">source</span> .bashrc	 </span><br><span class="line">qli@bigbrosci:~$ VESTA</span><br></pre></td></tr></table></figure>
+
+<p><code>注意</code> 上面VESTA的路径记得换成你自己电脑里面的。</p>
+<h5 id="5-Ubuntu的备份"><a href="#5-Ubuntu的备份" class="headerlink" title="5 Ubuntu的备份"></a>5 Ubuntu的备份</h5><p>本人喜欢瞎折腾，也经常会把电脑搞崩溃，备份就显得尤其重要。对于Ubuntu来说，前面我们在虚拟机的安装中提到存储Ubuntu系统的<code>vdi</code>文件，如果你有足够大的硬盘，可以定期将一个稳定版本的vdi保存起来，万一系统崩溃，删掉坏的，导入最新的备份即可。</p>
+<p>如果没有用虚拟机，直接装的Ubuntu系统，或者双系统，可以尝试定期保存<code>~/bin</code> 和<code>~/.bashrc</code> 文件，本人之前就是这样做的（现在懒得折腾，系统不坏了），它们不怎么占空间，打包压缩下，邮件基本就可以上传。如果系统坏掉了，非得安装一个新的才能解决的时候，只需要重复本教程，下载一些常用的软件，以及用备份的<code>~/bin</code> 和<code>~/.bashrc</code> 文件还原一下设置即可。数据一般来说都直接存储在服务器中，相关备份不在本教程讨论范围之内。</p>
+<p>当然还有其他的办法备份和恢复虚拟机，比如创建当前Ubuntu版本的iso文件，定期备份当前整个系统以便引导修复等等，精力有限，不再累赘。有兴趣的可以尝试。</p>
+<h5 id="6-打赏"><a href="#6-打赏" class="headerlink" title="6 打赏"></a>6 打赏</h5><p>如果感觉本文对你的相关研究有帮助，欢迎打赏，支持作者的热心付出。如果你也有自己擅长的操作等，热烈欢迎无私分享，可以通过QQ（122103465）或者邮件（<a href="mailto:&#x6c;&#113;&#x63;&#97;&#x74;&#x61;&#x40;&#x67;&#109;&#97;&#x69;&#108;&#x2e;&#99;&#111;&#109;">&#x6c;&#113;&#x63;&#97;&#x74;&#x61;&#x40;&#x67;&#109;&#97;&#x69;&#108;&#x2e;&#99;&#111;&#109;</a>）联系。</p>
+<img src="/2020/09/24/A23/打赏码.jpg" alt="打赏码" style="zoom: 33%;">
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
+              <a href="/tags/%E5%AE%89%E8%A3%85/" rel="tag"># 安装</a>
+              <a href="/tags/%E8%BD%AF%E4%BB%B6/" rel="tag"># 软件</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/23/A22/" rel="prev" title="Ubuntu虚拟机的安装">
+                  <i class="fa fa-chevron-left"></i> Ubuntu虚拟机的安装
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/02/A24/" rel="next" title="离子迁移概率密度可视化">
+                  离子迁移概率密度可视化 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

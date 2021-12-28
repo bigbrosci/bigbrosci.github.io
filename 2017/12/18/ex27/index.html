@@ -1,37 +1,845 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="通过前面读者的反馈，本节前面主要讲述一下零点能相关的注意事项以及频率计算的时间成本相关的知识。 1 参考书籍：以下所提到的书籍都可以在QQ群文件和百度网盘里面下载：http:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1bKHMjG 1.1 Density Functional Theory：A Practical Introduction大师兄极力推荐的菜鸟入门书！！！ 1）不要网上随便下载（很多都是野">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex27 乙醇分子的振动频率计算(五)">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/12/18/ex27/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="通过前面读者的反馈，本节前面主要讲述一下零点能相关的注意事项以及频率计算的时间成本相关的知识。 1 参考书籍：以下所提到的书籍都可以在QQ群文件和百度网盘里面下载：http:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1bKHMjG 1.1 Density Functional Theory：A Practical Introduction大师兄极力推荐的菜鸟入门书！！！ 1）不要网上随便下载（很多都是野">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/18/ex27/ex27-1.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/18/ex27/ex27-2.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/18/ex27/ex27-3.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/18/ex27/ex27-4.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/18/ex27/ex27-5.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/18/ex27/ex27-6.jpeg">
+<meta property="article:published_time" content="2017-12-18T07:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.707Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="乙醇">
+<meta property="article:tag" content="振动频率">
+<meta property="article:tag" content="时间">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2017/12/18/ex27/ex27-1.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/12/18/ex27/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/12/18/ex27/","path":"2017/12/18/ex27/","title":"Ex27 乙醇分子的振动频率计算(五)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex27 乙醇分子的振动频率计算(五) | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%8F%82%E8%80%83%E4%B9%A6%E7%B1%8D%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">1 参考书籍：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Density-Functional-Theory%EF%BC%9AA-Practical-Introduction"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 Density Functional Theory：A Practical Introduction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Atkins%E7%9A%84%E7%89%A9%E7%90%86%E5%8C%96%E5%AD%A6%E7%AC%AC9%E7%89%88"><span class="nav-number">1.2.</span> <span class="nav-text">1.2  Atkins的物理化学第9版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-Jens-K-Norskov-%E7%9A%84-Fundamental-Concepts-in-Heterogeneous-Catalysis"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 Jens. K. Norskov 的 Fundamental Concepts in Heterogeneous Catalysis</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%A2%91%E7%8E%87%E8%AE%A1%E7%AE%97%E7%9A%84%E7%BB%86%E8%8A%82%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">2 频率计算的细节问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%80%8E%E4%B9%88%E8%BF%9B%E8%A1%8C%E9%9B%B6%E7%82%B9%E8%83%BD%E6%A0%A1%E6%AD%A3%EF%BC%9F"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 怎么进行零点能校正？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E6%80%8E%E4%B9%88%E8%AE%A1%E7%AE%97%E8%BF%87%E6%B8%A1%E6%80%81%E5%92%8C%E5%8F%8D%E5%BA%94%E7%83%AD%E7%9A%84%E9%9B%B6%E7%82%B9%E8%83%BD%E6%A0%A1%E6%AD%A3%EF%BC%9F%EF%BC%88%E8%8F%9C%E9%B8%9F%E6%9A%82%E4%B8%94%E8%B7%B3%E8%BF%87%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 怎么计算过渡态和反应热的零点能校正？（菜鸟暂且跳过）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BD%B1%E5%93%8D%E9%A2%91%E7%8E%87%E8%AE%A1%E7%AE%97%E7%9A%84%E5%9B%A0%E7%B4%A0%E6%B5%8B%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text">3 影响频率计算的因素测试:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-EDIFFG%E6%B5%8B%E8%AF%95"><span class="nav-number">3.1.</span> <span class="nav-text">3.1  EDIFFG测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-1%E6%B5%8B%E8%AF%95"><span class="nav-number">3.1.1.</span> <span class="nav-text">3.1.1测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-2-%E8%99%9A%E9%A2%91"><span class="nav-number">3.1.2.</span> <span class="nav-text">3.1.2 虚频</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-3-%E6%97%B6%E9%97%B4"><span class="nav-number">3.1.3.</span> <span class="nav-text">3.1.3 时间</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-ENCUT%E6%B5%8B%E8%AF%95"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 ENCUT测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-1-%E9%9B%B6%E7%82%B9%E8%83%BD"><span class="nav-number">3.2.1.</span> <span class="nav-text">3.2.1 零点能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-2-%E8%99%9A%E9%A2%91%EF%BC%9A"><span class="nav-number">3.2.2.</span> <span class="nav-text">3.2.2 虚频：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-3-%E6%97%B6%E9%97%B4"><span class="nav-number">3.2.3.</span> <span class="nav-text">3.2.3 时间</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-PREC"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 PREC</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-%E9%9B%B6%E7%82%B9%E8%83%BD%E5%8F%98%E5%8C%96%E7%94%9A%E5%BE%AE"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.3.1 零点能变化甚微</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-%E8%99%9A%E9%A2%91"><span class="nav-number">3.3.2.</span> <span class="nav-text">3.3.2 虚频</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-3-%E6%97%B6%E9%97%B4"><span class="nav-number">3.3.3.</span> <span class="nav-text">3.3.3 时间</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-POTIM-%E5%8F%82%E6%95%B0"><span class="nav-number">3.4.</span> <span class="nav-text">3.4  POTIM 参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-1-%E9%9B%B6%E7%82%B9%E8%83%BD%EF%BC%9A"><span class="nav-number">3.4.1.</span> <span class="nav-text">3.4.1 零点能：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-2%E8%99%9A%E9%A2%91"><span class="nav-number">3.4.2.</span> <span class="nav-text">3.4.2虚频</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-3-%E6%97%B6%E9%97%B4"><span class="nav-number">3.4.3.</span> <span class="nav-text">3.4.3 时间</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-POINTS"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 POINTS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-1-%E9%9B%B6%E7%82%B9%E8%83%BD%EF%BC%9A"><span class="nav-number">3.5.1.</span> <span class="nav-text">3.5.1 零点能：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-2-%E8%99%9A%E9%A2%91%EF%BC%9A"><span class="nav-number">3.5.2.</span> <span class="nav-text">3.5.2 虚频：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-3-%E6%97%B6%E9%97%B4"><span class="nav-number">3.5.3.</span> <span class="nav-text">3.5.3 时间</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%89%A9%E5%B1%95%E9%98%85%E8%AF%BB%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">4      扩展阅读：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">5. 总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/18/ex27/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex27 乙醇分子的振动频率计算(五)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-18 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-18T02:06:48-05:00">2017-12-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/18/ex27/" class="post-meta-item leancloud_visitors" data-flag-title="Ex27 乙醇分子的振动频率计算(五)" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/12/18/ex27/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/18/ex27/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>通过前面读者的反馈，本节前面主要讲述一下零点能相关的注意事项以及频率计算的时间成本相关的知识。</p>
+<h2 id="1-参考书籍："><a href="#1-参考书籍：" class="headerlink" title="1 参考书籍："></a>1 参考书籍：</h2><p>以下所提到的书籍都可以在<strong>QQ群文件</strong>和<strong>百度网盘</strong>里面下载：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1bKHMjG">http://pan.baidu.com/s/1bKHMjG</a></p>
+<h3 id="1-1-Density-Functional-Theory：A-Practical-Introduction"><a href="#1-1-Density-Functional-Theory：A-Practical-Introduction" class="headerlink" title="1.1 Density Functional Theory：A Practical Introduction"></a>1.1 Density Functional Theory：A Practical Introduction</h3><p>大师兄极力推荐的菜鸟入门书！！！</p>
+<p>1）不要网上随便下载（很多都是野鸡版，公式符号不全）</p>
+<p>2）不要看中文版的；去看原汁原味的，困了就歇会，慢慢坚持看；</p>
+<p>3）大师兄QQ群下载或者点击百度网盘链接；</p>
+<p>4）第5章专门讨论的频率相关的问题！！！</p>
+<p><img src="/2017/12/18/ex27/ex27-1.jpeg"></p>
+<h3 id="1-2-Atkins的物理化学第9版"><a href="#1-2-Atkins的物理化学第9版" class="headerlink" title="1.2  Atkins的物理化学第9版"></a>1.2  Atkins的物理化学第9版</h3><p>前面几节我们都是用的这一部分作为参考，忘了的童鞋们返回继续重修；这本书网上已经可以下载第十版的pdf文件了。</p>
+<p><img src="/2017/12/18/ex27/ex27-2.jpeg"></p>
+<h3 id="1-3-Jens-K-Norskov-的-Fundamental-Concepts-in-Heterogeneous-Catalysis"><a href="#1-3-Jens-K-Norskov-的-Fundamental-Concepts-in-Heterogeneous-Catalysis" class="headerlink" title="1.3 Jens. K. Norskov 的 Fundamental Concepts in Heterogeneous Catalysis"></a>1.3 Jens. K. Norskov 的 Fundamental Concepts in Heterogeneous Catalysis</h3><p><img src="/2017/12/18/ex27/ex27-3.jpeg"></p>
+<h2 id="2-频率计算的细节问题"><a href="#2-频率计算的细节问题" class="headerlink" title="2 频率计算的细节问题"></a>2 频率计算的细节问题</h2><p>当你阅读完前面推荐书中的频率部分后，应该会明白很多。本节的第二部分我们主要讨论下频率计算的一些大家有顾虑的细节问题：</p>
+<h3 id="2-1-怎么进行零点能校正？"><a href="#2-1-怎么进行零点能校正？" class="headerlink" title="2.1 怎么进行零点能校正？"></a>2.1 怎么进行零点能校正？</h3><p>以乙醇的计算为例：</p>
+<p>A）首先结构优化完毕后我们会得到分子的能量：$E_{0}$  （OSZICAR中的E0）</p>
+<p>B）频率计算后我们会得到分子的零点能：$ZPE$</p>
+<p>C）零点能校正之后的乙醇分子能量为： $E_{ZPE} =  E_0 + ZPE$</p>
+<p>D）A 和 B 得出的结果直接相加即可，不要想太多。</p>
+<h3 id="2-2-怎么计算过渡态和反应热的零点能校正？（菜鸟暂且跳过）"><a href="#2-2-怎么计算过渡态和反应热的零点能校正？（菜鸟暂且跳过）" class="headerlink" title="2.2 怎么计算过渡态和反应热的零点能校正？（菜鸟暂且跳过）"></a>2.2 怎么计算过渡态和反应热的零点能校正？（菜鸟暂且跳过）</h3><p>对一个反应：IS –&gt; TS –&gt; FS</p>
+<p>IS: Initial State 反应物</p>
+<p>TS: Transition State 过渡态</p>
+<p>FS: Final State 产物</p>
+<p>记住这几个定义，本书后面 IS, TS, FS 用的时候多着呢！</p>
+<p>1）优化反应物 IS 和产物 FS 的结构，获得能量：$E(\textrm{IS})$, $E(\textrm{FS})$;</p>
+<p>2）对反应物和产物进行频率计算，获得各自的零点能：$\textrm{ZPE(IS)}, \textrm{ZPE(FS)}$。</p>
+<p>3）搜索过渡态，获得结构和能量 $E(\textrm{TS})$;</p>
+<p>4）过渡态频率分析，获得零点能 $\textrm{ZPE(TS)}$</p>
+<p><strong>不考虑零点能的反应能垒 ($E_a$) 和反应热 ($\Delta E$)：</strong></p>
+<p>$$ E_a = E(\textrm{TS}) – E(\textrm{IS}) \<br> \Delta E = E(\textrm{FS}) –  E(\textrm{IS}) $$</p>
+<p>考虑零点能校正：</p>
+<p>$$<br>\begin{align}<br>E{a(\textrm{ZPE})} &amp;= E_{\textrm{ZPE}}(\textrm{TS}) – E_{\textrm{ZPE}}(\textrm{IS}) \<br>     &amp;= E(\textrm{TS}) + \textrm{ZPE(TS}) – E(\textrm{IS}) – \textrm{ZPE(IS}) \<br>     &amp;= E_a + \textrm{ZPE(TS)} – \textrm{ZPE(IS)}<br>\end{align}<br>$$</p>
+<p>同理:</p>
+<p>$ \Delta E(\textrm{ZPE}) = \Delta E + \textrm{ZPE(FS)} – \textrm{ZPE(IS)} $</p>
+<p>两个处理方式：</p>
+<p>a. 先获取未校正的结果，然后把零点能各自相减；</p>
+<p>b. 先将各个物种进行零点能校正，然后在计算反应能垒或者反应热</p>
+<p>效果是一样的</p>
+<p>2.2 频率计算的时候，是不是体系中所有的原子都放开？</p>
+<p>不一定；这取决于你的体系，以及你想要关注的部分:</p>
+<hr>
+<p><strong>例子A:</strong></p>
+<p>乙醇在Cu(111)表面上的吸附，计算吸附热的零点能校正</p>
+<p>$$<br>\ce{CH_3CH_2OH + Cu(111) -&gt; Cu(111)-CH_3CH_2OH}<br>$$<br>此时，Cu(111)表面我们在计算频率的时候是要固定住的！只振动乙醇分子即可。</p>
+<hr>
+<p><strong>例子B:</strong></p>
+<p>计算CO在Cu(111)表面上的吸附：</p>
+<p>同A，固定Cu(111) 表面，如果你只关心 CO 在垂直表面上的振动，那么CO的 $x, y$ 方向便可以固定住，在坐标后面为：<code>F F T</code></p>
+<hr>
+<p><strong>例子C:</strong></p>
+<p>苯酚在Cu(111)表面上 O—H 键断裂活化能的零点能校正：</p>
+<p>在这里我们拿苯酚作为例子，很多时候，计算的对象比较大，全部频率优化非常耗时，那我们就得选择性地固定住一部分，只关心关键的局域部分。这个例子中我们主要讨论零点能对 O—H 键断裂活化能的影响，因此我们可以把苯环的部分固定住，只放开 O 和 H 原子进行振动。</p>
+<p>当然啦，这是一个简化的计算，肯定不如全部振动的结果好，但迫于计算时间的压力，这是一个折中的好办法。此外，由于在反应中苯环部分变化不大，所以即使我们全部放开，它对反应热和反应能垒的影响也很小，零点能部分相减的时候抵消了。在这里你要深刻体会到，意识到，<strong>把握到相对这两个字在理论计算中的巨大作用！！！</strong></p>
+<hr>
+<p>还有一点要注意的是：<code>IS</code>，<code>TS</code>和<code>FS</code>中，所固定和放开的原子必须一致！！！</p>
+<p><strong>不要在<code>IS</code>中固定苯环，而在<code>TS</code>或者<code>FS</code>中放开，</strong> 这样计算出来的结果只能用脑残来形容了。(<em>ps. 本人犯的这种错误太多啦，已经不能用脑残来形容了！</em>)</p>
+<hr>
+<h2 id="3-影响频率计算的因素测试"><a href="#3-影响频率计算的因素测试" class="headerlink" title="3 影响频率计算的因素测试:"></a>3 影响频率计算的因素测试:</h2><p>前面提到过：<code>ENCUT</code>, <code>KPOINTS</code>, <code>POTIM</code>, <code>EDIFF</code>都会对频率计算产生影响。频率计算很多时候会有小的虚频出现，通俗点说就是数值噪音。我们可能会想到，凡是可以提高精度的办法是不是就可以降低噪音了呢？写到这里，大师兄突然想起初中的一个老师说过一句话：好记性不如烂笔头，意思是让我们多写，这样记得会比较快。还有一句名言：<strong>纸上学来终觉浅，绝知此事要躬行！学习 <strong>VASP</strong>，亲自上手实践及其重要，看遍官网，翻烂本书不去行动也是白搭，好听点说只能是纸上谈兵。</strong></p>
+<p>下面的测试主要从零点能和虚频，和时间三个方面来判断：测试的命令为：</p>
+<p>获取虚频命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">&#x27;f/i&#x27;</span>  */OUTCAR | awk <span class="string">&#x27;&#123;print $1 &quot;\t &quot; $2 &quot;\t&quot; $8 &quot;\t &quot; $9 &quot;\t&quot; $10 &quot;\t&quot; $11&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>获取时间命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep Elapsed */OUTCAR | sort -n</span><br></pre></td></tr></table></figure>
+
+<p>获取零点能：  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> * ; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span> $(<span class="built_in">cd</span> <span class="variable">$i</span> ; fsum ; <span class="built_in">cd</span> <span class="variable">$OLDPWD</span>);<span class="keyword">done</span>  | sort –n</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-1-EDIFFG测试"><a href="#3-1-EDIFFG测试" class="headerlink" title="3.1  EDIFFG测试"></a>3.1  EDIFFG测试</h3><h4 id="3-1-1测试"><a href="#3-1-1测试" class="headerlink" title="3.1.1测试"></a>3.1.1测试</h4><p>$4, 5, 6, 7, 8$ 分别代表 <code>EDIFF=1E-4</code> 到 <code>-8</code> 的测试任务；</p>
+<p><img src="/2017/12/18/ex27/ex27-4.jpeg"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> * ; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span> $(<span class="built_in">cd</span> <span class="variable">$i</span> ; fsum ; <span class="built_in">cd</span> <span class="variable">$OLDPWD</span>); <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>零点能的计算结果：</p>
+<table>
+<thead>
+<tr>
+<th align="left">EDIFF</th>
+<th align="left">ZPE</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">4</td>
+<td align="left">2.14344</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">2.12494</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left">2.11698</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left">2.11696</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left">2.11696</td>
+<td align="left">eV</td>
+</tr>
+</tbody></table>
+<p>a. 可以看出来在<code>1E=-6</code>以后，零点能变化基本为 <code>0</code>了；我们可以用这个设置；</p>
+<p>b. 虽然你测出来一个很好的参数值，很不幸，这是默认的。</p>
+<p>c. 从时间上考虑，本人会选择 <code>EDIFF= 1E-5</code>，这比 <code>1E=-6</code> 快了将近一倍；</p>
+<p>d. $5$ 和 $6$ 之间的误差为：$ 0.008/2.117 = 0.38% $；</p>
+<p>e. 此外，单个的零点能貌似没有什么用处，一般都是两个结构的零点能相减。这个操作也会抵消一部分的计算误差。</p>
+<hr>
+<h4 id="3-1-2-虚频"><a href="#3-1-2-虚频" class="headerlink" title="3.1.2 虚频"></a>3.1.2 虚频</h4><p><img src="/2017/12/18/ex27/ex27-5.jpeg"></p>
+<p><strong>（这个命令只展示一次，后面测试结果全部用下面的表格）</strong></p>
+<table><tr><th>EDIFF</th><th>Nth</th><th>WN</th><th>Unit</th><th>Energy</th><th>Unit</th></tr><tr><td rowspan="3">4</td><td>25</td><td>10.183435</td><td> cm<sup>-1</sup></td><td>1.262585</td><td>meV</td></tr><tr><td>26</td><td>43.891375</td><td> cm<sup>-1</sup></td><td>5.441839</td><td>meV</td></tr><tr><td>27</td><td>61.646745</td><td> cm<sup>-1</sup></td><td>7.643225</td><td>meV</td></tr><tr><td rowspan="3">5</td><td>25</td><td>6.773094</td><td> cm<sup>-1</sup></td><td>0.839757</td><td>meV</td></tr><tr><td>26</td><td>28.045092</td><td> cm<sup>-1</sup></td><td>3.477149</td><td>meV</td></tr><tr><td>27</td><td>52.28955</td><td> cm<sup>-1</sup></td><td>6.48308</td><td>meV</td></tr><tr><td rowspan="3">6</td><td>25</td><td>6.132037</td><td> cm<sup>-1</sup></td><td>0.760276</td><td>meV</td></tr><tr><td>26</td><td>18.62878</td><td> cm<sup>-1</sup></td><td>2.309675</td><td>meV</td></tr><tr><td>27</td><td>65.657693</td><td> cm<sup>-1</sup></td><td>8.140519</td><td>meV</td></tr><tr><td rowspan="3">7</td><td>25</td><td>6.03848</td><td> cm<sup>-1</sup></td><td>0.748676</td><td>meV</td></tr><tr><td>26</td><td>19.115009</td><td> cm<sup>-1</sup></td><td>2.36996</td><td>meV</td></tr><tr><td>27</td><td>65.726299</td><td> cm<sup>-1</sup></td><td>8.149025</td><td>meV</td></tr><tr><td rowspan="3">8</td><td>25</td><td>6.036457</td><td> cm<sup>-1</sup></td><td>0.748425</td><td>meV</td></tr><tr><td>26</td><td>19.156334</td><td> cm<sup>-1</sup></td><td>2.375084</td><td>meV</td></tr><tr><td>27</td><td>65.711053</td><td> cm<sup>-1</sup></td><td>8.147135</td><td>meV</td></tr></table>
+
+<p>a. 改变收敛标准，并没有消除虚频，测试 $5$ 中，稍微降低了些，其他情况下，最大的仍然都再 <code>1500 px-1</code> 左右</p>
+<p>b. $6$, $7$, $8$ 中的虚频基本一致，说明增加收敛标准，并没起到什么好的效果。</p>
+<h4 id="3-1-3-时间"><a href="#3-1-3-时间" class="headerlink" title="3.1.3 时间"></a>3.1.3 时间</h4><table>
+<thead>
+<tr>
+<th align="left">EDIFF</th>
+<th align="left">Time</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">4</td>
+<td align="left">1702.463</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">2295.233</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left">4298.571</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left">5481.423</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left">5998.518</td>
+<td align="left">s</td>
+</tr>
+</tbody></table>
+<p>复习下谁偷走了我的机时中<code>EDIFF</code>的因素；增加<code>EDIFF</code>，计算时间变长了。（离子步数一致，每个离子步的收敛步数增多了） 一般来说<code>EDIFF</code>采用默认值或者<code>1E-5</code>都可以满足情况，任务比较繁重的时候议用<code>1E-5</code>。本节在后面的测试中，都采用 <strong>VASP</strong> 的默认<code>EDIFF</code>值进行（<code>1E-6</code>）</p>
+<hr>
+<h3 id="3-2-ENCUT测试"><a href="#3-2-ENCUT测试" class="headerlink" title="3.2 ENCUT测试"></a>3.2 ENCUT测试</h3><h4 id="3-2-1-零点能"><a href="#3-2-1-零点能" class="headerlink" title="3.2.1 零点能"></a>3.2.1 零点能</h4><table>
+<thead>
+<tr>
+<th align="left">ENCU</th>
+<th align="left">ZPE</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">400</td>
+<td align="left">2.11698</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">500</td>
+<td align="left">2.11448</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">600</td>
+<td align="left">2.11880</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">700</td>
+<td align="left">2.11971</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">800</td>
+<td align="left">2.11928</td>
+<td align="left">eV</td>
+</tr>
+</tbody></table>
+<p>从表中可以得出结论：增加<code>ENCUT</code>,对零点能的影响很小；</p>
+<p>在计算的过程中，<code>ENCUT</code>要保持一致，一但选定后就不要再轻易改动，这个表的数据告诉我们，即使改动了<code>ENCUT</code>，对零点能的影响也很小，所以<code>ENCUT</code>的影响可以忽略。</p>
+<h4 id="3-2-2-虚频："><a href="#3-2-2-虚频：" class="headerlink" title="3.2.2 虚频："></a>3.2.2 虚频：</h4><table><tr><th>ENCUT</th><th>Nth</th><th>WN</th><th>Unit</th><th>energy</th><th>unit</th></tr><tr><td rowspan="3">400</td><td>25</td><td>6.132038</td><td> cm<sup>-1</sup></td><td>0.760276</td><td>meV</td></tr><tr><td>26</td><td>18.62878</td><td> cm<sup>-1</sup></td><td>2.309675</td><td>meV</td></tr><tr><td>27</td><td>65.65769</td><td> cm<sup>-1</sup></td><td>8.140519</td><td>meV</td></tr><tr><td rowspan="4">500</td><td>24</td><td>0.489004</td><td> cm<sup>-1</sup></td><td>0.060629</td><td>meV</td></tr><tr><td>25</td><td>16.7313</td><td> cm<sup>-1</sup></td><td>2.074418</td><td>meV</td></tr><tr><td>26</td><td>23.491849</td><td> cm<sup>-1</sup></td><td>2.912619</td><td>meV</td></tr><tr><td>27</td><td>66.062971</td><td> cm<sup>-1</sup></td><td>8.190767</td><td>meV</td></tr><tr><td rowspan="4">600</td><td>24</td><td>0.288462</td><td> cm<sup>-1</sup></td><td>0.035765</td><td>meV</td></tr><tr><td>25</td><td>4.853849</td><td> cm<sup>-1</sup></td><td>0.601801</td><td>meV</td></tr><tr><td>26</td><td>6.324527</td><td> cm<sup>-1</sup></td><td>0.784142</td><td>meV</td></tr><tr><td>27</td><td>52.075614</td><td> cm<sup>-1</sup></td><td>6.456556</td><td>meV</td></tr><tr><td rowspan="3">700</td><td>25</td><td>0.747158</td><td> cm<sup>-1</sup></td><td>0.092636</td><td>meV</td></tr><tr><td>26</td><td>6.175845</td><td> cm<sup>-1</sup></td><td>0.765708</td><td>meV</td></tr><tr><td>27</td><td>32.540704</td><td> cm<sup>-1</sup></td><td>4.034535</td><td>meV</td></tr><tr><td rowspan="3">800</td><td>25</td><td>0.289332</td><td> cm<sup>-1</sup></td><td>0.035873</td><td>meV</td></tr><tr><td>26</td><td>7.356367</td><td> cm<sup>-1</sup></td><td>0.912074</td><td>meV</td></tr><tr><td>27</td><td>26.44812</td><td> cm<sup>-1</sup></td><td>3.27915</td><td>meV</td></tr></table>
+
+<p>增加<code>ENCUT</code>可以减小虚频；从 $400$ 增加到 $800$ 后，最大的虚频波数从 $65<del>cm^{-1}$ 减小到 $26</del>cm^{-1}$， 但 A 中的结果是不是要求我们算频率的时候，必须要把 <code>ENCUT</code>增大呢？ 答：<strong>没必要！！</strong></p>
+<p>因为前面零点能变化甚微，且虚频从 $65<del>cm^{-1}$ 减小到 $26</del>cm^{-1}$, 只能说是在误差范围内变化，我们是可以承受的，此时<code>ENCUT</code>在减小虚频中的作用，大家记住这一点就可以了。此外，增加<code>ENCUT</code>也会使得计算时间变长（见下图）。但是如果虚频大于$100~cm^{-1}$，且不是反应路径的时候，你就得小心了。</p>
+<h4 id="3-2-3-时间"><a href="#3-2-3-时间" class="headerlink" title="3.2.3 时间"></a>3.2.3 时间</h4><p>命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep Elapsed */OUTCAR | sort –n</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">ENCUT</th>
+<th align="left">Time</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">400</td>
+<td align="left">1832.405</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">500</td>
+<td align="left">2389.045</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">600</td>
+<td align="left">3019.433</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">700</td>
+<td align="left">4285.491</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">800</td>
+<td align="left">11943.02</td>
+<td align="left">s</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="3-3-PREC"><a href="#3-3-PREC" class="headerlink" title="3.3 PREC"></a>3.3 PREC</h3><p>这里我们设置了三个参数：<code>Normal</code>, <code>Accurate</code>和<code>High</code></p>
+<h4 id="3-3-1-零点能变化甚微"><a href="#3-3-1-零点能变化甚微" class="headerlink" title="3.3.1 零点能变化甚微"></a>3.3.1 零点能变化甚微</h4><table>
+<thead>
+<tr>
+<th align="left">PREC</th>
+<th align="left">ZPE</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">N</td>
+<td align="left">2.11698</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">A</td>
+<td align="left">2.1147</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">H</td>
+<td align="left">2.11363</td>
+<td align="left">eV</td>
+</tr>
+</tbody></table>
+<h4 id="3-3-2-虚频"><a href="#3-3-2-虚频" class="headerlink" title="3.3.2 虚频"></a>3.3.2 虚频</h4><table><tr><th>PREC</th><th>Nth</th><th>Wavenumber</th><th>Unit</th><th>Energy</th><th>Unit</th></tr><tr><td rowspan="3">N</td><td>25</td><td>6.132037</td><td> cm<sup>-1</sup></td><td>0.760276</td><td>meV</td></tr><tr><td>26</td><td>18.62878</td><td> cm<sup>-1</sup></td><td>2.309675</td><td>meV</td></tr><tr><td>27</td><td>65.657693</td><td> cm<sup>-1</sup></td><td>8.140519</td><td>meV</td></tr><tr><td rowspan="3">A</td><td>25</td><td>5.493108</td><td> cm<sup>-1</sup></td><td>0.681059</td><td>meV</td></tr><tr><td>26</td><td>10.478293</td><td> cm<sup>-1</sup></td><td>1.299143</td><td>meV</td></tr><tr><td>27</td><td>65.861524</td><td> cm<sup>-1</sup></td><td>8.165791</td><td>meV</td></tr><tr><td rowspan="4">H</td><td>24</td><td>0.552665</td><td> cm<sup>-1</sup></td><td>0.068522</td><td>meV</td></tr><tr><td>25</td><td>16.954329</td><td> cm<sup>-1</sup></td><td>2.10207</td><td>meV</td></tr><tr><td>26</td><td>29.95621</td><td> cm<sup>-1</sup></td><td>3.714098</td><td>meV</td></tr><tr><td>27</td><td>68.287802</td><td> cm<sup>-1</sup></td><td>8.466611</td><td>meV</td></tr></table>
+
+<p><code>PREC</code>同样对消除虚频不管用！！！！</p>
+<h4 id="3-3-3-时间"><a href="#3-3-3-时间" class="headerlink" title="3.3.3 时间"></a>3.3.3 时间</h4><table>
+<thead>
+<tr>
+<th align="left">Prec</th>
+<th align="left">Time</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">N</td>
+<td align="left">4298.571</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">A</td>
+<td align="left">7596.994</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">H</td>
+<td align="left">7962.539</td>
+<td align="left">s</td>
+</tr>
+</tbody></table>
+<p>通过前面的虚频和零点能，结合此时的时间，我们可以得出结论：</p>
+<p><code>PREC = Normal</code> 完全够用了。</p>
+<hr>
+<h3 id="3-4-POTIM-参数"><a href="#3-4-POTIM-参数" class="headerlink" title="3.4  POTIM 参数"></a>3.4  POTIM 参数</h3><p><img src="/2017/12/18/ex27/ex27-6.jpeg"></p>
+<h4 id="3-4-1-零点能："><a href="#3-4-1-零点能：" class="headerlink" title="3.4.1 零点能："></a>3.4.1 零点能：</h4><table>
+<thead>
+<tr>
+<th align="left">POTIM</th>
+<th align="left">ZPE</th>
+<th align="left">eV</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0.001</td>
+<td align="left">2.17125</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">0.005</td>
+<td align="left">2.12616</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">0.015</td>
+<td align="left">2.11769</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">0.020</td>
+<td align="left">2.11698</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">0.050</td>
+<td align="left">2.11671</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">0.100</td>
+<td align="left">2.12481</td>
+<td align="left">eV</td>
+</tr>
+</tbody></table>
+<p><code>POTIM</code>太小的时候，对零点能影响很大。（$0.001$ 和 $0.005$，$0.015$ 对比）</p>
+<h4 id="3-4-2虚频"><a href="#3-4-2虚频" class="headerlink" title="3.4.2虚频"></a>3.4.2虚频</h4><table><tr><th>POTIM</th><th>Nth</th><th>Wavenumber</th><th>Unit</th><th>Energy</th><th>Unit</th></tr><tr><td rowspan="3">0.001</td><td>25</td><td>21.746998</td><td> cm<sup>-1</sup></td><td>2.696285</td><td>meV</td></tr><tr><td>26</td><td>39.656607</td><td> cm<sup>-1</sup></td><td>4.916794</td><td>meV</td></tr><tr><td>27</td><td>56.54809</td><td> cm<sup>-1</sup></td><td>7.011072</td><td>meV</td></tr><tr><td rowspan="4">0.005</td><td>24</td><td>0.675194</td><td> cm<sup>-1</sup></td><td>0.083713</td><td>meV</td></tr><tr><td>25</td><td>12.785399</td><td> cm<sup>-1</sup></td><td>1.585188</td><td>meV</td></tr><tr><td>26</td><td>36.264179</td><td> cm<sup>-1</sup></td><td>4.496187</td><td>meV</td></tr><tr><td>27</td><td>61.287932</td><td> cm<sup>-1</sup></td><td>7.598738</td><td>meV</td></tr><tr><td rowspan="3">0.015</td><td>25</td><td>5.626635</td><td> cm<sup>-1</sup></td><td>0.697614</td><td>meV</td></tr><tr><td>26</td><td>23.117605</td><td> cm<sup>-1</sup></td><td>2.866219</td><td>meV</td></tr><tr><td>27</td><td>59.01173</td><td> cm<sup>-1</sup></td><td>7.316525</td><td>meV</td></tr><tr><td rowspan="3">0.020</td><td>25</td><td>6.132037</td><td> cm<sup>-1</sup></td><td>0.760276</td><td>meV</td></tr><tr><td>26</td><td>18.62878</td><td> cm<sup>-1</sup></td><td>2.309675</td><td>meV</td></tr><tr><td>27</td><td>65.657693</td><td> cm<sup>-1</sup></td><td>8.140519</td><td>meV</td></tr><tr><td rowspan="4">0.050</td><td>24</td><td>0.327964</td><td> cm<sup>-1</sup></td><td>0.040662</td><td>meV</td></tr><tr><td>25</td><td>23.575077</td><td> cm<sup>-1</sup></td><td>2.922938</td><td>meV</td></tr><tr><td>26</td><td>24.337978</td><td> cm<sup>-1</sup></td><td>3.017526</td><td>meV</td></tr><tr><td>27</td><td>95.239085</td><td> cm<sup>-1</sup></td><td>11.80815</td><td>meV</td></tr><tr><td rowspan="5">0.100</td><td>23</td><td>1.574379</td><td> cm<sup>-1</sup></td><td>0.195198</td><td>meV</td></tr><tr><td>24</td><td>5.865037</td><td> cm<sup>-1</sup></td><td>0.727172</td><td>meV</td></tr><tr><td>25</td><td>20.89784</td><td> cm<sup>-1</sup></td><td>2.591003</td><td>meV</td></tr><tr><td>26</td><td>45.241296</td><td> cm<sup>-1</sup></td><td>5.609208</td><td>meV</td></tr><tr><td>27</td><td>168.238904</td><td> cm<sup>-1</sup></td><td>20.85897</td><td>meV</td></tr></table>
+
+<p><code>POTIM</code>太大的时候，会搞出来超大号的虚频（$0.050$ 和 $0.100$）！</p>
+<h4 id="3-4-3-时间"><a href="#3-4-3-时间" class="headerlink" title="3.4.3 时间"></a>3.4.3 时间</h4><table>
+<thead>
+<tr>
+<th align="left">POTIM</th>
+<th align="left">Time</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">1530.591</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">2065.911</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">15</td>
+<td align="left">3845.977</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">20</td>
+<td align="left">4298.571</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">50</td>
+<td align="left">4829.897</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">100</td>
+<td align="left">5191.23</td>
+<td align="left">s</td>
+</tr>
+</tbody></table>
+<p><code>POTIM</code> 越小，单个离子步收敛的越快，也就是需要更少的电子步！</p>
+<p>综合前面的三个因素：<code>POTIM</code>太小或者太大都不好， <code>POTIM = 0.015</code>或者<code>0.020</code> 是很好的选择。 <code>0.015</code>是默认值。</p>
+<hr>
+<h3 id="3-5-POINTS"><a href="#3-5-POINTS" class="headerlink" title="3.5 POINTS"></a>3.5 POINTS</h3><p>这里用 $1$, $2$, $3$ 来分别代表 $1 \times 1 \times 1$， $2 \times 2 \times 2$ 和 $3 \times 3  \times 3$ 的 K 点。</p>
+<h4 id="3-5-1-零点能："><a href="#3-5-1-零点能：" class="headerlink" title="3.5.1 零点能："></a>3.5.1 零点能：</h4><table>
+<thead>
+<tr>
+<th align="left">KPOINTS</th>
+<th align="left">ZPE</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">2.11698</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">2.11678</td>
+<td align="left">eV</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">2.11689</td>
+<td align="left">eV</td>
+</tr>
+</tbody></table>
+<h4 id="3-5-2-虚频："><a href="#3-5-2-虚频：" class="headerlink" title="3.5.2 虚频："></a>3.5.2 虚频：</h4><table><tr><th>KPOINTS</th><th>Nth</th><th>Wavenumber</th><th>Unit</th><th>Energy</th><th>Unit</th></tr><tr><td rowspan="3">1</td><td>25</td><td>6.132037</td><td> cm<sup>-1</sup></td><td>0.76028</td><td>meV</td></tr><tr><td>26</td><td>18.62878</td><td> cm<sup>-1</sup></td><td>2.30968</td><td>meV</td></tr><tr><td>27</td><td>65.657693</td><td> cm<sup>-1</sup></td><td>8.14052</td><td>meV</td></tr><tr><td rowspan="3">2</td><td>25</td><td>5.726298</td><td> cm<sup>-1</sup></td><td>0.70997</td><td>meV</td></tr><tr><td>26</td><td>19.193163</td><td> cm<sup>-1</sup></td><td>2.37965</td><td>meV</td></tr><tr><td>27</td><td>64.645347</td><td> cm<sup>-1</sup></td><td>8.015</td><td>meV</td></tr><tr><td rowspan="3">3</td><td>25</td><td>4.826986</td><td> cm<sup>-1</sup></td><td>0.59847</td><td>meV</td></tr><tr><td>26</td><td>19.138554</td><td> cm<sup>-1</sup></td><td>2.37288</td><td>meV</td></tr><tr><td>27</td><td>64.83042</td><td> cm<sup>-1</sup></td><td>8.03795</td><td>meV</td></tr></table>
+
+<h4 id="3-5-3-时间"><a href="#3-5-3-时间" class="headerlink" title="3.5.3 时间"></a>3.5.3 时间</h4><table>
+<thead>
+<tr>
+<th align="left">KPOINTS</th>
+<th align="left">Time</th>
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">4298.571</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">8997.709</td>
+<td align="left">s</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">13480.847</td>
+<td align="left">s</td>
+</tr>
+</tbody></table>
+<p>综合前面三点： <code>Gamma</code>点足矣！</p>
+<hr>
+<h2 id="4-扩展阅读："><a href="#4-扩展阅读：" class="headerlink" title="4      扩展阅读："></a>4      扩展阅读：</h2><p>4.1 下载本节的练习，按照本节的顺序操作分析；</p>
+<p>4.2 阅读 <strong>VASP</strong> 官网中关于原子和分子的例子，去尝试回答里面的问题；</p>
+<p><a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/Atoms_and_Molecules">https://cms.mpi.univie.ac.at/wiki/index.php/Atoms_and_Molecules</a></p>
+<h2 id="5-总结："><a href="#5-总结：" class="headerlink" title="5. 总结："></a>5. 总结：</h2><p>分析完前面的测试，我们总结一下高效频率计算的关键点：</p>
+<p>5.1 <code>IBRION = 5</code>  （告诉 <strong>VASP</strong> 我们要算频率）</p>
+<p>5.2 <code>POTIM = 0.015</code></p>
+<p>5.3 <code>NFREE = 2</code></p>
+<p>5.4 <code>ENCUT</code>和原来一样</p>
+<p>5.5 <code>PREC = Normal</code></p>
+<p>5.6 <code>EDIFF = 1E-5</code> 或者 <code>1E-6</code></p>
+<p>5.7 <code>KPOINTS</code>  <code>Gamma</code>点即可。</p>
+<p>本节内容太多了，原因在于，这是菜鸟篇的最后一节！！！</p>
+<p>大师兄本人亲自做了很多测试，原因只有一个，告诉大家如何把握计算结果与时间的关系。在最短的时间获取最多的有价值的结果，这是计算化学的一个精髓所在。体现了你对时间和生命的尊重，也体现了你对高效率生活的追求。在菜鸟的时候，可以尽情地去测试。</p>
+<p>大师兄之所以用乙醇这个大分子去给大家展示，很多人直接用 $\rm{O_2}$，$\rm{CO}$ 或者水分子的计算作为例子。那样的简单例子不具有很强的代表性，当你把一个相对复杂的东西搞明白了，这些小分子的计算，就如同小儿科一般了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%B9%99%E9%86%87/" rel="tag"># 乙醇</a>
+              <a href="/tags/%E6%8C%AF%E5%8A%A8%E9%A2%91%E7%8E%87/" rel="tag"># 振动频率</a>
+              <a href="/tags/%E6%97%B6%E9%97%B4/" rel="tag"># 时间</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/17/ex26/" rel="prev" title="Ex26 乙醇分子的振动频率计算(四)">
+                  <i class="fa fa-chevron-left"></i> Ex26 乙醇分子的振动频率计算(四)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/20/A03/" rel="next" title="Linux命令之cd使用心得">
+                  Linux命令之cd使用心得 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

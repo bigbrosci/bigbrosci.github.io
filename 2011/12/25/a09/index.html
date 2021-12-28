@@ -1,37 +1,506 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="感谢吕梁超算中心的支持，以后VASP的学习系列练习，都将在天河二号上面进行展示操作。一方面帮助大家继续学习VASP知识，另一方面也帮助大家快速掌握使用超算中心计算的技巧，进而避免一些焦头烂额的琐事。今天我们先讲解一下怎么在Ubuntu系统上，1）安装VPN, 2）连接天河二号超算中心，3）以及将超算中心挂载到本地电脑上，进行文件互传。 如果你是Windows用户，管理员在发送账号的时候，已经将使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A09 超算中心使用前的准备工作（一）">
+<meta property="og:url" content="http://www.bigbrosci.com/2011/12/25/A09/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="感谢吕梁超算中心的支持，以后VASP的学习系列练习，都将在天河二号上面进行展示操作。一方面帮助大家继续学习VASP知识，另一方面也帮助大家快速掌握使用超算中心计算的技巧，进而避免一些焦头烂额的琐事。今天我们先讲解一下怎么在Ubuntu系统上，1）安装VPN, 2）连接天河二号超算中心，3）以及将超算中心挂载到本地电脑上，进行文件互传。 如果你是Windows用户，管理员在发送账号的时候，已经将使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2011/12/25/A09/a09/a09-1.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2011/12/25/A09/a09/a09-2.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2011/12/25/A09/a09/a09-3.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2011/12/25/A09/a09/a09-4.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2011/12/25/A09/a09/a09-5.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2011/12/25/A09/a09/a09-6.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2011/12/25/A09/a09/a09-7.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2011/12/25/A09/a09/a09-8.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2011/12/25/A09/a09/a09-9.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2011/12/25/A09/a09/a09-10.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2011/12/25/A09/a09/a09-11.png">
+<meta property="article:published_time" content="2011-12-25T07:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.223Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="超算中心">
+<meta property="article:tag" content="吕梁">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2011/12/25/A09/a09/a09-1.png">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2011/12/25/A09/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2011/12/25/A09/","path":"2011/12/25/A09/","title":"A09 超算中心使用前的准备工作（一）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>A09 超算中心使用前的准备工作（一） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%B8%8B%E8%BD%BDLinux%E7%89%88%E7%9A%84VPN%E8%BD%AF%E4%BB%B6%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">1 下载Linux版的VPN软件：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%AE%89%E8%A3%85Linux-%E7%89%88VPN"><span class="nav-number">2.</span> <span class="nav-text">2 安装Linux 版VPN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%BF%9E%E6%8E%A5VPN"><span class="nav-number">3.</span> <span class="nav-text">3 连接VPN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E9%80%9A%E8%BF%87ssh%E8%BF%9E%E6%8E%A5%E8%B6%85%E7%AE%97%E4%B8%AD%E5%BF%83%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">4 通过ssh连接超算中心服务器：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E4%B8%8A%E4%BC%A0%E6%88%96%E8%80%85%E4%B8%8B%E8%BD%BD%E6%95%B0%E6%8D%AE%EF%BC%88sshfs%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%89"><span class="nav-number">5.</span> <span class="nav-text">5 上传或者下载数据（sshfs的使用）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E5%BC%82%E5%B8%B8%E9%97%AE%E9%A2%98%E7%9A%84%E5%A4%84%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">6 异常问题的处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">小结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2011/12/25/A09/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          A09 超算中心使用前的准备工作（一）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2011-12-25 02:06:48" itemprop="dateCreated datePublished" datetime="2011-12-25T02:06:48-05:00">2011-12-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW%E9%99%84%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW附录</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2011/12/25/A09/" class="post-meta-item leancloud_visitors" data-flag-title="A09 超算中心使用前的准备工作（一）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2011/12/25/A09/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2011/12/25/A09/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>感谢吕梁超算中心的支持，以后VASP的学习系列练习，都将在天河二号上面进行展示操作。一方面帮助大家继续学习VASP知识，另一方面也帮助大家快速掌握使用超算中心计算的技巧，进而避免一些焦头烂额的琐事。今天我们先讲解一下怎么在Ubuntu系统上，1）安装VPN, 2）连接天河二号超算中心，3）以及将超算中心挂载到本地电脑上，进行文件互传。</p>
+<p>如果你是Windows用户，管理员在发送账号的时候，已经将使用说明一起发给你了。相信大家都可以顺利链接。那么请跳过本节内容。</p>
+<p>但是Linux系统在计算具有的独特优势是Windows所不能比的，建议Windows用户继续看下去，对以后使用Linux系统做计算会有帮助。下一节，我们介绍如何使用脚本运行VASP软件，由于本人还在摸索，需要和管理沟通学习，大家再耐心等待一天。如果你想要试用或者申请超算中心的机时，请加QQ群：国防科大吕梁超算中心（204521798）了解更多的信息。</p>
+<hr>
+<h2 id="1-下载Linux版的VPN软件："><a href="#1-下载Linux版的VPN软件：" class="headerlink" title="1 下载Linux版的VPN软件："></a>1 下载Linux版的VPN软件：</h2><p>链接：<a target="_blank" rel="noopener" href="https://www.hillstonenet.com/our-products/next-gen-firewalls-e-series/">https://www.hillstonenet.com/our-products/next-gen-firewalls-e-series/</a></p>
+<p>直接跳到网页最底部，右侧点击 Linux OS 下载。<strong>注意</strong>：这个VPN不支持Ubuntu17 和 18的版本。</p>
+<p><img src="/2011/12/25/A09/a09/a09-1.png"></p>
+<p><img src="/2011/12/25/A09/a09/a09-2.png"></p>
+<hr>
+<h2 id="2-安装Linux-版VPN"><a href="#2-安装Linux-版VPN" class="headerlink" title="2 安装Linux 版VPN"></a>2 安装Linux 版VPN</h2><p>Hillstone 官网已经给出了详细的安装说明， 链接如下：</p>
+<p><a target="_blank" rel="noopener" href="http://docs.hillstonenet.com/en/Content/7_VPN/SSL_VPN_Client_L.htm#Starting">http://docs.hillstonenet.com/en/Content/7_VPN/SSL_VPN_Client_L.htm#Starting</a></p>
+<p>大家可以参考链接，也可以根据下面的步骤进行。本人直接将官网的照片复制过来了。</p>
+<p><img src="/2011/12/25/A09/a09/a09-3.png"></p>
+<p>找到刚才下载的vpn软件： 右击 –&gt; 点击最底部的Properties</p>
+<hr>
+<p><img src="/2011/12/25/A09/a09/a09-4.png"></p>
+<p>在弹出的窗口中，将Execute的那个框选中，然后点击左上角的叉号直接关闭。、</p>
+<p>双击这个软件的图标，一步一步点下去，这样就完成安装啦，同时桌面上会生成VPN的快捷方式图标。</p>
+<hr>
+<h2 id="3-连接VPN"><a href="#3-连接VPN" class="headerlink" title="3 连接VPN"></a>3 连接VPN</h2><p>1） 打开VPN：双击桌面的VPN图标，会弹出让你输入电脑密码的对话框，输入密码，点击Authenticate按钮。</p>
+<p><img src="/2011/12/25/A09/a09/a09-5.png"></p>
+<p>2） 点击下图中的New 对应的加号，会弹出对话框，让你输入IP，账号密码</p>
+<p><img src="/2011/12/25/A09/a09/a09-6.png"></p>
+<p>注意：</p>
+<ul>
+<li><p>Name, Description 这两项随便填。</p>
+</li>
+<li><p>Host的IP超算中心给了三个，大家根据自己的网进行选择，如果一个不行，换另一个试试即可。</p>
+</li>
+<li><p>Port 就是 4433</p>
+</li>
+<li><p>User name和Password是VPN的账号和密码！！！</p>
+</li>
+<li><p>一定要选中Remember Password. 因为管理员给的密码实在是太安全了，Linux的VPN不能修改密码。如果嫌密码麻烦，可以在Windows连接成功后，修改VPN的密码。</p>
+</li>
+</ul>
+<p>4） 点击OK就开始连接了</p>
+<p>5） vpn的官网的填写说明，大家把网页中的第三条展开就可以看到了</p>
+<p><img src="/2011/12/25/A09/a09/a09-7.png"></p>
+<p>6） 连接过程以及成功是这个样子：</p>
+<p><img src="/2011/12/25/A09/a09/a09-8.png"></p>
+<p><img src="/2011/12/25/A09/a09/a09-9.png"></p>
+<hr>
+<h2 id="4-通过ssh连接超算中心服务器："><a href="#4-通过ssh连接超算中心服务器：" class="headerlink" title="4 通过ssh连接超算中心服务器："></a>4 通过ssh连接超算中心服务器：</h2><p>VPN登录成功后，后面我们就可以通过Terminal连接超算中心了。为了方便，提高效率，强烈建议大家按照下面的步骤进行：</p>
+<p>1） 安装sshfs </p>
+<p>这个用于把超算中心挂载到你的本地电脑上，后面再细说，先安装好。可以命令行一键搞定。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install sshfs</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2011/12/25/A09/a09/a09-10.png"></p>
+<p>2） 在home目录下建一个文件夹，名字为： lvliang</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/lvliang</span><br></pre></td></tr></table></figure>
+
+<p>3） 将下面的内容加入到 .bashrc 文件中，将下面代码中的<code>172.16.20.XX</code> 换成超算管理员发给你的IP地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">####lvliang###</span><br><span class="line">alias lvliang=&#x27;ssh iciq-lq@172.16.20.XX&#x27;</span><br><span class="line">alias mlvliang=&#x27;sshfs iciq-lq@172.16.20.XX: ~/lvliang/&#x27;</span><br><span class="line">alias ulvliang=&quot;sudo umount ~/lvliang  -l&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>lvliang 这个命令用来连接超算中心，提交任务，运行命令处理任务等</li>
+<li>mlvliang 用来挂载超算中心到你的电脑上，相当于把超算中心看作成一个移动硬盘</li>
+<li>ulvliang 用来卸载超算中心。</li>
+</ul>
+<p>4） 保存后，更新下 .bashrc 文件，然后直接敲命令： lvliang 即可连接超算中心。</p>
+<p>第一次连接，可能会出来一堆提示东西，输入Yes ，回车即可。</p>
+<p>输入自己的超算中心账号密码，就可以登录啦。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ . .bashrc </span><br><span class="line">qli@bigbro:~$ lvliang </span><br><span class="line">iciq-lq@172.16.20.10&#x27;s password: </span><br><span class="line">Last login: Tue Dec  4 18:22:59 2018 from 172.16.31.135</span><br></pre></td></tr></table></figure>
+
+<p>5）新用户刚开始的时候主目录下面什么都没有，强烈建议大家建一个 bin 文件夹，用来存放脚本。直接 <code>mkdir ~/bin</code> 即可。</p>
+<hr>
+<h2 id="5-上传或者下载数据（sshfs的使用）"><a href="#5-上传或者下载数据（sshfs的使用）" class="headerlink" title="5 上传或者下载数据（sshfs的使用）"></a>5 上传或者下载数据（sshfs的使用）</h2><p>1） 挂载超算中心到自己的本地电脑。</p>
+<p>打开一个新的终端，</p>
+<ul>
+<li>输入前面我们写进.bashrc文件中的命令： mlvliang (m是mount的缩写)。</li>
+<li>输入超算中心的密码：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ mlvliang </span><br><span class="line">iciq-lq@172.16.20.10&#x27;s password: </span><br><span class="line">qli@bigbro:~$ cd lvliang/</span><br><span class="line">qli@bigbro:~/lvliang$ ls</span><br><span class="line">bin  LVASPTHW  POTCAR  test_jobs</span><br><span class="line">qli@bigbro:~/lvliang$ </span><br></pre></td></tr></table></figure>
+
+<p>现在超算中心就成功被挂载到我们电脑上了，我们可以随时进入并访问超算中的文件夹，通过<code>cp、mv、rsync</code>等命令往里面传数据，或者下载数据到本地的电脑。</p>
+<hr>
+<p>2） 例子1 ：</p>
+<p>挂载超算中心登录后，我们将Ex01的文件下载（通过<code>cp</code>命令）到本地电脑桌面上。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/lvliang$ ls</span><br><span class="line">bin  LVASPTHW  POTCAR  test_jobs</span><br><span class="line">qli@bigbro:~/lvliang$ cd LVASPTHW/</span><br><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ ls</span><br><span class="line">ex01  ex02  ex03  ex04  ex05  ex06  ex07  ex08  ex09  ex10  ex11  ex12  ex13  ex14  ex15  ex74  ex77  ex78  potcar</span><br><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ cp ex01 ~/Desktop/</span><br><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ ls ~/Desktop/ex01/</span><br><span class="line">INCAR  KPOINTS  POSCAR  POTCAR</span><br></pre></td></tr></table></figure>
+
+<p>3） 例子2 ：</p>
+<p>我们将电脑桌面的ex16文件夹上传（通过<code>cp</code>命令）到超算中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ ls</span><br><span class="line">ex01  ex02  ex03  ex04  ex05  ex06  ex07  ex08  ex09  ex10  ex11  ex12  ex13  ex14  ex15  ex74  ex77  ex78  potcar</span><br><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ cp ~/Desktop/ex16 .</span><br><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ ls</span><br><span class="line">ex01  ex02  ex03  ex04  ex05  ex06  ex07  ex08  ex09  ex10  ex11  ex12  ex13  ex14  ex15  ex16  ex74  ex77  ex78  potcar</span><br><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ </span><br></pre></td></tr></table></figure>
+
+
+
+<p>4） 注意事项：</p>
+<p>1） 必须通过mlvliang这个命令将超算中心挂载到本地电脑上之后，我们才可以互传文件。</p>
+<p>2） 如果还没有挂载，就将电脑的内容复制到lvliang这个文件夹中，那么挂载之后，服务器中不会显示刚刚复制的内容</p>
+<p>3） 不要用鼠标点击电脑里面的文件夹查看文件，这样会很慢，只能使用命令！！！切记！！</p>
+<p>4） 卸载的时候，使用mlvliang 这个命令，然后输入自己的电脑密码（不是超算中心的了。）</p>
+<p>5） 我们这样做，相当于把超算中心当做一个移动硬盘来使用，非常方便。</p>
+<h2 id="6-异常问题的处理"><a href="#6-异常问题的处理" class="headerlink" title="6 异常问题的处理"></a>6 异常问题的处理</h2><p>1）挂载超算中心到本地电脑上的时候，有时候因为网络连接，会出现下图中的错误。这时候我们先使用<code>ulvliang </code>命令把超算中心卸载掉，然后再重新挂载就可以了。</p>
+<p><img src="/2011/12/25/A09/a09/a09-11.png"></p>
+<p>2） 如果上面还解决不了的话，可以尝试着先关机，出去溜达一会儿，然后回来再弄。或者找超算管理员解决。他们一般都很上心，服务响应很快。</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本节就先介绍到这里，大家可以通过这样的方式，安装VPN，连接以及挂载超算中心，并将自己的文件上传到超算中心（比如VASP的那一堆POTCAR文件，自己的脚本，任务文件等等）。先把准备工作做好，下一节我们就可以提交任务进行计算了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%B6%85%E7%AE%97%E4%B8%AD%E5%BF%83/" rel="tag"># 超算中心</a>
+              <a href="/tags/%E5%90%95%E6%A2%81/" rel="tag"># 吕梁</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2011/12/24/A08/" rel="prev" title="A08 Bader电荷计算(二)">
+                  <i class="fa fa-chevron-left"></i> A08 Bader电荷计算(二)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2011/12/26/A10/" rel="next" title="A10 超算中心使用前的准备工作（二）">
+                  A10 超算中心使用前的准备工作（二） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

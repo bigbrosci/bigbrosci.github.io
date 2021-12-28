@@ -1,37 +1,479 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="按照前面一节介绍的方法，结构优化过程完毕后，准备频率计算的输入文件，提交任务等待结束。然后我们介绍一下频率计算的输出与POSCAR原子的固定。 1 查看结果1.1 查看OSZICAR，你会发现一共计算了55步。 下面我们分析一下这$55$步是怎么回事： A）乙醇分子$\rm{CH_{3}CH_{2}OH}$ 含有 $9$ 个原子，每个原子在 $x, y, z$三个方向上均有一个自由度，共 $9 \">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex24 乙醇分子的振动频率计算(二)">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/12/15/ex24/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="按照前面一节介绍的方法，结构优化过程完毕后，准备频率计算的输入文件，提交任务等待结束。然后我们介绍一下频率计算的输出与POSCAR原子的固定。 1 查看结果1.1 查看OSZICAR，你会发现一共计算了55步。 下面我们分析一下这$55$步是怎么回事： A）乙醇分子$\rm{CH_{3}CH_{2}OH}$ 含有 $9$ 个原子，每个原子在 $x, y, z$三个方向上均有一个自由度，共 $9 \">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/15/ex24/ex24-1.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/15/ex24/ex24-2.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/15/ex24/ex24-3.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/15/ex24/ex24-4.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/15/ex24/ex24-5.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/15/ex24/ex24-6.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/15/ex24/ex24-7.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/15/ex24/ex24-8.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/15/ex24/ex24-9.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/15/ex24/ex24-10.jpeg">
+<meta property="article:published_time" content="2017-12-15T07:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.658Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="p4vasp">
+<meta property="article:tag" content="乙醇">
+<meta property="article:tag" content="原子固定">
+<meta property="article:tag" content="Vim">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2017/12/15/ex24/ex24-1.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/12/15/ex24/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/12/15/ex24/","path":"2017/12/15/ex24/","title":"Ex24 乙醇分子的振动频率计算(二)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex24 乙醇分子的振动频率计算(二) | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%9F%A5%E7%9C%8B%E7%BB%93%E6%9E%9C"><span class="nav-number">1.</span> <span class="nav-text">1 查看结果</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%9F%A5%E7%9C%8BOSZICAR%EF%BC%8C%E4%BD%A0%E4%BC%9A%E5%8F%91%E7%8E%B0%E4%B8%80%E5%85%B1%E8%AE%A1%E7%AE%97%E4%BA%8655%E6%AD%A5%E3%80%82"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 查看OSZICAR，你会发现一共计算了55步。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%9B%BA%E5%AE%9A%E5%8E%9F%E5%AD%90"><span class="nav-number">2.</span> <span class="nav-text">2 固定原子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E9%80%9A%E8%BF%87-Vim-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E5%AD%90%E7%9A%84%E5%9B%BA%E5%AE%9A%E5%92%8C%E9%80%89%E6%8B%A9"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 通过 Vim 实现原子的固定和选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E4%BD%BF%E7%94%A8p4vasp%E5%AE%9E%E7%8E%B0%E4%B8%8A%E8%BF%B0%E5%8A%9F%E8%83%BD"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 使用p4vasp实现上述功能:</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89-%E6%89%93%E5%BC%80p4vasp%EF%BC%8C%E5%AF%BC%E5%85%A5POSCAR%EF%BC%9B"><span class="nav-number">2.2.1.</span> <span class="nav-text">1） 打开p4vasp，导入POSCAR；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89-%E9%BC%A0%E6%A0%87%E7%B3%BB%E5%88%97%E6%93%8D%E4%BD%9C"><span class="nav-number">2.2.2.</span> <span class="nav-text">2）   鼠标系列操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">4 扩展练习：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">5 总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/15/ex24/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex24 乙醇分子的振动频率计算(二)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-15 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-15T02:06:48-05:00">2017-12-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/15/ex24/" class="post-meta-item leancloud_visitors" data-flag-title="Ex24 乙醇分子的振动频率计算(二)" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/12/15/ex24/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/15/ex24/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>按照前面一节介绍的方法，结构优化过程完毕后，准备频率计算的输入文件，提交任务等待结束。然后我们介绍一下频率计算的输出与POSCAR原子的固定。</p>
+<h2 id="1-查看结果"><a href="#1-查看结果" class="headerlink" title="1 查看结果"></a>1 查看结果</h2><h3 id="1-1-查看OSZICAR，你会发现一共计算了55步。"><a href="#1-1-查看OSZICAR，你会发现一共计算了55步。" class="headerlink" title="1.1 查看OSZICAR，你会发现一共计算了55步。"></a>1.1 查看OSZICAR，你会发现一共计算了55步。</h3><p><img src="/2017/12/15/ex24/ex24-1.jpeg"></p>
+<p>下面我们分析一下这$55$步是怎么回事：</p>
+<p>A）乙醇分子$\rm{CH_{3}CH_{2}OH}$ 含有 $9$ 个原子，每个原子在 $x, y, z$三个方向上均有一个自由度，共 $9 \times 3 = 27$ 个</p>
+<p>B）我们设置的<code>NFREE=2</code> ，也就是在每个方向上 <code>+POTIM</code> 和 <code>–POTIM</code>都移动并算一下，这样就有了 $27 \times 2 = 54$ 步：官网原文如下：大家自己去查阅<code>IBRION</code>和<code>NFREE</code>的相关内容。</p>
+<blockquote>
+<p>The parameter NFREEdetermines how many displacements are used for each direction and ion, andPOTIM determines the step size. The step size is defaulted to 0.015 ? (startingfrom VASP.5.1), if too large values are supplied in the input file. Expertiseshows that this is a very reasonable compromise.`</p>
+</blockquote>
+<blockquote>
+<p>NFREE=2 usescentral differences, i.e., each ion is displaced by a small positive andnegative displacement, ±POTIM, along each of the cartesian directions.`</p>
+</blockquote>
+<p>C）还有一步：$55  -54 = 1$, 这一步指的是第一个离子步，为频率计算前的单点计算。</p>
+<p>所以当你设置了<code>NFREE=2</code>的时候，频率计算需要 $1+N \times 6$ 步。$N$ 为体系中的振动的原子数。</p>
+<h2 id="2-固定原子"><a href="#2-固定原子" class="headerlink" title="2 固定原子"></a>2 固定原子</h2><p>默认的是所有的原子在$x, y, z$三个方向上均可移动。但很多时候，我们只需要振动感兴趣的原子或者某一特定的方向就可以了，也就是说选择性计算频率。比如我们只想算乙醇的羟基振动峰，那么其他的原子就可以固定。VASP可以通过设置POSCAR来实现这个功能？首先我们看一下当前的<code>POSCAR</code>：</p>
+<p><img src="/2017/12/15/ex24/ex24-2.jpeg"></p>
+<p>左下角的<code>:set nu</code>  显示文本的行数，取消行数可以通过 <code>:set nonu</code></p>
+<hr>
+<p>如果想要选择性地固定某些原子，我们需要以下几个步骤：</p>
+<p>1） 在第七行和第8行之间插入一行，内容为 <code>Selective Dynamics</code> ，前面讲过 <strong>VASP</strong> 只认第一个字母，也就是<code>S</code>是必须的，<code>Selective Dynamics</code> 和 <code>See</code>, <code>Sea</code>….等其他<code>S</code>开头的都是一个效果的。</p>
+<p>2）  加入<code>Selective</code>之后，我们需要在每一行的坐标后面加上 <code>T</code> 或者<code>F</code>表示允许和禁止移动。这里我们需要加三个<code>T</code>或者<code>F</code>，表示在 $x, y, z$ 三个方向上选择性固定原子的移动，</p>
+<p>三个方向都允许：<code>T T T</code></p>
+<p>三个方向上都不允许: <code>F F F</code>  </p>
+<p>$x$ 移动，$y$ 和 $z$ 方向上固定为： <code>T F F</code></p>
+<p>$x$ 和 $y$ 方向上固定，$z$ 方向振动： <code>F F T</code></p>
+<p>以此类推，其他的大家根据自己的情况固定。</p>
+<hr>
+<p>师兄，那么我们要做的就是在<code>POSCAR</code>中逐行写上<code>T T T</code>或者<code>F F F</code>就行了吧? </p>
+<p>是的，下面大师兄教给你的是通过 <strong>Vim</strong> 的命令或者 <strong>p4vasp</strong> 实现这个功能。</p>
+<hr>
+<h3 id="2-1-通过-Vim-实现原子的固定和选择"><a href="#2-1-通过-Vim-实现原子的固定和选择" class="headerlink" title="2.1 通过 Vim 实现原子的固定和选择"></a>2.1 通过 <strong>Vim</strong> 实现原子的固定和选择</h3><p><strong>第一步</strong>：加入 <code>Select</code> 的关键字母<code>S</code>，并在坐标后面全部加上 <code>T T T</code></p>
+<p><img src="/2017/12/15/ex24/ex24-3.jpeg"></p>
+<p>图中<code>箭头1</code>：插入一行，告诉 <strong>VASP</strong> 我们要选择性的固定某些原子或者在某些方向上；</p>
+<p>图中<code>方块2</code> <code>:10,18s</code>  中 <code>s</code> 代表替换（<code>substitute</code>）的意思，这里表示我们选中了第 $10$ 到 $18$ 行，$10$ 和 $18$ 之间有个逗号表示连续；<code>10,18s</code>后面用一个 <code>/</code> 分开，紧跟着你我们要替换的内容；</p>
+<p><code>$</code> 在这里是末尾的意思，<code>$/T T T</code>我们要把每一行的最后替换成 <code>T T T</code></p>
+<p>后面再用一个<code>/</code>分开，加上<code>g</code> 表示 global 全部替换的意思。</p>
+<p>输入完毕后，回车，效果如下：</p>
+<p><img src="/2017/12/15/ex24/ex24-4.jpeg"></p>
+<p>每一行的末尾都加入了 <code>T T T</code>  箭头指的地方告诉我们：$9$ 行中的 $9$ 个地方发生了替换。</p>
+<p>（自己复习下<code>sed</code>的用法，比较两者的区别）</p>
+<hr>
+<p><strong>第二步</strong>，下面我们要把OH之外的原子全部固定住：</p>
+<p>通过 <strong>p4vasp</strong> 我们可以知道，OH 的两个原子为第一个（O）和最后一个（H），因此我们把第 $11$ 行到 $17$ 行中的所有<code>T</code>替换成<code>F</code>就可以了。我们可以使用 <code>:11,17s/T/F/g</code>来实现。最后效果如下：</p>
+<p><img src="/2017/12/15/ex24/ex24-5.jpeg"></p>
+<p>C）扩展：</p>
+<p>如果所有的原子后面为： <code>T T T</code>，这与我们之前的计算效果是一样的（第 $8$ 行没有<code>S</code>，坐标后面没有<code>T T T</code>）。此外，固定之前要先找到哪些原子我们希望固定的，以及它们在坐标中的顺序。</p>
+<hr>
+<h3 id="2-2-使用p4vasp实现上述功能"><a href="#2-2-使用p4vasp实现上述功能" class="headerlink" title="2.2 使用p4vasp实现上述功能:"></a>2.2 使用p4vasp实现上述功能:</h3><p>基于 <strong>p4vasp</strong> 的可视化特性，直接用鼠标操作是很多<code>linux</code> 小白最喜欢看到的，下面我们主要讲解一下 <strong>p4vasp</strong> 的操作，请务必将 <strong>Vim</strong> 和 <strong>p4vasp</strong> 的操作关联起来，这样你会就会发现可视化和命令之间的微妙关系了。</p>
+<h4 id="1）-打开p4vasp，导入POSCAR；"><a href="#1）-打开p4vasp，导入POSCAR；" class="headerlink" title="1） 打开p4vasp，导入POSCAR；"></a>1） 打开p4vasp，导入<code>POSCAR</code>；</h4><p><img src="/2017/12/15/ex24/ex24-6.jpeg"></p>
+<p><code>System</code> 显示 ethanol 说明数据已导入。</p>
+<h4 id="2）-鼠标系列操作"><a href="#2）-鼠标系列操作" class="headerlink" title="2）   鼠标系列操作"></a>2）   鼠标系列操作</h4><p>A）点一下 <code>Show</code> 按钮，显示乙醇分子结构；</p>
+<p>B）  点击<code>Build</code>按钮：显示分子的坐标信息：这里的坐标顺序和<code>POSCAR</code>完全一致：</p>
+<p><img src="/2017/12/15/ex24/ex24-7.jpeg"></p>
+<p>C）  选择乙醇的羟基（使用空格键选择原子），下图中可以知道 O 和 H 在坐标顺序中为第一个和最后一个；</p>
+<p><img src="/2017/12/15/ex24/ex24-8.jpeg"></p>
+<p>D）选中右上角的<code>Selective Dynamics</code>，效果如图中箭头2指出来的部分，这个动作和我们之前在第八行插入<code>Selective Dynamics</code> 以及在坐标每一行加入<code>T T T</code>是等效的</p>
+<p><img src="/2017/12/15/ex24/ex24-9.jpeg"></p>
+<p>E）选中第二行坐标，摁住shift键，然后再点一下倒数第二行，选中整个区域后，点击右上方的 <code>Unselect</code> ， 这个动作等效于我们将 $11$ 到 $17$ 行中的<code>T</code>全部替换为<code>F</code>。</p>
+<p><img src="/2017/12/15/ex24/ex24-10.jpeg"></p>
+<p>F）操作完成后，左上角： <code>File --&gt; Save System As</code> 保存新的<code>POSCAR</code>即可。</p>
+<hr>
+<h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h2><p>4.1 掌握本节的两个<code>POSCAR</code>处理方法；</p>
+<p>4.2 学会计算频率分析所需的步数；</p>
+<p>4.3 浏览<code>OUTCAR</code>，查找频率输出结果</p>
+<h2 id="5-总结："><a href="#5-总结：" class="headerlink" title="5 总结："></a>5 总结：</h2><p>通过对比手动敲命令修改<code>POSCAR</code>和使用 <strong>p4vasp</strong> 进行鼠标操作，这里大师兄希望大家能掌握以下三点：</p>
+<p>1） 学会 <strong>Vim</strong> 的使用技巧，当然了，<strong>Vim</strong> 及其强大，完全掌握基本不可能，但最基本的操作要了解；</p>
+<p>2） <strong>p4vasp</strong> 的操作要熟悉，不知道怎么操作的，导入一个计算文件，随便点点，找找感觉；</p>
+<p>3） 在使用 <strong>p4vasp</strong> 的操作中，你要学会思考：怎么将鼠标操作转化为命令语言来实现，为将来写脚本做好准备，毕竟很多时候，我们用不了可视化界面，就只能手动修改格式了，结合命令，比可视化操作更快，还可以批量进行。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/p4vasp/" rel="tag"># p4vasp</a>
+              <a href="/tags/%E4%B9%99%E9%86%87/" rel="tag"># 乙醇</a>
+              <a href="/tags/%E5%8E%9F%E5%AD%90%E5%9B%BA%E5%AE%9A/" rel="tag"># 原子固定</a>
+              <a href="/tags/Vim/" rel="tag"># Vim</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/14/ex22/" rel="prev" title="Ex22 乙醇气相分子的优化">
+                  <i class="fa fa-chevron-left"></i> Ex22 乙醇气相分子的优化
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/15/ex23/" rel="next" title="Ex23 乙醇分子的振动频率计算(一)">
+                  Ex23 乙醇分子的振动频率计算(一) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

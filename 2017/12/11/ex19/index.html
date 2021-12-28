@@ -1,37 +1,452 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="模型对计算时间的影响 上一节介绍的KPOINTS对计算的影响，相信大家已经认真阅读参考书的第三章部分了。本季我们讨论一下模型的大小对计算的影响。主要体现在晶胞的尺寸，对称性以及对K点的影响上。  1 测试工作： 为了方便处理，我们把O$_2$计算的格子设置为长宽高均为8.0 $\AA$。 重复之前KPOINTS的批处理操作，我们可以获得一系列不同大小格子的文件夹。如下图： 命令：  for i i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex19 谁偷走的我的机时？（四）">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/12/11/ex19/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="模型对计算时间的影响 上一节介绍的KPOINTS对计算的影响，相信大家已经认真阅读参考书的第三章部分了。本季我们讨论一下模型的大小对计算的影响。主要体现在晶胞的尺寸，对称性以及对K点的影响上。  1 测试工作： 为了方便处理，我们把O$_2$计算的格子设置为长宽高均为8.0 $\AA$。 重复之前KPOINTS的批处理操作，我们可以获得一系列不同大小格子的文件夹。如下图： 命令：  for i i">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/11/ex19/ex19-1.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/11/ex19/ex19-2.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/11/ex19/ex19-3.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/11/ex19/ex19-4.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/11/ex19/ex19-5.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/11/ex19/ex19-6.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/11/ex19/ex19-7.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/11/ex19/ex19-8.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/11/ex19/ex19-9.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/11/ex19/ex19-10.jpeg">
+<meta property="article:published_time" content="2017-12-11T20:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.557Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="机时">
+<meta property="article:tag" content="模型">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2017/12/11/ex19/ex19-1.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/12/11/ex19/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/12/11/ex19/","path":"2017/12/11/ex19/","title":"Ex19 谁偷走的我的机时？（四）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex19 谁偷走的我的机时？（四） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E5%AF%B9%E8%AE%A1%E7%AE%97%E6%97%B6%E9%97%B4%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">1.</span> <span class="nav-text">模型对计算时间的影响</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%B5%8B%E8%AF%95%E5%B7%A5%E4%BD%9C%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">1 测试工作：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C%E5%88%86%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">2 测试结果分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E6%A8%A1%E5%9E%8B%E5%A4%A7%E5%B0%8F%E5%AF%B9%E8%AE%A1%E7%AE%97%E6%97%B6%E9%97%B4%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">4.</span> <span class="nav-text">2.1 模型大小对计算时间的影响</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E4%BD%93%E7%B3%BB%E7%9A%84%E5%AF%B9%E7%A7%B0%E6%80%A7%E5%AF%B9%E8%AE%A1%E7%AE%97%E9%80%9F%E5%BA%A6%E7%9A%84%E5%BD%B1%E5%93%8D%EF%BC%9A"><span class="nav-number">4.1.</span> <span class="nav-text">2.2 体系的对称性对计算速度的影响：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-K%E7%82%B9%E4%BF%9D%E6%8C%81%E4%B8%8D%E5%8F%98%EF%BC%9A"><span class="nav-number">4.1.1.</span> <span class="nav-text">2.2.1 K点保持不变：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-%E5%AF%B9%E7%A7%B0%E6%80%A7%E5%AF%B9K%E7%82%B9%E7%9A%84%E5%BD%B1%E5%93%8D%EF%BC%9A"><span class="nav-number">4.2.</span> <span class="nav-text">2.2.2 对称性对K点的影响：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-3-%E6%A8%A1%E5%9E%8B%E5%AF%B9%E7%A7%B0%E6%80%A7%E4%B8%8EK%E7%82%B9%E5%AF%B9%E7%A7%B0%E6%80%A7%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">4.2.1.</span> <span class="nav-text">2.3.3 模型对称性与K点对称性的关系</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">3 扩展练习：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">4 总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/11/ex19/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex19 谁偷走的我的机时？（四）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-11 15:30:16" itemprop="dateCreated datePublished" datetime="2017-12-11T15:30:16-05:00">2017-12-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/11/ex19/" class="post-meta-item leancloud_visitors" data-flag-title="Ex19 谁偷走的我的机时？（四）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/12/11/ex19/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/11/ex19/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="模型对计算时间的影响"><a href="#模型对计算时间的影响" class="headerlink" title="模型对计算时间的影响"></a>模型对计算时间的影响</h3><hr>
+<p>上一节介绍的KPOINTS对计算的影响，相信大家已经认真阅读参考书的第三章部分了。本季我们讨论一下模型的大小对计算的影响。主要体现在晶胞的尺寸，对称性以及对K点的影响上。</p>
+<hr>
+<h3 id="1-测试工作："><a href="#1-测试工作：" class="headerlink" title="1 测试工作："></a>1 测试工作：</h3><p> 为了方便处理，我们把O$_2$计算的格子设置为长宽高均为8.0 $\AA$。</p>
+<p><img src="/2017/12/11/ex19/ex19-1.jpeg"><br>重复之前KPOINTS的批处理操作，我们可以获得一系列不同大小格子的文件夹。如下图：<br><img src="/2017/12/11/ex19/ex19-2.jpeg"></p>
+<p>命令：  <code>for i in $(seq 10 2 20); do cp 8 $i; sed –i &quot;3,5s/8.0/$i/g&quot; $i/POSCAR ;done</code></p>
+<hr>
+<h3 id="2-测试结果分析"><a href="#2-测试结果分析" class="headerlink" title="2 测试结果分析"></a>2 测试结果分析</h3><h3 id="2-1-模型大小对计算时间的影响"><a href="#2-1-模型大小对计算时间的影响" class="headerlink" title="2.1 模型大小对计算时间的影响"></a>2.1 模型大小对计算时间的影响</h3><p><img src="/2017/12/11/ex19/ex19-3.jpeg"></p>
+<p>注意：在后面加入 <code>sort –n</code> 后输出的变化。</p>
+<hr>
+<p><img src="/2017/12/11/ex19/ex19-4.jpeg"></p>
+<p><img src="/2017/12/11/ex19/ex19-5.jpeg"></p>
+<p>从图中可以看出来，计算时间随着格子的大小，需要的计算时间增加的很快。</p>
+<p>注意：在测试中，KPOINTS一直保持不变（因为只有一个Gamma点）。而在我们实际的计算操作中，使用1x1x1 KPOINTS的机会并不多。如果格子在某个方向增加了2倍，那么对应的改方向的K点就需要除以2。重复一下上节的经验指导。也就是在计算过程中，保持k<em>a保持不变。当然，k</em>a是我们提前测试好的。</p>
+<p><img src="/2017/12/11/ex19/ex19-6.jpeg"></p>
+<p>举例：</p>
+<p>一个<code>10x10x10</code> $\AA^3$的体相材料，我们计算的时候K点设置为：<code>6x6x6</code>。</p>
+<p>当我们将材料在x方向增加1倍，变为<code>20x10x10</code>  $\AA^3$。为保持一致的精确度，那么我们的K点需要设置为：<code>3x6x6</code>。</p>
+<hr>
+<p>这是因为倒易晶格矢量和实际的晶格矢量之间存在着倒数的关系：</p>
+<p><img src="/2017/12/11/ex19/ex19-7.jpeg"></p>
+<p>注： 类似的图，不加说明，均出自我们的参考书。也就是说，我们选取的晶格越大，倒易晶格矢量越小。用同等数目的K点分布到倒易晶格中，网格的密度也会越大，从而造成计算量的增加。</p>
+<hr>
+<h4 id="2-2-体系的对称性对计算速度的影响："><a href="#2-2-体系的对称性对计算速度的影响：" class="headerlink" title="2.2 体系的对称性对计算速度的影响："></a>2.2 体系的对称性对计算速度的影响：</h4><h5 id="2-2-1-K点保持不变："><a href="#2-2-1-K点保持不变：" class="headerlink" title="2.2.1 K点保持不变："></a>2.2.1 K点保持不变：</h5><p>这一点前面关于氧原子的计算就已经介绍到了，降低体系的对称性会增加额外的计算时间。如图：将<code>12x12x12</code> $\AA^3$ （计算需要186.86 s）的格子修改如下：</p>
+<p><img src="/2017/12/11/ex19/ex19-8.jpeg"></p>
+<p>计算结束后，查看时间，为194.9 s, 计算时间增加了8秒。</p>
+<p><img src="/2017/12/11/ex19/ex19-9.jpeg"></p>
+<h4 id="2-2-2-对称性对K点的影响："><a href="#2-2-2-对称性对K点的影响：" class="headerlink" title="2.2.2 对称性对K点的影响："></a>2.2.2 对称性对K点的影响：</h4><p>体系的对称性不仅仅提现在前面的计算中，更可以在计算中极大地减少K点的数目，从而加快计算，节省时间。这一点我们引用参考书中的一段话：</p>
+<p><img src="/2017/12/11/ex19/ex19-10.jpeg"></p>
+<h5 id="2-3-3-模型对称性与K点对称性的关系"><a href="#2-3-3-模型对称性与K点对称性的关系" class="headerlink" title="2.3.3 模型对称性与K点对称性的关系"></a>2.3.3 模型对称性与K点对称性的关系</h5><p>在这里，体系的对称性与K点对称性的匹配问题，尤其是对于hexagonal的结构来说，必须要使用 gamma centered points. 也就是第三行的第一个字母必须为G或者g。我们看一下官网的原话：</p>
+<blockquote>
+<p>We strongly recommend to use only Gamma centered grids forhexagonal lattices. Many tests we have performed indicate that the energy convergessignificantly faster with centered grids than with standard Monkhorst Pack grids. Grids generated with the “M” setting in the third line, in fact do not have full hexagonal symmerty.</p>
+</blockquote>
+<p>如果你不确定自己的体系，直接用G就可以了。</p>
+<blockquote>
+<p>For reasons of safety it might be a good choice to use only meshes with theirorigin at (switch “G” or “g” on third line or odd divisions) if the tetrahedron method is used.</p>
+</blockquote>
+<h3 id="3-扩展练习："><a href="#3-扩展练习：" class="headerlink" title="3 扩展练习："></a>3 扩展练习：</h3><p> 1 认真阅读： Density Functional Theory: A Practical Introduction: 第三章的前两节；</p>
+<p>2 VASP官网查找K点相关的说明。</p>
+<h3 id="4-总结："><a href="#4-总结：" class="headerlink" title="4 总结："></a>4 总结：</h3><p> 学习完本节，大家应该掌握的内容有： </p>
+<p>4.1 晶格大小对计算时间的影响；</p>
+<p>4.2 体系的对称性对计算时间的影响；</p>
+<p>4.3 掌握K点和晶格大小的经验规则；</p>
+<p>4.4 晶格对称性和K点对称性的一致性。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E6%97%B6/" rel="tag"># 机时</a>
+              <a href="/tags/%E6%A8%A1%E5%9E%8B/" rel="tag"># 模型</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/11/ex20/" rel="prev" title="Ex20 谁偷走的我的机时？（五）">
+                  <i class="fa fa-chevron-left"></i> Ex20 谁偷走的我的机时？（五）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/14/ex22/" rel="next" title="Ex22 乙醇气相分子的优化">
+                  Ex22 乙醇气相分子的优化 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

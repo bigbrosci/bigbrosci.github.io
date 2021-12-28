@@ -1,37 +1,533 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="使用VASP计算，很多时候都逃不掉DOS，能带计算的相关问题，尤其是对于计算材料的童鞋们，更是家常便饭一般。群里很多人，很多新手们都时常在讨论DOS的计算。这里我们通过VASP官网的说明，解释一下算DOS的具体步骤。前面我们学会了如何拟合或者优化稳定的晶胞结构。在此基础上，我们可以计算一下相关的DOS信息。 1 KPOINTS 1.1 K点数目 与结构优化相比，算DOS的时候，需要用到更多的K点数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex-37 DOS 计算(一)">
+<meta property="og:url" content="http://www.bigbrosci.com/2018/02/06/ex37/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="使用VASP计算，很多时候都逃不掉DOS，能带计算的相关问题，尤其是对于计算材料的童鞋们，更是家常便饭一般。群里很多人，很多新手们都时常在讨论DOS的计算。这里我们通过VASP官网的说明，解释一下算DOS的具体步骤。前面我们学会了如何拟合或者优化稳定的晶胞结构。在此基础上，我们可以计算一下相关的DOS信息。 1 KPOINTS 1.1 K点数目 与结构优化相比，算DOS的时候，需要用到更多的K点数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/06/ex37/ex37-1.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/06/ex37/ex38-3.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/06/ex37/C:/Users/lqlhz/OneDrive/%E6%A1%8C%E9%9D%A2/ex37-41/ex38/ex38-4.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/06/ex37/C:/Users/lqlhz/OneDrive/%E6%A1%8C%E9%9D%A2/ex37-41/ex37/ex37-4.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/06/ex37/ex37-2.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/06/ex37/ex37-3.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/02/06/ex37/ex37-14.png">
+<meta property="article:published_time" content="2018-02-06T20:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.816Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="DOS">
+<meta property="article:tag" content="ISMEAR">
+<meta property="article:tag" content="SIGMA">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2018/02/06/ex37/ex37-1.png">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2018/02/06/ex37/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2018/02/06/ex37/","path":"2018/02/06/ex37/","title":"Ex-37 DOS 计算(一)"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex-37 DOS 计算(一) | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-KPOINTS"><span class="nav-number">1.</span> <span class="nav-text">1 KPOINTS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-NEDOS"><span class="nav-number">2.</span> <span class="nav-text">2 NEDOS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-ISMEAR%EF%BC%88%E4%B8%80%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">3  ISMEAR（一）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-ISMEAR%EF%BC%88%E4%BA%8C%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">4 ISMEAR（二）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0"><span class="nav-number">5.</span> <span class="nav-text">4 扩展练习:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">5 总结:</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/06/ex37/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex-37 DOS 计算(一)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-02-06 15:30:16" itemprop="dateCreated datePublished" datetime="2018-02-06T15:30:16-05:00">2018-02-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/02/06/ex37/" class="post-meta-item leancloud_visitors" data-flag-title="Ex-37 DOS 计算(一)" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/02/06/ex37/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/06/ex37/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>使用VASP计算，很多时候都逃不掉DOS，能带计算的相关问题，尤其是对于计算材料的童鞋们，更是家常便饭一般。群里很多人，很多新手们都时常在讨论DOS的计算。这里我们通过VASP官网的说明，解释一下算DOS的具体步骤。前面我们学会了如何拟合或者优化稳定的晶胞结构。在此基础上，我们可以计算一下相关的DOS信息。</p>
+<h2 id="1-KPOINTS"><a href="#1-KPOINTS" class="headerlink" title="1 KPOINTS"></a>1 KPOINTS</h2><p> <strong>1.1 K点数目</strong></p>
+<p>与结构优化相比，算DOS的时候，需要用到更多的K点数目，这是因为K点越多，画出来的DOS图质量越高。</p>
+<p>引用官网的话：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A high quality DOS requires usually very fine k-meshes.</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<p><strong>1.2 K点数目的选取</strong></p>
+<p> K点数目越多越好，我们该如何设置K点数目呢？</p>
+<p>还记的前面我们讲到的K点选择的经验规则吗？那一个规则可以认为是我们平时计算时K点选择的标配。对于DOS计算，我们就需要把配置提高一个档次了。</p>
+<p><img src="/2018/02/06/ex37/ex37-1.png"> </p>
+<p>一般来说，<code>K * a = 45 </code>左右之间完全可以满足你的要求，大伙可以根据这个经验来选择K点。 </p>
+<h2 id="2-NEDOS"><a href="#2-NEDOS" class="headerlink" title="2 NEDOS"></a>2 NEDOS</h2><p>NEDOS这个参数在DOS图的质量上面也有着很重要的作用。比如我们的DOS能量区间范围（DOS图的横坐标）为：[-10 eV，10eV]，VASP默认的将这个能量范围分成301点，然后作图。301也就是默认的NEDOS的取值。如果我们设置的NEDOS值够大，那么DOS区间就会被区分地越精确。NEDOS的取值一般来说：</p>
+<ul>
+<li><p><code>NEDOS = 3000</code>左右就足够好了。太大也没什么意义；</p>
+</li>
+<li><p>NEDOS越大，VASP输出的DOSCAR，vasprun.xml文件也就越大，占用存储空间。</p>
+</li>
+<li><p>经常有人抱怨说自己的DOS图有很多尖锐的峰，可以尝试着通过增加NEDOS这个办法来解决。</p>
+</li>
+<li><p>更多的信息，自己参考一下：<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/NEDOS">https://cms.mpi.univie.ac.at/wiki/index.php/NEDOS</a></p>
+</li>
+</ul>
+<h2 id="3-ISMEAR（一）"><a href="#3-ISMEAR（一）" class="headerlink" title="3  ISMEAR（一）"></a>3  ISMEAR（一）</h2><p>首先我们看官网的话： <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/ISMEAR">https://cms.mpi.univie.ac.at/wiki/index.php/ISMEAR</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">For the calculation of the total energy in bulk materials we recommend thetetrahedron method with Blöchl corrections (ISMEAR=-5). This method also givesa smooth nice electronic density of states (DOS).</span><br></pre></td></tr></table></figure>
+
+<p>也就是说 ISMEAR = -5 的时候（Blöchl修正的四面体方法），我们可以得到一个非常平滑的DOS图。</p>
+<p><strong>注意：</strong></p>
+<p>3.1 K点数目</p>
+<p>设置<code>ISMEAR = -5</code> 的时候，如果K点数目K点的数目小于等于4 ， 计算会出错，得到如下的错误结果：</p>
+<p> <strong>VERY BAD NEWS! internal error in subroutineIBZKPT:</strong></p>
+<p> <strong>Tetrahedron method fails for NKPT&lt;4. NKPT=       1</strong></p>
+<p>这也是很多人常见的错误。官网说的是K点数目小于三：the tetrahedron method is not applicable， if less than three k-points are used. （QQ群的<code>恒驰一强</code>发现官网的这个错误。）</p>
+<p>K点不够，用<code>ISMEAR = -5</code>出错的解决办法：</p>
+<ul>
+<li><p>既然Ｋ点不够，那么我就增加Ｋ点，然后再使用<code>ISMEAR= -5</code>　（<strong>简单粗暴，强烈推荐使用</strong>）</p>
+</li>
+<li><p>如果增加了K点，可能还是会出错。有时也会出现下面的错误（微信群的群友（<strong>Cu–Ni</strong>）提供）。我们先把解决方法列出来，错误部分大家慢慢看：</p>
+<ul>
+<li>直接换一下ISMEAR的取值。</li>
+<li>群友还发现：在保证K点数目大于4的时候，有时候减少K点数目或者增加K点数目都可以解决这个问题。如果你的服务器还算可以，建议增加K点数目，毕竟和K点数目越多，DOS的质量越高。这个办法大家可以参考一下。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WARNING: DENTET:can&#x27;t reach specified precision</span><br><span class="line">Number of Electronsis NELECT =</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2018/02/06/ex37/ex38-3.png"></p>
+</li>
+</ul>
+<p>  <strong>官方的解释：</strong></p>
+<p>  <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp-forum/viewtopic.php?t=416">http://cms.mpi.univie.ac.at/vasp-forum/viewtopic.php?t=416</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.error.wiki/The_old_and_the_new_charge_density_differ">http://www.error.wiki/The_old_and_the_new_charge_density_differ</a></p>
+<p>  <img src="/2018/02/06/ex37/C:/Users/lqlhz/OneDrive/%E6%A1%8C%E9%9D%A2/ex37-41/ex38/ex38-4.png"></p>
+<p>出现此警告(DENTET)的原因是因为无法通过tetrahedron方法得到足够精确的费米能级。也就是将态密度积分到费米面的电子数和体系的价电子数目不一致。</p>
+<p>3.2 适用体系：</p>
+<ul>
+<li><p><code>ISMEAR = -5</code> 适用于所有体系的<strong>DOS计算</strong>。非DOS计算的时候：</p>
+</li>
+<li><p>对于金属体系来说，结构优化的时候不能使用<code>ISMEAR= -5</code>（注意：是<strong>优化结构的时候不能用</strong>！），这是因为四面体方法不能很好地处理费米能级处的电子占据情况，导致算出来的力会有一定百分比的误差。所以，对金属体系结构优化的时候，<code>ISMEAR &gt; = 0</code> 参考：<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/vasp/vasp/Partial_occupancies_different_methods.html">https://cms.mpi.univie.ac.at/vasp/vasp/Partial_occupancies_different_methods.html</a></p>
+</li>
+<li><p>对于半导体和绝缘体的体系，<code>ISMEAR&gt;0</code> 是不可以的。只能ISMEAR&lt;=0。</p>
+</li>
+<li><p>四面体方法（<code>ISMEAR = -5</code>）不适合计算能带（对所有的体系来说的）。多谢wuli8老师帮忙完善！</p>
+</li>
+<li><p>使用ISMEAR= -5 的时候，SIGMA的取值没有影响，如果不放心，取<code>SIGMA = 0.01</code>。</p>
+</li>
+</ul>
+<p>3.3 小结：</p>
+<ul>
+<li>算DOS，只要K点不少于3； 用ISMEAR=-5是个不错的选择。</li>
+</ul>
+<h2 id="4-ISMEAR（二）"><a href="#4-ISMEAR（二）" class="headerlink" title="4 ISMEAR（二）"></a>4 ISMEAR（二）</h2><p>如果体系很大，只能适用gamma点来算，<code>ISMEAR = -5</code>的时候，肯定会出错，但服务器不给力，不能增加Ｋ点的时候，怎么办？</p>
+<ul>
+<li><p>对于所有的体系（K点数目小于4也可以）：可以使用<code>ISMEAR = 0</code>；<code>SIGMA = 0.01</code>。对于大部分的体系都能得到理想的结果。原则上来说，使用GS方法的时候(ISMEAR=0)，SIGMA的数值要测试下，保证<code>entropy T*S</code>这一项平均到每个原子上小于0.001 eV也就是1meV。不想测试的话，直接用个很小的值，比如这里我们说的：<code>SIGMA = 0.01</code>。</p>
+<p><img src="/2018/02/06/ex37/C:/Users/lqlhz/OneDrive/%E6%A1%8C%E9%9D%A2/ex37-41/ex37/ex37-4.png"></p>
+</li>
+<li><p>对于金属体系来说，也可以使用<code>ISMEAR = 1</code>；<code>SIGMA = 0.01</code>。SIGMA取值太大，计算出来的能量可能不正确；SIGMA取值越小，计算越精确，需要的时间也就越多。值得注意的是：这里我们使用的0.01已经很小，没有必要设置的再小。因为对于金属体系，使用MP方法(ISMEAR=1..N)时，SIGMA= 0.10 差不多就足够了。官网给的参考值是0.20。</p>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node124.html">http://cms.mpi.univie.ac.at/vasp/guide/node124.html</a></p>
+<p><img src="/2018/02/06/ex37/ex37-2.png"></p>
+<ul>
+<li>在KPOINTS确定之后，使用多大的SIGMA值，大家最好测试一下。<strong>原则如下</strong>：SIGMA取值在<strong>保证</strong>OUTCAR中<code>entropy T*S</code>这项的能量平均到每个原子上小于 1 meV的<strong>前提下</strong>：<strong>尽可能地大</strong>。这样可以在保证准确度的同时，也加快收敛速度。 </li>
+</ul>
+<p><img src="/2018/02/06/ex37/ex37-3.png"></p>
+<ul>
+<li><strong>记住：</strong> VASP学习最快的途径就是不停地看官网，然后亲自上手去测试，测试，测试！并观察分析结果。</li>
+</ul>
+<hr>
+<hr>
+<h2 id="4-扩展练习"><a href="#4-扩展练习" class="headerlink" title="4 扩展练习:"></a><strong>4</strong> <strong>扩展练习:</strong></h2><p>4.1 阅读VASP官网关于ISMEAR和SIGMA的所有说明：</p>
+<p>4.2 下载VASP的pdf说明书，搜索书中所有的ISMEAR和SIGMA关键词，阅读所有相关的内容；</p>
+<p>4.3 思考SMEAR方法的意义？SIGMA的意义？</p>
+<p>4.4 查看VASP说明书，查阅相关文献，了解MP和GS方法</p>
+<p>4.5 测试MP和 GS方法中，SIGMA取值对计算时间，能量，收敛步数的影响。</p>
+<p>4.6 分析下为什么算DOS的时候，要算两步： selfconsistent  和 none-selfconsistent calculations? </p>
+<hr>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结:"></a><strong>5</strong> <strong>总结:</strong></h2><p>看完本节：你应该知道计算DOS的时候：</p>
+<ul>
+<li><p>KPOINTS和NEDOS设置的一些内容。</p>
+</li>
+<li><p>ISMEAR要用-5。</p>
+</li>
+<li><p> KPOINTS因计算硬件限制不能设置的很大，数目小于4的时候：</p>
+</li>
+<li><p>对于所有体系均可以使用ISMEAR=0。</p>
+</li>
+<li><p>金属体系还可以用ISMEAR=1..N，官网建议SIGMA为0.20，太小的SIGMA值对收敛会产生影响。使用0.01-0.10的数值都是很安全的选择。</p>
+</li>
+<li><p>SIGMA的数值需要测试一下，一般来说在0.01-0.05之间足够了。</p>
+</li>
+<li><p>非DOS计算的时候，对于金属来说ISMEAR不能等于 -5，优先使用ISMEAR= 1。非金属来说（半导体和绝缘体），不能 &gt; 0 。对于所有的体系， ISMEAR= 0 则是一个很安全的选择，但SIGMA的数值要测试一下。说了这么多废话，还是官网简单明了：</p>
+</li>
+</ul>
+<p><img src="/2018/02/06/ex37/ex37-14.png"></p>
+<p>For further considerations on the choice for the smearing method see sections 9.4， 10.6. To summarize， use the following guidelines:</p>
+<ul>
+<li>​        For <strong>semiconductors or insulators</strong> use <strong>always</strong> tetrahedron method (ISMEAR=-5)， if the cell is too large (or if you use only 1 or two k-points) use ISMEAR=0.</li>
+</ul>
+<ul>
+<li>​        For <strong>relaxations in metals always</strong> use ISMEAR=1 and an appropriated SIGMA value (the entropy term should <strong>less than 1 meV per atom</strong>). <strong>Mind:</strong> <strong>Avoid</strong> to use ISMEAR&gt;0 for semiconductors and insulators， it might result in problems.</li>
+</ul>
+<p>For metals a sensible value is usually SIGMA= 0.2 (that’s the value we use for most transition metal surfaces).</p>
+<ul>
+<li>​        For the <strong>DOS</strong> and very accurate <em>total energy</em> calculations (<strong>no relaxation in metals</strong>) use the tetrahedron method (ISMEAR=-5).</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/DOS/" rel="tag"># DOS</a>
+              <a href="/tags/ISMEAR/" rel="tag"># ISMEAR</a>
+              <a href="/tags/SIGMA/" rel="tag"># SIGMA</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/02/05/ex36/" rel="prev" title="Ex36 晶格参数的确定（直接优化晶格常数）">
+                  <i class="fa fa-chevron-left"></i> Ex36 晶格参数的确定（直接优化晶格常数）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/02/07/ex38/" rel="next" title="Ex-38 DOS 计算(二)">
+                  Ex-38 DOS 计算(二) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

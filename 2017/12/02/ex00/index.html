@@ -1,37 +1,659 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="在学习本书时,大师兄们会默认读者掌握了一些基本的电脑操作技能,以及化学的基本常识。本章列举出一些常用的计算工具和软件,以及假设大家掌握的一些技能。如果没有达到基本的要求,那么请在学习前面几章的同时,抓紧提升自己的能力。 化学的基本知识如果没有掌握,不建议学习本书。  心态1） 主动行动,主动思考学习过程中要时刻抱着主动的心态去解决问题。  遇到不会的问题,主动去查找解决方法; 遇到不懂的基础知识,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ex00 为什么是&quot;The Hard Way&quot;">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/12/02/ex00/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="在学习本书时,大师兄们会默认读者掌握了一些基本的电脑操作技能,以及化学的基本常识。本章列举出一些常用的计算工具和软件,以及假设大家掌握的一些技能。如果没有达到基本的要求,那么请在学习前面几章的同时,抓紧提升自己的能力。 化学的基本知识如果没有掌握,不建议学习本书。  心态1） 主动行动,主动思考学习过程中要时刻抱着主动的心态去解决问题。  遇到不会的问题,主动去查找解决方法; 遇到不懂的基础知识,">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-02T07:06:48.000Z">
+<meta property="article:modified_time" content="2021-12-28T04:14:57.607Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/12/02/ex00/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/12/02/ex00/","path":"2017/12/02/ex00/","title":"ex00 为什么是\"The Hard Way\""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ex00 为什么是"The Hard Way" | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BF%83%E6%80%81"><span class="nav-number">1.</span> <span class="nav-text">心态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%EF%BC%89-%E4%B8%BB%E5%8A%A8%E8%A1%8C%E5%8A%A8-%E4%B8%BB%E5%8A%A8%E6%80%9D%E8%80%83"><span class="nav-number">1.1.</span> <span class="nav-text">1） 主动行动,主动思考</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%86%E6%98%AF"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">但是</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%EF%BC%89%E8%A2%AB%E7%AE%97%EF%BC%88ji%EF%BC%89%E8%AE%A1%EF%BC%88suan%EF%BC%89%E4%BA%86%E8%AF%A5%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="nav-number">1.2.</span> <span class="nav-text">2）被算（ji）计（suan）了该怎么办？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%EF%BC%89%E8%AE%A1%E7%AE%97-%E8%BD%AC%E8%A1%8C%EF%BC%9F"><span class="nav-number">1.3.</span> <span class="nav-text">3）计算 &#x3D; 转行？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">2.</span> <span class="nav-text">2  操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%99%E9%87%8D%E7%82%B9%E7%85%A7%E9%A1%BE%E5%AF%B9%E8%B1%A1%EF%BC%9AWindows%E7%94%A8%E6%88%B7%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%8F%90%E9%86%92%EF%BC%9A"><span class="nav-number">2.0.0.0.1.</span> <span class="nav-text">给重点照顾对象：Windows用户的第一个提醒：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">文本编辑工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89vim"><span class="nav-number">3.0.1.</span> <span class="nav-text">1）vim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-notepad"><span class="nav-number">3.0.2.</span> <span class="nav-text">2) notepad++</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89-Atom"><span class="nav-number">3.0.3.</span> <span class="nav-text">3） Atom</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%BB%BA%E6%A8%A1%E7%9B%B8%E5%85%B3%E8%BD%AF%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">常用建模相关软件:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Material-Studio"><span class="nav-number">4.0.1.</span> <span class="nav-text">1) Material Studio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89p4vasp"><span class="nav-number">4.0.2.</span> <span class="nav-text">2）p4vasp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89-VESTA"><span class="nav-number">4.0.3.</span> <span class="nav-text">3）**VESTA**</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%9B%B8%E5%85%B3"><span class="nav-number">5.</span> <span class="nav-text">服务器相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%9F%A5%E9%81%93%E6%80%8E%E4%B9%88%E8%BF%9E%E6%8E%A5%E8%87%AA%E5%B7%B1%E7%BB%84%E5%86%85%E6%88%96%E8%80%85%E7%A7%9F%E8%B5%81%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">5.0.1.</span> <span class="nav-text">1) 知道怎么连接自己组内或者租赁的服务器;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%88%9D%E6%AD%A5%E5%AD%A6%E4%B9%A0%E4%BD%BF%E7%94%A8%E5%9F%BA%E6%9C%AC%E7%9A%84linux%E5%91%BD%E4%BB%A4"><span class="nav-number">5.0.2.</span> <span class="nav-text">2) 初步学习使用基本的linux命令:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%89%8B%E4%B8%8A%E6%9C%89%E5%8F%AF%E4%BB%A5%E6%AD%A3%E5%B8%B8%E8%BF%90%E8%A1%8C%E7%9A%84VASP%E7%A8%8B%E5%BA%8F"><span class="nav-number">5.0.3.</span> <span class="nav-text">3) 手上有可以正常运行的VASP程序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0"><span class="nav-number">6.</span> <span class="nav-text">程序语言学习</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%B4%E8%B0%A2%EF%BC%9A"><span class="nav-number">8.</span> <span class="nav-text">致谢：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/02/ex00/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ex00 为什么是"The Hard Way"
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-02 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-02T02:06:48-05:00">2017-12-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 23:14:57" itemprop="dateModified" datetime="2021-12-27T23:14:57-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/02/ex00/" class="post-meta-item leancloud_visitors" data-flag-title="ex00 为什么是"The Hard Way"" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/12/02/ex00/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/02/ex00/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>在学习本书时,大师兄们会默认读者掌握了一些基本的电脑操作技能,以及化学的基本常识。本章列举出一些常用的计算工具和软件,以及假设大家掌握的一些技能。如果没有达到基本的要求,那么请在学习前面几章的同时,抓紧提升自己的能力。 化学的基本知识如果没有掌握,不建议学习本书。 </p>
+<h1 id="心态"><a href="#心态" class="headerlink" title="心态"></a>心态</h1><h2 id="1）-主动行动-主动思考"><a href="#1）-主动行动-主动思考" class="headerlink" title="1） 主动行动,主动思考"></a>1） 主动行动,主动思考</h2><p>学习过程中要时刻抱着<strong>主动</strong>的心态去解决问题。</p>
+<ul>
+<li>遇到不会的问题,<strong>主动</strong>去查找解决方法;</li>
+<li>遇到不懂的基础知识,<strong>主动</strong>去找教科书;</li>
+<li>遇到什么好的资源,书籍,课件等,<strong>主动</strong>去网上搜索,下载;</li>
+<li>本书中的练习，看到别人有意思的计算，<strong>主动</strong>去重复重复。</li>
+<li>没事就<strong>主动</strong>去官网溜达,</li>
+<li>VASP计算出错，<strong>主动</strong>去google或者官网的论坛找答案!</li>
+</ul>
+<h4 id="但是"><a href="#但是" class="headerlink" title="但是"></a><strong>但是</strong></h4><ul>
+<li>前面说的<strong>主动</strong>是对于你自己来说的,别碰到不会的就主动求助别人,这样你很难得到提升。</li>
+</ul>
+<h2 id="2）被算（ji）计（suan）了该怎么办？"><a href="#2）被算（ji）计（suan）了该怎么办？" class="headerlink" title="2）被算（ji）计（suan）了该怎么办？"></a>2）被算（ji）计（suan）了该怎么办？</h2><p>很多人在的课题组都是做实验的,老板头脑发热的时候，就安排做起了计算。但老板除了一颗乐观的心，屁都不懂啊。这时候的你，除非脑子很好用，否则就会陷入一种叫天天不应，叫地地不灵的境界。在这里,大师兄建议你：</p>
+<ul>
+<li><p>说服老板，找个计算靠谱的组，合作一下，避免自己直接算；</p>
+</li>
+<li><p>说服不了，找个计算靠谱的组，让老板派你去交流学习一段时间,别自己在那里瞎捣鼓。</p>
+</li>
+<li><p>总之，时间和精力的成本，自己心里要有个数。</p>
+</li>
+</ul>
+<h2 id="3）计算-转行？"><a href="#3）计算-转行？" class="headerlink" title="3）计算 = 转行？"></a>3）计算 = 转行？</h2><ul>
+<li><p>很多人吐槽计算化学是个坑告诉你，既然选择了这条路，就准备改行吧。请避开这些负能量的说法，拿出自己的主见。无论放弃或者坚持，都要拿出你自己的判断力出来，请不要再听别人在你耳边瞎磨。也就是我的人生我做主。</p>
+</li>
+<li><p>每一行的人都会说自己这一行是个坑，不管你怎么跳，都是坑。引用我老婆的原话：之前带两个孩子的时候，感觉自己每天都很累，现在孩子父母帮忙看着，自己工作了，但每天还是很累。美好的生活，累总是一路同行。</p>
+</li>
+<li><p>个人的理解是，学习理论计算可以使你的视野更加开阔，思维方式更加灵活，对事物本质的把握和理解上，比别人要更胜一筹。也就是一眼就能找到问题的关键所在。不论是否继续相关的研究，转行与否，对今后的发展总会有所帮助。当然，我这个穷酸书生说的话，大家也可以一笑了之。</p>
+</li>
+</ul>
+<h1 id="2-操作系统"><a href="#2-操作系统" class="headerlink" title="2  操作系统"></a>2  <strong>操作系统</strong></h1><p>做计算，有三个操作系统可以选择：</p>
+<ul>
+<li><p>Windows 系统:会使用Windows系统:会开机,打字,安装软件;</p>
+</li>
+<li><p>Linux 系统, 推荐使用 Ubuntu16.XXX版本的系统(强烈推荐使用linux系统,但不局限于Ubuntu系统);</p>
+</li>
+<li><p>Mac系统(大师兄周围很少用的,这里就忽略掉了….)。</p>
+</li>
+</ul>
+<h5 id="给重点照顾对象：Windows用户的第一个提醒："><a href="#给重点照顾对象：Windows用户的第一个提醒：" class="headerlink" title="给重点照顾对象：Windows用户的第一个提醒："></a>给重点照顾对象：Windows用户的第一个提醒：</h5><p>Windows用户在进行计算的时候，只要计算出错了，就要本能地记起第一个解决的办法： dos2unix </p>
+<p>这个命令干什么的不要紧，先死死记住即可。</p>
+<h1 id="文本编辑工具"><a href="#文本编辑工具" class="headerlink" title="文本编辑工具"></a><strong>文本编辑工具</strong></h1><h3 id="1）vim"><a href="#1）vim" class="headerlink" title="1）vim"></a>1）<a target="_blank" rel="noopener" href="https://www.vim.org/">vim</a></h3><p>这个必须要学会，linux下面自带。原因是绝大多数的计算都是在linux下面进行的，学会vim的基本操作可以极大提高你的文字处理能力和工作效率。</p>
+<h3 id="2-notepad"><a href="#2-notepad" class="headerlink" title="2) notepad++"></a>2) <a target="_blank" rel="noopener" href="https://notepad-plus-plus.org/">notepad++</a></h3><ul>
+<li>这个是对于Windows用户来说的，要求会创建文件,输入内容并保存文件，<strong>这个软件必须学会使用!</strong></li>
+</ul>
+<p>原因在于：Windows下面自带的记事本保存的文件与linux下的文件格式不匹配，提交任务的时候经常出问题，用notepad++则不会出现这个问题。</p>
+<p><strong>因此</strong>，记事本杜绝使用。为了安全，即使用了notepad++，Windows用户在进行计算的时候，也需要注意下面两点：</p>
+<ul>
+<li><p>Windows下面编辑的输入文件，如果想在linux服务器上运行，最好先执行: dos2unix 这个命令。</p>
+</li>
+<li><p>Windows用户计算出错了，一定要首先想到 dos2linux 这个命令来解决问题!!!</p>
+</li>
+</ul>
+<h3 id="3）-Atom"><a href="#3）-Atom" class="headerlink" title="3） Atom"></a>3） <a target="_blank" rel="noopener" href="https://atom.io/">Atom</a></h3><p>这个Atom是文本编辑工具，不是原子的意思。Windows，Linux，Mac系统均可使用。要求会输入文件，保存文件。</p>
+<h1 id="常用建模相关软件"><a href="#常用建模相关软件" class="headerlink" title="常用建模相关软件:"></a><strong>常用建模相关软件:</strong></h1><p>本书默认大家已经在自己的电脑里安装了下面三个软件：</p>
+<h3 id="1-Material-Studio"><a href="#1-Material-Studio" class="headerlink" title="1) Material Studio"></a><strong>1) Material Studio</strong></h3><ul>
+<li><p>这个软件，百度里面一大堆下载链接，安装教程，大家自行下载安装即可。</p>
+</li>
+<li><p> 本书默认大家已经安装成功，会不会使用暂且不要求；</p>
+</li>
+<li><p>不要问我从哪里下载，安装出现问题也不要找我解决。</p>
+</li>
+</ul>
+<h3 id="2）p4vasp"><a href="#2）p4vasp" class="headerlink" title="2）p4vasp"></a>2）<a target="_blank" rel="noopener" href="http://www.p4vasp.at/"><strong>p4vasp</strong></a></h3><ul>
+<li>链接：<a target="_blank" rel="noopener" href="http://www.p4vasp.at/">http://www.p4vasp.at/</a></li>
+</ul>
+<ul>
+<li><p>Windows版本，好像很久没有更新了，点击此处下载，解压,双击图标即可运行。也可以在大师兄QQ群或者其他QQ群文件中下载。</p>
+</li>
+<li><p>Linux版本功能更加强大。可以</p>
+<p>Ubuntu用户使用命令一键安装： <strong>sudo apt-get install p4vasp</strong></p>
+<p>也可以按照官网的说明，安装最新的版本：p4vasp 0.3.30</p>
+</li>
+<li><p>Mac系统：本人没有经验，希望土豪分享下经验。</p>
+</li>
+<li></li>
+</ul>
+<h3 id="3）-VESTA"><a href="#3）-VESTA" class="headerlink" title="3）**VESTA**"></a>3）**<a target="_blank" rel="noopener" href="http://jp-minerals.org/vesta/en/">VESTA</a>**</h3><ul>
+<li><p>来自日本的良心软件，Linux，Windows，Mac系统均可使用。链接：<a target="_blank" rel="noopener" href="http://jp-minerals.org/vesta/en/">http://jp-minerals.org/vesta/en/</a></p>
+</li>
+<li><p>Windows下面安装就不再介绍了，下载程序，解压，双击图标即可运行，相信大家都能搞定。</p>
+</li>
+<li><p>Linux下安装: </p>
+<ul>
+<li><p>下载binary程序文件，本人解压后放到了/opt/VESTA-x86_64目录</p>
+</li>
+<li><p>编辑 ~/.bashrc 文件，在文件最后，添加下面2行。</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export VESTA=/opt/VESTA-x86_64 </span><br><span class="line">export PATH=&quot;$PATH:$VESTA&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在终端里面进行的操作如下：第一行打开<del>/.bashrc文件, 自己添加上面提到的两行即可，第二行更新下</del>/bashrc文件，第三行运行VESTA。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ vim ~/.bashrc</span><br><span class="line">$ . ~/.bashrc</span><br><span class="line">$ VESTA</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="服务器相关"><a href="#服务器相关" class="headerlink" title="服务器相关"></a>服务器相关</h1><h3 id="1-知道怎么连接自己组内或者租赁的服务器"><a href="#1-知道怎么连接自己组内或者租赁的服务器" class="headerlink" title="1) 知道怎么连接自己组内或者租赁的服务器;"></a>1) 知道怎么连接自己组内或者租赁的服务器;</h3><h3 id="2-初步学习使用基本的linux命令"><a href="#2-初步学习使用基本的linux命令" class="headerlink" title="2) 初步学习使用基本的linux命令:"></a>2) 初步学习使用基本的linux命令:</h3><ul>
+<li><p> 进入目录 : cd </p>
+</li>
+<li><p>移动文件(夹): mv </p>
+</li>
+<li><p>复制文件: cp </p>
+</li>
+<li><p>复制文件夹用: cp -r ; 注意 cp 和 -r 之间有个或者N个空格</p>
+</li>
+<li><p>创建文件夹:mkdir     </p>
+</li>
+<li><p>删除文件: rm ;    </p>
+</li>
+<li><p>删除文件夹: rm  -r    </p>
+</li>
+<li><p>强制删除文件夹: rm -fr  或者 rm -rf  (f 和 r 的顺序可以颠倒 )        </p>
+</li>
+<li><p>显示目录下文件: ls,等命令;   </p>
+</li>
+<li><p>这里大师兄就不再啰嗦了,老司机们自动略过,新手自行百度:linux 命令,你会得到铺天盖地的信息。</p>
+</li>
+</ul>
+<h3 id="3-手上有可以正常运行的VASP程序"><a href="#3-手上有可以正常运行的VASP程序" class="headerlink" title="3) 手上有可以正常运行的VASP程序"></a>3) 手上有可以正常运行的VASP程序</h3><ul>
+<li><p> 组里面已经安装好vasp程序，或者使用超算中心的VASP程序，只要手上有可以正常运行的VASP即可。因为我们在本书里，<strong>不讨论</strong>：</p>
+</li>
+<li><ul>
+<li><ol>
+<li>怎么下载VASP？</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>去哪里下载VASP?</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>去哪里下载VASP的pseudo potentials?</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>怎么安装VASP?</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>前三条命令禁止在大师兄群里提问，第四条VASP安装遇到问题可以交流。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p> 知道怎么提交VASP任务</p>
+</li>
+<li><ul>
+<li>自己组里已经有提交任务的脚本，如果没有的话,</li>
+<li><ul>
+<li><ol>
+<li>找组里的师兄师姐帮忙;</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>第一个啃螃蟹的人,找老师解决或者服务器商求助</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>自行百度解决  </li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="程序语言学习"><a href="#程序语言学习" class="headerlink" title="程序语言学习"></a><strong>程序语言学习</strong></h1><p>建议大家学习两个语言: bash 和 python</p>
+<ul>
+<li>bash语言：日常terminal里面常用的基本命令，比如cd，ls这些，以及结合基本的逻辑语法，可以让你写出一些简单的小脚本，提高自己的工作效率；</li>
+<li>Python 语言：python是一款语法简单，很容易上手的程序，有着丰富的数据库支持，目前深受科研人员的喜爱。<strong>注意</strong>，这里我们不讨论类似：python是一门高级语言，运行的时候跟机器交互性差，需要时间比C++长这样的问题。因为这是专业程序员的事。不出意外，看这本书的大部分人，能够用python写个小脚本，方便地处理自己的任务和数据，就已经非常棒了，快和慢，对于我们来说，顶死了也就几秒的问题，完全可以接受。</li>
+<li>学习程序语言，一方面可以极大地提高自己的工作效率，另一方面也可以改变自己看待事物的思维方式。  </li>
+<li>如果不喜欢Python，当然也可以学习其他的程序语言，C++，R等。</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结:"></a><strong>总结:</strong></h1><ul>
+<li><p>初学者学习本书,所必须具有的技能:</p>
+</li>
+<li><ul>
+<li>熟练使用一个操作系统；</li>
+<li>会编辑文本，写入和保存文件；</li>
+<li><ul>
+<li><strong>Windows 用户Notepad++必须掌握</strong>,</li>
+<li>linux用户可以vim或者其他编辑器，比如Atom</li>
+</ul>
+</li>
+<li>安装好或者会初步使用一款建模软件。-<ul>
+<li>**p4vasp **安装在Windows和Ubuntu系统上；</li>
+<li><strong>VESTA</strong> 安装在Windows，Ubuntu，Mac系统上；</li>
+<li><strong>Materials Studio</strong> 安装在Windows或者Mac上。</li>
+</ul>
+</li>
+<li>会连接服务器，使用的vasp程序并且会提交任务<ul>
+<li>这个大师兄帮不了你，自行找服务器商或者其他售后人员解决。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>所具有的心态：</p>
+<ul>
+<li>主动去面对遇到的问题和困难，冰冻三尺,非一日之寒，遇到问题，主动解决，日积月累就会收获良多；</li>
+<li>对自己要有自信，即使自己是彻头彻底的小白,也不必要担心。相对于那些积累了很多错误经验的人来说，什么都不知道则具有更好的可塑性。</li>
+<li>不要盲目相信他人，有自己的理解。如果你在网上搜索问题的答案，会找到很多人的回答，但实际熵很多人水平都可能没有你高，而你却把他们的话当成真理一般去相信，这是致命的。</li>
+</ul>
+</li>
+<li><p>大师兄的要求：</p>
+<ul>
+<li><p>新手认真阅读序言里面推荐的那本参考书；</p>
+</li>
+<li><p>尽可能多地浏览VASP官网，对某些参数有疑惑，认真查阅手册；</p>
+</li>
+<li><p>最重要的是不要偷懒，遇到不会的东西或者困难，立刻记下来或者去解决，否则明天你就会忘掉；</p>
+</li>
+<li><p>好东西要学会分享，可以在QQ群里分享自己的心得，帮助其他正在入门的小师弟，妹们。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>在BB了这么多节的Learn VASP系列教程之后，感觉时候再强调下本书的重点了：The Hard Way.</p>
+<p>The Hard Way 在本人的眼里，类似于书山有路勤为径，学海无涯苦作舟的感觉，类似于经过无数瞎折腾终于尝到一点点小胜利甜头的感觉，类似于苦尽甘来，柳暗花明又一村的感觉。所以：Hard Way是本书的重点，也是痛苦学习的一个过程。</p>
+<p>本人学习和使用VASP教程已经5年多了，开始写本书的时候也有4年的经验了。我进入课题组之前，不会用Ubuntu系统，也不会用脚本，也不会用python写脚本，也没用过VASP。我的VASP入门，是花了一个月看了Davide Sholl的书后，老板又手把手花了一个多月的时间学会的，学习的资料是老版本的Hand on Session系列。每天做的是系列中的练习，准备老板布置的作业，思考老板预留的问题，然后第二天听老板解释每个参数的含义，里面的关键点。而真正操作起来进入课题的时候，又有组里细心的博后专门帮忙指导答疑，也有很多人可以进行讨论学习。写这么多并不是在秀自己遇到了一个多好的老板，多好的课题组。在这样的环境中，经过了四年的学习，好几个课题的实战，才变成你们感觉很牛逼的大师兄（其实我只是经验比你们多一点点而已）。而这本书，也是本人这四年来学习到的精华，每一节都要花费差不多4个小时的样子才能完成，或者更多。而这四年的精华，岂能让你把这本书看一遍就掌握了?</p>
+<p>到现在为止，瞎BB了76节。每节你花一天的时间去学习，加上其他参考书的学习，也需要2个月的时间。而2个月，对一个新手来说，完全在承受范围之内，请相信时间的力量。这里，我们澄清下对新手的定义：全职搞计算的菜鸟。所以，Hard Way 就是需要你花掉每一个整天的时间，一点点认真琢磨，反复操练，绝对不是什么速成。而现在我们搞科研都很浮躁，什么都喜欢图快，我们也有句古话：欲速则不达。因此，打算朝夕之内就学会VASP的读者，本书可能真的不适合你。</p>
+<p>图快的读者中，就有很多来自做实验的。现在大家普遍认为：实验+计算很好发文章，感觉计算就是动动鼠标，操作个软件的活，是个人就能做计算似的。在这种错误的理解，对计算难度过分低估，在高IF文章的诱惑下，安（suan）排（ji）自己的学生去搞计算。写到这里，很多脏话硬生生从嗓子眼憋回去了。骂是解决不了问题的。那么我们就理一理，一个实验的课题组，在没有任何计算背景的条件下，安（Po）排（Hai）一个学生做计算所遇到的问题吧：</p>
+<ul>
+<li><p>计算软件的选择：大千世界无奇不有，计算的软件也是多得数不过来，每个软件都有自己适用的体系，哪个更适合你的体系，你不会选择；</p>
+</li>
+<li><p>软件的购买：比如你决定了使用VASP，你需要找代理商购买软件（有些还很贵，舍不得买，用盗版的，发文章的时候还担心版权问题）；</p>
+</li>
+<li><p>服务器的购买：买了软件我们要安装啊。你可能说，这个容易，直接买几台电脑装上就可以了。这里的问题在于：用台电脑就可以算，就可以发文章的时代造就过去了，你可能被淘汰十几年了。所以，</p>
+<ul>
+<li>要买服务器，但服务器价格不菲，怎么选你也不知道；</li>
+<li>不买服务器，可以买超算中心的机时啊。好吧，就当这一关也过了。</li>
+</ul>
+</li>
+<li><p>软件安装：这也是个麻烦事。计算软件不是QQ，也不是360安全卫士，不是你下载个exe文件双击选择d盘就可以傻瓜式安装成功的。各种环境变量，依赖的库都是需要自己安装的。要不然那么多培训班上来就先给大家介绍软件是怎么安装的呢。</p>
+</li>
+<li><p>熟悉Linux系统：计算软件大部分都是在Linux系统下安装的，所以Linux系统的一些常用命令操作你得学会；而Linux的桌面之所以不如Windows，用户习惯是个难以突破的瓶颈，在没人陪伴的情况下，自己熟练Linux系统也是非常不易；</p>
+</li>
+<li><p>软件学习：这也是本书的重点，纯做计算的菜鸟，每天屁活都不干，就看本书，Linux系统下操练，有人指导的情况下差不多2个月能入门。对号入座，你一个做实验的，每天捣鼓设备，转转反应，就快累的嗝屁了，恨不得回到家或者宿舍就躺着歇会，还要跟朋友出去嗨，陪对象逛，当然还要玩把王者农药。真的能抽出时间来认真学习么？</p>
+</li>
+<li><p>有些体系对软件参数依赖性很强，没人指导，你不会设置，软件出错不会解决，计算结果不会分析，算对算错都不知道，迷迷糊糊就这样得到了一些结果。</p>
+</li>
+<li><p>计算的目的，肯定要跟实验对比啊？怎么对比，从哪方面下手，又没头绪，很多时候都是硬凑，结论反了也傻呵呵地跟别人说实验和理论吻合地很好，可以冲个大文章。</p>
+</li>
+<li><p>折腾完了，要投文章了。因为计算太烂，XJB乱扯结论而被直接拒掉的又有一批；</p>
+</li>
+<li><p>好不容易送审了， 最好去烧烧香，祈求不要落到做计算的人手里。真落到计算的人手里，算的太烂，也是很有可能因此丧命或者大修。</p>
+</li>
+<li><p>就当你运气好，大修了。审稿人抛出来的专业计算问题你可能又答不上来，怎么补数据都无从下手。</p>
+</li>
+<li><p>让你再幸运一把，补上数据，文章接受了。</p>
+</li>
+<li><p>那下一篇还这样弄么？ 可以，但经过上面的折腾，小硕士估计要毕业了，小博士也要滚蛋了。又得找下一个垫背的，也就是因为这样，上一批的不知对和错的经验就传授给了下一代。</p>
+</li>
+<li><p>总结：一个做实验的老师，不把自己在实验方面的专长传授给自己的学生，硬让人家自己去琢磨你什么都不懂的领域，最后造就了一个四不像的怪物出来，何为师道？</p>
+</li>
+</ul>
+<p>这种情况到底怎么办？</p>
+<p>1） 自己专心做实验，计算可以跟国内相关领域的老师合作一下，各取所长。</p>
+<p>在这里还要吐槽2点：</p>
+<ul>
+<li>有些做实验的跟计算合作，挂名的时候把计算放到不起眼位置的人，随意挪动计算作者的顺序，甚至是放到了通讯位置上，但没加*。生活不易，给做计算的留条活口，也给自己留个好名声。</li>
+<li>有些跟实验合作的计算工作者，随随便便优化个结构，做个漂亮的图就完事。只做锦上添花工作，而不深入研究课题机理。做计算的日子本来就难，请不要因为自己的不专业坏了计算的名声。</li>
+</ul>
+<p>如果想合作，就双方正儿八经地合作，真正意义的合作至少是通过计算解决了课题中的难点，机理，有助于组里课题的下一步进行，更高级点是实验验证了计算的假设，不过能做到这种程度的也没多少课题组。而对于这种良性的合作，实验和计算都给挂个一作，双方老板都挂个通讯，也无可厚非。</p>
+<p>2）不想合作，非让自己的学生做计算。这种情况就不要怕花钱，派学生到做计算的课题组学习上一两个月，然后再回来继续搞。如果有需要，也可以派出去参加参加一些高质量的培训班，暑期学校等，来弥补自己在学生指导方面的不足。</p>
+<p>今晚没干活，又XJB扯了一堆。速成思想，快餐文化害死人，这本给人一种DFT极品快餐的感觉；更会越来越”毁了”专业做计算的，让各种做实验的做计算的扰乱市场。虽然有这种负面的作用，但我还是想尽自己可能，稍微提高我们做计算的平均水平。因此，<strong>认真声明一下</strong>：本教程的初衷是给专门做计算菜鸟准备的。对于那些以为靠本书就可以快速入门的筒子们（不管是做计算还是做实验的），劝你们还是趁早放弃本书的学习，科研的路上，从来就没有速成二字。</p>
+<h1 id="致谢："><a href="#致谢：" class="headerlink" title="致谢："></a><strong>致谢：</strong></h1><p>本教程在写作的过程中，得到了很多人的支持。 有些地方可能描述不清，当然书里面也肯定避免不了错误的出现，也收到了很多人的建议和批评指正。在这里，向他们表示诚挚的谢意。</p>
+<p>很多人认为，通过这个教程，学到了很多东西，但请不要过分把功劳归在我身上。引用佛系的观点：<strong>因果，完全是自作自受</strong>。你自己学习了，自己认真练习了，水平的提高完全是你自己辛苦付出的结果。<strong>教程就在这里，你学或者不学，都跟我没有关系。</strong>私以为，收获最大的还是本人。一方面把自己多年的学习的经验整理总结出来，另一方面，很多当时一知半解的地方，在写作的过程中，通过查阅资料，认真分析得到了解决。</p>
+<p>教程的宗旨在于快速带领大家入门VASP的使用，这里大师兄想起了金庸笔下的打狗棒法， 本书传授的只是招式，而心法口诀则是你扎实的科研基础功，是自己这些年（高中，大学，硕士，博士）通过坚持不懈学习来积累获得的，对次，本人确实无能为力，而这一点也恰恰是我们最欠缺的部分，希望可以引起大家的重视，在等待任务结束的时候，多多补习自己的基础知识。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/02/ex10/" rel="prev" title="Ex10 O$_2$结构搭建以及POTCAR注意部分">
+                  <i class="fa fa-chevron-left"></i> Ex10 O$_2$结构搭建以及POTCAR注意部分
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/03/ex11/" rel="next" title="Ex11 O$_2$单点计算和优化结果分析">
+                  Ex11 O$_2$单点计算和优化结果分析 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

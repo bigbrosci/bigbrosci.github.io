@@ -1,37 +1,468 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="ASE 在 DFT 计算中的骚操作令人印象深刻。类似 ASE 的科研工具还有很多，比如 VASPKIT 和 QVASP。熟练使用这些科研工具肯定会助力大家快速完成科研任务，发出更好更高质量的文章。 此次，本文向大家隆重介绍另一款出色的科研工具：Pymatgen。 Pymatgen 是 python materials genomics 的缩写，它是一款基于 python 的、开源的、强大的材料分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pymatgen的骚操作系列（计算离子电导率）">
+<meta property="og:url" content="http://www.bigbrosci.com/2020/09/08/A18/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="ASE 在 DFT 计算中的骚操作令人印象深刻。类似 ASE 的科研工具还有很多，比如 VASPKIT 和 QVASP。熟练使用这些科研工具肯定会助力大家快速完成科研任务，发出更好更高质量的文章。 此次，本文向大家隆重介绍另一款出色的科研工具：Pymatgen。 Pymatgen 是 python materials genomics 的缩写，它是一款基于 python 的、开源的、强大的材料分析">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2020/09/08/A18/examples.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2020/09/08/A18/Li_Sn_S.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2020/09/08/A18/MSD.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2020/09/08/A18/打赏码.jpg">
+<meta property="article:published_time" content="2020-09-09T00:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.241Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="Pymatgen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2020/09/08/A18/examples.png">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2020/09/08/A18/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2020/09/08/A18/","path":"2020/09/08/A18/","title":"Pymatgen的骚操作系列（计算离子电导率）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Pymatgen的骚操作系列（计算离子电导率） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E7%A6%BB%E5%AD%90%E7%94%B5%E5%AF%BC%E7%8E%87%E7%9A%84%E7%90%86%E8%AE%BA%E4%B8%8E%E5%85%AC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">计算离子电导率的理论与公式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8CAIMD%E8%AE%A1%E7%AE%97"><span class="nav-number">1.1.</span> <span class="nav-text">如何进行AIMD计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%A4%84%E7%90%86%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%85%AC%E5%BC%8F"><span class="nav-number">1.2.</span> <span class="nav-text">后处理的基本公式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%B5%E5%AF%BC%E7%8E%87%E8%AE%A1%E7%AE%97%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">2.</span> <span class="nav-text">电导率计算的例子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pymatgen-%E5%A4%A7%E6%98%BE%E8%BA%AB%E6%89%8B"><span class="nav-number">2.1.</span> <span class="nav-text">Pymatgen 大显身手</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85pymatgen"><span class="nav-number">2.1.1.</span> <span class="nav-text">安装pymatgen</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B-DiffusionAnalyzer-%E7%9A%84%E7%B1%BB"><span class="nav-number">2.1.2.</span> <span class="nav-text">查看 DiffusionAnalyzer 的类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.1.3.</span> <span class="nav-text">代码示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90%E4%B8%8B%E8%BD%BD%EF%BC%9A"><span class="nav-number">2.1.4.</span> <span class="nav-text">例子下载：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-number">2.1.5.</span> <span class="nav-text">思考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%93%E8%B5%8F"><span class="nav-number">2.1.6.</span> <span class="nav-text">打赏</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2020/09/08/A18/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Pymatgen的骚操作系列（计算离子电导率）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-09-08 20:30:16" itemprop="dateCreated datePublished" datetime="2020-09-08T20:30:16-04:00">2020-09-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2020/09/08/A18/" class="post-meta-item leancloud_visitors" data-flag-title="Pymatgen的骚操作系列（计算离子电导率）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/09/08/A18/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/09/08/A18/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>ASE 在 DFT 计算中的骚操作令人印象深刻。类似 ASE 的科研工具还有很多，比如 VASPKIT 和 QVASP。熟练使用这些科研工具肯定会助力大家快速完成科研任务，发出更好更高质量的文章。</p>
+<p>此次，本文向大家隆重介绍另一款出色的科研工具：Pymatgen。</p>
+<p>Pymatgen 是 python materials genomics 的缩写，它是一款基于 python 的、开源的、强大的材料分析软件（<a target="_blank" rel="noopener" href="https://pymatgen.org/%EF%BC%89%E3%80%82">https://pymatgen.org/）。</a></p>
+<p>Pymatgen 包含一系列能够表示元素（Element）、位点（Site）、分子（Molecule）、和结构（Structure）的类（Class）。它具有为很多计算软件提供前处理和后处理的能力。这些计算软件包括VASP，ABINIT，exciting，FEFF，QCHEM，LAMMPS，ADF，AIIDA，ASE，Gaussian，Lobster，Phonopy，Shengbte，Pwscf，和Zeo++等等。它能实现科研狗的众多后处理需求，包括生成相图（Phase diagram）和布拜图（Pourbaix diagrams），分析态密度和能带等等。</p>
+<p>Pymatgen 还提供了很多数据库（Materials Project REST API，Crystallography Open Database，and other external data sources）的接口，方便大家从数据库中查询结构和其他数据。</p>
+<p>真是科研狗快乐科研之利器呀！</p>
+<blockquote>
+<p>以下是Pymatgen官网提供的后处理的例子：</p>
+</blockquote>
+<p><img src="/2020/09/08/A18/examples.png"></p>
+<p><em>Top: (left) Phase and (right) Pourbaix diagram from the Materials API. Bottom left: Calculated bandstructure plot using pymatgen’s parsing and plotting utilities. Bottom right: Arrhenius plot using pymatgen’s DiffusionAnalyzer.</em></p>
+<p><strong>此次，本文就介绍一下如何使用 Pymatgen 的 DiffusionAnalyzer 类去计算锂离子固态电解质中锂离子电导率。</strong></p>
+<h2 id="计算离子电导率的理论与公式"><a href="#计算离子电导率的理论与公式" class="headerlink" title="计算离子电导率的理论与公式"></a>计算离子电导率的理论与公式</h2><p>目前，比较准确的计算离子电导率的方法是先用NVT系综第一性原理分子动力学（<strong>AIMD</strong>，<em>ab initio</em> molecular dynamics）模拟材料中离子在不同温度下的运动，然后计算出离子的平均（average）均方位移（<strong>MSD</strong>，mean square displacement），再计算出自扩散系数（D$_s$，self-diffusion coefficient），最后求得离子在某温度下的电导率（$\sigma$，conductivity）。</p>
+<h3 id="如何进行AIMD计算"><a href="#如何进行AIMD计算" class="headerlink" title="如何进行AIMD计算"></a>如何进行AIMD计算</h3><p>AIMD计算通常非常耗时，所以，为了减少计算成本，我们可以适当放宽计算精度。如果用 VASP 进行计算，具体的，大家可以</p>
+<ul>
+<li>采用较小的截断能。氧化物用 400 eV，硫化物用 280 eV，硒化物用 270 eV</li>
+<li>采用Gamma点作为K点设置，并使用gam版本的 VASP 进行计算</li>
+<li>采用单胞计算，如果材料的单胞包含比较多的原子</li>
+<li>采用合适的步长，比如2 fs，即 POTIM = 2</li>
+</ul>
+<h3 id="后处理的基本公式"><a href="#后处理的基本公式" class="headerlink" title="后处理的基本公式"></a>后处理的基本公式</h3><p>一旦AIMD计算完成，大家就可以着手计算离子电导率了。本文首先先介绍以下计算过程中使用的公式，方便有兴趣的同学自己开发脚本。</p>
+<blockquote>
+<p>平均均方位移（average MSD）可以通过以下公式计算：<br>$$<br>averageMSD=\langle[, \mathbf r(t)]^2,\rangle=\frac{1}{N}\sum_{i}^{N}\langle[,  \mathbf r_i(t+t_0)],^2 - [,  \mathbf r_i(t_0)],^2\rangle<br>$$<br>$\mathbf r_i(t)$ 是第 $i$ 个离子在 $t$ 时刻的位移。</p>
+<p>自扩散系数（$D_s$）可以通过以下公式计算：<br>$$<br>D_s=\frac{averageMSD}{2dt}<br>$$<br>$d$ 是离子在材料中的扩散维度（一般地，$d=3$），$t$ 是离子扩散的时间。</p>
+<p>最后，离子电导率（$\sigma$）可以这样计算：<br>$$<br>\sigma=\frac{ne^2Z^2}{k_BT}D_s<br>$$<br>$n$ 是材料中的离子密度，$e$ 是元电荷，$Z$ 是离子的价态，$k_B$ 是玻尔兹曼常数，$T$ 是温度。</p>
+</blockquote>
+<h2 id="电导率计算的例子"><a href="#电导率计算的例子" class="headerlink" title="电导率计算的例子"></a>电导率计算的例子</h2><p>现在我们通过一个 Li_Sn_S 材料的例子来详细了解一下整个计算和处理的过程。该材料的结构显示如下：</p>
+<p><img src="/2020/09/08/A18/Li_Sn_S.jpg"></p>
+<p>本例中采用单胞做计算，INCAR 设置如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[test@ln0%tianhe2 li_sn_s]$ vi INCAR</span><br><span class="line"></span><br><span class="line">ISTART = <span class="number">0</span></span><br><span class="line">ICHARG = <span class="number">2</span></span><br><span class="line">IBRION = <span class="number">0</span></span><br><span class="line">ISIF = <span class="number">2</span></span><br><span class="line">NPAR = <span class="number">8</span></span><br><span class="line">NSW = <span class="number">30000</span></span><br><span class="line">TEBEG = <span class="number">900</span> <span class="comment">#还要设置成 1500K 等等</span></span><br><span class="line">PREC = N</span><br><span class="line">POTIM = <span class="number">2</span></span><br><span class="line">SMASS = <span class="number">0.0</span></span><br><span class="line">NELMIN = <span class="number">4</span></span><br><span class="line">LWAVE = F</span><br><span class="line">LCHARG = F</span><br><span class="line">IALGO = <span class="number">48</span></span><br><span class="line">LREAL = A</span><br></pre></td></tr></table></figure>
+
+<p>AIMD 计算结束之后会得到 XDATCAR 文件。很多时候，由于超算的时间限制，一个完整的AIMD计算需要提交两三次，从而产生两三个 XDATCAR 文件，这时，我们只要把它们按顺序通过 cat 命令合并在一起就行。例如我们有三个 XDATCAR 文件，分别命名成 XDATCAR01，XDATCAR02，和 XDATCAR03。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[test@ln0%tianhe2 li_sn_s]$ cat XDATCAR01 XDATCAR02 XDATCAR03 &gt; XDATCAR </span><br></pre></td></tr></table></figure>
+
+<p><strong>新得到的XDATCAR文件，注意删掉重复的与晶格信息相关的行</strong>，一般续算的次数也不多，在使用上面命令的时候，手动把<code>XDATCAR02</code>, <code>XDATCAR03</code> 中的删除即可。</p>
+<h3 id="Pymatgen-大显身手"><a href="#Pymatgen-大显身手" class="headerlink" title="Pymatgen 大显身手"></a>Pymatgen 大显身手</h3><h4 id="安装pymatgen"><a href="#安装pymatgen" class="headerlink" title="安装pymatgen"></a>安装pymatgen</h4><p>首先让我们安装 pyamtgen，推荐大家参考官网，使用 anaconda 安装，否则会出现问题。安装好了anaconda之后，不管是 linux 还是 windows, 安装 pyamtgen 的指令是一样的。下面以吕梁天河超算为例：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">[test@ln0%</span><span class="bash">tianhe2 li_sn_s]$ conda install --channel conda-forge pymatgen</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，我们可以试着运行 python，导入 Pyamtgen 模块，如果像下面一样没有出错，就是安装成功了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[test@ln0%tianhe2 li_sn_s]$ python</span><br><span class="line">Python <span class="number">3.7</span><span class="number">.3</span> (default, Mar <span class="number">27</span> <span class="number">2019</span>, <span class="number">22</span>:<span class="number">11</span>:<span class="number">17</span>) </span><br><span class="line">[GCC <span class="number">7.3</span><span class="number">.0</span>] :: Anaconda, Inc. on linux</span><br><span class="line"><span class="type">Type</span> <span class="string">&quot;help&quot;</span>, <span class="string">&quot;copyright&quot;</span>, <span class="string">&quot;credits&quot;</span> <span class="keyword">or</span> <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> pymatgen</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br></pre></td></tr></table></figure>
+
+<h4 id="查看-DiffusionAnalyzer-的类"><a href="#查看-DiffusionAnalyzer-的类" class="headerlink" title="查看 DiffusionAnalyzer 的类"></a>查看 DiffusionAnalyzer 的类</h4><p>大家可以通过官方文档（<a target="_blank" rel="noopener" href="https://pymatgen.org/pymatgen.analysis.diffusion_analyzer.html%EF%BC%89%E6%9F%A5%E7%9C%8B%E6%8E%A5%E4%B8%8B%E6%9D%A5%E8%A6%81%E4%BD%BF%E7%94%A8%E7%9A%84%E7%B1%BB%EF%BC%8C%E7%86%9F%E6%82%89%E4%B8%80%E4%B8%8B%E4%BB%A3%E7%A0%81%E7%9A%84%E7%94%A8%E6%B3%95%E3%80%82">https://pymatgen.org/pymatgen.analysis.diffusion_analyzer.html）查看接下来要使用的类，熟悉一下代码的用法。</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DiffusionAnalyzer</span>(<span class="params">MSONable</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, structure, displacements, specie, temperature,</span></span></span><br><span class="line"><span class="params"><span class="function">                 time_step, step_skip, smoothed=<span class="string">&quot;max&quot;</span>, min_obs=<span class="number">30</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">                 avg_nsteps=<span class="number">1000</span>, lattices=<span class="literal">None</span></span>):</span></span><br></pre></td></tr></table></figure>
+
+<p>这段代码显示，运行这个类需要一系列的输入信息，包括材料结构（structure），位移（displacements），要研究的离子（specie），温度（temperature）等等。</p>
+<p>但是这个类提供了很多方法让大家可以通过读取 XDATCAR 或者 vasprun 文件的方式来实例化，例如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@classmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">from_structures</span>(<span class="params">cls, structures, specie, temperature,</span></span></span><br><span class="line"><span class="params"><span class="function">                        time_step, step_skip, initial_disp=<span class="literal">None</span>,</span></span></span><br><span class="line"><span class="params"><span class="function">                        initial_structure=<span class="literal">None</span>, **kwargs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        Convenient constructor that takes in a list of Structure objects to</span></span><br><span class="line"><span class="string">        perform diffusion analysis.</span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            structures ([Structure]): list of Structure objects (must be</span></span><br><span class="line"><span class="string">                ordered in sequence of run). E.g., you may have performed</span></span><br><span class="line"><span class="string">                sequential VASP runs to obtain sufficient statistics.</span></span><br><span class="line"><span class="string">        ... ...</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>好了，废话不多说，直接上代码，开始进行后处理。</p>
+<h4 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h4><p>新建一个文件，名字为<code>li_conductivity.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">分析AIMD结果，计算MSD 和 conductivity</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">from</span> pymatgen.core.trajectory <span class="keyword">import</span> Trajectory</span><br><span class="line"><span class="keyword">from</span> pymatgen.io.vasp.outputs <span class="keyword">import</span> Xdatcar</span><br><span class="line"><span class="keyword">from</span> pymatgen <span class="keyword">import</span> Structure</span><br><span class="line"><span class="keyword">from</span> pymatgen.analysis.diffusion_analyzer <span class="keyword">import</span> DiffusionAnalyzer</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这一步是读取 XDATCAR，得到一系列结构信息</span></span><br><span class="line">traj = Trajectory.from_file(<span class="string">&#x27;XDATCAR&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这一步是实例化 DiffusionAnalyzer 的类</span></span><br><span class="line"><span class="comment"># 并用 from_structures 方法初始化这个类； 900 是温度，2 是POTIM 的值，1是间隔步数</span></span><br><span class="line"><span class="comment"># 间隔步数（step_skip）不太容易理解，但是根据官方教程:</span></span><br><span class="line"><span class="comment"># dt = timesteps * self.time_step * self.step_skip</span></span><br><span class="line"></span><br><span class="line">diff = DiffusionAnalyzer.from_structures(traj,<span class="string">&#x27;Li&#x27;</span>,<span class="number">900</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以用内置的 plot_msd 方法画出 MSD 图像</span></span><br><span class="line"><span class="comment"># 有些终端不能显示图像，这时候可以调用 export_msdt() 方法，得到数据后再自己作图</span></span><br><span class="line">diff.plot_msd()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 接下来直接得到 离子迁移率， 单位是 mS/cm</span></span><br><span class="line">C = diff.conductivity</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;result.dat&#x27;</span>,<span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(<span class="string">&#x27;# AIMD result for Li-ion\n&#x27;</span>)</span><br><span class="line">    f.write(<span class="string">&#x27;temp\tconductivity\n&#x27;</span>)</span><br><span class="line">    f.write(<span class="string">&#x27;%d\t%.2f\n&#x27;</span> %(<span class="number">900</span>,C))</span><br></pre></td></tr></table></figure>
+
+<p>在终端运行该文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[test@ln0%tianhe2 li_sn_s]$ python li_conductivity.py</span><br></pre></td></tr></table></figure>
+
+<p>一段时间后就会得到MSD图像和离子电导率</p>
+<p><img src="/2020/09/08/A18/MSD.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[test@ln0%tianhe2 li_sn_s]$ vi result.dat</span><br><span class="line"></span><br><span class="line"># AIMD result for Li-ion</span><br><span class="line">temp	conductivity</span><br><span class="line">900	884.05</span><br></pre></td></tr></table></figure>
+
+<p>可见，该材料在 900K 时的锂离子电导率为 884.05 mS/cm。</p>
+<h4 id="例子下载："><a href="#例子下载：" class="headerlink" title="例子下载："></a>例子下载：</h4><p>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1WGzOVJBoe6Ym8mvR1uWanA">https://pan.baidu.com/s/1WGzOVJBoe6Ym8mvR1uWanA</a><br>提取码：jhc5</p>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>简短几行代码就可以计算出离子电导率，那么如何得出材料在300K下的电导率呢？</li>
+<li>如何计算离子在材料中的迁移势垒？</li>
+<li>如何可视化离子在材料中的扩散路径？</li>
+</ul>
+<p>本文只是浅谈离子电导率的计算，欢迎大家指出计算过程中的不足之处。</p>
+<h4 id="打赏"><a href="#打赏" class="headerlink" title="打赏"></a>打赏</h4><p>如果感觉本文对你的相关研究有帮助，欢迎打赏，支持作者的热心付出。如果你也有自己的骚操作，热烈欢迎无私分享，可以通过QQ联系（122103465）</p>
+<img src="/2020/09/08/A18/打赏码.jpg" style="zoom:25%;">
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Pymatgen/" rel="tag"># Pymatgen</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/08/31/A17/" rel="prev" title="ASE的骚操作系列">
+                  <i class="fa fa-chevron-left"></i> ASE的骚操作系列
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/11/A19/" rel="next" title="ASE的骚操作系列（扩胞）">
+                  ASE的骚操作系列（扩胞） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

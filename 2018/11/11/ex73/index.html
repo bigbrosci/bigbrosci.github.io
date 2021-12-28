@@ -1,37 +1,502 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="在学习下面neb的计算前，思考了很久，感觉有必要先给大家介绍一个非常实用的python小脚本，经历过反复的修改，最终在群友小塔玛斯的努力下，完成了一个稳定的过渡态计算中非常实用小脚本：POSCARtoolkit.py 本节我们介绍一下这个脚本的具体使用方法。 版本和版权问题：版本： 这个脚本有2个版本，分别适用于python3和python2的2.6及以上版本。 大家根据自己使用的python版本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex73 过渡态的计算（四）">
+<meta property="og:url" content="http://www.bigbrosci.com/2018/11/11/ex73/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="在学习下面neb的计算前，思考了很久，感觉有必要先给大家介绍一个非常实用的python小脚本，经历过反复的修改，最终在群友小塔玛斯的努力下，完成了一个稳定的过渡态计算中非常实用小脚本：POSCARtoolkit.py 本节我们介绍一下这个脚本的具体使用方法。 版本和版权问题：版本： 这个脚本有2个版本，分别适用于python3和python2的2.6及以上版本。 大家根据自己使用的python版本">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/11/ex73/ex73-1.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/11/ex73/ex73-2.jpg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/11/ex73/ex73-3.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/11/ex73/ex73-4.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/11/ex73/ex73-5.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/11/ex73/ex73-6.png">
+<meta property="article:published_time" content="2018-11-11T20:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:55.476Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="POSCARtoolkit.py">
+<meta property="article:tag" content="NEB">
+<meta property="article:tag" content="过渡态">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2018/11/11/ex73/ex73-1.jpg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2018/11/11/ex73/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2018/11/11/ex73/","path":"2018/11/11/ex73/","title":"Ex73 过渡态的计算（四）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex73 过渡态的计算（四） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E5%92%8C%E7%89%88%E6%9D%83%E9%97%AE%E9%A2%98%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">版本和版权问题：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%89%8D%E7%9A%84%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">使用前的准备工作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9D%90%E6%A0%87%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text">坐标转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%AD%90%E5%B1%82%E6%95%B0%E7%9A%84%E5%9B%BA%E5%AE%9A"><span class="nav-number">4.</span> <span class="nav-text">原子层数的固定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BA%E5%AE%9A%E5%92%8C%E6%94%BE%E5%BC%80%E7%94%A8%E6%88%B7%E9%80%89%E6%8B%A9%E7%9A%84%E5%8E%9F%E5%AD%90"><span class="nav-number">5.</span> <span class="nav-text">固定和放开用户选择的原子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%B9%E9%87%8F%E8%BD%AC%E5%8C%96"><span class="nav-number">6.</span> <span class="nav-text">批量转化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%84%E4%BB%B7"><span class="nav-number">7.</span> <span class="nav-text">评价</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/11/11/ex73/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex73 过渡态的计算（四）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-11-11 15:30:16" itemprop="dateCreated datePublished" datetime="2018-11-11T15:30:16-05:00">2018-11-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/11/11/ex73/" class="post-meta-item leancloud_visitors" data-flag-title="Ex73 过渡态的计算（四）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/11/11/ex73/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/11/ex73/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>在学习下面neb的计算前，思考了很久，感觉有必要先给大家介绍一个非常实用的python小脚本，经历过反复的修改，最终在群友小塔玛斯的努力下，完成了一个稳定的过渡态计算中非常实用小脚本：<code>POSCARtoolkit.py</code></p>
+<p>本节我们介绍一下这个脚本的具体使用方法。</p>
+<h3 id="版本和版权问题："><a href="#版本和版权问题：" class="headerlink" title="版本和版权问题："></a>版本和版权问题：</h3><p>版本：</p>
+<p>这个脚本有2个版本，分别适用于python3和python2的2.6及以上版本。</p>
+<p>大家根据自己使用的python版本进行下载，如果运行的时候出现错误，请先检查是不是版本的问题。链接:<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1JJHVM27NdIC-uZlxzlg-Mg">https://pan.baidu.com/s/1JJHVM27NdIC-uZlxzlg-Mg</a>   提取码:mt7e</p>
+<p>版权问题：</p>
+<p>这个脚本大家随便实用，如果感觉不错，碰到作者时，请他吃顿饭。作者坐高铁买不起盒饭时，在任何QQ群里呼救时，使用者需慷慨解囊，集资把盒饭钱凑够。</p>
+<p>如果不接受这个条款，请自觉不使用该脚本。</p>
+<h3 id="使用前的准备工作"><a href="#使用前的准备工作" class="headerlink" title="使用前的准备工作"></a>使用前的准备工作</h3><p>2.1）下载脚本，将脚本命名为：POSCARtoolkit.py  </p>
+<p>2.2）可执行化：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u+x POSCARtoolkit.py</span><br></pre></td></tr></table></figure>
+
+<p>2.3）将脚本移到~/bin 文件夹下面： </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv POSCARtoolkit.py ~/bin</span><br></pre></td></tr></table></figure>
+
+<p>注释：</p>
+<p>A) 2.2 和2.3步的顺序可以颠倒，不影响使用；</p>
+<p>B) 如果没有~/bin文件夹，那么 mkdir ~/bin 手动创建一个即可。</p>
+<h3 id="坐标转换"><a href="#坐标转换" class="headerlink" title="坐标转换"></a>坐标转换</h3><p>这个脚本可以实现分数坐标（Direct）向笛卡尔坐标（Cartesian）的转换。VASP的输出结果是以分数坐标的形式存在CONTCAR中，但我们在操作模型的过程中，移动原子都是以Å来进行的，所以将分数坐标转化为笛卡尔坐标对于搭建模型很有帮助。脚本用法：<code>POSCARtoolkit.py -i POSCAR</code></p>
+<p><strong>注意：</strong></p>
+<p>如果你的POSCARtoolkit.py脚本在和POSCAR一个目录下，使用下图中的命令，如果你已经完成了前面2中的步骤，脚本前面的python 不用输入。</p>
+<p> <img src="/2018/11/11/ex73/ex73-1.jpg"></p>
+<p>描述1） -i 代表 input的意思, 后面紧跟你要转化的文件，可以是POSCAR，CONTCAR，也可以是其他的VASP的坐标文件。比如你把POSCAR命名成bigbro, 也是可以直接转换的。 POSCARtoolkit.py –i bigbro  即可。</p>
+<p>描述2）：脚本将含有分数坐标的POSCAR 转换成笛卡尔坐标的POSCAR_C。输出的文件被命名为POSCAR_C。</p>
+<p>描述3）如果你预先把POSCAR命名为bigbro， 那么运行程序后，输出结果为 bigbro_C.</p>
+<p>描述4）如果POSCAR已经为笛卡尔坐标，则转换终止，大家可以尝试一下转换一个笛卡尔坐标的POSCAR。</p>
+<h3 id="原子层数的固定"><a href="#原子层数的固定" class="headerlink" title="原子层数的固定"></a>原子层数的固定</h3><p>除了可以实现坐标系的转换，该脚本还可以根据Z方向的原子坐标，固定底部几层原子。</p>
+<p>这在slab模型的相关计算中非常实用，如下图所示，在slab模型中，我们经常将底部的原子层固定，只放开表面的来进行计算。</p>
+<p><img src="/2018/11/11/ex73/ex73-2.jpg"></p>
+<p>比如我们把底部的三层原子进行固定。脚本的用法如下：<code>POSCARtoolkit.py -i POSCAR_C -f</code></p>
+<p><img src="/2018/11/11/ex73/ex73-3.png"></p>
+<p>描述1） 脚本会根据阈值（默认1.5 Å）划分层，这里的1.5 Å指的是层间距。</p>
+<p>描述2） 用户可以通过在脚本后面增加参数 -y 1.0 自己定义更小的阈值</p>
+<p>描述3） 如果不想每次使用的时候使用参数-y，用户也可以直接在脚本里面修改阈值的大小，如下如，在第40行中，默认的阈值1.5被修改0.5。</p>
+<p><img src="/2018/11/11/ex73/ex73-4.png"></p>
+<p>当然，修改脚本默认的参数后，如果使用中使用的 –y， 还是会按照 –y 后面的阈值进行操作。</p>
+<p>描述4） 输入完命令，回车后，会提醒用户输入固定的层数，这里我们输入3，回车，即固定底下三层原子，而其他原子放开。</p>
+<p>描述5） 上图命令中，我们对POSCAR_C 进行操作，输出文件问POSCAR_C_C。</p>
+<h3 id="固定和放开用户选择的原子"><a href="#固定和放开用户选择的原子" class="headerlink" title="固定和放开用户选择的原子"></a>固定和放开用户选择的原子</h3><p>除了固定层数外，该脚本允许用户选择部分原子放开，固定或者部分放开。这个功能实现的前提是POSCAR 或者 CONTCAR 中有 <code>Selective dynamics</code> 信息。如果没有，则可先固定任意的原子层（POSCARtoolkit.py -i  CONTCAR  -f ），这样的话<code>Selective dynamics</code>就会被写入到输出文件POSCAR_C中。然后用户再对POSCAR_C进行原子选择性操作。 下面我们先详细介绍一下脚本的用法，然后再加一些实例的操作来帮助用户理解。</p>
+<p>用法：POSCARtoolkit.py -i POSCAR_C [-f or -r] -s [your selections]</p>
+<p>描述1)：POSCARtoolkit.py -i POSCAR_C 我们对输入文件POSCAR_C 进行操作</p>
+<p>描述2): -f 和 –r  配合后面的 –s 进行操作。</p>
+<ul>
+<li>-f 表示表示固定（fix）选中的原子，</li>
+<li>-r 代表放开（relax）选中的原子，由于原子在xyz三个方向上都可以选择放开，所以使用-r的时候要配合F T 来进行操作。 如下：<ul>
+<li>-r  FFT  代表只放开z方向，同理 –r TTF， -r  TFT， -r TTT， -r FTT这些你就知道是怎么回事了。</li>
+<li>-r 后面的FFT这三个字母之间可以有空格，也可以没有。也就是说：FFT 和 F  FT， FF T 以及 F F T 效果是一样的。</li>
+</ul>
+</li>
+</ul>
+<p>描述3） -s 选项表示选择部分原子, 后面是你要选择的原子，选择项如下：</p>
+<ul>
+<li><p>all 表示选中所有原子</p>
+</li>
+<li><p>1-5 6 9 表示选中 第1-5个和6,9 号原子</p>
+</li>
+<li><p>Pt 表示选中所有的Pt原子</p>
+</li>
+<li><p>1-5 6 9 Pt 表示选中 第1-5个和6,9 号原子和所有的Pt原子</p>
+</li>
+</ul>
+<p>描述4）其他未选择的原子，限制信息保持不变。</p>
+<p>实例操作1： 如果我们想固定POSCAR_C中所有的原子：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POSCARtoolkit.py -i POSCAR_C  -f  -s  all</span><br></pre></td></tr></table></figure>
+
+<p>注释： -f 表示fix， -s all 表示选择所有的原子</p>
+<p>POSCAR_C 中必须有<code>Selective dynamics</code>这一行</p>
+<p><img src="/2018/11/11/ex73/ex73-5.png"></p>
+<p>实例操作2： 将所有的原子只在z方向上放开：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POSCARtoolkit.py -i POSCAR_C  -r FF T  -s  all</span><br></pre></td></tr></table></figure>
+
+<p>注释：放开z方向上使用 –r FF T， FFT之间有无空格均可。</p>
+<p><img src="/2018/11/11/ex73/ex73-6.png"></p>
+<p>实例操作3： 将所有的C，H, O 原子在xy方向上放开：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POSCARtoolkit.py -i POSCAR_C  -r TTF  -s  C H O</span><br></pre></td></tr></table></figure>
+
+<p>实例操作4： 将所有的Pt原子和40号原子在z方向放开：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POSCARtoolkit.py -i POSCAR_C  -r  FFT  -s  Pt 40</span><br></pre></td></tr></table></figure>
+
+<h3 id="批量转化"><a href="#批量转化" class="headerlink" title="批量转化"></a>批量转化</h3><p>前面介绍的都是针对一个文件进行操作，由于固定原子层数的功能我们设置了一个交互，需要用户指定需要固定的层数（z轴从下到上）。</p>
+<p>但这对于层数批量固定操作来说是个累赘，我们不想每操作一个文件就输入一次层数。</p>
+<p>所以，如果想跳过交互，可以通过管道连接符 | 实现。比如固定底部4层：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 4 | python POSCARtoolkit.py -i CONTCAR –f</span><br></pre></td></tr></table></figure>
+
+<p>知道了这一点，我们就可以通过一个for循环进行批量固定层数的操作了。比如我们有POSCAR1， POSCAR2 到POSCAR100个文件，</p>
+<ol>
+<li>我们想批量固定它们的底部3层。</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in POSCAR&#123;1..10&#125;; do echo 3 | python POSCARtoolkit.py  –i  $i  –f ; done </span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>我们想批量将C H O原子在z方向上放开，zy方向上固定。（这个不需要管道连接符）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in POSCAR&#123;1..10&#125;; do python POSCARtoolkit.py  –i  $i  –r FFT –s C H O ; done</span><br></pre></td></tr></table></figure>
+
+<h3 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h3><p>这个脚本在模型操作的过程中，实用性很强，也很方便。实在是VASP计算中的一大利器。本脚本是群友tamas-zju-VASP（小塔玛斯）费煞苦心完成的。如果感觉不错，欢迎打赏。下载链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1JJHVM27NdIC-uZlxzlg-Mg">https://pan.baidu.com/s/1JJHVM27NdIC-uZlxzlg-Mg</a>   提取码:mt7e</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/POSCARtoolkit-py/" rel="tag"># POSCARtoolkit.py</a>
+              <a href="/tags/NEB/" rel="tag"># NEB</a>
+              <a href="/tags/%E8%BF%87%E6%B8%A1%E6%80%81/" rel="tag"># 过渡态</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/10/ex72/" rel="prev" title="Ex72 过渡态的计算（三）">
+                  <i class="fa fa-chevron-left"></i> Ex72 过渡态的计算（三）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/12/ex74/" rel="next" title="Ex74 过渡态的计算（五）">
+                  Ex74 过渡态的计算（五） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

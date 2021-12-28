@@ -1,37 +1,478 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="上一节我们知道怎么获取气相分子的熵以及吉布斯自由能的计算。这一节，我们简单介绍一下表面吸附分子熵的计算。 复习基础知识首先我们应该要知道对一个体系来说，都有哪几部分对熵有贡献。一般熵通过统计热力学计算分子的配分函数来获取：主要有平动，转动，振动，电子以及核这5部分。参考下面的这个链接： http:&#x2F;&#x2F;210.45.168.34:8080&#x2F;elite&#x2F;wlhx&#x2F;jiaocai&#x2F;C_05.htm 或者">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex69 表面吸附物种的熵">
+<meta property="og:url" content="http://www.bigbrosci.com/2018/11/07/ex69/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="上一节我们知道怎么获取气相分子的熵以及吉布斯自由能的计算。这一节，我们简单介绍一下表面吸附分子熵的计算。 复习基础知识首先我们应该要知道对一个体系来说，都有哪几部分对熵有贡献。一般熵通过统计热力学计算分子的配分函数来获取：主要有平动，转动，振动，电子以及核这5部分。参考下面的这个链接： http:&#x2F;&#x2F;210.45.168.34:8080&#x2F;elite&#x2F;wlhx&#x2F;jiaocai&#x2F;C_05.htm 或者">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-1.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-2.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-3.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-4.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-5.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-6.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-7.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-8.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-9.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-10.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-11.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-12.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-13.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-14.png">
+<meta property="article:published_time" content="2018-11-07T20:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:55.398Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="表面吸附">
+<meta property="article:tag" content="熵">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2018/11/07/ex69/ex69-1.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2018/11/07/ex69/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2018/11/07/ex69/","path":"2018/11/07/ex69/","title":"Ex69 表面吸附物种的熵"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex69 表面吸附物种的熵 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%8D%E4%B9%A0%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.</span> <span class="nav-text">复习基础知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%AD%90%E4%BB%8E%E6%B0%94%E7%9B%B8%E5%88%B0%E8%A1%A8%E9%9D%A2%E5%90%B8%E9%99%84%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">分子从气相到表面吸附的过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E6%8C%AF%E5%8A%A8%E9%A2%91%E7%8E%87%E6%9D%A5%E8%AE%A1%E7%AE%97Entropy"><span class="nav-number">3.</span> <span class="nav-text">通过振动频率来计算Entropy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%86%9F%E6%82%89%E4%B8%8D%E5%90%8C%E7%9A%84%E6%8C%AF%E5%8A%A8%E9%A2%91%E7%8E%87%E5%AF%B9%E7%86%B5%E7%9A%84%E8%B4%A1%E7%8C%AE"><span class="nav-number">4.</span> <span class="nav-text">熟悉不同的振动频率对熵的贡献</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%8D%E6%8F%90%E9%9B%B6%E7%82%B9%E8%83%BD"><span class="nav-number">5.</span> <span class="nav-text">再提零点能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-number">6.</span> <span class="nav-text">思考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/11/07/ex69/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex69 表面吸附物种的熵
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-11-07 15:30:16" itemprop="dateCreated datePublished" datetime="2018-11-07T15:30:16-05:00">2018-11-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/11/07/ex69/" class="post-meta-item leancloud_visitors" data-flag-title="Ex69 表面吸附物种的熵" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/11/07/ex69/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/07/ex69/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>上一节我们知道怎么获取气相分子的熵以及吉布斯自由能的计算。这一节，我们简单介绍一下表面吸附分子熵的计算。</p>
+<h3 id="复习基础知识"><a href="#复习基础知识" class="headerlink" title="复习基础知识"></a>复习基础知识</h3><p>首先我们应该要知道对一个体系来说，都有哪几部分对熵有贡献。一般熵通过统计热力学计算分子的配分函数来获取：主要有平动，转动，振动，电子以及核这5部分。参考下面的这个链接： <a target="_blank" rel="noopener" href="http://210.45.168.34:8080/elite/wlhx/jiaocai/C_05.htm">http://210.45.168.34:8080/elite/wlhx/jiaocai/C_05.htm</a> 或者找本物化书狂补统计热力学的知识。</p>
+<p>1）电子运动的能级间隔很大，除了在几千度以上的高温条件下，电子常常处于基态。一般情况下各激发态对配分函数的贡献都可忽略。</p>
+<p>2）原子核的能级间隔极大，在一般的物理和化学过程中，原子核总是处于基态。所以这一项也可以忽略。</p>
+<p>3）到现在我们需要考虑的只有平动，转动和振动这三个了。</p>
+<h3 id="分子从气相到表面吸附的过程"><a href="#分子从气相到表面吸附的过程" class="headerlink" title="分子从气相到表面吸附的过程"></a>分子从气相到表面吸附的过程</h3><p>当分子从气相吸附到表面上，打个不恰当的比喻，就如同图中的苍蝇被粘住在纸板上，因此就不能随便乱飞了，更不用说施展什么空中技巧了。</p>
+<p><img src="/2018/11/07/ex69/ex69-1.jpeg"></p>
+<p>同样，对分子来说，举个例子，一个非线性的三原子分子，一共有3N个自由度。气相里面为：3个平动，3个转动以及3N-6个振动。但是当它吸附到表面上，由于平动和转动被限制住了，这6个自由度则会转化成振动自由度，也就是在表面上分子有3N个振动模式。如果你可视化表面上吸附分子频率计算的结果，会发现最后6个分别对应的是平动和转动，但它们已经不是气相中的平动和转动了，我们称之为：frustrated translation，frustrated rotation。</p>
+<p><img src="/2018/11/07/ex69/ex69-2.jpeg"></p>
+<p>（你大妈(平动转动)已经不是十年前的大妈了，你大爷(振动)永远是你大爷）</p>
+<p>这两个在表面化学里面是非常令人蛋疼的东西。这个我们后面慢慢讲。至少现在我们知道了，表面的吸附物种有3N个振动方式。所以，平动和转动对熵的贡献也不用管了，直接处理振动即可。（不会算的筒子们小开心下。）</p>
+<h3 id="通过振动频率来计算Entropy"><a href="#通过振动频率来计算Entropy" class="headerlink" title="通过振动频率来计算Entropy"></a>通过振动频率来计算Entropy</h3><p>振动频率对熵的贡献，随便查阅一本统计热力学的书，都可以找到答案，这里我们的参考书是第十版Atkins的物理化学。</p>
+<p>Physical Chemistry 第10版的642页。获取方式：QQ群文件，Books文件下里面就有，自己下载。</p>
+<p><img src="/2018/11/07/ex69/ex69-3.jpeg">  <img src="/2018/11/07/ex69/ex69-4.png"></p>
+<hr>
+<p><img src="/2018/11/07/ex69/ex69-5.png"></p>
+<p>图里面圈出来的公式里面，β，h，c，是基本的物理学常数。v （上面加个波浪号）是波数，单位是：m<sup>-1</sup>。我们就是通过这个公式来计算单个振动模式对熵的贡献。这个很简单，直接把数值带入公式即可，可以摁计算器，也可以用excel等其他工具进行计算。本节，我们分享一个对应这个公式的python小脚本。</p>
+<p><img src="/2018/11/07/ex69/ex69-6.png"></p>
+<p>通过单个振动频率计算熵的小脚本，图里面的98.485是错的，应该是96.485，kJ/mol 转换为 eV的常数。</p>
+<p>脚本解释：</p>
+<p>i）VASP得到的频率波数是cm<sup>-1</sup>，这也是大家所习惯接受的，所以在12行，单位要乘以100先将 cm<sup>-1</sup> 转化成m<sup>-1</sup>。</p>
+<p>ii） 剩下的14-19行是一些基本的物理量，我们默认温度是300K;</p>
+<p>iii) 21-27行：是我们定义的一个计算熵的小函数。</p>
+<p>x_i 是书里面的 βhcv</p>
+<p>pf_l和pf_r 是花括号里面，减号左面和右面的部分</p>
+<p>pf 得到的是花括号的结果</p>
+<p>然后entropy 是 pf * R</p>
+<p>iv）29-31行就是调用函数，然后输出S, TS部分了。这里S的单位是 J K<sup>-1</sup>mol<sup>-1</sup>。TS 的单位是我们熟悉的eV。</p>
+<p>v）自己对着图片输入一遍就可以得到脚本了，不要问我要现成的。如果自己照着抄的脚本运行出现错误，反复跟图片里面的进行对比，然后进行修改。</p>
+<hr>
+<h3 id="熟悉不同的振动频率对熵的贡献"><a href="#熟悉不同的振动频率对熵的贡献" class="headerlink" title="熟悉不同的振动频率对熵的贡献"></a>熟悉不同的振动频率对熵的贡献</h3><p>有了这个小脚本，我们就可以计算任何振动频率对熵的贡献了。一般来说，我们VASP的频率计算会有3N个波数，我们需要做的就是挨个算（虚频除外），然后求和即可。这里，大师兄想强调的并不是如何去通过这些频率去算熵（相信到现在你也已经学会了），而是要了解频率大小对熵的贡献程度。下图是我们计算了不同波数（从10到500 cm<sup>-1</sup>）的振动所对应的熵，以及TS, 单位分别为：J K<sup>-1</sup>mol<sup>-1</sup> 和 eV。</p>
+<p><img src="/2018/11/07/ex69/ex69-7.png"></p>
+<p>通过上图的结果，你会发现：当波数越小的时候，TS越大，随着波数增加，TS越来越小，在490 cm<sup>-1</sup>, 300K 的时候,连0.01eV都不到。一般来说，正常的振动频率（3n-6，过去以及现在的大爷那部分）对熵的贡献，基本上就可以忽略掉了，因为一般来说正常的频率波数在400-3000cm<sup>-1</sup>范围之间。</p>
+<p>我们现在知道，波数越小，他们对熵的贡献也就越大，而前面我们说的frustrated translation 和 rotation，它们恰恰具有很小的波数，尤其是frustrated translation这部分，大部分都在50cm<sup>-1</sup>以下，因此他们对熵的贡献不能忽略。然而，它们既有体相声子谱的一些特征，也有气相分子的平动和转动的样子。因此在处理的时候，要小小心心地将它们剥离开来，非常令人蛋疼。正所谓：雄兔脚扑朔，雌兔眼迷离；双兔傍地走，安能辨我是雄雌？</p>
+<p><img src="/2018/11/07/ex69/ex69-8.jpeg"></p>
+<p>另一方面：由于它们的波数很小，而VASP在小波数这部分的计算很烂，软件计算的结果也会导致很大的误差产生。一般来说大家都直接放弃，忽略这部分了。当然这样的理由很多人不服，明明知道它们波数小，对熵的贡献大，却又不得不忽略。这里，大师兄再给你另外一个解释：摘自Computational Catalysis (RSC) 这本书的第32页。如下：</p>
+<p><img src="/2018/11/07/ex69/ex69-9.png"></p>
+<p>在这里建议我们将平动单独处理，假设的是分子在二维平面内可以运动。也就是说只损失了一个方向的自由度。经验告诉我们，对不同的过渡金属表面来说，平动部分对熵的贡献可以作为一个常数来处理。所以，又可以不考虑了…. 以上是大家一般都不考虑这部分的贡献的原因。当然，你也可以根据上面的公式计算frustrated translation对熵的贡献，然后其他的按照振动来处理即可。</p>
+<p>如果你对这一部分感兴趣，可以参考下这些人的工作：</p>
+<p>1） Campbell 这个牛牛的JACS，还有一篇Chemical Review，大家自己找下。</p>
+<p><img src="/2018/11/07/ex69/ex69-10.png"></p>
+<p>2） 最新的一篇JPCC</p>
+<p><img src="/2018/11/07/ex69/ex69-11.png"></p>
+<p>3） Tamkin 这个软件的作者以及她发表的一些文章： <a target="_blank" rel="noopener" href="http://molmod.github.io/tamkin/">http://molmod.github.io/tamkin/</a> </p>
+<p><img src="/2018/11/07/ex69/ex69-12.png"></p>
+<p>4）Norskov 这个牛牛的一本书：Fundamental Concepts in Heterogeneous Catalysis （群文件也有，自己去找）</p>
+<p><a target="_blank" rel="noopener" href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781118892114">https://onlinelibrary.wiley.com/doi/book/10.1002/9781118892114</a> </p>
+<p><img src="/2018/11/07/ex69/ex69-13.jpeg"></p>
+<p>注意： 在这本书里的P33页，不同的吸附位点，构型数目，也会对熵有贡献：如下图：</p>
+<p><img src="/2018/11/07/ex69/ex69-14.png"></p>
+<p>这个的贡献不是很大，如果你的覆盖度为1/9的时候，R * ln((1/9) / (8/9)) = R * ln (1/8)， 300K的时候，TS = 300 * 8.314 * ln (1/8) / 1000 / 98.485 = 0.053 eV。差不多可以忽略掉。</p>
+<h3 id="再提零点能"><a href="#再提零点能" class="headerlink" title="再提零点能"></a>再提零点能</h3><p>师兄，既然前面的frustrated的平动和转动我们都忽略了，那么他们的零点能矫正的时候还用不用考虑。</p>
+<p>答：小波数范围对零点能的贡献很小，一般来说，考虑或者不考虑它们的贡献，无关紧要。本人一般直接都加上。</p>
+<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>1）表面化学中，熵的贡献主要在吸附/脱附的阶段，因为分子损失/获得了大部分的平动和转动，对于表面吸附物种的熵：</p>
+<p>i）3N-6的振动部分贡献很小，可以忽略不计；</p>
+<p>ii）Frustrated rotation 大约在200-400cm<sup>-1</sup>左右，也可以和振动部分一起忽略；</p>
+<p>iii）Frustrated translation部分，可以近似为二维平动来处理。也可以忽略，一般来说：忽略 是大家普遍的做法。如果理论基础不扎实，只想简单算算，那么你的腰椎间盘还是不要突出为妙。</p>
+<p>iv）表面吸附位点的数目对熵的贡献，基本也可以忽略。</p>
+<p>2） 而在表面反应的阶段，我们计算反应热和活化能的时候通过下面的公式：</p>
+<p>ΔE = E(FS) – E(IS)；</p>
+<p>Ea = E(TS) – E(IS) </p>
+<p>这两个量的计算都是通过相减来得到的，而这个相减的过程中：</p>
+<p>i）大部分熵的贡献可以被抵消掉了；</p>
+<p>ii）小波数范围内零点能的矫正部分也会被抵消掉，所以零点能校正的时候，大胆地直接地把非虚频的部分直接加起来就可以了。</p>
+<p>iii）如果你不信，那么可以通过频率计算一下IS，FS，或者TS的熵，然后计算矫正过的ΔE, Ea，会发现熵的贡献很小很小，所以一般大家都直接考虑零点能，而不考虑熵的贡献，如果有审稿人问你这个问题，用脚本算一下，回答审稿人说影响不大就是了。</p>
+<p>3）总结：表面吸附物种的熵，一路忽略，结果就是啥也不算… 不过，不算归不算，但背后的原因或者依据你得搞明白。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%A1%A8%E9%9D%A2%E5%90%B8%E9%99%84/" rel="tag"># 表面吸附</a>
+              <a href="/tags/%E7%86%B5/" rel="tag"># 熵</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/11/06/ex68/" rel="prev" title="Ex68 频率，零点能，吉布斯自由能的计算">
+                  <i class="fa fa-chevron-left"></i> Ex68 频率，零点能，吉布斯自由能的计算
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/11/08/ex70/" rel="next" title="Ex70 过渡态的计算（一）">
+                  Ex70 过渡态的计算（一） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

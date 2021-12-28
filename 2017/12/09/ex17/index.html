@@ -1,37 +1,540 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="这一节和后面几节，我们会复习一下前面学到的Linux批量操作知识，然后对一些影响计算时间的参数进行测试。 本节主要考虑ENCUT的影响。前面我们一直在说EDIFF和EDIFFG对计算时间的影响。为了给大家一个感性的认识，现在我们用O$_2$分子的计算作为测试例子，将结果展示出来。这两个参数主要是在计算精度上影响计算时间，很容易想到，精度越高，收敛的越慢，需要的时间对应的也会更长。  1 调节EDI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex17 谁偷走的我的机时？（二）">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/12/09/ex17/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="这一节和后面几节，我们会复习一下前面学到的Linux批量操作知识，然后对一些影响计算时间的参数进行测试。 本节主要考虑ENCUT的影响。前面我们一直在说EDIFF和EDIFFG对计算时间的影响。为了给大家一个感性的认识，现在我们用O$_2$分子的计算作为测试例子，将结果展示出来。这两个参数主要是在计算精度上影响计算时间，很容易想到，精度越高，收敛的越慢，需要的时间对应的也会更长。  1 调节EDI">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-1.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-2.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-3.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-4.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-5.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-6.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-7.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-8.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-10.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-11.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-12.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-13.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-14.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-15.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-16.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-17.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-18.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-19.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-20.jpeg">
+<meta property="og:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-21.jpeg">
+<meta property="article:published_time" content="2017-12-09T20:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:54.532Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="机时">
+<meta property="article:tag" content="回顾">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2017/12/09/ex17/ex17-1.jpeg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/12/09/ex17/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/12/09/ex17/","path":"2017/12/09/ex17/","title":"Ex17 谁偷走的我的机时？（二）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex17 谁偷走的我的机时？（二） | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%B0%83%E8%8A%82EDIFF%E5%92%8CEDIFFG"><span class="nav-number">1.</span> <span class="nav-text">1 调节EDIFF和EDIFFG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-ENCUT-%E6%B5%8B%E8%AF%95%EF%BC%9A"><span class="nav-number">2.</span> <span class="nav-text">2 ENCUT 测试：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E5%88%B6%E5%A4%87ENCUT%E6%B5%8B%E8%AF%95%E6%A8%A1%E6%9D%BF"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 制备ENCUT测试模板</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E5%BF%AB%E9%80%9F%E5%88%B6%E4%BD%9C%E6%B5%8B%E8%AF%95%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 快速制作测试任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-%E6%89%B9%E9%87%8F%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 批量提交任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-%E6%89%B9%E9%87%8F%E6%9F%A5%E7%9C%8B%E7%BB%93%E6%9E%9C%E7%9A%84%E5%91%BD%E4%BB%A4%EF%BC%9A"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 批量查看结果的命令：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-%E8%AE%A1%E7%AE%97%E6%97%B6%E9%97%B4%E9%9A%8F%E7%9D%80ENCUT%E5%A2%9E%E5%8A%A0%E7%9A%84%E5%8F%98%E5%8C%96%E6%9B%B2%E7%BA%BF"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 计算时间随着ENCUT增加的变化曲线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-%E4%BD%9C%E5%9B%BE%E7%9A%84-Python-%E8%84%9A%E6%9C%AC%EF%BC%9A"><span class="nav-number">2.6.</span> <span class="nav-text">2.6 作图的 Python 脚本：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-6-1-%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%EF%BC%8C%E5%B9%B6%E4%BF%9D%E5%AD%98%E6%88%90%E6%96%87%E4%BB%B6"><span class="nav-number">2.6.1.</span> <span class="nav-text">2.6.1 获取数据，并保存成文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-6-2-%E4%BD%9C%E5%9B%BE-%E8%84%9A%E6%9C%AC%EF%BC%8C-%E5%90%8D%E4%B8%BA-plt-py"><span class="nav-number">2.6.2.</span> <span class="nav-text">2.6.2 作图 脚本， 名为 plt.py</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-6-3-%E8%BF%90%E8%A1%8C%E8%84%9A%E6%9C%AC%EF%BC%9A%EF%BC%88python-plt-py%EF%BC%89"><span class="nav-number">2.6.3.</span> <span class="nav-text">2.6.3 运行脚本：（python plt.py）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-%E4%BD%93%E7%B3%BB%E7%9A%84%E8%83%BD%E9%87%8F%E9%9A%8FENCUT%E7%9A%84%E5%8F%98%E5%8C%96%EF%BC%9A"><span class="nav-number">2.7.</span> <span class="nav-text">2.7 体系的能量随ENCUT的变化：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-7-1-%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%EF%BC%9A"><span class="nav-number">2.7.1.</span> <span class="nav-text">2.7.1 生成数据：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-7-2-%E4%BF%AE%E6%94%B9%E8%84%9A%E6%9C%AC%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="nav-number">2.7.2.</span> <span class="nav-text">2.7.2 修改脚本如下：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-8-%E5%B0%8F%E7%BB%93%E4%B8%80%E4%B8%8B%EF%BC%9A"><span class="nav-number">2.8.</span> <span class="nav-text">2.8 小结一下：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">3 扩展练习：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">4.</span> <span class="nav-text">4 总结：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/09/ex17/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex17 谁偷走的我的机时？（二）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-09 15:30:16" itemprop="dateCreated datePublished" datetime="2017-12-09T15:30:16-05:00">2017-12-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/09/ex17/" class="post-meta-item leancloud_visitors" data-flag-title="Ex17 谁偷走的我的机时？（二）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/12/09/ex17/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/09/ex17/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>这一节和后面几节，我们会复习一下前面学到的Linux批量操作知识，然后对一些影响计算时间的参数进行测试。 本节主要考虑<code>ENCUT</code>的影响。前面我们一直在说<code>EDIFF</code>和<code>EDIFFG</code>对计算时间的影响。为了给大家一个感性的认识，现在我们用O$_2$分子的计算作为测试例子，将结果展示出来。这两个参数主要是在计算精度上影响计算时间，很容易想到，精度越高，收敛的越慢，需要的时间对应的也会更长。</p>
+<hr>
+<h3 id="1-调节EDIFF和EDIFFG"><a href="#1-调节EDIFF和EDIFFG" class="headerlink" title="1 调节EDIFF和EDIFFG"></a>1 调节EDIFF和EDIFFG</h3><p><img src="/2017/12/09/ex17/ex17-1.jpeg"></p>
+<p>左侧为之前计算的INCAR，右侧为提高精度后的INCAR。O$_2$的初始距离设置的为1.207$\AA$。提交计算，等待任务结束。前面我们知道VASP计算完成后，OUTCAR最后输出的是计算时间，内存等信息。我们现在查看一下：文件夹 0 对应的是之前的O$_2$计算，文件夹1 中是提高精度后的计算。</p>
+<p><img src="/2017/12/09/ex17/ex17-2.jpeg"></p>
+<p><strong>注意：</strong>grep User OUTCAR 后得出的结果被空格分成了4部分，时间信息在第4部分里面。User（1） time（2） （sec：）（3） 44.20 （4）</p>
+<hr>
+<p>讲解：</p>
+<p>1.1）通过<code>tail OUTCAR</code> 这个命令，可以找到用grep命令查看时间的关键词：User 或者 Elapsed，这里我们采用User 后面的时间作为参考；</p>
+<p>1.2）右下方黄色图框中的时间表面：提高了精度后，计算时间从44秒增加到78秒。</p>
+<p>1.3）我们看一下，改变精度后体系的能量变化：</p>
+<p><img src="/2017/12/09/ex17/ex17-3.jpeg"></p>
+<p>从-9.8609降低到-9.8611，变化大小为： -0.0002 eV。 这么小的能量变化，我们可以认为忽略不计。</p>
+<p>在这里，我们要认真思考收敛标准对于我们计算体系能量的影响，选取一个合适的标准而又不会浪费太多的机时。一般来说，结构优化的时候，<code>EDIFF=1E-5</code>, <code>EDIFFG =-0.01 </code>至 <code>-0.03</code> 都是被认可的。</p>
+<hr>
+<h3 id="2-ENCUT-测试："><a href="#2-ENCUT-测试：" class="headerlink" title="2 ENCUT 测试："></a>2 ENCUT 测试：</h3><h4 id="2-1-制备ENCUT测试模板"><a href="#2-1-制备ENCUT测试模板" class="headerlink" title="2.1 制备ENCUT测试模板"></a>2.1 制备ENCUT测试模板</h4><p><img src="/2017/12/09/ex17/ex17-4.jpeg"></p>
+<p>解释：  </p>
+<p>2.1.1）新建测试目录 2 ，进入后，将前面的文件夹0复制过来，文件夹名为 400</p>
+<p>2.1.2）使用sed命令，在INCAR中最后一行加入ENCUT参数，值设置为400</p>
+<hr>
+<h4 id="2-2-快速制作测试任务"><a href="#2-2-快速制作测试任务" class="headerlink" title="2.2 快速制作测试任务"></a>2.2 快速制作测试任务</h4><p><img src="/2017/12/09/ex17/ex17-5.jpeg"></p>
+<p>图中的命令行为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in &#123;1..8&#125;; do cp 400 $((400+$i*50)); sed -i &quot;s/400/$((400+$i*50))/g&quot;  $((400+$i*50))/INCAR ; done</span><br></pre></td></tr></table></figure>
+
+<p>复习前面学到的linux操作：</p>
+<p>2.2.1）明白<code>&#123;1..8&#125;</code> 是怎么回事；</p>
+<p>2.2.2） <code>$i</code> 变量的调用；</p>
+<p>2.2.3）新学：<code>$((加减乘除))</code>，注意数学运算用2个括号 括起来；</p>
+<p>2.2.4）sed 命令进行文本中某一项的替换；</p>
+<p>2.2.5）运行完毕后，会获得一系列<code>ENCUT</code>值的文件夹，且每个里面INCAR已经对应地设置完毕。</p>
+<hr>
+<h4 id="2-3-批量提交任务"><a href="#2-3-批量提交任务" class="headerlink" title="2.3 批量提交任务"></a>2.3 批量提交任务</h4><p><img src="/2017/12/09/ex17/ex17-6.jpeg"><br>命令：<br><code>for i in *; do cd $i ; qsub sub4; cd $OLDPWD; done</code></p>
+<p>讲解：</p>
+<p>2.3.1）do后面执行的是，进入for循环中的文件夹，然后提交任务，（大师兄提交任务的命令是 qsub sub4， qsub 是命令，sub4是脚本名），任务提交后，返回原来的目录下（<code>cd $OLDPWD</code>），然后再进入下一个for循环中的文件夹，重复之前的操作，直至遍历所有for循环的变量文件夹；</p>
+<p>2.3.2）图中的Single是任务的说明，这个在提交任务的脚本里面自己随意设置：<br><img src="/2017/12/09/ex17/ex17-7.jpeg"></p>
+<hr>
+<h4 id="2-4-批量查看结果的命令："><a href="#2-4-批量查看结果的命令：" class="headerlink" title="2.4 批量查看结果的命令："></a>2.4 批量查看结果的命令：</h4><p><img src="/2017/12/09/ex17/ex17-8.jpeg"></p>
+<p>此处需要注意 * 的用法</p>
+<p>我们只需要图中方框标出来的信息，其他的结果可以直接扔掉。为简化输出结果，这里大师兄用了另外一个强大的命令： awk</p>
+<p><code>for i in *0; do echo -e  $i &quot;\t&quot; $(grep User $i/OUTCAR | awk &#39;&#123;print $4&#125;&#39;); done</code></p>
+<p>2.4.1）  学会echo 命令：</p>
+<p>2.4.2）  echo –e 后面加上”\t”后（双引号），可以直接输出 tab，方便导入excel；</p>
+<p>2.4.3）  本例中，awk 后面用<code>&#123;&#125;</code>将打印的内容括起来；</p>
+<p>2.4.4）  <code>print $4</code> 意思是输出前面结果的第4项；</p>
+<p>2.4.5）  awk命令极其强大，强烈建议大家尝试着去网上查找资料，主动去学习；</p>
+<p>2.4.6）将结果复制到excel里面作图。</p>
+<h4 id="2-5-计算时间随着ENCUT增加的变化曲线"><a href="#2-5-计算时间随着ENCUT增加的变化曲线" class="headerlink" title="2.5 计算时间随着ENCUT增加的变化曲线"></a>2.5 计算时间随着ENCUT增加的变化曲线</h4><p><img src="/2017/12/09/ex17/ex17-10.jpeg"></p>
+<p>从图中可以看出，<strong>计算时间随着ENCUT的增加也相应地增加了</strong>。因此，在保证计算准确度和ENCUT的值的选取，你要学会合理取值，加快自己的计算速度。此外，图表的比较形象直观，大家在今后的学习中，多多思考将自己的数据转化为图表的形式！可以很好的表达自己的计算结果。</p>
+<p>设想一下，同学A和B把同样的数据结果给老师看，A单纯把数据列到表格里面，B做成了上图的形式，老师会喜欢谁？此外，我们也可以通过写一个简单的python脚本来实现作图的功能。</p>
+<hr>
+<h4 id="2-6-作图的-Python-脚本："><a href="#2-6-作图的-Python-脚本：" class="headerlink" title="2.6 作图的 Python 脚本："></a>2.6 作图的 Python 脚本：</h4><h5 id="2-6-1-获取数据，并保存成文件"><a href="#2-6-1-获取数据，并保存成文件" class="headerlink" title="2.6.1 获取数据，并保存成文件"></a>2.6.1 获取数据，并保存成文件</h5><p><img src="/2017/12/09/ex17/ex17-11.jpeg"></p>
+<p>注意echo $i 后面的逗号，输出的文件 data.dat 中，逗号用于将两列数据分开。</p>
+<p>2.6.1.1）图中圈出来的部分中， &gt; 代表将前面命令的输出保存到 data.dat 文件中；</p>
+<p>2.6.1.2） data.dat 后缀可以随便写，<code>data.txt</code>， <code>data.out</code>, <code>data.export</code>, 也可以不写：<code>data</code> 。 因为输出后的都是文本格式，直接可以编辑打开。</p>
+<p>2.6.1.3） 查看一下保存的数据结果</p>
+<p><img src="/2017/12/09/ex17/ex17-12.jpeg"></p>
+<h5 id="2-6-2-作图-脚本，-名为-plt-py"><a href="#2-6-2-作图-脚本，-名为-plt-py" class="headerlink" title="2.6.2 作图 脚本， 名为 plt.py"></a>2.6.2 作图 脚本， 名为 plt.py</h5><p>vim打开后，内容如下图：</p>
+<p><img src="/2017/12/09/ex17/ex17-13.jpeg"></p>
+<p>python程序学习参考书：** learn python the hard way**（免费），网上还有很多学习资料，这里就不介绍了。python读取data.dat 文件，根据 delimiter 后面的参数（此处为逗号）将数据分成若干列。</p>
+<hr>
+<h5 id="2-6-3-运行脚本：（python-plt-py）"><a href="#2-6-3-运行脚本：（python-plt-py）" class="headerlink" title="2.6.3 运行脚本：（python plt.py）"></a>2.6.3 运行脚本：（python plt.py）</h5><p><img src="/2017/12/09/ex17/ex17-14.jpeg"></p>
+<h4 id="2-7-体系的能量随ENCUT的变化："><a href="#2-7-体系的能量随ENCUT的变化：" class="headerlink" title="2.7 体系的能量随ENCUT的变化："></a>2.7 体系的能量随ENCUT的变化：</h4><p><img src="/2017/12/09/ex17/ex17-15.jpeg"></p>
+<p>获取图上结果的命令行：</p>
+<p><code>for i in *0; do echo -e  $i &quot;\t&quot; $(grep User $i/OUTCAR | awk&#39;&#123;print $4&#125;&#39;) &quot;\t&quot; $(grep &#39; without&#39; $i/OUTCAR | tail -n 1 | awk &#39;&#123;print $4&#125;&#39;); done</code></p>
+<p>作图过程如下：</p>
+<h5 id="2-7-1-生成数据："><a href="#2-7-1-生成数据：" class="headerlink" title="2.7.1 生成数据："></a>2.7.1 生成数据：</h5><p><img src="/2017/12/09/ex17/ex17-16.jpeg"></p>
+<p>前面的命令中， “\t” 改为 逗号，  done 后面 加上 &gt; data.dat， 重新运行一遍。 </p>
+<h5 id="2-7-2-修改脚本如下："><a href="#2-7-2-修改脚本如下：" class="headerlink" title="2.7.2 修改脚本如下："></a>2.7.2 修改脚本如下：</h5><p><img src="/2017/12/09/ex17/ex17-17.jpeg"></p>
+<p>增加了 一列（z）</p>
+<hr>
+<p>2.7.3 选择合适的画图区间：</p>
+<p><img src="/2017/12/09/ex17/ex17-18.jpeg"></p>
+<p>图中蓝色的O$_2$分子的能量随ENCUT值增加的变化，为一直线！</p>
+<hr>
+<p>大师兄问：结果对不对？</p>
+<p>答：结果是对的，但不具有任何的合理性。</p>
+<p>因为它不能体现出能量变化的趋势：因为 y 轴的取值范围太大了，而我们能量的变化又太小。这也是很多人在做模拟的时候容易犯的错误，看到一个直线，或者平滑的曲线，就如同哥伦布发现了新大陆一番。其实则不然，很多时候，真相往往被我们的粗糙的观测范围给掩盖了。</p>
+<p>这个称之为作图骗人的一个Trick！很多人在发文章的时候将这一技巧运用的如火纯情。所以，当你看文献的时候，如果发现别人的结果也是一条直线或者平滑曲线，第一直觉是去看坐标轴的范围，而不是感觉别人的工作是多么地牛逼。</p>
+<p>重新作图，这次只用ENCUT和O$_2$分子的能量，如下图：</p>
+<p><img src="/2017/12/09/ex17/ex17-19.jpeg"></p>
+<p>能量一直在降低， 结果对不对呢？对的，但变化却被过度放大了！</p>
+<hr>
+<p>很多新手看到这个图以为能量降低的很快，感觉自己的计算不收敛，因此还要继续往下做或者测试。其实则不然，在这里，我们还是需要主要 y 轴的取值范围。图中整个y轴的变化为0.016 eV。每两个点之间的变化仅仅为0.002 eV。这个变化我们也是可以接受的，虽然图中感觉下降的很厉害的样子。</p>
+<p>上面两个图中，走了两个极端，一个极大，一个极小。所以，在我们处理数据时，一定要仔细观察坐标轴的取值范围。</p>
+<hr>
+<h4 id="2-8-小结一下："><a href="#2-8-小结一下：" class="headerlink" title="2.8 小结一下："></a>2.8 小结一下：</h4><p>但从数据上可以看出来，O$_2$分子的能量随着ENCUT值的增加还是会有些少许的波动。比如，从400到800 eV，能量降低了0.01 eV。大师兄，那我们该取哪个ENCUT值呢？</p>
+<p>首先，我们要明确几个要点：</p>
+<p>2.8.1）ENCUT值越大，计算的越精确，花费的时间也就越多；</p>
+<p>2.8.2）ENCUT的取值仅仅通过一个例子的测试来确定，这是不对的；</p>
+<ul>
+<li>A)   在VASP的计算中，单个结构的能量所具有的意义不大，也就是说相对能量最重要！</li>
+<li>B)   为什么A）中说相对能量最重要：这是因为：没有对比，就没有伤害！设想一下，你把一个O$_2$的能量算的再精确或者能量再低，而不去使用它，它也就是个数字而已，不具有任何的物理化学意义。</li>
+<li>C)  B)中要表达的意思是，算出来的数值必须要应用到我们的物理化学概念中，也就是物理化学的概念体现在这些能量的使用过程中，也就是相对能量里面：比如，O$_2$的结合能， O$_2$的吸附能；某一化学反应的能量，反应能垒，表面能，功函数等等，无一不是多个能量的数学运算所的出来的。</li>
+<li>D)   O$_2$的结合能示例：</li>
+</ul>
+<p>公式： EB = E(O$_2$) –2E(O)</p>
+<p>O$_2$的结合能随着ENCUT值增加的变化情况：</p>
+<p><img src="/2017/12/09/ex17/ex17-20.jpeg"></p>
+<p>第一、二、三、四列分别为ENCUT，O原子能量，O$_2$分子能量和O$_2$分子中O的结合能。从图中，我们可以分析出来，ENCUT在450 eV时，O$_2$的结合能和ENCUT为800 eV的时候差别很小，因此我们可以选取450 eV进行计算。</p>
+<p>注： O原子不同ENCUT的单点能，自己根据前面的过程，补充计算。</p>
+<hr>
+<p>2.8.3）ENCUT的取值与体系中所有的元素有关；</p>
+<ul>
+<li>A）体系中含有不同元素的时候，查看这些元素POTCAR中的ENMAX值，找出最大的那个；</li>
+<li>B）ENCUT的最小值为所有元素中ENMAX的最大值！</li>
+<li>C）也就是说，找到最大的ENMAX（max）， ENCUT值大于等于ENMAX（max）。</li>
+</ul>
+<p><img src="/2017/12/09/ex17/ex17-21.jpeg"></p>
+<p>示例图中，<br>potcar.sh 为生成POTCAR的脚本，可在本书的附录中获取。ENCUT 的取值至少为 400 eV。</p>
+<hr>
+<p>2.8.4） ENCUT的值，也要查阅相关的参考文献进行确定。你的计算体系大家都用400 eV，你也可以设置该值或者稍微高一些。ENCUT很多人在刚开始做计算的时候，都会测试一个数值。如果不想测试，查找参考文献其实是一个很好的办法。</p>
+<hr>
+<h3 id="3-扩展练习："><a href="#3-扩展练习：" class="headerlink" title="3 扩展练习："></a>3 扩展练习：</h3><p>3.1 复习前面学到的批量操作方式；</p>
+<p>3.2 熟练运用前面的操作，并理解命令的工作原理；</p>
+<p>3.3 改变KPOINTS的大小，查看计算时间，能量的变化；</p>
+<h3 id="4-总结："><a href="#4-总结：" class="headerlink" title="4 总结："></a>4 总结：</h3><p>1 EDIFF和EDIFFG对计算的影响通过实例强调了一次；</p>
+<p>2 ENCUT 测试的操作流程；</p>
+<p>3 ENCUT对计算时间和能量的影响结果分析；</p>
+<p>4 通过excel 和python作图的两个方法；</p>
+<p>5 能量和计算时间随ENCUT的变化；</p>
+<p>6 看图时坐标轴的区间范围要注意；</p>
+<p>7 总结ENCUT取值的一些注意事项。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E6%97%B6/" rel="tag"># 机时</a>
+              <a href="/tags/%E5%9B%9E%E9%A1%BE/" rel="tag"># 回顾</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/08/ex16/" rel="prev" title="Ex16 谁偷走的我的机时？（一）">
+                  <i class="fa fa-chevron-left"></i> Ex16 谁偷走的我的机时？（一）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/10/ex18/" rel="next" title="Ex18 谁偷走的我的机时？（三）">
+                  Ex18 谁偷走的我的机时？（三） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

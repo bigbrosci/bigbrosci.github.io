@@ -1,37 +1,451 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
 
 
-{% block title %}{{ page.title }} | {{ config.title }}{% endblock %}
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-{% block page_class %}page-post-detail{% endblock %}
+<link rel="stylesheet" href="/css/main.css">
 
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-    <div class="post-spread">
-      {% if theme.jiathis %}
-        {% include '_partials/share/jiathis.swig' %}
-      {% elseif theme.baidushare %}
-        {% include '_partials/share/baidushare.swig' %}
-      {% elseif theme.add_this_id %}
-        {% include '_partials/share/add-this.swig' %}
-      {% elseif theme.duoshuo_shortname and theme.duoshuo_share %}
-        {% include '_partials/share/duoshuo_share.swig' %}
-      {% endif %}
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD最近整理材料，发现遗落在角落里的一个python脚本（cssm.py），可以批量切常见金属稳定表面的slab模型。 cssm.py 是：cleave_stable_surfaces_from_metals的缩写。废话不多说，下面的是在天河II上运行的实例。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex81 使用ASE批量切金属稳定的表面">
+<meta property="og:url" content="http://www.bigbrosci.com/2019/05/14/ex81/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD最近整理材料，发现遗落在角落里的一个python脚本（cssm.py），可以批量切常见金属稳定表面的slab模型。 cssm.py 是：cleave_stable_surfaces_from_metals的缩写。废话不多说，下面的是在天河II上运行的实例。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-14T19:30:16.000Z">
+<meta property="article:modified_time" content="2021-12-28T03:15:55.530Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="ASE">
+<meta property="article:tag" content="slab">
+<meta property="article:tag" content="切面">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2019/05/14/ex81/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2019/05/14/ex81/","path":"2019/05/14/ex81/","title":"Ex81 使用ASE批量切金属稳定的表面"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex81 使用ASE批量切金属稳定的表面 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
-{% endblock %}
+  <div class="site-meta">
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2019/05/14/ex81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex81 使用ASE批量切金属稳定的表面
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-05-14 15:30:16" itemprop="dateCreated datePublished" datetime="2019-05-14T15:30:16-04:00">2019-05-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2019/05/14/ex81/" class="post-meta-item leancloud_visitors" data-flag-title="Ex81 使用ASE批量切金属稳定的表面" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/05/14/ex81/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/05/14/ex81/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD<br>最近整理材料，发现遗落在角落里的一个python脚本（<code>cssm.py</code>），可以批量切常见金属稳定表面的slab模型。 <code>cssm.py</code> 是：<code>cleave_stable_surfaces_from_metals</code>的缩写。废话不多说，下面的是在天河II上运行的实例。</p>
+<span id="more"></span>
+<p>=======<br>最近整理材料，发现遗落在角落里的一个python脚本（<code>cssm.py</code>），可以批量切常见金属稳定表面的slab模型。 <code>cssm.py</code> 是：<code>cleave_stable_surfaces_from_metals</code>的缩写。废话不多说，下面是在天河II上运行的实例，大家照着敲一遍应该问题不大。</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>535e55dd998f6e9656aa1a4374c3d1a2c4d3fdc4</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/cssm$ ls</span><br><span class="line">cssm.py</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/cssm$ python cssm.py</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;cssm.py&quot;</span>, line 3, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    from ase import Atoms</span><br><span class="line">ImportError: No module named ase</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/cssm$ python3 cssm.py</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/cssm$ ls</span><br><span class="line">POSCAR_Ag_1           POSCAR_Co_3_bottomed  POSCAR_Fe_3           POSCAR_Ni_2_bottomed  POSCAR_Pt_2           POSCAR_Ru_1_bottomed</span><br><span class="line">POSCAR_Ag_1_bottomed  POSCAR_Cu_1           POSCAR_Fe_3_bottomed  POSCAR_Ni_3           POSCAR_Pt_2_bottomed  POSCAR_Ru_2</span><br><span class="line">POSCAR_Ag_2           POSCAR_Cu_1_bottomed  POSCAR_Ir_1           POSCAR_Ni_3_bottomed  POSCAR_Pt_3           POSCAR_Ru_2_bottomed</span><br><span class="line">POSCAR_Ag_2_bottomed  POSCAR_Cu_2           POSCAR_Ir_1_bottomed  POSCAR_Pd_1           POSCAR_Pt_3_bottomed  POSCAR_Ru_3</span><br><span class="line">POSCAR_Ag_3           POSCAR_Cu_2_bottomed  POSCAR_Ir_2           POSCAR_Pd_1_bottomed  POSCAR_Rh_1           POSCAR_Ru_3_bottomed</span><br><span class="line">POSCAR_Ag_3_bottomed  POSCAR_Cu_3           POSCAR_Ir_2_bottomed  POSCAR_Pd_2           POSCAR_Rh_1_bottomed  cssm.py</span><br><span class="line">POSCAR_Co_1           POSCAR_Cu_3_bottomed  POSCAR_Ir_3           POSCAR_Pd_2_bottomed  POSCAR_Rh_2</span><br><span class="line">POSCAR_Co_1_bottomed  POSCAR_Fe_1           POSCAR_Ir_3_bottomed  POSCAR_Pd_3           POSCAR_Rh_2_bottomed</span><br><span class="line">POSCAR_Co_2           POSCAR_Fe_1_bottomed  POSCAR_Ni_1           POSCAR_Pd_3_bottomed  POSCAR_Rh_3</span><br><span class="line">POSCAR_Co_2_bottomed  POSCAR_Fe_2           POSCAR_Ni_1_bottomed  POSCAR_Pt_1           POSCAR_Rh_3_bottomed</span><br><span class="line">POSCAR_Co_3           POSCAR_Fe_2_bottomed  POSCAR_Ni_2           POSCAR_Pt_1_bottomed  POSCAR_Ru_1</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/cssm$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/cssm$ rm *&#123;1..3&#125;</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/cssm$ ls</span><br><span class="line">POSCAR_Ag_1_bottomed  POSCAR_Co_3_bottomed  POSCAR_Fe_2_bottomed  POSCAR_Ni_1_bottomed  POSCAR_Pd_3_bottomed  POSCAR_Rh_2_bottomed  cssm.py</span><br><span class="line">POSCAR_Ag_2_bottomed  POSCAR_Cu_1_bottomed  POSCAR_Fe_3_bottomed  POSCAR_Ni_2_bottomed  POSCAR_Pt_1_bottomed  POSCAR_Rh_3_bottomed</span><br><span class="line">POSCAR_Ag_3_bottomed  POSCAR_Cu_2_bottomed  POSCAR_Ir_1_bottomed  POSCAR_Ni_3_bottomed  POSCAR_Pt_2_bottomed  POSCAR_Ru_1_bottomed</span><br><span class="line">POSCAR_Co_1_bottomed  POSCAR_Cu_3_bottomed  POSCAR_Ir_2_bottomed  POSCAR_Pd_1_bottomed  POSCAR_Pt_3_bottomed  POSCAR_Ru_2_bottomed</span><br><span class="line">POSCAR_Co_2_bottomed  POSCAR_Fe_1_bottomed  POSCAR_Ir_3_bottomed  POSCAR_Pd_2_bottomed  POSCAR_Rh_1_bottomed  POSCAR_Ru_3_bottomed</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/cssm$  <span class="keyword">for</span> i <span class="keyword">in</span> *med*; <span class="keyword">do</span> mkdir $(<span class="built_in">echo</span> <span class="variable">$i</span> |awk -F <span class="string">&quot;_&quot;</span> <span class="string">&#x27;&#123;print $2&quot;_&quot;$3&#125;&#x27;</span>); mv <span class="variable">$i</span>  $(<span class="built_in">echo</span> <span class="variable">$i</span> |awk -F <span class="string">&quot;_&quot;</span> <span class="string">&#x27;&#123;print $2&quot;_&quot;$3&#125;&#x27;</span>)/POSCAR;  <span class="keyword">done</span></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/cssm$ ls */*</span><br><span class="line">Ag_1/POSCAR  Co_1/POSCAR  Cu_1/POSCAR  Fe_1/POSCAR  Ir_1/POSCAR  Ni_1/POSCAR  Pd_1/POSCAR  Pt_1/POSCAR  Rh_1/POSCAR  Ru_1/POSCAR</span><br><span class="line">Ag_2/POSCAR  Co_2/POSCAR  Cu_2/POSCAR  Fe_2/POSCAR  Ir_2/POSCAR  Ni_2/POSCAR  Pd_2/POSCAR  Pt_2/POSCAR  Rh_2/POSCAR  Ru_2/POSCAR</span><br><span class="line">Ag_3/POSCAR  Co_3/POSCAR  Cu_3/POSCAR  Fe_3/POSCAR  Ir_3/POSCAR  Ni_3/POSCAR  Pd_3/POSCAR  Pt_3/POSCAR  Rh_3/POSCAR  Ru_3/POSCAR</span><br></pre></td></tr></table></figure>
+
+<p>注：直接用<code>python cssm.py</code> 会出错，因为默认的是<code>python2</code>版本，而ASE基于<code>python3</code>，换成<code>python3 cssm.py</code>就OK了。</p>
+<p>脚本内容: </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> ase <span class="keyword">import</span> Atoms</span><br><span class="line"><span class="keyword">import</span> ase.io </span><br><span class="line"><span class="keyword">from</span> ase.build <span class="keyword">import</span> molecule</span><br><span class="line"><span class="keyword">from</span> ase.build <span class="keyword">import</span> bulk </span><br><span class="line"><span class="keyword">from</span> ase.build <span class="keyword">import</span> surface</span><br><span class="line"><span class="keyword">from</span> ase.build <span class="keyword">import</span> add_vacuum </span><br><span class="line"><span class="keyword">from</span> ase.build <span class="keyword">import</span> fcc111, bcc110, hcp0001</span><br><span class="line"><span class="keyword">from</span> ase.constraints <span class="keyword">import</span> FixAtoms</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## Crystal structure of elements: from https://en.wikipedia.org/wiki/Periodic_table_(crystal_structure)</span></span><br><span class="line">bcc = [<span class="string">&#x27;V&#x27;</span>,  <span class="string">&#x27;Cr&#x27;</span>, <span class="string">&#x27;Mn&#x27;</span>, <span class="string">&#x27;Fe&#x27;</span>, <span class="string">&#x27;Nb&#x27;</span>, <span class="string">&#x27;Pb&#x27;</span>]</span><br><span class="line">hcp = [<span class="string">&#x27;Mg&#x27;</span>, <span class="string">&#x27;Sc&#x27;</span>, <span class="string">&#x27;Ti&#x27;</span>, <span class="string">&#x27;Co&#x27;</span>, <span class="string">&#x27;Zn&#x27;</span>, <span class="string">&#x27;Y&#x27;</span>, <span class="string">&#x27;Zr&#x27;</span>, <span class="string">&#x27;Tc&#x27;</span>, <span class="string">&#x27;Ru&#x27;</span>, <span class="string">&#x27;Cd&#x27;</span>, <span class="string">&#x27;Hf&#x27;</span>, <span class="string">&#x27;Re&#x27;</span>, <span class="string">&#x27;Os&#x27;</span>]</span><br><span class="line">fcc = [<span class="string">&#x27;Al&#x27;</span>, <span class="string">&#x27;Ca&#x27;</span>, <span class="string">&#x27;Ni&#x27;</span>, <span class="string">&#x27;Cu&#x27;</span>, <span class="string">&#x27;Rh&#x27;</span>, <span class="string">&#x27;Pd&#x27;</span>, <span class="string">&#x27;Ag&#x27;</span>, <span class="string">&#x27;Ir&#x27;</span>, <span class="string">&#x27;Pt&#x27;</span>, <span class="string">&#x27;Au&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">### Metal  Bulk structures from DFT calculations without vdw </span></span><br><span class="line"><span class="comment">## &#123;element:[E_bulk, Natom_in_the_bulk, lattice_a, lattice_c]</span></span><br><span class="line"><span class="comment">## &#x27;Bulks are conventional cells, not primitive cells&#x27;</span></span><br><span class="line"></span><br><span class="line">dict_metals = &#123; </span><br><span class="line"><span class="string">&#x27;Ag&#x27;</span>:(-<span class="number">10.88004463</span>,<span class="number">4</span>,<span class="number">4.1423472817</span>),</span><br><span class="line"><span class="string">&#x27;Co&#x27;</span>:(-<span class="number">14.06155869</span>,<span class="number">2</span>,<span class="number">2.4908062578</span>,<span class="number">4.0275560997</span>),</span><br><span class="line"><span class="string">&#x27;Cu&#x27;</span>:(-<span class="number">14.91182926</span>,<span class="number">4</span>,<span class="number">3.6339719976</span>),</span><br><span class="line"><span class="string">&#x27;Fe&#x27;</span>:(-<span class="number">16.47105782</span>,<span class="number">2</span>,<span class="number">2.8346922247</span>),</span><br><span class="line"><span class="string">&#x27;Ir&#x27;</span>:(-<span class="number">35.00402169</span>,<span class="number">4</span>,<span class="number">3.8852086642</span>),</span><br><span class="line"><span class="string">&#x27;Ni&#x27;</span>:(-<span class="number">21.86901226</span>,<span class="number">4</span>,<span class="number">3.5177809803</span>),</span><br><span class="line"><span class="string">&#x27;Pd&#x27;</span>:(-<span class="number">20.864555</span>,<span class="number">4</span>,<span class="number">3.9374172967</span>),</span><br><span class="line"><span class="string">&#x27;Pt&#x27;</span>:(-<span class="number">24.39436715</span>,<span class="number">4</span>,<span class="number">3.9669414218</span>),</span><br><span class="line"><span class="string">&#x27;Rh&#x27;</span>:(-<span class="number">29.10896058</span>,<span class="number">4</span>,<span class="number">3.8241655305</span>),</span><br><span class="line"><span class="string">&#x27;Ru&#x27;</span>:(-<span class="number">18.49439863</span>,<span class="number">2</span>,<span class="number">2.7126893229</span>,<span class="number">4.2897522328</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bottom</span>(<span class="params">file_in</span>):</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;This function is used to pull the cetered atoms (from ASE) back to the bottom. &#x27;&#x27;&#x27;</span></span><br><span class="line">    f = <span class="built_in">open</span>(file_in, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    lines = f.readlines()</span><br><span class="line">    f.close()</span><br><span class="line">    coord = [<span class="built_in">float</span>(line.rstrip().split()[<span class="number">2</span>]) <span class="keyword">for</span> line <span class="keyword">in</span> lines[<span class="number">9</span>:]]</span><br><span class="line">    bottom = <span class="built_in">min</span>(coord)</span><br><span class="line">    out_put = <span class="built_in">open</span>(file_in + <span class="string">&#x27;_bottomed&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">    out_put.writelines(i <span class="keyword">for</span> i <span class="keyword">in</span> lines[<span class="number">0</span>:<span class="number">9</span>])</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> lines[<span class="number">9</span>:]:</span><br><span class="line">        infor = line.rstrip().split()</span><br><span class="line">        infor[<span class="number">2</span>] = <span class="built_in">str</span>(<span class="built_in">float</span>(infor[<span class="number">2</span>]) - bottom)</span><br><span class="line">        out_put.write(<span class="string">&#x27;   &#x27;</span>.join(infor) + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">    out_put.close()   </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cssm</span>(<span class="params">metal, data_dict</span>):</span>  <span class="comment"># cleave_stable_surfaces_from_metals </span></span><br><span class="line">    name = <span class="string">&#x27;POSCAR_&#x27;</span> + metal</span><br><span class="line">    <span class="keyword">if</span> metal <span class="keyword">in</span> bcc:   <span class="comment"># For bcc metals, cleave 110 surface </span></span><br><span class="line">        lattice_a = <span class="built_in">float</span>(data_dict.get(metal)[<span class="number">2</span>])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">4</span>):</span><br><span class="line">            name_out = name + <span class="string">&#x27;_&#x27;</span> + <span class="built_in">str</span>(i)</span><br><span class="line">            slab = bcc110(metal, a = lattice_a, size = (i, i, <span class="number">4</span>), vacuum = <span class="number">7.5</span>)</span><br><span class="line">            <span class="string">&#x27;&#x27;&#x27;(i,i,4) means repeat i i 4 in x y and z directions. vacuum will be 7.5 * 2 because it was added on the two sides.&#x27;&#x27;&#x27;</span> </span><br><span class="line">            constraint_l = FixAtoms(indices=[atom.index <span class="keyword">for</span> atom <span class="keyword">in</span> slab <span class="keyword">if</span> atom.index &lt; i*i*<span class="number">2</span>])</span><br><span class="line">            slab.set_constraint(constraint_l)</span><br><span class="line">            ase.io.write(name_out, slab, <span class="built_in">format</span>=<span class="string">&#x27;vasp&#x27;</span>)    </span><br><span class="line">            <span class="comment">### Add the element line to the POSCAR file ###</span></span><br><span class="line">            subprocess.call([<span class="string">&#x27;sed -i &#x27;</span> + <span class="string">&#x27;\&#x27;5a&#x27;</span> + metal + <span class="string">&#x27;\&#x27;  &#x27;</span> + name_out], shell = <span class="literal">True</span>  )</span><br><span class="line">            bottom(name_out)            </span><br><span class="line">    <span class="keyword">elif</span> metal <span class="keyword">in</span> hcp:   <span class="comment"># For hcp metals, cleave 0001 surface </span></span><br><span class="line">        lattice_a, lattice_c = [<span class="built_in">float</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> data_dict.get(metal)[<span class="number">2</span>:]]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">4</span>):</span><br><span class="line">            name_out = name + <span class="string">&#x27;_&#x27;</span> + <span class="built_in">str</span>(i)</span><br><span class="line">            slab = hcp0001(metal, a = lattice_a, c = lattice_c, size = (i, i, <span class="number">4</span>), vacuum = <span class="number">7.5</span>)</span><br><span class="line">            constraint_l = FixAtoms(indices=[atom.index <span class="keyword">for</span> atom <span class="keyword">in</span> slab <span class="keyword">if</span> atom.index &lt; i*i*<span class="number">2</span>])</span><br><span class="line">            slab.set_constraint(constraint_l)</span><br><span class="line">            ase.io.write(name_out, slab, <span class="built_in">format</span>=<span class="string">&#x27;vasp&#x27;</span>)</span><br><span class="line">            subprocess.call([<span class="string">&#x27;sed -i &#x27;</span> + <span class="string">&#x27;\&#x27;5a&#x27;</span> + metal + <span class="string">&#x27;\&#x27;  &#x27;</span> + name_out], shell = <span class="literal">True</span>  )</span><br><span class="line">            bottom(name_out)            </span><br><span class="line">            </span><br><span class="line">    <span class="keyword">elif</span> metal <span class="keyword">in</span> fcc:   <span class="comment"># For fcc metals, cleave 111 surface</span></span><br><span class="line">        lattice_a = <span class="built_in">float</span>(data_dict.get(metal)[<span class="number">2</span>])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">4</span>):</span><br><span class="line">            name_out = name + <span class="string">&#x27;_&#x27;</span> + <span class="built_in">str</span>(i)</span><br><span class="line">            slab = fcc111(metal, a = lattice_a, size = (i, i, <span class="number">4</span>), vacuum = <span class="number">7.5</span>)</span><br><span class="line"><span class="comment">#            slab.center(vacuum=7.5, axis = 2)</span></span><br><span class="line">            constraint_l = FixAtoms(indices=[atom.index <span class="keyword">for</span> atom <span class="keyword">in</span> slab <span class="keyword">if</span> atom.index &lt; i*i*<span class="number">2</span>])</span><br><span class="line">            slab.set_constraint(constraint_l)</span><br><span class="line">            ase.io.write(name_out, slab, <span class="built_in">format</span>=<span class="string">&#x27;vasp&#x27;</span>)</span><br><span class="line">            subprocess.call([<span class="string">&#x27;sed -i &#x27;</span> + <span class="string">&#x27;\&#x27;5a&#x27;</span> + metal + <span class="string">&#x27;\&#x27;  &#x27;</span> + name_out], shell = <span class="literal">True</span>  )</span><br><span class="line">            bottom(name_out)            </span><br><span class="line">    <span class="keyword">else</span>: </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;Please add your element in the crystal structure lists: bcc, hcp, and fcc&#x27;</span>)  </span><br><span class="line">        </span><br><span class="line"><span class="keyword">for</span> metal <span class="keyword">in</span> dict_metals.keys():</span><br><span class="line">    cssm(metal, dict_metals)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>简单介绍:</p>
+<p>首先声明：最近很忙，没时间写脚本的详解， 如果已经安装ASE的或者有天河II号账号的，可以直接试试，如果不行，自己慢慢琢磨；如果不愿意琢磨，那么就按照前面练习中的笨方法用Material Studio切面。下面以<code>Ag</code>为例：</p>
+<p><code>dict_metals</code> 这个字典里面是本人计算的一些常见金属的bulk晶格常数，能量，bulk中原子数目等信息；仅供大家消遣，测试。如果你要通过这个脚本切用于发表文章的slab，运行前，先自己优化一遍bulk，然后修改成自己的结果再运行。</p>
+<p>1）<code>POSCAR_Ag_1</code>， <code>POSCAR_Ag_2</code>，<code>POSCAR_Ag_3</code> 分别是<code>1x1</code>,<code>2x2</code>, <code>3x3</code>的slab模型。</p>
+<p>2）ASE默认把结构放在slab的中心，加真空层的时候也是在两侧加，因此脚本里面是7.5$\AA$，对应15$\AA$；</p>
+<p>3） </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slab = fcc111(metal, a = lattice_a, size = (i, i, <span class="number">4</span>), vacuum = <span class="number">7.5</span>)</span><br></pre></td></tr></table></figure>
+
+<p> 是切面的关键行；也是脚本的核心部分；</p>
+<p>4）每个<code>slab</code>有4层，如果想切厚点，修改 <code>size = (i, i, 4)</code>中的4换成为你想要的层数。如果想切（5x5)，4层的<code>slab</code>，将前面一行的<code>for i in range(1,4)</code>改成<code>for i in range(1,6)</code>；</p>
+<ol start="5">
+<li>通过</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">constraint_l = FixAtoms(indices=[atom.index <span class="keyword">for</span> atom <span class="keyword">in</span> slab <span class="keyword">if</span> atom.index &lt; i*i*<span class="number">2</span>])</span><br><span class="line">slab.set_constraint(constraint_l)</span><br></pre></td></tr></table></figure>
+
+<p> 把<code>slab</code>的<code>top 2</code> 层放开；</p>
+<p>6）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ase.io.write(name_out, slab, format=&#x27;vasp&#x27;) </span><br></pre></td></tr></table></figure>
+
+<p>是通过ASE将结构输出到<code>vasp</code>的格式。</p>
+<p>7）ASE的输出一般没有元素行，脚本里面自动加上了：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">subprocess.call([&#x27;sed -i &#x27; + &#x27;\&#x27;5a&#x27; + metal + &#x27;\&#x27;  &#x27; + name_out], shell = True)</span><br></pre></td></tr></table></figure>
+
+<p>8）<code>bottom(name_out) </code> 功能是把模型从中心拽到底部，输出的结果是<code>POSCAR_Ag_1_bottomed``，POSCAR_Ag_2_bottomed</code>，<code>POSCAR_Ag_3_bottomed</code>。（个人不喜欢ASE把结构放在中间）</p>
+<ol start="9">
+<li>脚本感觉有些啰嗦，欢迎有兴趣的人改进，让它变得更加简洁易懂。</li>
+</ol>
+<p>10）最后的bash命令，将所有的<code>bottomed</code>归类到各自对应的文件夹中,喜欢把模型放在中间的，可以不用运行<code>bottom</code>那个命令。</p>
+<p>11）期待我们中国的大牛们写出比ASE更好的软件包出来，安利一波：有问题首先尝试<code>VASPKIT</code>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ASE/" rel="tag"># ASE</a>
+              <a href="/tags/slab/" rel="tag"># slab</a>
+              <a href="/tags/%E5%88%87%E9%9D%A2/" rel="tag"># 切面</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/04/30/A14/" rel="prev" title="ASE转换文件到POSCAR格式">
+                  <i class="fa fa-chevron-left"></i> ASE转换文件到POSCAR格式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/07/20/ex82/" rel="next" title="Ex82 nebmake.pl 的坑（二）">
+                  Ex82 nebmake.pl 的坑（二） <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>
