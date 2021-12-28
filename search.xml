@@ -682,47 +682,6 @@
       </tags>
   </entry>
   <entry>
-    <title>ASE的安装</title>
-    <url>/2019/03/22/A13_ase_install/</url>
-    <content><![CDATA[<h4 id="什么是ASE？"><a href="#什么是ASE？" class="headerlink" title="什么是ASE？"></a>什么是ASE？</h4><p>ASE 是Atomic Simulation Environment的简称。详细的介绍大家可以浏览官网：<a href="https://wiki.fysik.dtu.dk/ase/about.html%E3%80%82ASE%E6%98%AF%E4%B8%80%E4%B8%AA%E5%9F%BA%E4%BA%8Epython%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BA%93%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%81%9A%E7%9A%84%E4%BA%8B%E6%83%85%E5%BE%88%E5%A4%9A%EF%BC%8C%E4%B8%8D%E5%90%8C%E7%A8%8B%E5%BA%8F%E4%BB%BB%E5%8A%A1%E7%9A%84%E8%AE%BE%E7%BD%AE%EF%BC%8C%E7%BB%93%E6%9E%84%E7%9A%84%E6%90%AD%E5%BB%BA%EF%BC%8C%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%E9%83%BD%E5%8F%AF%E4%BB%A5%E5%81%9A%E3%80%82">https://wiki.fysik.dtu.dk/ase/about.html。ASE是一个基于python的程序库，可以做的事情很多，不同程序任务的设置，结构的搭建，结构分析都可以做。</a></p>
-<h4 id="为什么用ASE？"><a href="#为什么用ASE？" class="headerlink" title="为什么用ASE？"></a>为什么用ASE？</h4><ul>
-<li><p>ASE里面包含了很多的功能，其中个人认为最为方便地就是计算模型不同文件类型的转换。比如将cif文件转化为POSCAR，将POSCAR转化为xyz文件，等等；</p>
-</li>
-<li><p>可以在学习ASE的时候，顺便学习python的一些知识；</p>
-</li>
-<li><p>使用ASE分析计算结果；</p>
-</li>
-<li><p>使用ASE学习做计算；这里分享<code>江山</code>推荐的一本书：<a href="https://github.com/jkitchin/dft-book">https://github.com/jkitchin/dft-book</a></p>
-</li>
-</ul>
-<h4 id="怎么安装ASE？"><a href="#怎么安装ASE？" class="headerlink" title="怎么安装ASE？"></a>怎么安装ASE？</h4><p>如果你用的是国防科大吕梁超算中心，管理员已经安装好了ASE，那么需要你做的只有一步，添加ASE的路径到<code>.bashrc</code>文件中就可以直接用了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/opt/python3.6/bin$ ls ase*</span><br><span class="line">ase  ase-build  ase-db  ase-gui  ase-info  ase-run</span><br><span class="line">iciq-lq@ln3:/THFS/opt/python3.6/bin$ <span class="built_in">pwd</span></span><br><span class="line">/THFS/opt/python3.6/bin</span><br><span class="line">iciq-lq@ln3:/THFS/opt/python3.6/bin$ tail -n 1 ~/.bashrc</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/THFS/opt/python3.6/bin</span><br></pre></td></tr></table></figure>
-
-<p>如果你想在自己电脑上安装ASE。安装过程很简单，详细的信息请参考：<a href="https://wiki.fysik.dtu.dk/ase/install.html%E3%80%82Mac%E5%A4%AA%E8%B4%B5%EF%BC%8C%E6%B2%A1%E5%B0%9D%E8%AF%95%E8%BF%87%EF%BC%8CWindows%E7%B3%BB%E7%BB%9F%E6%9C%AC%E4%BA%BA%E4%B8%8D%E5%A4%AA%E7%86%9F%E6%82%89%EF%BC%8C%E4%B8%8B%E9%9D%A2%E9%99%84%E4%B8%8A%E5%9C%A8Windows10%E4%B8%ADUbuntu%E5%AF%84%E7%94%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B%EF%BC%88%E8%B7%9F%E6%AD%A3%E5%84%BF%E5%85%AB%E7%BB%8FUbuntu%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B%E4%B8%80%E6%A0%B7%EF%BC%89%EF%BC%9B">https://wiki.fysik.dtu.dk/ase/install.html。Mac太贵，没尝试过，Windows系统本人不太熟悉，下面附上在Windows10中Ubuntu寄生系统的安装过程（跟正儿八经Ubuntu系统的安装流程一样）；</a> 总共就三步。</p>
-<ul>
-<li><p>安装pip：如果已经安装了pip，则就剩2步了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo apt install python-pip</span><br><span class="line">sudo apt install python3-pip</span><br></pre></td></tr></table></figure>
-
-<p>一个是基于python2，一个是python3的。</p>
-</li>
-<li><p><img src="/2019/03/22/A13_ase_install/a13-1.png"></p>
-</li>
-<li><p>安装ASE：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip install --upgrade --user ase</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2019/03/22/A13_ase_install/a13-2.png"></p>
-</li>
-<li><p>添加ASE的路径到<code>.bashrc</code>文件。</p>
-</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/home/bigbro/.<span class="built_in">local</span>/bin</span><br></pre></td></tr></table></figure>
-
-<p>在Terminal里面输入<code>ase</code>，然后摁下<code>tab</code>键：如果跟下面的输出一样，说明八九不离十了。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bigbro@DESKTOP-S6R3TUP:~$ ase</span><br><span class="line">ase             ase-build       ase-db          ase-gui         ase-info        ase-run         ase_figures.sh  aselite.py      aselite.pyc</span><br><span class="line">bigbro@DESKTOP-S6R3TUP:~$ ase --version</span><br><span class="line">ase-3.17.0</span><br></pre></td></tr></table></figure>
-
-]]></content>
-  </entry>
-  <entry>
     <title>ASE的骚操作系列</title>
     <url>/2020/08/31/A17/</url>
     <content><![CDATA[<p>对科研狗们来说，ASE不是Automotive Service Excellence的缩写，而是Atomic Simulation Environment。<br>是一款基于Python语言的工具软件，可以方便地处理DFT计算中结构搭建，准备输入文件准备，读取输出文件，既可以可视化，又可以用来转换文件格式。本文主要介绍ASE在DFT计算中的骚操作。这个”骚”字让我想起来小学的时候，同桌读了屈原的《离骚》，然后转过头来用这个字来笑话我，说我真骚。我被憋的满脸通红却不知如何反驳。骚就骚吧，骚前面加个<code>离</code>可以千古流传，那么我相信，它后面加个<code>操作</code>也可以对大家日常的计算有所帮助。<br>首先声明：本教程具有自动过滤功能。每次过滤的时候，我都会提醒一下，以防你被滤纸卡住。但如果你读完教程却不能顺利进行操作，请不要找我，请分解自己让自己滤下去。</p>
@@ -8197,17 +8156,17 @@ suggested common fields:
   <entry>
     <title>z01 分享一本葵花宝典</title>
     <url>/2019/10/07/S01/</url>
-    <content><![CDATA[<p><img src="/2019/10/07/S01/share01/z01_1.png" alt=""></p>
+    <content><![CDATA[<p><img src="/2019/10/07/S01/share01/z01_1.png"></p>
 <p>Python现在越来越流行，连微信朋友圈都开始推广一些python培训课程广告了：俩美女一起上班，一个瞬间完成工作，另一个一脸懵逼地问道你咋这么快就干完活啦？另一个回答道：因为我学习了Python啊。是的，Python确实有这些神奇的功效，但在网络这么发达的时代，想学习python的途径有很多，参加什么割韭菜的培训班啦，找个计算机学院的男女朋友啦，向师兄师姐学习啦，自己学习琢磨啦等等。</p>
-<p><img src="/2019/10/07/S01/share01/z01_2.png" alt=""></p>
+<p><img src="/2019/10/07/S01/share01/z01_2.png"></p>
 <p>学习Python的一个好处就是，很多懂python的都会github上分享一些自己的脚本，但这些脚本很多时候不是为你的课题量身定制的。稍微懂点可以加以修改就变成自己科研的一个利器了。更重要的好处就是广告里面所凸显的，由于计算中很多操作都是可以重复的，写个小脚本可以快速完成自己的工作任务，提高效率，省出时间该干嘛干嘛去。此外，很多复杂的任务，手动计算量很大，也得需要写点脚本来帮忙。那种瞬间完成任务的感觉，不会点程序语言的人是不会体验到的。而且，现在小学生，初中生都开始学习python了，我们也没有理由不跟上时代的潮流。</p>
-<p><img src="/2019/10/07/S01/share01/z01_3.jpg" alt=""></p>
+<p><img src="/2019/10/07/S01/share01/z01_3.jpg"></p>
 <p>看到这里，应该能明白本文的目的。不要你交99元，也不给你优惠99元。大师兄推荐一本武林秘籍，专门针对科研人员的一本科学计算相关的Python书。里面大量例子简单易懂，解释详细，带你缓缓走入Python的程序世界，平日闲的没事加以练习，犹如武林高手给你灌输真气一般，达到计算的另一个境界，轻而易举超越那些培训班被割过的韭菜们。</p>
 <p>获取方式，扫描右侧或者下方二维码关注公众号：大师兄科研网，回复：<strong>武林秘籍</strong> 就可以获取下载链接了。为了避免别人学会了python跟你抢男女朋友，课题组争宠，大家下载后私下练习就OK啦，有对象的，一起练习讨论效果更佳。</p>
-<p><img src="/2019/10/07/S01/share01/z01_4.jpg" alt=""></p>
+<p><img src="/2019/10/07/S01/share01/z01_4.jpg"></p>
 ]]></content>
       <categories>
-        <category>杂谈</category>
+        <category>Share</category>
       </categories>
       <tags>
         <tag>Python</tag>
@@ -8217,7 +8176,7 @@ suggested common fields:
   <entry>
     <title>理论模拟导向的催化剂理性高效设计策略用于醇的选择性胺化</title>
     <url>/2019/10/12/S02/</url>
-    <content><![CDATA[<p><img src="/2019/10/12/S02/share02/s021.png" alt=""></p>
+    <content><![CDATA[<p><img src="/2019/10/12/S02/share02/s021.png"></p>
 <p>理论模拟导向的催化剂理性高效设计策略用于醇的选择性胺化</p>
 <p>第一作者：王涛</p>
 <p>通讯作者：Philippe Sautet</p>
@@ -8225,29 +8184,29 @@ suggested common fields:
 <p>胺是工业上生产药物、农用化学品、生物活性剂、聚合物和染料的重要中间体化合物，其中伯胺是衍生化反应的关键试剂。传统合成胺的方法包括氨与烷基卤的直接反应，或通过还原硝基络合物和腈，但是这些工艺的缺陷在于产生有害的副产物、废弃物并消耗大量氢气。而利用氨气通过借氢反应机理直接胺化脂肪类醇用于合成胺被认为是一种有潜力的绿色合成路线并且已经有数千吨规模的工业化应用。然而，合成胺工业仍然面临诸多挑战，尤其是选择性合成伯胺。在此背景下，探索催化剂的本征性质与合成胺活性和选择性的依赖关系变得尤为重要。近年来，理论模拟的飞速发展使得揭示催化过程中的构效关系成为可能。本文结合第一性原理微观动力学模拟和实验，揭示了决定醇的胺化活性和选择性的关键因素并构建了其与碳和氧原子吸附能的依赖关系，实现了该反应金属合金催化剂的理性高效筛选，为实验上醇胺化催化剂的设计和升级提供了重要理论参考。</p>
 <p><strong>内容和讨论</strong></p>
 <p><strong>A.</strong> <strong>醇的胺化反应机理:</strong> 首先甲醇的胺化被作为模型反应进行研究，该反应机理主要包括三部分(如图1)：醇的脱氢生成醛；醛与NH3迅速反应生成亚胺；亚胺的加氢生成胺。基于上述反应机理，DFT计算在九种过渡金属的密堆积表面系统展开。由于实际反应气氛中具有大量的NH3，因此催化剂的表面会覆盖一定浓度的NH3，早期的研究发现表面覆盖1/9 ML的NH3有助于准确描述胺化反应催化剂的活性顺序。其中，第二步醛与NH3反应生成亚胺被认为是气相里的快速平衡反应而且是理论模拟上的难点，该工作通过详细的反应器动力学模拟证明采用Eley–Rideal 反应机理能够准确描述该关键步骤。最终为微观动力学模拟提供了可靠的反应机理。</p>
-<p><img src="/2019/10/12/S02/share02/s022.png" alt=""></p>
+<p><img src="/2019/10/12/S02/share02/s022.png"></p>
 <p><strong>图1</strong>: 甲醇与氨气的胺化反应机理</p>
 <p><strong>B.</strong> <strong>线性降维:</strong> 基于Norskov课题组提出的d带中心理论和scaling关系，反应过程中表面物种的吸附能并非相互独立的而是受制于scaling关系，并且基元反应的能垒也可以通过BEP关系与反应热关联，因此通过详细的描述符的筛选以及线性拟合可以实现降维和最优描述符的确认。由于该反应涉及含C、N、O的三类中间体，scaling关系可以最终将该反应中涉及的中间体的能量与C、N和O原子的吸附能进行关联。然而，包含三种不同描述符导致无法利用典型的二维火山曲线进行活性描述。深入研究发现：N原子的吸附能同样依赖于C和O原子的吸附能并且具有完美的线性关系（如图2）。而该依赖关系的物理化学根源一方面为N(3.0)原子的电负性恰好介于C(2.5)和O(3.5)原子之间，另一方面N原子的最高占据轨道能量(HOMO)可以线性分解为C和O原子的相应能量。基于上述分析，甲醇胺化反应的能量维度被降低为二(C和O原子的吸附能)。</p>
-<p><img src="/2019/10/12/S02/share02/s023.png" alt="">**</p>
+<p><img src="/2019/10/12/S02/share02/s023.png">**</p>
 <p><strong>图2</strong>: N原子的吸附能与C和O原子吸附能的线性关系</p>
 <p><strong>C.</strong> <strong>醇的胺化活性和选择性与简单描述符的依赖关系:</strong> 基于图1的反应机理和图2的线性降维，通过构建微观动力学模型，最终建立了醇胺化的反应速率(TOF)与C和O原子吸附能的依赖关系。如图3a所示，由于对C和O原子吸附能力的区别，九种金属分布于火山图的不同位置而呈现出不同的反应活性。然而，针对醇的胺化反应，人们更加关心且关键的问题是选择性。因此，该工作进一步系统考察了导致伯胺选择性降低的不同可能性，最终发现CH3NH和CH2NH物种的耦合是导致选择性丢失的关键因素之一，并巧妙的将其与简单描述符进行了关联，最终构建了醇胺化生成伯胺的选择性与C和O原子吸附能的依赖关系如图3b。随着CH3NH/CH2NH耦合能垒(<em>E</em>a)的增加，副反应变得困难，进而催化剂的选择性增加。至此，通过计算催化剂表面C和O原子的吸附能，结合图3中的火山图便可定性预测相应催化剂的醇胺化反应的活性和选择性，从而大大提高催化剂的筛选效率。</p>
-<p><img src="/2019/10/12/S02/share02/s024.png" alt=""></p>
+<p><img src="/2019/10/12/S02/share02/s024.png"></p>
 <p><strong>图3:</strong> 醇的胺化活性(a)和选择性(b)与C和O原子吸附能的依赖关系</p>
 <p><strong>D.</strong> <strong>实验室论证预测:</strong> 基于上述活性和选择性图，通过对元素周期表中不同过渡金属进行两两排列组合，最终计算了三百余种双金属合金的C和O原子吸附能，并预测出系列有潜力的醇选择性胺化催化剂。基于上述理论预测，索尔维公司研发中心对不同合金进行了详细的实验室测试以论证图3的可靠性。具体的：本文合成了系列Co基合金催化剂，一方面由于Co金属的相对廉价，另一方面Co具有较高的活性和伯胺选择性。根据图3a的理论预测，提高Co的活性需要设法降低其O原子的吸附能，由于Pt和Pd具有弱的O吸附能力，因此将Co与Pt和Pd形成合金将可以实现反应活性提高的，然而基于图3b的信息，这将同时伴随着伯胺选择性的降低。事实上，图4和图5的实验结果也证实了CoPt和CoPd合金相比Co金属的高活性和低伯胺选择性。此外，图3表明：将Co与Ag和Ru组合将会维持甚至提高活性且提高选择性。该预测结果同样与图4和图5中的实验结果一致，并且成功设计出活性选择性都大大提高的CoAg合金催化剂。本文预测的其他有潜力的合金催化剂也将进一步推动实验上对醇胺化反应研究。</p>
 <p><img src="/2019/10/12/S02/share02/s025.png" alt="img"></p>
 <p><strong>图4:</strong> 实验上不同催化剂醇的胺化生成伯胺的TOF</p>
-<p><img src="/2019/10/12/S02/share02/s026.png" alt=""></p>
+<p><img src="/2019/10/12/S02/share02/s026.png"></p>
 <p><strong>图5:</strong> 实验上不同催化剂醇的胺化生成伯胺的选择性</p>
 <p><strong>总结和展望</strong></p>
 <p>通过精确的第一性原理计算和微观动力学方法，准确的模拟了醇的胺化这一复杂反应的详细机理，揭示了决定金属合金催化剂醇的胺化活性和选择性的关键因素，并与简单易得的C和O原子吸附能进行关联，系统的实验测试论证了理论预测的可靠性。最终大大提高了醇胺化反应金属合金催化剂的筛选效率，为工业上醇胺化催化剂的设计和升级提供了参考。此外，该工作采用的改进的动力学模拟方法能够引入反应器环境对复杂反应机理的影响，一方面实现对实验条件更加精准的描述，另一方面能够准确定性预测金属合金催化剂的活性和选择性的变化趋势，为后续高通量催化剂筛选提供了基础。</p>
 <p><strong>作者简介</strong></p>
 <p>文章第一作者王涛博士目前为美国斯坦福大学SUNCAT中心博士后研究员，通讯作者Philippe Sautet为美国加州大学洛杉矶分校教授、ACS Catalysis副主编、法国科学院院士、美国能源局IMASC能源前沿研究中心副主任，长期致力于理论催化方向的基础研究。此外，法国里昂高等师范学院、法国里尔大学、比利时根特大学以及跨国公司索尔维研发中心E2P2实验室也为该工作提供了支持。本文经大师兄涛本人授权发布。</p>
 <p>文章链接：<a href="https://www.nature.com/articles/s41929-019-0327-2">https://www.nature.com/articles/s41929-019-0327-2</a></p>
-<p> <img src="/2019/10/12/S02/share02/s027.jpg" alt=""></p>
+<p> <img src="/2019/10/12/S02/share02/s027.jpg"></p>
 <p>关注公众号：大师兄科研网，回复：<strong>胺化</strong>，可以获取下载链接。</p>
 ]]></content>
       <categories>
-        <category>分享</category>
+        <category>Share</category>
       </categories>
       <tags>
         <tag>文章</tag>
@@ -8257,27 +8216,27 @@ suggested common fields:
   <entry>
     <title>基于DFT+U研究应力调控CeO2(111)催化分解水制氢的活性</title>
     <url>/2019/10/13/S03/</url>
-    <content><![CDATA[<p><img src="/2019/10/13/S03/share03/s031.png" alt=""></p>
-<p><strong>基于DFT+<em>U</em>研究应力调控CeO2(111)催化分解水制氢的活性</strong></p>
+    <content><![CDATA[<p><img src="/2019/10/13/S03/share03/s031.png"></p>
+<p>*<em>基于DFT+<em>U</em>研究应力调控CeO2(111)催化分解水制氢的活性</em>*</p>
 <p><code>研究背景</code></p>
 <p>氢能清洁无污染，是最具潜力的能量载体。使用太阳能、风能和水能转换得到的清洁电能电解水制氢是人来未来最具发展潜力的、可持续的、绿色环保的制氢技术。传统低温碱性电解水制氢技术的效率受限于液体电解质较低的传质过程和氧电极较慢的反应动力。相比于液体传质技术，新兴发展的高温固体燃料电池 (SOEC)技术以固体作为传质媒介，充分利用工业废热提供反应所需的热能，具有极高的传质效率和水电解效率。然而人们对SOEC制氢反应机理尚缺乏深刻认识。计算模拟技术是揭示能源材料领域中多相催化反应过程及机理的重要手段，可以辅助了解SOEC电解水的关键反应步骤，以开发、低廉且稳定的催化剂用于增强氢电极的稳定性以及提高制氢反应在燃料电池中的效率。兼具优异的电子和离子传质能力的氧化铈（CeO2）是SOEC水分解重要的催化剂和稳定剂。CeO2优越的催化活性归因于Ce3+与Ce4+的氧化还原循环。基于密度泛函理论，该工作使用Hubbard-<em>U<strong>（</strong>U</em>eff=4.5 eV）修正的方法来描述Ce 4<em>f</em>轨道电子的强关联作用，研究表面应力对CeO2(111)催化制氢的影响。</p>
 <p><code>研究内容</code></p>
 <p>水在CeO2表面分解制氢包括三个基本反应步骤：（1）CeO2(111)表面生成一个氧空位；（2）H2O吸附于氧空位附近最终形成表面OH-；（3）表面OH-分解形成H2并留下一个晶格氧，如Figure 1所示水分解过程中形成的反应中间体以及最终生成H2的反应过程。该工作主要研究了三种可能的反应路径，即不同OH- 覆盖率下形成H2的过程如Figure 1所示。通过研究应力对三种不同反应路径中反应中间体形成的影响，以及应力对各反应步骤反应能垒的调控，来探究应力如何增强CeO2催化制氢的性能。</p>
 <p>首先，研究发现拉伸应变有效增强了氧空位和OH-等中间体的稳定性，随之增加了各反应步骤的反应能垒。与之相反的是压缩应变可以通过减弱OH-与表面的结合能，从而降低生成H2的能垒。通过计算不同反应温度下中间体的自由能可以获得沿着2H，4H和5H的反应路径能量图。研究发现不管处于何种应力条件下生成氧空位和氧空位的扩散，以及OH-的形成不需要很高的能量势垒，而OH-分解形成H2是水分解制氢反应路径中能垒最高的一个步骤。然后，通过对比不同反应温度下，研究发现在温度低于1000 K时，沿着5H路径可以最快速地水分解生成H2 如图2所示，且最佳反应路径不受应力的影响。然而，当温度升高到1200 K时，应力有效地调控了制氢的反应路径，即拉伸应力下最优路径沿着5H，而在压缩应力下最优反应路径沿着2H或者4H。此外，研究还发现反应速度随着压缩应力的增大而增快，且当压缩应力大于3%时，反应速度获得显著提升。因此，计算模拟理论研究显示压缩应力（&gt;3%）有利于增强CeO2(111)催化水分解制氢的反应活性。</p>
-<p><img src="/2019/10/13/S03/share03/s032.png" alt=""></p>
+<p><img src="/2019/10/13/S03/share03/s032.png"></p>
 <p>图1. 2H，4H和5H覆盖的CeO2(111)表面生成H2的反应路径示意图。黄色, 红色，蓝色，白色，黑色和灰色原子球分别代表Ce，表面O，次表面O，H，次表面氧空位和表面氧空位。</p>
-<p><img src="/2019/10/13/S03/share03/s033.png" alt=""></p>
+<p><img src="/2019/10/13/S03/share03/s033.png"></p>
 <p>图2不同反应温度与应力条件下最优反应路径生成H2的反应速度对比图。</p>
 <p><code>作者简介</code></p>
 <p>本文第一作者，武甜甜为丹麦科技大学能源转化与储存系博士后研究员。</p>
 <p>Google Scholar： </p>
 <p><a href="https://scholar.google.com/citations?user=rm84jfsAAAAJ&amp;hl=en">https://scholar.google.com/citations?user=rm84jfsAAAAJ&amp;hl=en</a></p>
 <p>指导老师为：Tejs Vegge教授。</p>
-<p>课题组主页：<a href="https://www.dtu.dk/english/service/phonebook/person?id=5334&amp;tab=1。">https://www.dtu.dk/english/service/phonebook/person?id=5334&amp;tab=1。</a></p>
+<p>课题组主页：<a href="https://www.dtu.dk/english/service/phonebook/person?id=5334&amp;tab=1%E3%80%82">https://www.dtu.dk/english/service/phonebook/person?id=5334&amp;tab=1。</a></p>
 <p>本文经作者授权发布，版权属于第一作者。</p>
 ]]></content>
       <categories>
-        <category>分享</category>
+        <category>Share</category>
       </categories>
       <tags>
         <tag>文章</tag>
@@ -8289,10 +8248,10 @@ suggested common fields:
     <url>/2019/10/13/S04/</url>
     <content><![CDATA[<p>Hall Petch关系是材料学中描述多晶材料最为重要的一个相关关系，它反映了材料强度与晶粒的尺寸的开方成反比。同时材料在极小晶粒尺寸下表现出的反常Hall Petch 关系也一度成为材料学家的研究热点。关于反常Hall Petch关系的研究发现屡现于高水平期刊，本文将不做更多介绍。从Hall Petch关系的第一次报导开始，已经有大量的文章针对各种材料体系（纯金属，金属间化合物，多相合金等等）进行了相关研究。然而，从Hall Petch 关系提出至今，依旧没有出现一个完美简洁的理论可以解释这个现象。研究人员为了解释这个现象已经提出了大量的理论，在接下来的篇幅中，作者将从中提取了几个典型的理论做简要介绍</p>
 <p>1951年，Hall（文献1）发表的论文中首次报导了钢中存在的Hall Petch关系:</p>
-<p>$\sigma=\sigma<em>0 + k</em>{HP}d^{-1/2} $</p>
+<p>$\sigma=\sigma_0 + k_{HP}d^{-1/2} $</p>
 <p>其中$\sigma$表示流变应力，d表示晶粒尺寸，k是Hall Petch 系数，其对不同材料，温度和应变条件都非常敏感。</p>
 <p>与此同时，他也在文章中首次提出了试图解释Hall Petch关系的pile up（位错阻塞）模型。</p>
-<p><img src="/2019/10/13/S04/share04/share042.png" alt=""></p>
+<p><img src="/2019/10/13/S04/share04/share042.png"></p>
 <p>该理论认为材料的强度来自于外力作用下导致的晶粒内部位错源开动，位错源启动后形成的位错林被晶粒之间的界面（晶界）阻碍后引起了材料的应力强化。简单起见，我们不妨假设两个近似六边形的晶粒以晶界AB接触，左边晶粒的中心O点存在一个位错源，在外加应力的作用下位错源沿着某一滑移面释放出一系列位错。随着第一个发射的位错冲撞到晶界AB上，整个位错列队被禁锢在位错源与晶界之间。由于晶界墙的阻力和新产生位错的弹性应变，整个位错列最后会形成一个稳定分布，假设晶粒的平均尺寸为d，则位错列中位错的数目为：</p>
 <p>$n=\frac{(1-v)d\tau_e}{2\mu{b}}$</p>
 <p>其中$\tau_e$表示位错的有效剪切应力，它可以表示为：</p>
@@ -8302,16 +8261,16 @@ suggested common fields:
 <p>Hall认为，材料屈服发生于位错列冲破晶界的时候，也就是说 $\tau_p$大于临界值$\tau_c$。如果我们取等号，再将前面的n代入，我们就可以得到：</p>
 <p>$\tau = \tau_i +\surd{\frac{2\tau_c\mu{b}}{1-v}} \times d^{-1/2}$</p>
 <p>该公式看起来非常合理简洁，-1/2次方的关系也出来了。但是如果材料的屈服依靠的是位错像裂纹一般冲破晶界，我们应该在实验中大量发现，但实际上，只有少数几篇文献报导过相关现象。更重要的是，依据该理论计算的屈服强度跟实际数据还是有较大出入。</p>
-<p>在pile up模型的基础上，Cotrell（文献2）认为，材料的屈服并非来自于位错林冲破晶界，而是由于位错林在晶界的终端的应力场诱发了邻近晶粒中的位错源(如下图的R处)的开动。这样子需要的 临界应力要小于pile-up模型。<br><img src="/2019/10/13/S04/share04/share047.png" alt=""><br>晶粒内部出现位错源固然可行，但是另一方面，晶界本身就是天生的位错源，在晶粒内部没有经受剧烈变形的情况下，晶界上的位错形核位置要远远多于晶粒内部。Li （文献3）于1963年提出了boundary source（晶界位错源）模型。为了方便起见，我们不妨假设晶粒是边长为d的立方体。假设晶粒的每一个面上的台阶密度为m，假设每一个台阶都有一定几率发射位错。进一步简化，我们不妨认为每个台阶都会发射位错，则一个面的总位错数目为$md^2$。每一个晶粒与毗邻晶粒公用一个晶面，则一个晶粒可以认为有三个晶界面属于这个晶粒。所以:<br><img src="/2019/10/13/S04/share04/share048.png" alt=""><br>我们可以认为一个晶粒有3$md^2$个位错。这些位错在外加应力作用下继续向晶内扩散，形成位错林。位错林的密度为:<br>$\rho = 3md^2 / d^3 = 3m/d$<br>另一方面，晶体材料的位错密度和强度之间可以由著名的Taylor公式来描述:<br>$\sigma = \sigma_0 + M\alpha\mu{b}\surd\rho$<br>代入前者即得:</p>
+<p>在pile up模型的基础上，Cotrell（文献2）认为，材料的屈服并非来自于位错林冲破晶界，而是由于位错林在晶界的终端的应力场诱发了邻近晶粒中的位错源(如下图的R处)的开动。这样子需要的 临界应力要小于pile-up模型。<br><img src="/2019/10/13/S04/share04/share047.png"><br>晶粒内部出现位错源固然可行，但是另一方面，晶界本身就是天生的位错源，在晶粒内部没有经受剧烈变形的情况下，晶界上的位错形核位置要远远多于晶粒内部。Li （文献3）于1963年提出了boundary source（晶界位错源）模型。为了方便起见，我们不妨假设晶粒是边长为d的立方体。假设晶粒的每一个面上的台阶密度为m，假设每一个台阶都有一定几率发射位错。进一步简化，我们不妨认为每个台阶都会发射位错，则一个面的总位错数目为$md^2$。每一个晶粒与毗邻晶粒公用一个晶面，则一个晶粒可以认为有三个晶界面属于这个晶粒。所以:<br><img src="/2019/10/13/S04/share04/share048.png"><br>我们可以认为一个晶粒有3$md^2$个位错。这些位错在外加应力作用下继续向晶内扩散，形成位错林。位错林的密度为:<br>$\rho = 3md^2 / d^3 = 3m/d$<br>另一方面，晶体材料的位错密度和强度之间可以由著名的Taylor公式来描述:<br>$\sigma = \sigma_0 + M\alpha\mu{b}\surd\rho$<br>代入前者即得:</p>
 <p>$\sigma = \sigma_0 + M\alpha\mu{b}3^{1/2}m^{1/2}d^{-1/2}$ </p>
 <p>我们再一次获得了Hall Petch关系。在原文中也有说明这个方式计算的理论屈服强度与pile up模型基本一致。目前介绍的这两个模型，前者认为位错完全起源于晶粒内部，后者则认为位错完全起源于晶界，两者分别是实际情况下的两个极端。但是殊途同归，两个极端最后得到了相同的结论和近似的屈服强度。不过，这两个模型的局限性也是明显的，实验中Hall Petch曲线的斜率对晶粒结构和化学成分非常敏感，但是上述模型中并未考虑这些实际因素。</p>
 <p>值得注意的是，在2002年的一篇文章4中，该文作者成功在MD模拟中发现了晶界处位错的形核和发射过程。</p>
-<p><img src="/2019/10/13/S04/share04/share0412.png" alt=""></p>
+<p><img src="/2019/10/13/S04/share04/share0412.png"></p>
 <p>（未完待续）</p>
 <p>1 Hall, E. O. The deformation and ageing of mild steel: III discussion of results. Proceedings of the Physical Society. Section B 64.9 (1951): 747.<br>2  A.H. Cottrell,: The Mechanical Properties of Matter, Wiley, New York (1964)<br>3 Li, James CM. Petch relation and grain boundary sources. Transactions of the Metallurgical Society of AIME 227.1 (1963): 239.<br>4 Van Swygenhoven, H., P. M. Derlet, and A. Hasnaoui. Atomic mechanism for dislocation emission from nanosized grain boundaries. Physical Review B 66.2 (2002): 024101.<br>本文经ponychen授权发布，版权属于ponychen。</p>
 ]]></content>
       <categories>
-        <category>分享</category>
+        <category>Share</category>
       </categories>
       <tags>
         <tag>Hall Petch</tag>
@@ -8323,18 +8282,18 @@ suggested common fields:
     <url>/2019/10/14/S05/</url>
     <content><![CDATA[<p>在上文中，我们介绍了用于解释Hall Petch关系的位错阻塞模型和晶界位错源模型。两种理论都是较为早期出现的模型，原理上相对简单，因此文章中仔细介绍了相对应的推导过程。本文将继续介绍剩下的相关模型，由于推理过程相对复杂，读者如果对具体推导过程有兴趣可以阅读对应参考文献。</p>
 <p>上文介绍的两种模型都未在公式中直接体现材料变形中塑性应变对Hall Petch系数的影响。因此，位错阻塞模型和晶界位错源模型仅仅只能描述多晶材料在屈服极限之下的情况。我们知道，当多晶材料所受应变超过其屈服极限，材料由于位错的交截和阻碍出现了加工硬化。加工硬化势必会影响Hall Petch系数的数值。在Meakin和Petch（文献1）提出的work haraening（加工硬化）模型中，Hall Petch系数被看成是一个与应变有关的因变量。</p>
-<p><img src="/2019/10/14/S05/share05/share051.png" alt=""></p>
+<p><img src="/2019/10/14/S05/share05/share051.png"></p>
 <p>由于Hall Petch系数中包含了应变，该模型同时成功预测了材料中的加工硬化行为。如果我们将晶粒尺寸d固定，可以发现该模型描述了一种应力与应变成抛物线形状的加工硬化关系，这与很多实验是相符合的。</p>
 <p>目前为止介绍的所有模型都默认认为位错来自于位错源的开动。然而实际上，当晶体被弯曲，或者在晶粒之间的交叠以及孔洞处，由于非均匀变形，晶体为了降低变形带来的巨大应力，会自发形成一些几何必须位错来释放应力。下图展示:</p>
-<p><img src="/2019/10/14/S05/share05/share052.png" alt=""></p>
+<p><img src="/2019/10/14/S05/share05/share052.png"></p>
 <p>当晶体被弯曲时，晶体中自发在易滑移面上出现的几何必须位错林。在Ashby（文献2）等提出的几何必须位错模型中，作者认为晶界作为晶体中的应力协调区，其上的位错类型主要为几何必须位错主导，并且晶体中绝大部分的几何必须位错都位于晶界上，因此材料的强度由晶界上的几何必须位错密度决定。而平衡位错密度又由晶粒尺寸决定，通过结合加工硬化模型，作者获得了如下的Hall Petch关系式。</p>
-<p><img src="/2019/10/14/S05/share05/share053.png" alt=""></p>
+<p><img src="/2019/10/14/S05/share05/share053.png"></p>
 <p>位错阻塞模型将材料的强度归功于晶粒内部位错源开动的位错受阻，而目前介绍的其他模型则都将材料的强度归功于晶界处的位错密度受阻。在这两种极端情况的基础上，Meyersm（文献3）等人认为（复合模型），一个多晶材料应该被分为两部分：连续的拥有较高流变强度的晶界部分以及被晶界包围的离散的拥有较低流变强度的块体部分（见下图4，t为晶界厚度）。</p>
-<p><img src="/2019/10/14/S05/share05/share054.png" alt=""></p>
+<p><img src="/2019/10/14/S05/share05/share054.png"></p>
 <p>当材料承受外力时，晶界部分首先发生变形，形成大量几何必须位错；随着进一步变形，晶界首先发生局部屈服形成加工硬化层，并形核大量位错向晶粒内运动；最后，随着晶粒内位错密度的上升，晶粒部分发生屈服。至此，材料整体完成了整个塑性变形过程。基于这一过程假设，作者得出了如下关系。</p>
-<p><img src="/2019/10/14/S05/share05/share055.png" alt=""></p>
+<p><img src="/2019/10/14/S05/share05/share055.png"></p>
 <p>可以发现，该关系式并非符合正常的Hall Petch关系，式子中同时出现了一次方和二次方项。作者进一步假设随着晶粒尺寸的增大，其容纳几何必须位错的数量也在上升，因此其厚度t也在上升。基于这一假设，作者得到了下图的强度与晶粒尺寸的关系。</p>
-<p><img src="/2019/10/14/S05/share05/share056.png" alt=""></p>
+<p><img src="/2019/10/14/S05/share05/share056.png"></p>
 <p>可以发现，复合模型在晶粒尺寸较大的时候可以较好的匹配Hall Petch关系，而当晶粒尺寸小到纳米级的时候，复合模型成功预测了超细晶材料的强度反常降低现象的存在。这是之前所有的理论模型都无法给出的结果。</p>
 <p>实际上，在复合模型之后材料学家依旧提出了大量的理论模型，其目的也不仅仅是在于解释Hall Petch关系。由于篇幅所限，本文仅仅介绍了一些具有代表性的模型。实际上，从实验的角度来说，很多材料也并非严格遵循Hall Petch关系中-1/2指数，该指数存在一个很大的范围。对于我们来说，-1/2只是代表材料强度与晶粒尺寸联系的一个优美符号。</p>
 <ol>
@@ -8346,7 +8305,7 @@ suggested common fields:
 <p>本文经ponychen授权发布，版权属于ponychen。</p>
 ]]></content>
       <categories>
-        <category>分享</category>
+        <category>Share</category>
       </categories>
       <tags>
         <tag>Hall Petch</tag>
@@ -8357,15 +8316,14 @@ suggested common fields:
     <title>高阶弹性常数计算的一点建议</title>
     <url>/2019/10/15/S06/</url>
     <content><![CDATA[<p>在线弹性理论中，体系被施加一个无穷小的应变，从而体系应变后的能量可以以小应变为自变量泰勒展开，并忽略二阶导以上的高阶项。通过对不同特定的独立的应变模式求解能量应变方程或者应力应变方程，我们可以获得材料所有的二阶弹性常数（SOECs）。SOECs反映了体系的简谐弹性特征。通过SOECs，一方面我们可以获得体系的基于Vogit-Reuss-Hill平均的多晶力学性能，包括杨氏模量，剪切模量，体积模量，泊松比和维氏硬度等，以及在此基础之上的各向异性系数等等特征；另一方面，我们也可以通过SOECs获得单晶力学性能在空间中的具体分布，并将其用图的模式直观的表示出来。</p>
-<p><img src="/2019/10/15/S06/share06/share061.png" alt=""></p>
+<p><img src="/2019/10/15/S06/share06/share061.png"></p>
 <p>图中我们展示了某种金属的杨氏模量和剪切模量（每个面的平均值）的空间分布图，感兴趣的读者可以猜猜这是哪种布拉维晶型的金属。</p>
 <p>在实际负载下，材料承受的往往是有限形变，这时候材料的非简谐弹性将称为不可忽视的因素。很多实验数据有去测量体系的三阶弹性常数（TOECs），甚至四阶弹性常数（FOECs）。注意到TOECs和FOECs相对比SOECs在实验中更加受到实验精度的影响，具体的测量非常困难。如果我们能在理论上对其进行预测，将变得非常有意义。实际上已经有若干文献进行了相关研究，笔者也抱着好奇的态度尝试进行了TOECs和FOECs的计算。原理上来说相对简单，我们只需要将能量对应变进行泰勒展开，将阶次保留到四次，即可同时获得SOECs，TOECs和FOECs。</p>
-<p><img src="/2019/10/15/S06/share06/share062.png" alt=""></p>
+<p><img src="/2019/10/15/S06/share06/share062.png"></p>
 <p>将所有的应变η设为同一个数值，我们就可以用一个包含四次，三次和二次项的多项式来拟合计算的数据，获得包含各个弹性常数的多元一次方程组。求解这个这个方程组即可获得所有的弹性常数。</p>
 <p>不过实际操作起来并没有这么简单。即使是最简单的立方体系，其TOECs也达到了6个，而FOECs更是达到了11个。对于更低对称性的体系，其计算量更是一个天文数字（开玩笑的，天文倒不至于，很大就是了）。一种避让的方法就是，我们可以用应力对应变进行展开，这样相对需要的独立应变数少一些。笔者使用Au作为测试体系，根据文献对体系施加了11种独立应变，如下图。</p>
-<p><img src="/2019/10/15/S06/share06/share063.png" alt=""></p>
+<p><img src="/2019/10/15/S06/share06/share063.png"></p>
 <p>感兴趣的童鞋可以直接阅读文末给的参考文献。笔者通过测试发现，首先，体系的应变量必须足够大。笔者一开始犯上了计算SOECs的习惯，使用的很小的应变，计算结果简直南辕北辙。后来将应变加到15%后，获得的TOECs相对理想。细想也是，应变很小时，体系还处于线弹性阶段，这时候的非谐弹性非常微弱，极容易被数值误差干扰。将应变加大到非谐区后，数值就非常稳定了。同时，尽管我们使用了大应变条件，但是实际上高阶弹性常数的具体数值依旧会对数值精度的波动非常敏感。</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -8378,8 +8336,7 @@ suggested common fields:
 <th>C456</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>exp</td>
 <td>-1730</td>
 <td>-922</td>
@@ -8397,15 +8354,13 @@ suggested common fields:
 <td>-616</td>
 <td>62</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p>同文献一样，笔者使用了非常高精度的k点半径和截断能。随着精度的提高，结果趋于较好的收敛。笔者在此展示了笔者自己算的TOECs与实验的比较，两者相对来说还是比较接近的（相对实验的误差与文献差不多）。总的来说，如果有小伙伴需要计算材料的TOECs或者FOECs，笔者建议一定要对应变，k点，截断能三者都要做仔细地收敛测试。</p>
 <p>Wang,Hao, and Mo Li. “Ab initio calculations of second-, third-, andfourth-order elastic constants for single crystals.” <em>PhysicalReview B</em> 79.22 (2009): 224102.</p>
 <p>本文经ponychen授权发布，版权属于ponychen。</p>
 ]]></content>
       <categories>
-        <category>分享</category>
+        <category>Share</category>
       </categories>
       <tags>
         <tag>ponychen</tag>
@@ -9850,6 +9805,33 @@ suggested common fields:
       </categories>
       <tags>
         <tag>序言</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ipad 连接服务器APP</title>
+    <url>/2021/12/26/S07/</url>
+    <content><![CDATA[<p>在ipad，手机上运行终端，连接服务器可以让我们随时随地查看，提交任务。在这里推荐一款ipad和iphone上的终端APP: SSHaking。如果你用的安卓系统，一些推荐的APP可以直接到文章底部去找。<br>先依照个人使用的经验，列出来以下SSHaking的优点：</p>
+<p>1） 界面简洁，没广告；</p>
+<p>2） 可以同时打开好几个terminal界面；</p>
+<p>3）连接服务器设置也很简单；</p>
+<p>4） 支持连接多个Hosts； （平时常用的terminus只支持一个，连多个的话要花钱，服务器如果只有一个，也推荐terminus）</p>
+<p>5） 免费！！！！</p>
+<p>6）APP的开发者很牛，可能也很帅！</p>
+<p>7）希望大家多多下载这款APP，有什么bug及时给作者提出来，而且作者看到后修复的也很及时。</p>
+<p>如果你用的是安卓系统，可以有以下几个选择：</p>
+<p>1） juiceSSH (轻和浅吟🐳)<br>2） Admin hands (HeyTamas)</p>
+<p>括号里是提供APP名字的好心人。如果你也有推荐的其他好用的APP(免费的)，可以在微信公众号留言。</p>
+<p><img src="/2021/12/26/S07/F00/QR_code.jpeg">{ width=50% }</p>
+<p>（<a href="https://mp.weixin.qq.com/s/jvghzIlV6NOsNFjUa445xQ%EF%BC%89">https://mp.weixin.qq.com/s/jvghzIlV6NOsNFjUa445xQ）</a></p>
+]]></content>
+      <categories>
+        <category>Share</category>
+      </categories>
+      <tags>
+        <tag>Ipad</tag>
+        <tag>SSHaking</tag>
+        <tag>Terminal</tag>
+        <tag>神器</tag>
       </tags>
   </entry>
 </search>
