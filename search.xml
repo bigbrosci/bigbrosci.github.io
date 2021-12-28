@@ -8414,12 +8414,7 @@ suggested common fields:
 </li>
 </ul>
 <p><strong>注意</strong></p>
-<p>最新版的VASP中可以在INCAR中设置KPOINTS。但在涉及到计算能带的特殊K点时候，INCAR中就不可以直接设置了。所以，在本书中，KPOINTS是认为必须有的。请不要再纠结这个问题，也不要专门找我争论这个问题。如果你认为可以没有，那就是可以没有。至少本书中，我们会介绍KPOINTS文件的准备工作。—-<br>title: Ex1 VASP基本输入文件的准备（INCAR）<br>categories: </p>
-<ul>
-<li>LVASPTHW<br>tags: </li>
-<li>INCAR<br>date: 2017-10-15 15:30:16</li>
-</ul>
-<hr>
+<p>最新版的VASP中可以在INCAR中设置KPOINTS。但在涉及到计算能带的特殊K点时候，INCAR中就不可以直接设置了。所以，在本书中，KPOINTS是认为必须有的。请不要再纠结这个问题，也不要专门找我争论这个问题。如果你认为可以没有，那就是可以没有。至少本书中，我们会介绍KPOINTS文件的准备工作。</p>
 <p>这一节，我们主要通过VASP官网中O原子的计算实例，来学习INCAR的文件准备工作。记住前面我们说的话，INCAR是纯文本。Windows用户，不要用记事本或者写字板打开。推荐使用<a href="https://notepad-plus-plus.org/">Notepad++</a>。</p>
 <h3 id="简单说明"><a href="#简单说明" class="headerlink" title="简单说明"></a>简单说明</h3><p>INCAR主要是告诉VASP我们要算什么以及计算的细节，INCAR准备的原则是：<strong>越简单越好</strong>，<strong>不知道的，不理解的就不往里面放</strong>。 下面是给新手们的一些建议：</p>
 <ul>
@@ -8498,13 +8493,8 @@ suggested common fields:
 <ul>
 <li>INCAR是纯文本没有尾缀; </li>
 <li>算原子或者分子时：ISMEAR = 0， SIGMA = 0.01</li>
-<li>Windows用户请使用Notepad++作为文本编辑器，不要使用自带的记事本或者写字板!—-<br>title: Ex1 VASP基本输入文件的准备（KPOINTS）<br>categories: </li>
+<li>Windows用户请使用Notepad++作为文本编辑器，不要使用自带的记事本或者写字板</li>
 </ul>
-<ul>
-<li>LVASPTHW<br>tags: </li>
-<li>KPOINTS<br>date: 2017-10-16 15:30:16</li>
-</ul>
-<hr>
 <p>上一节，我们学习了INCAR的简单准备工作。这一节，我们学习另外一个输入文件的写法：<strong><em>KPOINTS</em></strong></p>
 <h3 id="简单说明-1"><a href="#简单说明-1" class="headerlink" title="简单说明"></a>简单说明</h3><p>KPOINTS文件在计算中的作用，一方面决定了计算的精度，同时也影响计算所需要的时间。精度高，时间长，精度低，时间短。所以：合理设置KPOINTS文件，可以保证我们使用最少的时间，来获取准确可靠的结果。</p>
 <h3 id="KPOINTS的输入和保存"><a href="#KPOINTS的输入和保存" class="headerlink" title="KPOINTS的输入和保存"></a>KPOINTS的输入和保存</h3><p>打开编辑器，把下面几行输入进去: </p>
@@ -8543,13 +8533,8 @@ suggested common fields:
 </li>
 <li><p>如非六角晶系的计算，如果已经设置的M算起来了，继续用M算就行，没必要改成G再重新算一遍；</p>
 </li>
-<li>前面看不懂，没事。<strong>记住这一点，本节就圆满完成任务</strong>：气体分子，原子计算的时候，使用gamma点即可。—-<br>title: Ex1 VASP基本输入文件的准备（POSCAR）<br>categories: </li>
+<li>前面看不懂，没事。<strong>记住这一点，本节就圆满完成任务</strong>：气体分子，原子计算的时候，使用gamma点即可。</li>
 </ul>
-<ul>
-<li>LVASPTHW<br>tags: </li>
-<li>POSCAR<br>mathjax: true<br>date: 2017-10-17 15:30:16</li>
-</ul>
-<hr>
 <p>$\require{mediawiki-texvc}$</p>
 <p>这一节，我们学习VASP计算中模型的文件：<strong><em>POSCAR</em></strong></p>
 <h3 id="简单说明-2"><a href="#简单说明-2" class="headerlink" title="简单说明"></a>简单说明</h3><p>POSCAR 里面包含了你要进行计算的模型结构信息。也就是你要研究的对象。POSCAR有自己固定的格式，每一行都有特定的含义，认真掌握这些，对于搭建模型非常有帮助。对于本节的例子：O原子的计算中，我们要把O原子放到一个格子里面，格子大小为：8 $\times$ 8 $\times$ 8 $\AA{^3}$。那么POSCAR应该这样写。</p>
@@ -8593,13 +8578,6 @@ suggested common fields:
 <li>学会写O原子在格子里面这个模型的POSCAR；</li>
 <li>知道每一行所代表的含义。</li>
 </ul>
-<hr>
-<p>title: Ex1 VASP基本输入文件的准备（POTCAR）<br>categories: </p>
-<ul>
-<li>LVASPTHW<br>tags: </li>
-<li>POTCAR<br>date: 2017-10-18 15:30:16</li>
-</ul>
-<hr>
 <p>这一节，我们学习VASP计算中的赝势文件：<strong><em>POTCAR</em></strong></p>
 <h3 id="简单说明-3"><a href="#简单说明-3" class="headerlink" title="简单说明"></a>简单说明</h3><p>如果组里安装了VASP，则在某个目录下，一定会有对应的一套对应的赝势文件，本书默认大家已经知道去哪里找，不讨论从哪里下载POTCAR（小窍门：一般各个VASP相关的QQ群中，都会有打包的POTCAR文件）。在该目录下， 一般来说，会有LDA，PBE，和PW91这三个文件夹，主流的计算一般都是用PBE。当你进入PBE的文件夹后，就会找到各个元素所对应的POTCAR文件了。</p>
 <p><strong>POTCAR中各项的含义</strong></p>
@@ -8645,13 +8623,8 @@ suggested common fields:
 <li>VRHFIN， LEXCH，TITEL，ZVAL，ENMAX 这几个参数的大体意思；</li>
 <li>初步了解：Fe_sv，Fe_pv， Ge_d,  Ge_gw，C_s, C_h 这些标记的含义；</li>
 <li>查看VASP官网，了解VASP推荐的POTCAR；</li>
-<li>使用grep来获取POTCAR中有价值的信息。—-<br>title: Ex1 VASP基本输入文件的准备（小结）<br>categories: </li>
+<li>使用grep来获取POTCAR中有价值的信息。</li>
 </ul>
-<ul>
-<li>LVASPTHW<br>tags: </li>
-<li>VASP 输入文件<br>date: 2017-10-19 15:30:16</li>
-</ul>
-<hr>
 <p>通过本节（Ex01）的学习，大家初步了解VASP四个主要输入文件的是怎么制作的，一些简单参数的含义，以及每个文件所对应的格式和细节。本节我们分成了很多小节，每节内容都很多，但对新手来说，信息量可能有些大。但不需要一次性全部掌握，因为在后面的学习中，我们会逐渐深入。自己在课题进行的过程中，也会加深自己的理解。但书中要求掌握的部分，必须要牢牢记住。</p>
 <p>本书的名字为：The Hard Way。意思是，学习VASP并不是一蹴而就的，需要一个长时间的积累过程。所以，新手切勿急躁，很多内容看不懂不要紧，务必要静下心来浏览一遍，自己跟着说明亲自去实践，切不可复制粘贴。 本节所讲解的东西，都务必去VASP官网找对应的说明，认真阅读，反复思考。养成潜心学习官网教程的良好习惯，从而远离网络上那些错误的信息。尤其是对于新手来说，很多都不懂的时候，没有自己的主见，别人一说就被牵着鼻子走了。</p>
 <p><strong>相关的参考资料：</strong></p>
@@ -8734,13 +8707,6 @@ suggested common fields:
 <p>1） 熟练操作使用这些命令；</p>
 <p>2） 搜索百度，尝试一些教程相关的学习；</p>
 <p>3） 养成遇到不会的命令，就自己<strong>主动</strong>认真搜索学习的习惯。</p>
-<hr>
-<p>title: Ex02 做计算常用的批量处理方法（二）<br>categories: </p>
-<ul>
-<li>LVASPTHW<br>tags: </li>
-<li>Linux 基本操作<br>date: 2017-10-21 15:30:16</li>
-</ul>
-<hr>
 <p>上一小节，我们学习了一些基本的linux操作，今天我们学习下文件以及文件夹的操作命令：mkdir, cp，mv以及一个简单的for循环。</p>
 <p><strong>文件（夹）的操作命令：</strong></p>
 <p>1 mkdir 是创建文件夹的一个命令，后面紧跟着你要创建的文件夹的名字。mkdir的使用，有很多敲门。大家可以百度关键词查找： mkdir 窍门，小诀窍 等等。创建一个名字为：ex02的文件夹，然后进入，再创建一个birbro的文件夹: </p>
@@ -8906,14 +8872,7 @@ suggested common fields:
 <p><strong>小结:</strong></p>
 <p>sed 是一个非常强大的命令，对于做计算的我们来说，熟练正确地使用sed可以极大的提高我们的工作效率，大家务必硬着头皮掌握这个命令。这个网站列举了一些基本的用法：</p>
 <p><strong><a href="http://man.linuxde.net/sed">http://man.linuxde.net/sed</a></strong> </p>
-<p>大家参照着进行练习，也可以百度里面搜索一些其他的 sed 使用技巧，如果你有认为很好的sed 技巧，也可以发邮件分享给大师兄（lqcata@gmail.com）。—-<br>title: Ex03 做计算常用的批量处理方法（四）<br>categories: </p>
-<ul>
-<li>LVASPTHW<br>tags: </li>
-<li>for 循环</li>
-<li>批量处理</li>
-<li>sed<br>date: 2017-10-23 15:30:16</li>
-</ul>
-<hr>
+<p>大家参照着进行练习，也可以百度里面搜索一些其他的 sed 使用技巧，如果你有认为很好的sed 技巧，也可以发邮件分享给大师兄（lqcata@gmail.com）。</p>
 <p>本节我们学习2个批量操作：</p>
 <ul>
 <li>通过sed单个命令进行批量操作</li>
@@ -9074,14 +9033,7 @@ suggested common fields:
 <li>脚本使用方法：<code>save_calculation.sh  N</code>  N为第几次算，这里用了4，然后就会得到相应的<code>POSCAR-4</code>， <code>OSZICAR-4</code>， <code>OUTCAR-4</code>等文件，记录第四次计算的细节；</li>
 <li>保存之后，我们就可以提交任务继续苦苦等待了。</li>
 </ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>到这里，CONTCAR的基本介绍以及作用差不多就讲完了。新手们看到后可能会很困惑，因为里面很多内容是大师兄临时加进去给有经验的人写的。只要记住一句话就完成本节的学习任务：CONTCAR的作用跟POSCAR一样，存储的是模型被优化过的结构信息。—-<br>title: Ex06 VASP的输出文件（二）<br>categories: </p>
-<ul>
-<li>LVASPTHW<br>tags: </li>
-<li>OSZICAR</li>
-<li>优化</li>
-<li>ALGO<br>date: 2017-10-28 18:30:16</li>
-</ul>
-<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>到这里，CONTCAR的基本介绍以及作用差不多就讲完了。新手们看到后可能会很困惑，因为里面很多内容是大师兄临时加进去给有经验的人写的。只要记住一句话就完成本节的学习任务：CONTCAR的作用跟POSCAR一样，存储的是模型被优化过的结构信息。</p>
 <p>上一节，我们学习了<code>CONTCAR</code>的一些基本内容。本着从简到易，从最常用到最不常用的原则，这一节，我们学习VASP的另外一个简单，但又很重要的的输出文件：<code>OSZICAR</code>。 </p>
 <p>首先，推荐一个QE学习的视频：<a href="https://www.bilibili.com/video/av36194036">https://www.bilibili.com/video/av36194036</a> （用良心带人入坑）</p>
 <h3 id="OSZICAR-的含义"><a href="#OSZICAR-的含义" class="headerlink" title="OSZICAR 的含义"></a><code>OSZICAR</code> 的含义</h3><p>师兄，<code>OSZICAR</code>是什么的缩写？为什么起这么一个名字？</p>
@@ -9349,123 +9301,6 @@ suggested common fields:
       </tags>
   </entry>
   <entry>
-    <title>Ex04 做计算常用的批量处理方法（五）</title>
-    <url>/2017/10/24/ex4/</url>
-    <content><![CDATA[<p>前面2节，我们学习了使用sed命令结合for循环，来对INCAR进行批量操作。同样，我们也可以对KPOINTS文件进行类似的批处理操作。本节，我们借对KPOINTS文件的操作，一方面，学习几个小窍门，另一方面回顾上一节的学习内容以及KPOINTS文件。</p>
-<h4 id="KPOINTS文件"><a href="#KPOINTS文件" class="headerlink" title="KPOINTS文件"></a>KPOINTS文件</h4><p>前面我们学习到，KPOINTS文件只有简单的几行，如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">K-POINTS  </span><br><span class="line">0  </span><br><span class="line">Gamma</span><br><span class="line">1 1 1</span><br><span class="line">0 0 0 </span><br></pre></td></tr></table></figure>
-<p>目前，对于大家来说，需要掌握的有以下点：</p>
-<ul>
-<li><p>会自己闭着眼把这几行写出来；</p>
-</li>
-<li><p>第三行的gamma代表的是gamma centered的意思；</p>
-</li>
-<li>第四行中的1 1 1 俗称gamma点。很多时候，在QQ群里面提问题，别人说用gamma点算一下，指的就是1 1 1；</li>
-<li><p>除了使用gamma点，我们还可以使用其他的数值，比如2 2 2，3 3 3， 1 2 3 等，数值越大，计算量也就越大。具体的要根据你自己的体系以及组里的计算能力来确定，这个我们后面会介绍；</p>
-</li>
-<li><p>对于气体分子或者原子的计算来说，也就是把它们放到一个格子的体系，使用gamma点就足够了。</p>
-</li>
-</ul>
-<p>本节，我们主要对KPOINTS的文件的第四行进行批量操作，将1 1 1改成 2 2 2， 3 3 3 等。首先浏览下面的命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ ls</span><br><span class="line">ex01  ex02  ex03</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ mkdir ex04 &amp;&amp; cd ex04</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do cp ../ex03/0.01/ $&#123;i&#125;$&#123;i&#125;$&#123;i&#125; -r ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls </span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 333/KPOINTS  -n </span><br><span class="line">     1	K-POINTS  </span><br><span class="line">     2	 0  </span><br><span class="line">     3	Gamma</span><br><span class="line">     4	1 1 1</span><br><span class="line">     5	0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do sed -i &#x27;4s/1 1 1/$i $i $i/g&#x27; $i/KPOINTS ; done </span><br><span class="line">sed: can&#x27;t read 1/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 2/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 3/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 4/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 5/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 6/KPOINTS: No such file or directory</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 333/KPOINTS  -n </span><br><span class="line">     1	K-POINTS  </span><br><span class="line">     2	 0  </span><br><span class="line">     3	Gamma</span><br><span class="line">     4	1 1 1</span><br><span class="line">     5	0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do sed -i &#x27;4s/1 1 1/$i $i $i/g&#x27; $&#123;i&#125;$&#123;i&#125;$&#123;i&#125;/KPOINTS ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 333/KPOINTS  -n </span><br><span class="line">     1	K-POINTS  </span><br><span class="line">     2	 0  </span><br><span class="line">     3	Gamma</span><br><span class="line">     4	$i $i $i</span><br><span class="line">     5	0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
-<p><strong>详解：</strong></p>
-<ul>
-<li><p>第三行：我们使用了 mkdir  ex04 &amp;&amp; cd ex04 这个命令。 &amp;&amp; 的作用是将两个命令连起来运行，如果&amp;&amp;前面的命令运行成功，则继续后面的命令。这里我们先运行了mkdir ex04的命令，然后通过cd进入新建的ex04这个文件夹目录下。但如果前面的命令运行不成功，我们还想运行第二个命令，那么可以用 ||这个将两个命令联系起来。百度自己搜索：&amp;&amp;  和 ||的使用，多多练习，可以提高你敲命令的工作效率。</p>
-</li>
-<li><p>我们使用for循环，将ex03中的0.01文件夹复制成111， 222， 333等。这里我们在调用for 循环中的变量i的时候，使用的是${i}。为什么要加花括号呢？ 这是为了避免$i和后面的连在一起，从而导致调用失败。比如下面的命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do echo $iA; done </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do echo $&#123;i&#125;A; done </span><br><span class="line">1A</span><br><span class="line">2A</span><br><span class="line">3A</span><br><span class="line">4A</span><br><span class="line">5A</span><br><span class="line">6A</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
-</li>
-<li><p>后面的命令中，我们得到了这样的错误：sed: can’t read 1/KPOINTS: No such file or directory。原因是我们的问价夹中有3个数字，我们需要调用$i三次，但写$i/KPOINTS就会引用一次，导致sed的命令对象不正确。</p>
-</li>
-<li>改正之后，我们发现INCAR中的1 1 1 全部被替换成$i $i $i了。这里是大师兄故意犯了的错误：将双引号变成了单引号。到现在，单引号和双引号的区别，相信大家在练习完之后能大体知道个所以然了。</li>
-</ul>
-<p>上面的练习中，我们没有成功将 1 1 1改成文件夹对应的数字，那么改怎么做呢？ 有下面2个方法：</p>
-<p><strong>方法1：</strong> 将ex04的文件夹全部删掉，然后从新来过，如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls </span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ rm * -fr</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do cp ../ex03/0.01/ $&#123;i&#125;$&#123;i&#125;$&#123;i&#125; -r ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls </span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do sed -i &quot;4s/1 1 1/$i $i $i/g&quot; $&#123;i&#125;$&#123;i&#125;$&#123;i&#125;/KPOINTS ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 333/KPOINTS  -n </span><br><span class="line">     1	K-POINTS  </span><br><span class="line">     2	 0  </span><br><span class="line">     3	Gamma</span><br><span class="line">     4	3 3 3</span><br><span class="line">     5	0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
-<p><strong>方法2：</strong>将错就错，在错误的基础上，把$i $i $i 批量替换成文件夹对应的数字：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls</span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 222/KPOINTS  </span><br><span class="line">K-POINTS  </span><br><span class="line"> 0  </span><br><span class="line">Gamma</span><br><span class="line">$i $i $i</span><br><span class="line">0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125; ; do sed -i &quot;s/\$i \$i \$i/$i $i $i/g&quot; $i$i$i/KPOINTS ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 222/KPOINTS  </span><br><span class="line">K-POINTS  </span><br><span class="line"> 0  </span><br><span class="line">Gamma</span><br><span class="line">2 2 2</span><br><span class="line">0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>这里我们没有用${i}，而是直接$i$i$i连在一起用了。说明这个时候，花括号有或者没有，对命令行影响不大。</p>
-</li>
-<li><p>sed 操作的难点在于区别$i是调用的参数还是要被替换的字符上。例子中我们用一个反斜杠 \ 将$i转义成字符，进而避免将其按照变量来处理。说白了，就是让$ 这个符号变成一个纯文字符号，而不再发挥调用变量的作用。这一部分的知识，大家自行百度搜索：Linux 转义符 进行学习。</p>
-</li>
-</ul>
-<p>再举个例子：如果被替换的内容中含有 /  , 直接输入则会被认为是分隔符,因此我们需要将其作为分隔符的作用去掉。怎么做呢? 输入\/ (一个反斜杠加单斜杠,中间没有空格),这样的话 / 就会被当成字符来处理啦! 大家好好琢磨下面的这个命令，我们要把big/bro中的/替换为\。如果你能理解了，转义符就基本入门了。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ echo big/bro </span><br><span class="line">big/bro</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ echo big/bro | sed &#x27;s/\//\\/g&#x27;</span><br><span class="line">big\bro</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
-<ul>
-<li>这里我们用了一个|，中文名字叫管道符，它的作用是将前面命令的输出结果传递给后面的命令，用作操作对象。百度自行搜索：Linux 管道符</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在本节的操作中，我们可以学到很多知识，私以为对于一个新手来说，这一节的内容难度有些大，需要认真操作，思考，查阅相关的资料。简单总结一下，本节需要掌握的内容有：</p>
-<ul>
-<li><p>&amp;&amp;，||  和 | 的用法 </p>
-</li>
-<li><p>${i} 中什么时候用花括号，什么时候不用</p>
-</li>
-<li><p>sed 中的单引号，双引号的区别;</p>
-</li>
-<li><p>转义符在字符处理中的作用。</p>
-</li>
-<li><p>如何避免命令出错，以及出错后改怎么改正。</p>
-</li>
-</ul>
-<p>前面的四点都是死死的基本Linux操作，而最后一点则是考验大家智商的时候。做计算，肯定避免不了会敲错命令，犯各种各样的错误。在避免出错方面，我们要认真掌握命令操作的关键点以及总结前面错误的经验；在错误的改正方面，我们要多多动脑子，及时想办法补救。众多补救的办法中，提前将操作的对象进行备份是最为有效的。比如，在前面例子中，由于在ex03中有备份的文件，即使在ex04目录犯错后，我们大不了全部删除，重新再来一遍。所以，在大家没有进行计算前，先提个醒：<strong>一定要时刻牢记备份自己的文件</strong>。—-<br>title: Ex04 做计算常用的批量处理方法（六）<br>categories: </p>
-<ul>
-<li>LVASPTHW<br>tags: </li>
-<li>for 循环</li>
-<li>批量处理<br>date: 2017-10-25 15:30:16<br>mathjax: true</li>
-</ul>
-<hr>
-<p>$\require{mediawiki-texvc}$</p>
-<p>前面我们对INCAR，KPOINTS进行了批量操作，这一节，我们介绍对输入文件进行批量操作的最后一部分：POSCAR。 在这里，大师兄需要指出的是，批量操作的方式有很多种，大家千万不要仅仅局限在本书的例子里面，自己主动去思考这些命令的运行方式，将其运行的范围扩展，最后才能做到随心所欲，达到无招胜有招的境界。如果只跟着大师兄的教程去练习而不主动思考的话，时间长了思维就会被限制了。</p>
-<p>此外，大师兄给的例子是都可以正确执行的，虽然易错的地方已经指出来了，但更希望大家主动去尝试自己理解不清楚的参数，主动去犯错，得到错误的结果时，印象会更加深刻些。有句古话说的好:纸上学来终觉浅，绝知此事要躬行。所以，行动是很有必要的。大家在此基础上多加尝试，尽可能多的犯错误，知道什么样的输入对应什么样的错误。</p>
-<h3 id="POSCAR-批处理练习"><a href="#POSCAR-批处理练习" class="headerlink" title="POSCAR 批处理练习:"></a>POSCAR 批处理练习:</h3><p>前面我们将O原子放到了一个8$\times$ 8$\times$8 $\AA{^3}$ 的格子里。现在我们要创建不同大小的正方形格子，每个格子边长分别为8,10,12,14,16$\AA$。重复下面的操作，完成POSCAR的批量练习，并思考这些命令是怎么工作的。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ mkdir poscar</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cd poscar/</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ for i in $(seq 8 2 16); do cp -r ../../ex03/0.01 $&#123;i&#125;$&#123;i&#125;$&#123;i&#125; ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ ls </span><br><span class="line">101010  121212  141414  161616  888</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ cat -n 888/POSCAR </span><br><span class="line">     1	O atom in a box </span><br><span class="line">     2	1.0            </span><br><span class="line">     3	8.0 0.0 0.0   </span><br><span class="line">     4	0.0 8.0 0.0  </span><br><span class="line">     5	0.0 0.0 8.0 </span><br><span class="line">     6	O          </span><br><span class="line">     7	1         </span><br><span class="line">     8	Cartesian</span><br><span class="line">     9	0 0 0           #</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ for i in $(seq 8 2 16); do sed -i &quot;3,5s/8/$i/g&quot; $&#123;i&#125;$&#123;i&#125;$&#123;i&#125;/POSCAR ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ cat -n 888/POSCAR      </span><br><span class="line">1	O atom in a box </span><br><span class="line">     2	1.0            </span><br><span class="line">     3	8.0 0.0 0.0   </span><br><span class="line">     4	0.0 8.0 0.0  </span><br><span class="line">     5	0.0 0.0 8.0 </span><br><span class="line">     6	O          </span><br><span class="line">     7	1         </span><br><span class="line">     8	Cartesian</span><br><span class="line">     9	0 0 0           #</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ cat -n 101010/POSCAR </span><br><span class="line">     1	O atom in a box </span><br><span class="line">     2	1.0            </span><br><span class="line">     3	10.0 0.0 0.0   </span><br><span class="line">     4	0.0 10.0 0.0  </span><br><span class="line">     5	0.0 0.0 10.0 </span><br><span class="line">     6	O          </span><br><span class="line">     7	1         </span><br><span class="line">     8	Cartesian</span><br><span class="line">     9	0 0 0           #</span><br></pre></td></tr></table></figure>
-<p><strong>命令详解:</strong></p>
-<ul>
-<li><p>seq 命令用来打印一系列的数字， 在这个例子中 seq 8 2 16 获取8到16之间的数字，间隔为2; 其中， 8  2 16 三个数字间需要用空格分开；看到这里你会想到之前我们使用的花括号 {}，对的，如果间隔是1的话， {1..9} 和 seq 1 1 9 以及 seq 1 9 是一样的; seq 1 9 中省略的是 seq 1 1 9 中间的 1，  因为它是默认值。但是这里我们数字的间隔是2，使用花括号则不能实现我们的目的。</p>
-</li>
-<li><p>for 循环的精髓:  for i in  $(seq 8 2 16);  </p>
-<p>提醒1)：for循环这部分结束后，要跟一个是分号，不是冒号!!!</p>
-<p>提醒2): $ 和 后面的括号之间没有空格!!! </p>
-<p>大家可以主动把分号改成冒号或者在$后面加个空格，看看会出什么错。</p>
-<p>在这里，调用seq 8 2 16这个命令的输出，我们用 到了$()  这个组合。它的作用是: 调用一个命令或者函数的输出，进而转化为for循环的对象集合。for i in $(seq 8 2 6) 等于for i in 8 10 12 14 16 。 </p>
-</li>
-<li><p>此外，你还会见到一些人使用 ` ` 这个符号(反单引号);  `seq 8 2 16`  的效果等于 $(seq 8 2 16)。所以，当你见到 ` ` 时，不要害怕，因为你知道里面是在调用一个命令或者函数，和 $() 效果是一样的。Linux下面有很多奇奇怪怪的字符，当你知道他们的意思时就见怪不怪了。</p>
-</li>
-<li><p>sed 命令，这里我们使用了 sed –i “3,5s/8/$i/g”  </p>
-<p>3,5s 的意思是：选择第三行到第五行中所有的8；然后将它们替换成$i； </p>
-</li>
-</ul>
-<p>有很多筒子不知道怎么一次性选择三行中的内容，便运行了这和循环命令三次:</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sed –i “3s/8.0/$i/g”</span><br><span class="line">sed –i “4s/8.0/$i/g”</span><br><span class="line">sed –i “5s/8.0/$i/g”</span><br></pre></td></tr></table></figure>
-<p>效果是一样的，但3,5s这样更简洁，优美。希望大家可以认真学习sed的使用，达到炉火纯青的地步。后面我们也会在计算过程中继续介绍sed是如何发挥作用的。</p>
-<p><strong>为什么说这是 for 循环的精髓呢?</strong></p>
-<p>从for循环的语法上看，有两个主要部分：</p>
-<p>1）第一个是选取对象，也就是for i in XXX 语句中的 XXX 部分;</p>
-<p>2）另一个是去执行的动作， do YYY ; </p>
-<p>对于do YYY 我们根据自己的要求或者要现实的目的，把命令填到YYY这一块就可以了。但是，对于前面的集合选取，这就需要大家脑洞大开了。最简单的是根据自己的任务要求选取合适的范围直接输入，比如 for i in 1 2 3 4 5 ;</p>
-<p>再复杂些，我们使用一个函数，命令或者更高级的命令操作来得到所需范围，如本例中 for i in $(seq 8 2 16)。这个随着计算的进行，你的体会也就越来越深刻。</p>
-<p>当我们准备计算输入文件，查看计算亦或者整理计算结果时，首先要对这些文件或者文件夹进行选择，即把需要处理的对象放在一起。为了保证for循环变量范围的高效选择，养成一个良好的计算习惯非常重要：那就是保持计算在不同目录下的一致性；也就是目录要规范，文件系统有序而整齐，根据不同的计算等级或者类型进行创建。如果文件夹一个套一个，随意创建，毫无规则可言，那么在用for循环的时候，工作效率就会大大地打折扣。</p>
-<p> 在这里教给大家另外一个linux 命令：tree 来查看当前目录下的文件夹级别信息，用以给for循环提供合适的变量; (tree 和 tree -d， 尝试下有什么不同)</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls</span><br><span class="line">kpoints  poscar</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ tree -d </span><br><span class="line">.</span><br><span class="line">├── kpoints</span><br><span class="line">│   ├── 111</span><br><span class="line">│   ├── 222</span><br><span class="line">│   ├── 333</span><br><span class="line">│   ├── 444</span><br><span class="line">│   ├── 555</span><br><span class="line">│   └── 666</span><br><span class="line">└── poscar</span><br><span class="line">    ├── 101010</span><br><span class="line">    ├── 121212</span><br><span class="line">    ├── 141414</span><br><span class="line">    ├── 161616</span><br><span class="line">    └── 888</span><br><span class="line"></span><br><span class="line">13 directories</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cd kpoints/</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/kpoints$ ls</span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/kpoints$ tree  </span><br><span class="line">.</span><br><span class="line">├── 111</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">├── 222</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">├── 333</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">├── 444</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">├── 555</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">└── 666</span><br><span class="line">    ├── INCAR</span><br><span class="line">    ├── KPOINTS</span><br><span class="line">    ├── POSCAR</span><br><span class="line">    └── POTCAR</span><br><span class="line"></span><br><span class="line">6 directories, 24 files</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/kpoints$ </span><br></pre></td></tr></table></figure>
-<p>上面例子给出了一个非常清晰的文件目录结构。如果你在服务器上运行，发现下面的错误。且自己没有root权限安装tree这个命令，那么自动跳过这个练习或者在自己电脑的Linux系统上进行操作。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> tree</span><br><span class="line">-bash: tree: command not found</span><br></pre></td></tr></table></figure>
-<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>本节我们学习了:</p>
-<p>1) seq 命令获取数字序列的方法;</p>
-<p>2) 使用 $() 将括号里面命令的输出转为for循环变量的方法;</p>
-<p>3) sed 一次性选择多行的方法。</p>
-<p>4) 保持文件系统有序而整齐，提高for 循环处理任务的效率。</p>
-<p>前面这几节没有直接进入计算部分，是因为我们的一句古话：工欲善其事必先利其器。进行理论计算，学会最基本的相关操作知识非常重要。从前面这几节的学习，你会发现：懂得使用一个命令，可以节省很多时间; 但如果你懂得如何进一步发挥这个命令的作用，那么它会更加节省你的时间。省下来的时间你可以去看书，运动，谈恋爱…等等。想想都是很美好的事情。记得本人刚读博士的时候，组里的一个博后给我说：如果你想偷懒，那么就必须多动脑! 大家可以在运行完命令后，仔细体会下这句话的思想。而大家主动学习怎么去偷懒是最重要的。当然基本的命令操作只是科研中的一个小利器而已，真正的利器在于你扎实的理论化学基本功。</p>
-]]></content>
-      <categories>
-        <category>LVASPTHW</category>
-      </categories>
-      <tags>
-        <tag>批量处理</tag>
-        <tag>for 循环</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Ex76 过渡态任务的检查（一）</title>
     <url>/2018/11/16/ex76/</url>
     <content><![CDATA[<p>前面我们介绍了怎么准备过渡态计算的INCAR，POSCAR，POTCAR和POTCAR，这一节理所当然，就是要提交任务了。过渡态计算的时候，和大多数的计算是一样的：检查输入文件，准备好脚本，敲命令提交任务。所以，我们就在这三个方面展开，具体讨论一下里面的细节部分，避免不必要的出错，提高计算的成功率和效率。</p>
@@ -9512,14 +9347,7 @@ suggested common fields:
 <li>检查插点的时候，原子是不是乱套了，没有一一对应；</li>
 <li>检查我们插的点，是不是具有很好的化学或者物理意义，也就是预先评估下自己猜的这个路径靠不靠谱。</li>
 </ul>
-<p>3) 使用Windows的用户先不用着急，大师兄正在学习VASPkit+VDM的骚操作。学会了下一节会及时更新，并提交过渡态的计算。—-<br>title: Ex76 NEB计算前结构的检查（二）<br>categories: </p>
-<ul>
-<li>LVASPTHW<br>tags: </li>
-<li>NEB</li>
-<li>过渡态</li>
-<li>检查<br>date: 2018-11-17 15:30:16</li>
-</ul>
-<hr>
+<p>3) 使用Windows的用户先不用着急，大师兄正在学习VASPkit+VDM的骚操作。学会了下一节会及时更新，并提交过渡态的计算。</p>
 <p>前面一节，我们提到说，在<code>Ubuntu</code>或者其他<code>Linux</code>系统下面，可以使用<code>p4vasp</code>或者<code>ASE</code>将结构批量打开，查看我们初步设置的NEB路径是否合理。但是在<code>Windows</code>系统下，我们不方便使用命令进行查看。这里介绍一下在<code>Windows</code>下面通过<code>VASPkit</code>结合<code>VMD</code>查看NEB路径结构的方法。</p>
 <h3 id="软件的获取："><a href="#软件的获取：" class="headerlink" title="软件的获取："></a>软件的获取：</h3><ul>
 <li><code>VASPkit</code>程序的下载<ul>
@@ -10109,5 +9937,116 @@ suggested common fields:
       <categories>
         <category>LVASPTHW</category>
       </categories>
+  </entry>
+  <entry>
+    <title>Ex04 做计算常用的批量处理方法（五）</title>
+    <url>/2017/10/24/ex04/</url>
+    <content><![CDATA[<p>前面2节，我们学习了使用sed命令结合for循环，来对INCAR进行批量操作。同样，我们也可以对KPOINTS文件进行类似的批处理操作。本节，我们借对KPOINTS文件的操作，一方面，学习几个小窍门，另一方面回顾上一节的学习内容以及KPOINTS文件。</p>
+<h4 id="KPOINTS文件"><a href="#KPOINTS文件" class="headerlink" title="KPOINTS文件"></a>KPOINTS文件</h4><p>前面我们学习到，KPOINTS文件只有简单的几行，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">K-POINTS  </span><br><span class="line">0  </span><br><span class="line">Gamma</span><br><span class="line">1 1 1</span><br><span class="line">0 0 0 </span><br></pre></td></tr></table></figure>
+<p>目前，对于大家来说，需要掌握的有以下点：</p>
+<ul>
+<li><p>会自己闭着眼把这几行写出来；</p>
+</li>
+<li><p>第三行的gamma代表的是gamma centered的意思；</p>
+</li>
+<li>第四行中的1 1 1 俗称gamma点。很多时候，在QQ群里面提问题，别人说用gamma点算一下，指的就是1 1 1；</li>
+<li><p>除了使用gamma点，我们还可以使用其他的数值，比如2 2 2，3 3 3， 1 2 3 等，数值越大，计算量也就越大。具体的要根据你自己的体系以及组里的计算能力来确定，这个我们后面会介绍；</p>
+</li>
+<li><p>对于气体分子或者原子的计算来说，也就是把它们放到一个格子的体系，使用gamma点就足够了。</p>
+</li>
+</ul>
+<p>本节，我们主要对KPOINTS的文件的第四行进行批量操作，将1 1 1改成 2 2 2， 3 3 3 等。首先浏览下面的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ ls</span><br><span class="line">ex01  ex02  ex03</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ mkdir ex04 &amp;&amp; cd ex04</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do cp ../ex03/0.01/ $&#123;i&#125;$&#123;i&#125;$&#123;i&#125; -r ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls </span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 333/KPOINTS  -n </span><br><span class="line">     1	K-POINTS  </span><br><span class="line">     2	 0  </span><br><span class="line">     3	Gamma</span><br><span class="line">     4	1 1 1</span><br><span class="line">     5	0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do sed -i &#x27;4s/1 1 1/$i $i $i/g&#x27; $i/KPOINTS ; done </span><br><span class="line">sed: can&#x27;t read 1/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 2/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 3/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 4/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 5/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 6/KPOINTS: No such file or directory</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 333/KPOINTS  -n </span><br><span class="line">     1	K-POINTS  </span><br><span class="line">     2	 0  </span><br><span class="line">     3	Gamma</span><br><span class="line">     4	1 1 1</span><br><span class="line">     5	0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do sed -i &#x27;4s/1 1 1/$i $i $i/g&#x27; $&#123;i&#125;$&#123;i&#125;$&#123;i&#125;/KPOINTS ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 333/KPOINTS  -n </span><br><span class="line">     1	K-POINTS  </span><br><span class="line">     2	 0  </span><br><span class="line">     3	Gamma</span><br><span class="line">     4	$i $i $i</span><br><span class="line">     5	0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
+<p><strong>详解：</strong></p>
+<ul>
+<li><p>第三行：我们使用了 mkdir  ex04 &amp;&amp; cd ex04 这个命令。 &amp;&amp; 的作用是将两个命令连起来运行，如果&amp;&amp;前面的命令运行成功，则继续后面的命令。这里我们先运行了mkdir ex04的命令，然后通过cd进入新建的ex04这个文件夹目录下。但如果前面的命令运行不成功，我们还想运行第二个命令，那么可以用 ||这个将两个命令联系起来。百度自己搜索：&amp;&amp;  和 ||的使用，多多练习，可以提高你敲命令的工作效率。</p>
+</li>
+<li><p>我们使用for循环，将ex03中的0.01文件夹复制成111， 222， 333等。这里我们在调用for 循环中的变量i的时候，使用的是${i}。为什么要加花括号呢？ 这是为了避免$i和后面的连在一起，从而导致调用失败。比如下面的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do echo $iA; done </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do echo $&#123;i&#125;A; done </span><br><span class="line">1A</span><br><span class="line">2A</span><br><span class="line">3A</span><br><span class="line">4A</span><br><span class="line">5A</span><br><span class="line">6A</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>后面的命令中，我们得到了这样的错误：sed: can’t read 1/KPOINTS: No such file or directory。原因是我们的问价夹中有3个数字，我们需要调用$i三次，但写$i/KPOINTS就会引用一次，导致sed的命令对象不正确。</p>
+</li>
+<li>改正之后，我们发现INCAR中的1 1 1 全部被替换成$i $i $i了。这里是大师兄故意犯了的错误：将双引号变成了单引号。到现在，单引号和双引号的区别，相信大家在练习完之后能大体知道个所以然了。</li>
+</ul>
+<p>上面的练习中，我们没有成功将 1 1 1改成文件夹对应的数字，那么改怎么做呢？ 有下面2个方法：</p>
+<p><strong>方法1：</strong> 将ex04的文件夹全部删掉，然后从新来过，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls </span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ rm * -fr</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do cp ../ex03/0.01/ $&#123;i&#125;$&#123;i&#125;$&#123;i&#125; -r ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls </span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do sed -i &quot;4s/1 1 1/$i $i $i/g&quot; $&#123;i&#125;$&#123;i&#125;$&#123;i&#125;/KPOINTS ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 333/KPOINTS  -n </span><br><span class="line">     1	K-POINTS  </span><br><span class="line">     2	 0  </span><br><span class="line">     3	Gamma</span><br><span class="line">     4	3 3 3</span><br><span class="line">     5	0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
+<p><strong>方法2：</strong>将错就错，在错误的基础上，把$i $i $i 批量替换成文件夹对应的数字：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls</span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 222/KPOINTS  </span><br><span class="line">K-POINTS  </span><br><span class="line"> 0  </span><br><span class="line">Gamma</span><br><span class="line">$i $i $i</span><br><span class="line">0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125; ; do sed -i &quot;s/\$i \$i \$i/$i $i $i/g&quot; $i$i$i/KPOINTS ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 222/KPOINTS  </span><br><span class="line">K-POINTS  </span><br><span class="line"> 0  </span><br><span class="line">Gamma</span><br><span class="line">2 2 2</span><br><span class="line">0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>这里我们没有用${i}，而是直接$i$i$i连在一起用了。说明这个时候，花括号有或者没有，对命令行影响不大。</p>
+</li>
+<li><p>sed 操作的难点在于区别$i是调用的参数还是要被替换的字符上。例子中我们用一个反斜杠 \ 将$i转义成字符，进而避免将其按照变量来处理。说白了，就是让$ 这个符号变成一个纯文字符号，而不再发挥调用变量的作用。这一部分的知识，大家自行百度搜索：Linux 转义符 进行学习。</p>
+</li>
+</ul>
+<p>再举个例子：如果被替换的内容中含有 /  , 直接输入则会被认为是分隔符,因此我们需要将其作为分隔符的作用去掉。怎么做呢? 输入\/ (一个反斜杠加单斜杠,中间没有空格),这样的话 / 就会被当成字符来处理啦! 大家好好琢磨下面的这个命令，我们要把big/bro中的/替换为\。如果你能理解了，转义符就基本入门了。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ echo big/bro </span><br><span class="line">big/bro</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ echo big/bro | sed &#x27;s/\//\\/g&#x27;</span><br><span class="line">big\bro</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
+<ul>
+<li>这里我们用了一个|，中文名字叫管道符，它的作用是将前面命令的输出结果传递给后面的命令，用作操作对象。百度自行搜索：Linux 管道符</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在本节的操作中，我们可以学到很多知识，私以为对于一个新手来说，这一节的内容难度有些大，需要认真操作，思考，查阅相关的资料。简单总结一下，本节需要掌握的内容有：</p>
+<ul>
+<li><p>&amp;&amp;，||  和 | 的用法 </p>
+</li>
+<li><p>${i} 中什么时候用花括号，什么时候不用</p>
+</li>
+<li><p>sed 中的单引号，双引号的区别;</p>
+</li>
+<li><p>转义符在字符处理中的作用。</p>
+</li>
+<li><p>如何避免命令出错，以及出错后改怎么改正。</p>
+</li>
+</ul>
+<p>前面的四点都是死死的基本Linux操作，而最后一点则是考验大家智商的时候。做计算，肯定避免不了会敲错命令，犯各种各样的错误。在避免出错方面，我们要认真掌握命令操作的关键点以及总结前面错误的经验；在错误的改正方面，我们要多多动脑子，及时想办法补救。众多补救的办法中，提前将操作的对象进行备份是最为有效的。比如，在前面例子中，由于在ex03中有备份的文件，即使在ex04目录犯错后，我们大不了全部删除，重新再来一遍。所以，在大家没有进行计算前，先提个醒：<strong>一定要时刻牢记备份自己的文件</strong>。</p>
+<p>$\require{mediawiki-texvc}$</p>
+<p>前面我们对INCAR，KPOINTS进行了批量操作，这一节，我们介绍对输入文件进行批量操作的最后一部分：POSCAR。 在这里，大师兄需要指出的是，批量操作的方式有很多种，大家千万不要仅仅局限在本书的例子里面，自己主动去思考这些命令的运行方式，将其运行的范围扩展，最后才能做到随心所欲，达到无招胜有招的境界。如果只跟着大师兄的教程去练习而不主动思考的话，时间长了思维就会被限制了。</p>
+<p>此外，大师兄给的例子是都可以正确执行的，虽然易错的地方已经指出来了，但更希望大家主动去尝试自己理解不清楚的参数，主动去犯错，得到错误的结果时，印象会更加深刻些。有句古话说的好:纸上学来终觉浅，绝知此事要躬行。所以，行动是很有必要的。大家在此基础上多加尝试，尽可能多的犯错误，知道什么样的输入对应什么样的错误。</p>
+<h3 id="POSCAR-批处理练习"><a href="#POSCAR-批处理练习" class="headerlink" title="POSCAR 批处理练习:"></a>POSCAR 批处理练习:</h3><p>前面我们将O原子放到了一个8$\times$ 8$\times$8 $\AA{^3}$ 的格子里。现在我们要创建不同大小的正方形格子，每个格子边长分别为8,10,12,14,16$\AA$。重复下面的操作，完成POSCAR的批量练习，并思考这些命令是怎么工作的。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ mkdir poscar</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cd poscar/</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ for i in $(seq 8 2 16); do cp -r ../../ex03/0.01 $&#123;i&#125;$&#123;i&#125;$&#123;i&#125; ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ ls </span><br><span class="line">101010  121212  141414  161616  888</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ cat -n 888/POSCAR </span><br><span class="line">     1	O atom in a box </span><br><span class="line">     2	1.0            </span><br><span class="line">     3	8.0 0.0 0.0   </span><br><span class="line">     4	0.0 8.0 0.0  </span><br><span class="line">     5	0.0 0.0 8.0 </span><br><span class="line">     6	O          </span><br><span class="line">     7	1         </span><br><span class="line">     8	Cartesian</span><br><span class="line">     9	0 0 0           #</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ for i in $(seq 8 2 16); do sed -i &quot;3,5s/8/$i/g&quot; $&#123;i&#125;$&#123;i&#125;$&#123;i&#125;/POSCAR ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ cat -n 888/POSCAR      </span><br><span class="line">1	O atom in a box </span><br><span class="line">     2	1.0            </span><br><span class="line">     3	8.0 0.0 0.0   </span><br><span class="line">     4	0.0 8.0 0.0  </span><br><span class="line">     5	0.0 0.0 8.0 </span><br><span class="line">     6	O          </span><br><span class="line">     7	1         </span><br><span class="line">     8	Cartesian</span><br><span class="line">     9	0 0 0           #</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ cat -n 101010/POSCAR </span><br><span class="line">     1	O atom in a box </span><br><span class="line">     2	1.0            </span><br><span class="line">     3	10.0 0.0 0.0   </span><br><span class="line">     4	0.0 10.0 0.0  </span><br><span class="line">     5	0.0 0.0 10.0 </span><br><span class="line">     6	O          </span><br><span class="line">     7	1         </span><br><span class="line">     8	Cartesian</span><br><span class="line">     9	0 0 0           #</span><br></pre></td></tr></table></figure>
+<p><strong>命令详解:</strong></p>
+<ul>
+<li><p>seq 命令用来打印一系列的数字， 在这个例子中 seq 8 2 16 获取8到16之间的数字，间隔为2; 其中， 8  2 16 三个数字间需要用空格分开；看到这里你会想到之前我们使用的花括号 {}，对的，如果间隔是1的话， {1..9} 和 seq 1 1 9 以及 seq 1 9 是一样的; seq 1 9 中省略的是 seq 1 1 9 中间的 1，  因为它是默认值。但是这里我们数字的间隔是2，使用花括号则不能实现我们的目的。</p>
+</li>
+<li><p>for 循环的精髓:  for i in  $(seq 8 2 16);  </p>
+<p>提醒1)：for循环这部分结束后，要跟一个是分号，不是冒号!!!</p>
+<p>提醒2): $ 和 后面的括号之间没有空格!!! </p>
+<p>大家可以主动把分号改成冒号或者在$后面加个空格，看看会出什么错。</p>
+<p>在这里，调用seq 8 2 16这个命令的输出，我们用 到了$()  这个组合。它的作用是: 调用一个命令或者函数的输出，进而转化为for循环的对象集合。for i in $(seq 8 2 6) 等于for i in 8 10 12 14 16 。 </p>
+</li>
+<li><p>此外，你还会见到一些人使用 ` ` 这个符号(反单引号);  `seq 8 2 16`  的效果等于 $(seq 8 2 16)。所以，当你见到 ` ` 时，不要害怕，因为你知道里面是在调用一个命令或者函数，和 $() 效果是一样的。Linux下面有很多奇奇怪怪的字符，当你知道他们的意思时就见怪不怪了。</p>
+</li>
+<li><p>sed 命令，这里我们使用了 sed –i “3,5s/8/$i/g”  </p>
+<p>3,5s 的意思是：选择第三行到第五行中所有的8；然后将它们替换成$i； </p>
+</li>
+</ul>
+<p>有很多筒子不知道怎么一次性选择三行中的内容，便运行了这和循环命令三次:</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sed –i “3s/8.0/$i/g”</span><br><span class="line">sed –i “4s/8.0/$i/g”</span><br><span class="line">sed –i “5s/8.0/$i/g”</span><br></pre></td></tr></table></figure>
+<p>效果是一样的，但3,5s这样更简洁，优美。希望大家可以认真学习sed的使用，达到炉火纯青的地步。后面我们也会在计算过程中继续介绍sed是如何发挥作用的。</p>
+<p><strong>为什么说这是 for 循环的精髓呢?</strong></p>
+<p>从for循环的语法上看，有两个主要部分：</p>
+<p>1）第一个是选取对象，也就是for i in XXX 语句中的 XXX 部分;</p>
+<p>2）另一个是去执行的动作， do YYY ; </p>
+<p>对于do YYY 我们根据自己的要求或者要现实的目的，把命令填到YYY这一块就可以了。但是，对于前面的集合选取，这就需要大家脑洞大开了。最简单的是根据自己的任务要求选取合适的范围直接输入，比如 for i in 1 2 3 4 5 ;</p>
+<p>再复杂些，我们使用一个函数，命令或者更高级的命令操作来得到所需范围，如本例中 for i in $(seq 8 2 16)。这个随着计算的进行，你的体会也就越来越深刻。</p>
+<p>当我们准备计算输入文件，查看计算亦或者整理计算结果时，首先要对这些文件或者文件夹进行选择，即把需要处理的对象放在一起。为了保证for循环变量范围的高效选择，养成一个良好的计算习惯非常重要：那就是保持计算在不同目录下的一致性；也就是目录要规范，文件系统有序而整齐，根据不同的计算等级或者类型进行创建。如果文件夹一个套一个，随意创建，毫无规则可言，那么在用for循环的时候，工作效率就会大大地打折扣。</p>
+<p> 在这里教给大家另外一个linux 命令：tree 来查看当前目录下的文件夹级别信息，用以给for循环提供合适的变量; (tree 和 tree -d， 尝试下有什么不同)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls</span><br><span class="line">kpoints  poscar</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ tree -d </span><br><span class="line">.</span><br><span class="line">├── kpoints</span><br><span class="line">│   ├── 111</span><br><span class="line">│   ├── 222</span><br><span class="line">│   ├── 333</span><br><span class="line">│   ├── 444</span><br><span class="line">│   ├── 555</span><br><span class="line">│   └── 666</span><br><span class="line">└── poscar</span><br><span class="line">    ├── 101010</span><br><span class="line">    ├── 121212</span><br><span class="line">    ├── 141414</span><br><span class="line">    ├── 161616</span><br><span class="line">    └── 888</span><br><span class="line"></span><br><span class="line">13 directories</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cd kpoints/</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/kpoints$ ls</span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/kpoints$ tree  </span><br><span class="line">.</span><br><span class="line">├── 111</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">├── 222</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">├── 333</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">├── 444</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">├── 555</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">└── 666</span><br><span class="line">    ├── INCAR</span><br><span class="line">    ├── KPOINTS</span><br><span class="line">    ├── POSCAR</span><br><span class="line">    └── POTCAR</span><br><span class="line"></span><br><span class="line">6 directories, 24 files</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/kpoints$ </span><br></pre></td></tr></table></figure>
+<p>上面例子给出了一个非常清晰的文件目录结构。如果你在服务器上运行，发现下面的错误。且自己没有root权限安装tree这个命令，那么自动跳过这个练习或者在自己电脑的Linux系统上进行操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"> tree</span><br><span class="line">-bash: tree: command not found</span><br></pre></td></tr></table></figure>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>本节我们学习了:</p>
+<p>1) seq 命令获取数字序列的方法;</p>
+<p>2) 使用 $() 将括号里面命令的输出转为for循环变量的方法;</p>
+<p>3) sed 一次性选择多行的方法。</p>
+<p>4) 保持文件系统有序而整齐，提高for 循环处理任务的效率。</p>
+<p>前面这几节没有直接进入计算部分，是因为我们的一句古话：工欲善其事必先利其器。进行理论计算，学会最基本的相关操作知识非常重要。从前面这几节的学习，你会发现：懂得使用一个命令，可以节省很多时间; 但如果你懂得如何进一步发挥这个命令的作用，那么它会更加节省你的时间。省下来的时间你可以去看书，运动，谈恋爱…等等。想想都是很美好的事情。记得本人刚读博士的时候，组里的一个博后给我说：如果你想偷懒，那么就必须多动脑! 大家可以在运行完命令后，仔细体会下这句话的思想。而大家主动学习怎么去偷懒是最重要的。当然基本的命令操作只是科研中的一个小利器而已，真正的利器在于你扎实的理论化学基本功。</p>
+]]></content>
+      <categories>
+        <category>LVASPTHW</category>
+      </categories>
+      <tags>
+        <tag>批量处理</tag>
+        <tag>for 循环</tag>
+      </tags>
   </entry>
 </search>
