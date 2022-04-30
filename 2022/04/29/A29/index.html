@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="ASE消虚频的小脚本做计算，虚频是令我们又爱又恨的一个东西。结构优化的时候，出现虚频，往往需要我们花费大量的时间和精力去消掉它们，最后搞得精疲力尽。算过渡态的时候，它又不出来，又得折腾个半死才出现。再不幸一些，除了过渡态对应的虚频外，还出现了一个伴生的姐弟虚频，我们又得继续消下去。本节简单介绍一个结构优化时消虚频的小脚本。主要是根据虚频的振动方向将体系中对应原子的坐标进行微调，然后用于重新优化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ASE消虚频的小脚本">
+<meta property="og:url" content="http://www.bigbrosci.com/2022/04/29/A29/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="ASE消虚频的小脚本做计算，虚频是令我们又爱又恨的一个东西。结构优化的时候，出现虚频，往往需要我们花费大量的时间和精力去消掉它们，最后搞得精疲力尽。算过渡态的时候，它又不出来，又得折腾个半死才出现。再不幸一些，除了过渡态对应的虚频外，还出现了一个伴生的姐弟虚频，我们又得继续消下去。本节简单介绍一个结构优化时消虚频的小脚本。主要是根据虚频的振动方向将体系中对应原子的坐标进行微调，然后用于重新优化。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.bigbrosci.com/2022/04/29/A29/A28/qrcode.jpg">
+<meta property="article:published_time" content="2022-04-29T04:30:16.000Z">
+<meta property="article:modified_time" content="2022-04-30T02:22:41.801Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="ASE">
+<meta property="article:tag" content="软件">
+<meta property="article:tag" content="虚频">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2022/04/29/A29/A28/qrcode.jpg">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2022/04/29/A29/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2022/04/29/A29/","path":"2022/04/29/A29/","title":"ASE消虚频的小脚本"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ASE消虚频的小脚本 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#ASE%E6%B6%88%E8%99%9A%E9%A2%91%E7%9A%84%E5%B0%8F%E8%84%9A%E6%9C%AC"><span class="nav-number">1.</span> <span class="nav-text">ASE消虚频的小脚本</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">161</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2022/04/29/A29/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ASE消虚频的小脚本
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-04-29 00:30:16 / 修改时间：22:22:41" itemprop="dateCreated datePublished" datetime="2022-04-29T00:30:16-04:00">2022-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/04/29/A29/" class="post-meta-item leancloud_visitors" data-flag-title="ASE消虚频的小脚本" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/04/29/A29/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/04/29/A29/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h4 id="ASE消虚频的小脚本"><a href="#ASE消虚频的小脚本" class="headerlink" title="ASE消虚频的小脚本"></a>ASE消虚频的小脚本</h4><p>做计算，虚频是令我们又爱又恨的一个东西。结构优化的时候，出现虚频，往往需要我们花费大量的时间和精力去消掉它们，最后搞得精疲力尽。算过渡态的时候，它又不出来，又得折腾个半死才出现。再不幸一些，除了过渡态对应的虚频外，还出现了一个伴生的姐弟虚频，我们又得继续消下去。本节简单介绍一个结构优化时消虚频的小脚本。主要是根据虚频的振动方向将体系中对应原子的坐标进行微调，然后用于重新优化。</p>
+<p>简单介绍下原理，先看下VASP的OUTCAR中虚频对应的部分，</p>
+<p>1）7220行带有<code>f/i</code>说明有虚频存在，</p>
+<p>2） <code>X, Y, Z</code>为体系中原子的坐标，也就是<code>POSCAR</code>中的内容。</p>
+<p>3） <code>dx, dy,dz</code>为虚频对应的原子振动方向上的位移。</p>
+<p>4）我们将<code>（dx, dy,dz）</code>这个位移乘以一个介于0-1之间的校正因子，然后跟POSCAR中的坐标加起来即可。</p>
+<p>5）以z方向为例，校正因子设为0.1，微调后的z方向坐标为： <code>10.709980</code> + <code>（-0.676634）</code> $\times$ <code>0.1</code>  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">7219</span><br><span class="line">7220    3 f/i=    9.313471 THz    58.518262 2PiTHz  310.663930 cm-1    38.517432 meV</span><br><span class="line">7221              X         Y         Z           dx          dy          dz</span><br><span class="line">7222       6.003159 11.629641  6.067545            0           0           0</span><br><span class="line">7223       7.651085  3.894943  9.628260            0           0           0</span><br><span class="line">7224       2.424442  5.785382  9.658882            0           0           0</span><br><span class="line">7225       5.384679  7.755200  0.000000            0           0           0</span><br><span class="line">7226       0.004928  9.643165  0.000000            0           0           0</span><br><span class="line">7227       8.286347  7.755200  0.877073            0           0           0</span><br><span class="line">7228       2.944132  9.643165  0.971480            0           0           0</span><br><span class="line">7229       6.823299  9.643165  1.459420            0           0           0</span><br><span class="line">7230       1.481083  7.755200  1.553827            0           0           0</span><br><span class="line">7231       4.619917  7.755200  2.336493            0           0           0</span><br><span class="line">7232       9.762503  9.643165  2.430900            0           0           0</span><br><span class="line">7233       6.756153  7.724844  3.627352            0           0           0</span><br><span class="line">7234       1.491401  9.684490  3.647528            0           0           0</span><br><span class="line">7235       8.239374  9.666853  5.136018            0           0           0</span><br><span class="line">7236       3.012611  7.740104  5.091365            0           0           0</span><br><span class="line">7237       6.016826  7.737975  6.049788            0           0           0</span><br><span class="line">7238       0.788563  9.668849  6.080188            0           0           0</span><br><span class="line">7239       8.321833  7.730633  7.184644            0           0           0</span><br><span class="line">7240       3.081015  9.671865  7.187374            0           0           0</span><br><span class="line">7241       0.815711  7.728916  8.180983            0           0           0</span><br><span class="line">7242       6.063762  9.648841  8.115270            0           0           0</span><br><span class="line">7243       9.839838  9.660462  8.962566            0           0           0</span><br><span class="line">7244       4.631258  7.730218  9.011537            0           0           0</span><br><span class="line">7245       7.668770  7.725888  9.623941            0           0           0</span><br><span class="line">7246       2.424191  9.657803  9.623832            0           0           0</span><br><span class="line">7247       2.095436  3.874640 10.694551            0           0           0</span><br><span class="line">7248       0.099192 11.590822 10.709980    -0.736317    0.002031   -0.676634</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p>脚本内容 (命名为： <code>vib_correct.py</code> )</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Qiang Li</span></span><br><span class="line"><span class="string">Command: python3 vib_correct.py </span></span><br><span class="line"><span class="string">This is a temporary script file.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> ase.io <span class="keyword">import</span> read, write</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment">#获取虚频开始行</span></span><br><span class="line">l_position = <span class="number">0</span>  <span class="comment">#虚频振动方向部分在OUTCAR中的起始行数</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;OUTCAR&#x27;</span>) <span class="keyword">as</span> f_in:</span><br><span class="line">    lines = f_in.readlines()</span><br><span class="line">    wave_num = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> num, line <span class="keyword">in</span> <span class="built_in">enumerate</span>(lines):</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;f/i&#x27;</span> <span class="keyword">in</span> line:</span><br><span class="line">            wave_tem = <span class="built_in">float</span>(line.rstrip().split()[<span class="number">6</span>])</span><br><span class="line">            <span class="keyword">if</span> wave_tem &gt; wave_num: <span class="comment">#获取最大的虚频</span></span><br><span class="line">                wave_num = wave_tem</span><br><span class="line">                l_position = num+<span class="number">2</span></span><br><span class="line"><span class="comment"># ASE读POSCAR</span></span><br><span class="line">model = read(<span class="string">&#x27;POSCAR&#x27;</span>)</span><br><span class="line">model_positions = model.get_positions()</span><br><span class="line">num_atoms = <span class="built_in">len</span>(model)</span><br><span class="line"><span class="comment">#print(model_positions)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取虚频对应的OUTCAR部分 </span></span><br><span class="line">vib_lines = lines[l_position:l_position + num_atoms] <span class="comment">#振动部分 7222到7248行</span></span><br><span class="line"><span class="comment">#print(vib_lines)</span></span><br><span class="line">vib_dis = []</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> vib_lines:</span><br><span class="line">    <span class="comment">#model_positions = [float(i) for i in line.rstrip().split()[:3]]</span></span><br><span class="line">    vib_infor = [<span class="built_in">float</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> line.rstrip().split()[<span class="number">3</span>:]] <span class="comment"># dx， dy， dz对应的那三列</span></span><br><span class="line">    vib_dis.append(vib_infor)</span><br><span class="line">vib_dis = np.array(vib_dis) <span class="comment">#将振动部分写到一个array中。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 微调结构</span></span><br><span class="line">new_positions = model_positions + vib_dis * <span class="number">0.4</span> <span class="comment"># 0.4是微调的校正因子，即虚频对应振动位移的0.4，具体多大自己根据经验调。</span></span><br><span class="line">model.positions = new_positions</span><br><span class="line"></span><br><span class="line"><span class="comment">###保存结构</span></span><br><span class="line">write(<span class="string">&#x27;POSCAR_new&#x27;</span>, model, vasp5=<span class="literal">True</span>) <span class="comment"># POSCAR_new是微调后的结构，用于下一步的计算（别忘了把POSCAR_new改成POSCAR）。</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>脚本使用：</p>
+<ol>
+<li>脚本跟计算文件在同一个目录下：<code>python3  vib_correct.py </code></li>
+</ol>
+<ol start="2">
+<li>如果赋予了脚本可执行权限，并放到了<code>~/bin</code>目录下，直接运行：<code> vib_correct.py</code> 命令即可得到校正后的结构文件：<code>POSCAR_new</code>。</li>
+<li>重新计算的时候，新建一个文件夹，把<code>POSCAR_new</code> 复制到文件夹里面，记得把名字改成<code>POSCAR</code>。</li>
+<li>这个脚本只适用于普通结构优化时候的虚频。如果过渡态计算的时候出现好几个虚频，不要使用这个脚本，因为脚本默认使用最大虚频对应的位移进行校正。</li>
+<li>不用ASE，自己直接写个<code>python</code>脚本也能实现。不过使用ASE可以很方便地获取<code>POSCAR</code>中原子数目，保存原子固定的信息。参考如下。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Qiang Li</span></span><br><span class="line"><span class="string">Command: python3 vib_correct.py</span></span><br><span class="line"><span class="string">This is a temporary script file.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment">#获取虚频开始行</span></span><br><span class="line">l_position = <span class="number">0</span>  <span class="comment">#虚频振动方向部分在OUTCAR中的起始行数</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;OUTCAR&#x27;</span>) <span class="keyword">as</span> f_in:</span><br><span class="line">    lines = f_in.readlines()</span><br><span class="line">    wave_num = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> num, line <span class="keyword">in</span> <span class="built_in">enumerate</span>(lines):</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;f/i&#x27;</span> <span class="keyword">in</span> line:</span><br><span class="line">            wave_tem = <span class="built_in">float</span>(line.rstrip().split()[<span class="number">6</span>])</span><br><span class="line">            <span class="keyword">if</span> wave_tem &gt; wave_num: <span class="comment">#获取最大的虚频</span></span><br><span class="line">                wave_num = wave_tem</span><br><span class="line">                l_position = num+<span class="number">2</span></span><br><span class="line"><span class="comment"># 读POSCAR</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;POSCAR&#x27;</span>) <span class="keyword">as</span> f_pos:</span><br><span class="line">    lines_pos = f_pos.readlines()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取虚频对应的OUTCAR部分    </span></span><br><span class="line">num_atoms = <span class="built_in">sum</span>([<span class="built_in">int</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> lines_pos[<span class="number">6</span>].rstrip().split()])</span><br><span class="line">vib_lines = lines[l_position:l_position + num_atoms] <span class="comment">#振动部分 7222到7248行</span></span><br><span class="line"></span><br><span class="line">model_positions = []</span><br><span class="line">vib_dis = []</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> vib_lines:</span><br><span class="line">    position = [<span class="built_in">float</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> line.rstrip().split()[:<span class="number">3</span>]]</span><br><span class="line">    vib_infor = [<span class="built_in">float</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> line.rstrip().split()[<span class="number">3</span>:]] <span class="comment"># dx， dy， dz对应的那三列</span></span><br><span class="line">    model_positions.append(position)</span><br><span class="line">    vib_dis.append(vib_infor)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 微调结构</span></span><br><span class="line">model_positions = np.array(model_positions)</span><br><span class="line">vib_dis = np.array(vib_dis) <span class="comment">#将振动部分写到一个array中。</span></span><br><span class="line">new_positions = model_positions + vib_dis * <span class="number">0.4</span> <span class="comment"># 0.4是微调的校正因子，即虚频对应振动位移的0.4，具体多大自己根据经验调。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###保存结构</span></span><br><span class="line">f_out = <span class="built_in">open</span>(<span class="string">&#x27;POSCAR_new&#x27;</span>,<span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">f_out.writelines(lines_pos[:<span class="number">8</span>])</span><br><span class="line">f_out.write(<span class="string">&#x27;Cartesian\n&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> new_positions:</span><br><span class="line">    f_out.write(<span class="string">&#x27; &#x27;</span>.join([<span class="built_in">str</span>(coord) <span class="keyword">for</span> coord <span class="keyword">in</span> i]) + <span class="string">&#x27;  F  F  F\n&#x27;</span>)</span><br><span class="line">f_out.close()</span><br></pre></td></tr></table></figure>
+
+<img src="/2022/04/29/A29/A28/qrcode.jpg" style="zoom:25%;">
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ASE/" rel="tag"># ASE</a>
+              <a href="/tags/%E8%BD%AF%E4%BB%B6/" rel="tag"># 软件</a>
+              <a href="/tags/%E8%99%9A%E9%A2%91/" rel="tag"># 虚频</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/04/A28/" rel="prev" title="通过ASE获取原子之间的距离">
+                  <i class="fa fa-chevron-left"></i> 通过ASE获取原子之间的距离
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/29/A30/" rel="next" title="VASP官方视频">
+                  VASP官方视频 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>
