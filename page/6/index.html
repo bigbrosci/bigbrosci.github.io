@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-count">122</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-count">159</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,157 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/04/ex12/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2017/12/04/ex12/" class="post-title-link" itemprop="url">Ex12 VASP中MAGMOM的简单设定</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-04 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-04T02:06:48-05:00">2017-12-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/04/ex12/" class="post-meta-item leancloud_visitors" data-flag-title="Ex12 VASP中MAGMOM的简单设定" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/12/04/ex12/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/04/ex12/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p> 很多师弟师妹问到：”师兄， 我见上一节计算的时候打开自旋极化的时候，设置MAGMOM怎么没有讲啊？”</p>
+<p>为了解答师弟师妹们的疑惑（主要是给师妹讲的），本节介绍一下INCAR中MAGMOM的设置以及易出错的地方。</p>
+<h3 id="MAGMOM-的设定"><a href="#MAGMOM-的设定" class="headerlink" title="MAGMOM 的设定"></a>MAGMOM 的设定</h3><p>谈到自旋极化计算，避免不了的就是MAGMOM这个参数。通过MAGMOM我们可以指定体系中原子的初始磁矩。通俗点说，就是给VASP指条计算的明路。对于复杂体系来说，合理的初始值可以加快计算速度，并保持计算结果的正确性。但是对于一些简单的磁性体系，我们可以直接使用<code>ISPIN=2</code>, MAGMOM不必进行设置。</p>
+<p><img src="/2017/12/04/ex12/ex12-1.jpeg"></p>
+<p>我们通过上图可以知道：O$_2$ 分子的基态是三重态，也就是每个原子都有一点单电子，所以每个氧原子的初始的磁矩可以设置为1。但VASP对MAGMOM的要求不一定非得是1，也就是初始值是一个可以模糊也可以精确的数值。因为很多时候，我们不知道确切的磁矩是多少。如果我们已经知道磁矩是多少（比如O$_2$），可以直接写上去，也可以差不多写一个； 但如果不知道的话，就需要根据自己的假设，猜一个初始值了。</p>
+<p>下面通过一个问题，先简单看下MAGMOM 应该怎么设置。 对于O$_2$分子的计算，以下几行中，MAGMOM设置错误的是第几行？</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">MAGMOM = 2 * 1 </span><br><span class="line">MAGMOM = 1 * 2 </span><br><span class="line">MAGMOM = 1  1 </span><br><span class="line">MAGMOM = 2  2</span><br><span class="line">MAGMOM = 3  3 </span><br><span class="line">MAGMOM = 2*1</span><br><span class="line">MAGMOM = 1*2</span><br><span class="line">MAGMOM = 1.5*2</span><br><span class="line">MAGMOM = 2*1.5</span><br></pre></td></tr></table></figure>
+
+<p>有兴趣的可以尝试一下前面中的各个选项。<strong>答案</strong>是：1，2，7，8 行。当你用了1，2，7，8行中任何一个时，会得到这样的错误信息： </p>
+<p><img src="/2017/12/04/ex12/ex12-2.jpeg"></p>
+<p>（此时的你，应该知道从哪里找到的这个错误信息，不知道的请查看前面几节的内容）</p>
+<p>显示的错误告诉我们MAGMOM设置的不合理。为什么会出错呢？ 我们看下官网MAGMOM的说明：</p>
+<p><img src="/2017/12/04/ex12/ex12-3.jpeg"></p>
+<p><strong>敲黑板：</strong></p>
+<ul>
+<li><p>首先：MAGMOM是一个实数的排列（real array）</p>
+</li>
+<li><p>其次：注意红色框框中的部分。默认值是，原子的个数乘以1.0，也就是原子个数在前面，MAGMOM的值在后面。</p>
+</li>
+<li><p>最后： *  前后没有空格，没有空格，没有空格！！！</p>
+</li>
+</ul>
+<p>因此前面的问题中：</p>
+<p>第1行存在1个错误：* 前后有空格</p>
+<p>第2行存在2个错误：* 前后有空格，原子数目和MAGMOM值颠倒了</p>
+<p>第7和8行存在1个错误：原子数目和MAGMOM值颠倒了</p>
+<p>有的人会问，那其他行中，比如第5行设置的 3 3 难道也正确吗？ 正确的磁矩不应该是1 1 吗？</p>
+<p>是的，这是正确的，看官网的话：</p>
+<p>If one is searching for a spin polarised (ferro- or antiferromagnetic) solution, it is usually safest to start from larger local magnetic moments, because in some cases, the default values might not be sufficiently big. A safe default is usually the experimental magnetic moment multiplied by 1.2 or 1.5.</p>
+<ul>
+<li><p>MAGMOM并不要求严格按照我们已知的数据去输入</p>
+</li>
+<li><p>如果你知道体系的磁矩是多少，初始的时候可以设置的更大些，1.2或者1.5倍。</p>
+</li>
+<li><p>如果你设置的很大，通常情况下（MAGMOM = 5 5 或者MAGMOM = 2*5，或者更疯狂：MAGMOM = 2*10） ，VASP会自动矫正回来。但是大师兄建议1.5倍足够了。</p>
+</li>
+<li><p>如果你不知道体系的磁矩是多少，可以根据原子所处的化学环境， 根据成键情况，大体推测有多少个未成对电子，然后将未成对电子数目*1.5即可。</p>
+</li>
+<li><p> VASP的wiki版中：* 前面有空格，这是不对的。</p>
+</li>
+</ul>
+<p> <img src="/2017/12/04/ex12/ex12-4.jpeg"></p>
+<p>当我们正确解决了POSCAR的结构搭建，懂得了POTCAR和POSCAR的关系，以及如何设置MAGMOM时，就可以计算O$_2$的单点能量了。当然，本例中MAGMOM不用设置，因为默认值就是1，如果你的体系很简单，那么直接ISPIN = 2 就可以了，MAGMOM可以不管。</p>
+<h5 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h5><p>大师兄计算了一个复杂大分子在Ni(111)表面上的吸附情况。有56个Ni，17个C，20个H，以及6个O原子。前面已经学到，当体系中含有Ni的时候，要考虑自旋的情况。 Ni(111)表面是一个简单的自旋体系，完全可以使用默认值。因为体相的Ni磁矩为0.56 μB左右。默认值为1.0，已经足够大。为了让大家有一个更加清晰的印象。大师兄专门设置了一个MAGMOM。 如下图：</p>
+<p><img src="/2017/12/04/ex12/ex12-5.jpeg"></p>
+<p>INCAR 中MAGMOM的设置：</p>
+<p><img src="/2017/12/04/ex12/ex12-6.jpeg"></p>
+<p>通过该例子，相比大家对MAGMOM的设置以及该注意的地方已经熟练掌握了，当然还有非线性的MAGMOM设置，这个在后面详细描述。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>1） 对于简单体系来说，MAGMOM可以采用默认值；</p>
+<p>2） MAGMOM设置的时候，初始值不要求与实验值完全一致，一般取大些（1.5倍）比较好。</p>
+<p>3） MAGMOM磁矩中*前后没有空格。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -4144,146 +4295,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2011/12/24/A08/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2011/12/24/A08/" class="post-title-link" itemprop="url">A08 Bader电荷计算(二)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2011-12-24 02:06:48" itemprop="dateCreated datePublished" datetime="2011-12-24T02:06:48-05:00">2011-12-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW%E9%99%84%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW附录</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2011/12/24/A08/" class="post-meta-item leancloud_visitors" data-flag-title="A08 Bader电荷计算(二)" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2011/12/24/A08/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2011/12/24/A08/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本节我们Bader电荷分析的常见问题做个总结。</p>
-<h1 id="VTST的网站"><a href="#VTST的网站" class="headerlink" title="VTST的网站"></a>VTST的网站</h1><p>Henkelman 课题组主页：</p>
-<p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/henkelman/">http://theory.cm.utexas.edu/henkelman/</a></p>
-<p>Bader计算的链接： </p>
-<p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/henkelman/code/bader/">http://theory.cm.utexas.edu/henkelman/code/bader/</a></p>
-<p>VTST脚本链接：</p>
-<p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/vtsttools/">http://theory.cm.utexas.edu/vtsttools/</a> </p>
-<p><img src="/2011/12/24/A08/A07/A07-1.jpeg"></p>
-<h1 id="常见问题："><a href="#常见问题：" class="headerlink" title="常见问题："></a>常见问题：</h1><p><strong>电荷数字保留位数：</strong></p>
-<p>Bader电荷分析只是定性的辅助工具，得到的结果肯定也是定性的。大致分析原子上的带电情况即可，不要去较真小数点后多少位，一般来说小数点后两位就足够了。</p>
-<p><strong>ACF.dat 文件怎么看？</strong></p>
-<p><code>ACF.dat</code> 中的<code>CHARGE</code>那一列，对应的是每个原子上<strong>总的</strong>价电子数目。</p>
-<p>划重点： 1）总的 2）价电子数目</p>
-<p><strong>如何判断原子的带电情况？</strong></p>
-<p>你需要用<code>CHARGE</code>那列的数值去减去该原子对应的<code>POTCAR </code>中的价电子数目。</p>
-<p><strong>怎么才能得到POTCAR中原子的价电子数目呢？</strong></p>
-<p>打开<code>POTCAR</code>，查找关键词：<code>ZVAL</code>，后面对应的就是价电子数目，更方便点：</p>
-<p><code>grep ZVAL POTCAR</code></p>
-<p><strong>划重点：</strong>不要以为自己元素周期表倒背如流就可以随便设定原子的价电子数目。</p>
-<p><code>POTCAR</code>中原子的价电子数目有些和周期表是一样的，比如H。</p>
-<p>有些差别是很大的。比如：<code>Europium [Xe]4f76s2</code>,  Lanshipunvboshan<strong>you</strong>gatedihuoerdiuyilu 中的you。</p>
-<p>You有9个价电子，但<code>POTCAR</code>中有17个。</p>
-<p><strong>减完之后怎么分析？</strong></p>
-<p>如果一个原子<code>POTCAR</code>中的电子数为5.</p>
-<p>1） <code>ACF.dat</code>中该原子对应的CHARGE为6.2，6.2 - 5 = 1.2， 这说明该原子得到了1.2个电子。虽然是+1.2，但它的化合价是-1.2价。</p>
-<p>2） <code>ACF.dat</code>中该原子对应的CHARGE 为 4.3， 4.3 – 5 = -0.7, 说明该原子失去了0.7个电子，虽然是负值，但它的化合价是 + 0.7 价。</p>
-<p>注意：这里我们说的化合价，是基于Bader电荷分析得到的。由于Bader电荷分析是一个经验性的定性分析工具，这些化合价的值只能用来参考判断体系中电子的转移情况。</p>
-<p>大家千万不要把这里的化合价跟我们中学所学到的化合价的概念混淆了。因为大部分的情况下，Bader电荷分析出来的化合价与我们在教科书里面所学到的化合价还是有区别的。</p>
-<hr>
-<p>师兄，前面扯了那多么，直接用<code>POTCAR</code>中的价电子数减去<code>CHARGE</code>对应的不就更直接了？</p>
-<p>是的，你很聪明：对应前面的例子：</p>
-<ul>
-<li><p>1） 5 –6.2 = -1.2 说明该原子是-1.2价，得到了1.2个电子，</p>
-</li>
-<li><p>2） 5 - 4.3 = 0.7 说明该原子是 +0.7 价，失去了0.7个电子。</p>
-</li>
-</ul>
-<p>所以得失电子和化学价是反着的。这点你能把握住，就会分析了。</p>
-<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><p>Bader电荷分析并不神秘，你需要做的有两点：</p>
-<p>1） 去看VTST的官网，知道怎么去算；<br>2） 怎么通过得失电子判断原子的带电情况。<code>ACF.dat</code>中的<code>CHARGE</code>列，以及<code>POTCAR</code>中的价电子数。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
@@ -4297,7 +4308,7 @@
 
 <div class="copyright">
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="user"></i>
   </span>

@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-count">122</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-count">159</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,161 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/02/ex33/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/02/02/ex33/" class="post-title-link" itemprop="url">Ex33 晶格参数的确定（Birch-Murnaghan状态方程-1）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-02-02 02:06:48" itemprop="dateCreated datePublished" datetime="2018-02-02T02:06:48-05:00">2018-02-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/02/02/ex33/" class="post-meta-item leancloud_visitors" data-flag-title="Ex33 晶格参数的确定（Birch-Murnaghan状态方程-1）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/02/02/ex33/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/02/ex33/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>O$_2$分子的计算中，我们知道了，单纯从数据库中获取的结构，只能作为一个合理的初始值，与计算所得到的理论结构还有一定的差距，因此我们需要对该结构进行优化才可以获取稳定的晶格参数信息。有两个方法可以实现：</p>
+<ul>
+<li>1 Birch-Murnaghan状态方程拟合, </li>
+<li>2 VASP计算中通过调节ISIF参数直接优化Bulk。</li>
+</ul>
+<p>下面两节我们先讨论一下第一个方法：BM方程拟合。</p>
+<h2 id="1-什么是Birch-Murnaghan方程？"><a href="#1-什么是Birch-Murnaghan方程？" class="headerlink" title="1 什么是Birch-Murnaghan方程？"></a>1 什么是Birch-Murnaghan方程？</h2><p>BM方程为块体材料的体积随着外压变化的状态方程。大师兄参考了维基百科的说明，大家下载维基百科导出的PDF文件参考。在学习下面的内容前，请务必阅读这个文件，了解什么是Birch-Murnaghan方程。下载：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1bUSYbs">http://pan.baidu.com/s/1bUSYbs</a> </p>
+<p><img src="/2018/02/02/ex33/ex33-1.jpeg"></p>
+<p><img src="/2018/02/02/ex33/ex33-2.jpeg"></p>
+<h2 id="2-如何通过BM方程获取晶格参数？"><a href="#2-如何通过BM方程获取晶格参数？" class="headerlink" title="2 如何通过BM方程获取晶格参数？"></a>2 如何通过BM方程获取晶格参数？</h2><p>首先，我们将BM方程中的体积转化为晶格参数（a）的函数：</p>
+<p><img src="/2018/02/02/ex33/ex33-3.jpeg"></p>
+<p>其中E(a)和E$_0$是晶格参数为a和a$_0$时bulk的能量，B$_0$，B$_0$’和V$_0$这些见BM方程的维基百科介绍。令$(1/a)^2 = x$，上图中的BM方程可以写成：</p>
+<p> $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $ 的形式，</p>
+<p>E$_0$, B$_0$,B$_0$’和V$_0$等写进c$_0$,c$_1$,c$_2$,和c$_3$这些常数里面，它们的具体形式此时并不重要，我们需要做的就是拟合这样的曲线去寻找使y(x)为最小值时的x取值。对y(x)这个方程求导数，dy(x)/dx = 0 的时候，便可以获取能量最低时的x值了，再由$(1/a)^2 = x$ 获得晶格参数。</p>
+<p> dy(x)/dx = c$_1$+ 2c$_2$x + 3c$_3$x$^2$</p>
+<p>令：dy(x)/dx = 0，即 c$_1$+ 2c$_2$x + 3c$_3$x$^2$ = 0</p>
+<p>这是一个典型的二项式方程，求解很容易。</p>
+<p>$$<br>x = \frac{-2c_2\pm\sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}<br>$$<br>x有两个值，其中负值被舍弃掉，最终：</p>
+<p>$$<br>x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}<br>$$</p>
+<h2 id="3-获取拟合的数据："><a href="#3-获取拟合的数据：" class="headerlink" title="3 获取拟合的数据："></a>3 获取拟合的数据：</h2><p>经过前面的分析，我们需要的就是获得的c$_1$，c$_2$ 和c$_3$值。可以设置一系列不同的晶格常数进行计算，得到对应的能量，然后将这些数据带入下面的方程中：$y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $进行拟合。本节我们主要讨论一下如何进行该计算。看到这里，你第一反应是我们之前测试K点或者SIGMA值时的那些Linux批量操作。是的，我们也需要进行一个批量操作的计算。</p>
+<p>3.1 分数坐标</p>
+<p>如果我们改变了晶格常数，那么Fe原子的坐标也要发生相应的变化。此时，用分数坐标更加方便，VESTA中在cif转VASP格式的时候，会提醒你选择哪个形式的坐标，我们选择分数坐标：</p>
+<p><img src="/2018/02/02/ex33/ex33-6.jpeg"></p>
+<p>POSCAR如下图：</p>
+<p><img src="/2018/02/02/ex33/ex33-7.jpeg"></p>
+<p>注意：</p>
+<p> 如果前面练习中，导出的为笛卡尔坐标形式的，你有两个选择：</p>
+<p>A）重新按照前面的步骤，用VESTA导出为分数坐标形式；</p>
+<p>B）将单点计算的结果直接复制过来（<code>cp  CONTCAR  POSCAR</code>），因为VASP的输出坐标为分数坐标形式，单点计算中，晶胞原子都没有动，CONTCAR可以直接使用。复制过来的POSCAR如下：</p>
+<p><img src="/2018/02/02/ex33/ex33-8.jpeg"></p>
+<p>3.2 获得分数坐标的POSCAR后，我们可以批量对晶格常数a,b,c进行批量操作，也可以对缩放系数进行批量操作，而原子的坐标不用去管。</p>
+<p>3.3 本练习对缩放系数进行批量操作</p>
+<p>我们取10个点，将1.0 替换成0.95, 0.96, 0.97, 0.98, 0.99, 1.01, 1.02, 1.03, 1.04, 1.05。此时，晶格常数为：<code>缩放系数</code>*<code>2.8664</code>.（记住，下一节用得到）</p>
+<p>a) 准备缩放系数为1.0 的计算文件夹，命名为1.00，里面包含我们前面一节已经讲过的Bulk单点计算相关文件；</p>
+<p>b) </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> 0.95 0.96 0.97 0.98 0.99 1.01 1.02 1.03 1.04 1.05; <span class="keyword">do</span> cp 1.00 <span class="variable">$i</span> ; sed -i <span class="string">&quot;2s/1.0/<span class="variable">$i</span>/g&quot;</span> <span class="variable">$i</span>/POSCAR ; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：这里大师兄在自己电脑的<code>~/.bashrc</code>文件里面设置了：<code> alias cp=&#39;cp -r&#39;</code></p>
+<p>思考： sed 命令后面用的是双引号（为什么？）如果这里看不懂的话，建议从Ex00开始学习。</p>
+<p>d.) 批量提交命令： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *; <span class="keyword">do</span> <span class="built_in">cd</span> <span class="variable">$i</span>; qsub sub4; <span class="built_in">cd</span> <span class="variable">$OLDPWD</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<p>其中，qsub sub4 是大师兄提交单个任务的命令。</p>
+<p>3.4 数据提取：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *; <span class="keyword">do</span> <span class="built_in">echo</span> -e <span class="variable">$i</span> <span class="string">&quot;\t&quot;</span> $(grep <span class="string">&#x27;  without&#x27;</span> <span class="variable">$i</span>/OUTCAR | tail -n 1| awk <span class="string">&#x27;&#123;print $7&#125;&#x27;</span>);  <span class="keyword">done</span> &gt; data</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2018/02/02/ex33/ex33-9.jpeg"></p>
+<p>3.5 以上计算文件以及相关的命令已经上传到QQ群文件和百度网盘了，大家对比下计算结果。 <a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1dEJr9rb">http://pan.baidu.com/s/1dEJr9rb</a> </p>
+<h2 id="4-扩展练习"><a href="#4-扩展练习" class="headerlink" title="4 扩展练习"></a>4 扩展练习</h2><p>4.1 完成本练习中的相关操作，并学习VASP官网批量操作的例子：</p>
+<p><a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/Fcc_Si">https://cms.mpi.univie.ac.at/wiki/index.php/Fcc_Si</a></p>
+<p>注意：FCC Si的例子用的原胞，并且该网址最后图中曲线不是二次方程！！！虽然用二次方程拟合出来的结果差不多。</p>
+<p>4.2 探索学习曲线拟合的方法；</p>
+<p>4.3 学习并了解BM方程以及如何拟合，如何通过BM方程获取稳定的晶格参数；</p>
+<p>4.4 对晶格参数进行批量操作，并计算。</p>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h2><p>本节从BM方程开始，简单介绍了什么是BM方程，如何通过BM方程获取稳定晶胞对应的晶格参数，最后，又复习了一下本书前面几节的批量操作，下一节我们讲解一下如何通过python脚本对BM方程拟合。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3921,157 +4076,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/04/ex12/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/12/04/ex12/" class="post-title-link" itemprop="url">Ex12 VASP中MAGMOM的简单设定</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-12-04 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-04T02:06:48-05:00">2017-12-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2017/12/04/ex12/" class="post-meta-item leancloud_visitors" data-flag-title="Ex12 VASP中MAGMOM的简单设定" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2017/12/04/ex12/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/04/ex12/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p> 很多师弟师妹问到：”师兄， 我见上一节计算的时候打开自旋极化的时候，设置MAGMOM怎么没有讲啊？”</p>
-<p>为了解答师弟师妹们的疑惑（主要是给师妹讲的），本节介绍一下INCAR中MAGMOM的设置以及易出错的地方。</p>
-<h3 id="MAGMOM-的设定"><a href="#MAGMOM-的设定" class="headerlink" title="MAGMOM 的设定"></a>MAGMOM 的设定</h3><p>谈到自旋极化计算，避免不了的就是MAGMOM这个参数。通过MAGMOM我们可以指定体系中原子的初始磁矩。通俗点说，就是给VASP指条计算的明路。对于复杂体系来说，合理的初始值可以加快计算速度，并保持计算结果的正确性。但是对于一些简单的磁性体系，我们可以直接使用<code>ISPIN=2</code>, MAGMOM不必进行设置。</p>
-<p><img src="/2017/12/04/ex12/ex12-1.jpeg"></p>
-<p>我们通过上图可以知道：O$_2$ 分子的基态是三重态，也就是每个原子都有一点单电子，所以每个氧原子的初始的磁矩可以设置为1。但VASP对MAGMOM的要求不一定非得是1，也就是初始值是一个可以模糊也可以精确的数值。因为很多时候，我们不知道确切的磁矩是多少。如果我们已经知道磁矩是多少（比如O$_2$），可以直接写上去，也可以差不多写一个； 但如果不知道的话，就需要根据自己的假设，猜一个初始值了。</p>
-<p>下面通过一个问题，先简单看下MAGMOM 应该怎么设置。 对于O$_2$分子的计算，以下几行中，MAGMOM设置错误的是第几行？</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">MAGMOM = 2 * 1 </span><br><span class="line">MAGMOM = 1 * 2 </span><br><span class="line">MAGMOM = 1  1 </span><br><span class="line">MAGMOM = 2  2</span><br><span class="line">MAGMOM = 3  3 </span><br><span class="line">MAGMOM = 2*1</span><br><span class="line">MAGMOM = 1*2</span><br><span class="line">MAGMOM = 1.5*2</span><br><span class="line">MAGMOM = 2*1.5</span><br></pre></td></tr></table></figure>
-
-<p>有兴趣的可以尝试一下前面中的各个选项。<strong>答案</strong>是：1，2，7，8 行。当你用了1，2，7，8行中任何一个时，会得到这样的错误信息： </p>
-<p><img src="/2017/12/04/ex12/ex12-2.jpeg"></p>
-<p>（此时的你，应该知道从哪里找到的这个错误信息，不知道的请查看前面几节的内容）</p>
-<p>显示的错误告诉我们MAGMOM设置的不合理。为什么会出错呢？ 我们看下官网MAGMOM的说明：</p>
-<p><img src="/2017/12/04/ex12/ex12-3.jpeg"></p>
-<p><strong>敲黑板：</strong></p>
-<ul>
-<li><p>首先：MAGMOM是一个实数的排列（real array）</p>
-</li>
-<li><p>其次：注意红色框框中的部分。默认值是，原子的个数乘以1.0，也就是原子个数在前面，MAGMOM的值在后面。</p>
-</li>
-<li><p>最后： *  前后没有空格，没有空格，没有空格！！！</p>
-</li>
-</ul>
-<p>因此前面的问题中：</p>
-<p>第1行存在1个错误：* 前后有空格</p>
-<p>第2行存在2个错误：* 前后有空格，原子数目和MAGMOM值颠倒了</p>
-<p>第7和8行存在1个错误：原子数目和MAGMOM值颠倒了</p>
-<p>有的人会问，那其他行中，比如第5行设置的 3 3 难道也正确吗？ 正确的磁矩不应该是1 1 吗？</p>
-<p>是的，这是正确的，看官网的话：</p>
-<p>If one is searching for a spin polarised (ferro- or antiferromagnetic) solution, it is usually safest to start from larger local magnetic moments, because in some cases, the default values might not be sufficiently big. A safe default is usually the experimental magnetic moment multiplied by 1.2 or 1.5.</p>
-<ul>
-<li><p>MAGMOM并不要求严格按照我们已知的数据去输入</p>
-</li>
-<li><p>如果你知道体系的磁矩是多少，初始的时候可以设置的更大些，1.2或者1.5倍。</p>
-</li>
-<li><p>如果你设置的很大，通常情况下（MAGMOM = 5 5 或者MAGMOM = 2*5，或者更疯狂：MAGMOM = 2*10） ，VASP会自动矫正回来。但是大师兄建议1.5倍足够了。</p>
-</li>
-<li><p>如果你不知道体系的磁矩是多少，可以根据原子所处的化学环境， 根据成键情况，大体推测有多少个未成对电子，然后将未成对电子数目*1.5即可。</p>
-</li>
-<li><p> VASP的wiki版中：* 前面有空格，这是不对的。</p>
-</li>
-</ul>
-<p> <img src="/2017/12/04/ex12/ex12-4.jpeg"></p>
-<p>当我们正确解决了POSCAR的结构搭建，懂得了POTCAR和POSCAR的关系，以及如何设置MAGMOM时，就可以计算O$_2$的单点能量了。当然，本例中MAGMOM不用设置，因为默认值就是1，如果你的体系很简单，那么直接ISPIN = 2 就可以了，MAGMOM可以不管。</p>
-<h5 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h5><p>大师兄计算了一个复杂大分子在Ni(111)表面上的吸附情况。有56个Ni，17个C，20个H，以及6个O原子。前面已经学到，当体系中含有Ni的时候，要考虑自旋的情况。 Ni(111)表面是一个简单的自旋体系，完全可以使用默认值。因为体相的Ni磁矩为0.56 μB左右。默认值为1.0，已经足够大。为了让大家有一个更加清晰的印象。大师兄专门设置了一个MAGMOM。 如下图：</p>
-<p><img src="/2017/12/04/ex12/ex12-5.jpeg"></p>
-<p>INCAR 中MAGMOM的设置：</p>
-<p><img src="/2017/12/04/ex12/ex12-6.jpeg"></p>
-<p>通过该例子，相比大家对MAGMOM的设置以及该注意的地方已经熟练掌握了，当然还有非线性的MAGMOM设置，这个在后面详细描述。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>1） 对于简单体系来说，MAGMOM可以采用默认值；</p>
-<p>2） MAGMOM设置的时候，初始值不要求与实验值完全一致，一般取大些（1.5倍）比较好。</p>
-<p>3） MAGMOM磁矩中*前后没有空格。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
@@ -4085,7 +4089,7 @@
 
 <div class="copyright">
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="user"></i>
   </span>

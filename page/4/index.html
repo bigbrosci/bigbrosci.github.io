@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-count">122</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-count">159</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,156 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/09/30/ex53/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/09/30/ex53/" class="post-title-link" itemprop="url">Ex53 表面吸附以及模型的搭建思想</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-09-30 02:06:48" itemprop="dateCreated datePublished" datetime="2018-09-30T02:06:48-04:00">2018-09-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/09/30/ex53/" class="post-meta-item leancloud_visitors" data-flag-title="Ex53 表面吸附以及模型的搭建思想" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/09/30/ex53/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/09/30/ex53/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>吸附这个词，对于做表面化学的人来说，是一个普通的不能再普通的名词了。从今天这一节开始，我们将逐步进入表面化学相关计算领域。</p>
+<p><img src="/2018/09/30/ex53/ex53-1.jpeg"> </p>
+<h2 id="1-我们先看一下维基百科的解释"><a href="#1-我们先看一下维基百科的解释" class="headerlink" title="1) 我们先看一下维基百科的解释:"></a>1) 我们先看一下维基百科的解释:</h2><p>a）吸附是指某种气体，液体或者被溶解的固体的原子，离子或者分子附着在某表面上。这一过程使得表面上产生由吸附物构成的膜。吸附不同于吸收，吸收是指作为吸附物的液体浸入或者溶解于另一液体或固体中的过程。吸附仅限于固体表面，而吸收同时作用于表面和内部。</p>
+<p>b) 吸附也属于一种传质过程，物质内部的分子和周围分子有互相吸引的引力，但物质表面的分子，其中相对物质外部的作用力没有充分发挥，所以液体或固体物质的表面可以吸附其他的液体或气体，尤其是表面面积很大的情况下，这种吸附力能产生很大的作用，所以工业上经常利用大面积的物质进行吸附，如活性炭、水膜等。吸附过程有两种情况:</p>
+<p>一种是物理吸附，在吸附过程中物质不改变原来的性质，因此吸附能小，被吸附的物质很容易再脱离，如用活性炭吸附气体，只要升高温度，就可以使被吸附的气体逐出活性炭表面。</p>
+<p>另一种是化学吸附，在吸附过程中不仅有引力，还运用化学键的力，因此吸附能较大，要逐出被吸附的物质需要较高的温度，而且被吸附的物质即使被逐出，也已经产生了化学变化，不再是原来的物质了，一般催化剂都是以这种吸附方式起作用。</p>
+<p><img src="/2018/09/30/ex53/ex53-2.jpeg"></p>
+<h2 id="2-IPUAC-GoldBook中的定义"><a href="#2-IPUAC-GoldBook中的定义" class="headerlink" title="2) IPUAC GoldBook中的定义:"></a>2) IPUAC GoldBook中的定义:</h2><p>Adsorption: An increase in the concentration of a dissolved substance at the interface of a condensed and a liquid phase due to the operation of surface forces. Adsorption can also occur at the interface of a condensed and a gaseous phase.</p>
+<p><a target="_blank" rel="noopener" href="https://goldbook.iupac.org/html/A/A00155.html">https://goldbook.iupac.org/html/A/A00155.html</a></p>
+<h2 id="3-参考书"><a href="#3-参考书" class="headerlink" title="3) 参考书"></a>3) 参考书</h2><p>吸附在物理化学中也是一个非常重要的概念，只要学过物理化学，肯定不会错过这一部分的内容。主要列举有关吸附的几本参考书，具体内容本节则不再详细介绍，这也超出了本书所包含的范围。</p>
+<p>a) Atkins’ Physical Chemistry </p>
+<p>(链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1hsJ95sg">https://pan.baidu.com/s/1hsJ95sg</a> 密码:nfxw)</p>
+<p>b) Concepts of Modern Catalysis and Kinetic  (By I. Chorkendorff）</p>
+<p>链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1hrA5LHi">https://pan.baidu.com/s/1hrA5LHi</a> 密码:aqvq)</p>
+<p>c) 南大物理化学(傅献彩主编)</p>
+<h1 id="吸附在催化研究中的地位"><a href="#吸附在催化研究中的地位" class="headerlink" title="吸附在催化研究中的地位"></a>吸附在催化研究中的地位</h1><p>催化剂发挥催化作用的前提是:反应物需要和催化剂有接触（也就是反应物吸附到催化剂表面上并且得到活化）。写这句话的意思就是:研究一个催化反应，第一步我们需要搞懂的就是反应物在表面的吸附情况。个人计算的心得就是：反应的初始态，过渡态以及末态，它们都是表面的吸附物种。这句话的意思是：在我们的计算中，吸附贯穿着我们对催化现象的整个研究过程中。吸附不仅仅是把反应物放到表面上就完事了，更与后面的反应息息相关。切记不要在思考的时候把后面我们要学习的过渡态和吸附隔离开。</p>
+<h1 id="吸附模型的搭建"><a href="#吸附模型的搭建" class="headerlink" title="吸附模型的搭建"></a>吸附模型的搭建</h1><p>前面我们已经讲过slab模型了，搭建吸附模型的本质就是在slab模型基础上，再添加吸附分子的xyz坐标。搭建的模型无非就是一个xyz的坐标文件。需要注意的有3个方面:</p>
+<ol>
+<li>熟悉VASP的POSCAR格式: 每一行的内容所代表的意思以及它们之间的相互联系:</li>
+</ol>
+<ul>
+<li>元素行，原子数目以及原子的坐标之间的关系；</li>
+<li>Selective Dynamic 行与 T T T， F F F 等原子固定的关系；</li>
+<li> Cartesian 坐标和 Direct 坐标的区别等等；</li>
+<li> POSCAR与KPOINTS的关系。</li>
+</ul>
+<p>熟悉POSCAR或者CONTCAR的格式可以使你在搭建模型过程中游刃有余。</p>
+<ol start="2">
+<li>Slab模型在Z方向上: </li>
+</ol>
+<ul>
+<li><p>slab的厚度</p>
+</li>
+<li><p>真空层的厚度，</p>
+</li>
+</ul>
+<p>这两点一方面决定了我们计算量的大小。另一方面，对于不同的体系，我们需要不同厚度的slab模型来保证计算的准确性。例如：对于金属体系来说，越开放的表面往往需要更多的层数。所以，在准确性和计算量上，我们要合理地权衡和取舍。可以通过一些基本的测试工作，以及参考他人发表的计算参数来确定。</p>
+<ol start="3">
+<li>Slab模型在XY方向上:</li>
+</ol>
+<ul>
+<li><p>表面的大小：这个主要影响覆盖度，计算的工作量；</p>
+</li>
+<li><p>表面的吸附位点：比如面心立方金属的111表面，有top(t)，bridge(b)，fcc(f) 和hcp(h)这几个位置，在搭建模型的时候要考虑吸附物种分别在这几个位置上的情况；</p>
+</li>
+<li><p>吸附物种与表面的结合情况：不同的分子构型?用什么原子?哪一部位和表面接触?初始猜测的键长多少? 等等</p>
+</li>
+</ul>
+<p>这些对于你搭建合理的模型至关重要。一个合理的模型可以极大地降低计算工作量，提高你的计算成功率。当然，这需要一个扎实和良好的化学基本功来作为保障。</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>本节简单介绍了一下吸附的概念，吸附模型搭建的一些基本的思路，大家可以自己主动思考一下:本节提到的相关内容之间的相互关系以及具体的注意事项。在后面具体的实例操作计算中，我们会逐步慢慢展开详细介绍。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3474,161 +3624,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/02/ex33/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/02/02/ex33/" class="post-title-link" itemprop="url">Ex33 晶格参数的确定（Birch-Murnaghan状态方程-1）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-02-02 02:06:48" itemprop="dateCreated datePublished" datetime="2018-02-02T02:06:48-05:00">2018-02-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/02/02/ex33/" class="post-meta-item leancloud_visitors" data-flag-title="Ex33 晶格参数的确定（Birch-Murnaghan状态方程-1）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/02/02/ex33/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/02/ex33/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>O$_2$分子的计算中，我们知道了，单纯从数据库中获取的结构，只能作为一个合理的初始值，与计算所得到的理论结构还有一定的差距，因此我们需要对该结构进行优化才可以获取稳定的晶格参数信息。有两个方法可以实现：</p>
-<ul>
-<li>1 Birch-Murnaghan状态方程拟合, </li>
-<li>2 VASP计算中通过调节ISIF参数直接优化Bulk。</li>
-</ul>
-<p>下面两节我们先讨论一下第一个方法：BM方程拟合。</p>
-<h2 id="1-什么是Birch-Murnaghan方程？"><a href="#1-什么是Birch-Murnaghan方程？" class="headerlink" title="1 什么是Birch-Murnaghan方程？"></a>1 什么是Birch-Murnaghan方程？</h2><p>BM方程为块体材料的体积随着外压变化的状态方程。大师兄参考了维基百科的说明，大家下载维基百科导出的PDF文件参考。在学习下面的内容前，请务必阅读这个文件，了解什么是Birch-Murnaghan方程。下载：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1bUSYbs">http://pan.baidu.com/s/1bUSYbs</a> </p>
-<p><img src="/2018/02/02/ex33/ex33-1.jpeg"></p>
-<p><img src="/2018/02/02/ex33/ex33-2.jpeg"></p>
-<h2 id="2-如何通过BM方程获取晶格参数？"><a href="#2-如何通过BM方程获取晶格参数？" class="headerlink" title="2 如何通过BM方程获取晶格参数？"></a>2 如何通过BM方程获取晶格参数？</h2><p>首先，我们将BM方程中的体积转化为晶格参数（a）的函数：</p>
-<p><img src="/2018/02/02/ex33/ex33-3.jpeg"></p>
-<p>其中E(a)和E$_0$是晶格参数为a和a$_0$时bulk的能量，B$_0$，B$_0$’和V$_0$这些见BM方程的维基百科介绍。令$(1/a)^2 = x$，上图中的BM方程可以写成：</p>
-<p> $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $ 的形式，</p>
-<p>E$_0$, B$_0$,B$_0$’和V$_0$等写进c$_0$,c$_1$,c$_2$,和c$_3$这些常数里面，它们的具体形式此时并不重要，我们需要做的就是拟合这样的曲线去寻找使y(x)为最小值时的x取值。对y(x)这个方程求导数，dy(x)/dx = 0 的时候，便可以获取能量最低时的x值了，再由$(1/a)^2 = x$ 获得晶格参数。</p>
-<p> dy(x)/dx = c$_1$+ 2c$_2$x + 3c$_3$x$^2$</p>
-<p>令：dy(x)/dx = 0，即 c$_1$+ 2c$_2$x + 3c$_3$x$^2$ = 0</p>
-<p>这是一个典型的二项式方程，求解很容易。</p>
-<p>$$<br>x = \frac{-2c_2\pm\sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}<br>$$<br>x有两个值，其中负值被舍弃掉，最终：</p>
-<p>$$<br>x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}<br>$$</p>
-<h2 id="3-获取拟合的数据："><a href="#3-获取拟合的数据：" class="headerlink" title="3 获取拟合的数据："></a>3 获取拟合的数据：</h2><p>经过前面的分析，我们需要的就是获得的c$_1$，c$_2$ 和c$_3$值。可以设置一系列不同的晶格常数进行计算，得到对应的能量，然后将这些数据带入下面的方程中：$y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $进行拟合。本节我们主要讨论一下如何进行该计算。看到这里，你第一反应是我们之前测试K点或者SIGMA值时的那些Linux批量操作。是的，我们也需要进行一个批量操作的计算。</p>
-<p>3.1 分数坐标</p>
-<p>如果我们改变了晶格常数，那么Fe原子的坐标也要发生相应的变化。此时，用分数坐标更加方便，VESTA中在cif转VASP格式的时候，会提醒你选择哪个形式的坐标，我们选择分数坐标：</p>
-<p><img src="/2018/02/02/ex33/ex33-6.jpeg"></p>
-<p>POSCAR如下图：</p>
-<p><img src="/2018/02/02/ex33/ex33-7.jpeg"></p>
-<p>注意：</p>
-<p> 如果前面练习中，导出的为笛卡尔坐标形式的，你有两个选择：</p>
-<p>A）重新按照前面的步骤，用VESTA导出为分数坐标形式；</p>
-<p>B）将单点计算的结果直接复制过来（<code>cp  CONTCAR  POSCAR</code>），因为VASP的输出坐标为分数坐标形式，单点计算中，晶胞原子都没有动，CONTCAR可以直接使用。复制过来的POSCAR如下：</p>
-<p><img src="/2018/02/02/ex33/ex33-8.jpeg"></p>
-<p>3.2 获得分数坐标的POSCAR后，我们可以批量对晶格常数a,b,c进行批量操作，也可以对缩放系数进行批量操作，而原子的坐标不用去管。</p>
-<p>3.3 本练习对缩放系数进行批量操作</p>
-<p>我们取10个点，将1.0 替换成0.95, 0.96, 0.97, 0.98, 0.99, 1.01, 1.02, 1.03, 1.04, 1.05。此时，晶格常数为：<code>缩放系数</code>*<code>2.8664</code>.（记住，下一节用得到）</p>
-<p>a) 准备缩放系数为1.0 的计算文件夹，命名为1.00，里面包含我们前面一节已经讲过的Bulk单点计算相关文件；</p>
-<p>b) </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> 0.95 0.96 0.97 0.98 0.99 1.01 1.02 1.03 1.04 1.05; <span class="keyword">do</span> cp 1.00 <span class="variable">$i</span> ; sed -i <span class="string">&quot;2s/1.0/<span class="variable">$i</span>/g&quot;</span> <span class="variable">$i</span>/POSCAR ; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-
-<p>注意：这里大师兄在自己电脑的<code>~/.bashrc</code>文件里面设置了：<code> alias cp=&#39;cp -r&#39;</code></p>
-<p>思考： sed 命令后面用的是双引号（为什么？）如果这里看不懂的话，建议从Ex00开始学习。</p>
-<p>d.) 批量提交命令： </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *; <span class="keyword">do</span> <span class="built_in">cd</span> <span class="variable">$i</span>; qsub sub4; <span class="built_in">cd</span> <span class="variable">$OLDPWD</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-
-<p>其中，qsub sub4 是大师兄提交单个任务的命令。</p>
-<p>3.4 数据提取：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *; <span class="keyword">do</span> <span class="built_in">echo</span> -e <span class="variable">$i</span> <span class="string">&quot;\t&quot;</span> $(grep <span class="string">&#x27;  without&#x27;</span> <span class="variable">$i</span>/OUTCAR | tail -n 1| awk <span class="string">&#x27;&#123;print $7&#125;&#x27;</span>);  <span class="keyword">done</span> &gt; data</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/02/02/ex33/ex33-9.jpeg"></p>
-<p>3.5 以上计算文件以及相关的命令已经上传到QQ群文件和百度网盘了，大家对比下计算结果。 <a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1dEJr9rb">http://pan.baidu.com/s/1dEJr9rb</a> </p>
-<h2 id="4-扩展练习"><a href="#4-扩展练习" class="headerlink" title="4 扩展练习"></a>4 扩展练习</h2><p>4.1 完成本练习中的相关操作，并学习VASP官网批量操作的例子：</p>
-<p><a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/Fcc_Si">https://cms.mpi.univie.ac.at/wiki/index.php/Fcc_Si</a></p>
-<p>注意：FCC Si的例子用的原胞，并且该网址最后图中曲线不是二次方程！！！虽然用二次方程拟合出来的结果差不多。</p>
-<p>4.2 探索学习曲线拟合的方法；</p>
-<p>4.3 学习并了解BM方程以及如何拟合，如何通过BM方程获取稳定的晶格参数；</p>
-<p>4.4 对晶格参数进行批量操作，并计算。</p>
-<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h2><p>本节从BM方程开始，简单介绍了什么是BM方程，如何通过BM方程获取稳定晶胞对应的晶格参数，最后，又复习了一下本书前面几节的批量操作，下一节我们讲解一下如何通过python脚本对BM方程拟合。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
@@ -3642,7 +3637,7 @@
 
 <div class="copyright">
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="user"></i>
   </span>

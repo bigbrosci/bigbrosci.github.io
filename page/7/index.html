@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">121</span>
+          <span class="site-state-item-count">122</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">158</span>
+        <span class="site-state-item-count">159</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,146 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2011/12/24/A08/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2011/12/24/A08/" class="post-title-link" itemprop="url">A08 Bader电荷计算(二)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2011-12-24 02:06:48" itemprop="dateCreated datePublished" datetime="2011-12-24T02:06:48-05:00">2011-12-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW%E9%99%84%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW附录</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2011/12/24/A08/" class="post-meta-item leancloud_visitors" data-flag-title="A08 Bader电荷计算(二)" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2011/12/24/A08/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2011/12/24/A08/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>本节我们Bader电荷分析的常见问题做个总结。</p>
+<h1 id="VTST的网站"><a href="#VTST的网站" class="headerlink" title="VTST的网站"></a>VTST的网站</h1><p>Henkelman 课题组主页：</p>
+<p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/henkelman/">http://theory.cm.utexas.edu/henkelman/</a></p>
+<p>Bader计算的链接： </p>
+<p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/henkelman/code/bader/">http://theory.cm.utexas.edu/henkelman/code/bader/</a></p>
+<p>VTST脚本链接：</p>
+<p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/vtsttools/">http://theory.cm.utexas.edu/vtsttools/</a> </p>
+<p><img src="/2011/12/24/A08/A07/A07-1.jpeg"></p>
+<h1 id="常见问题："><a href="#常见问题：" class="headerlink" title="常见问题："></a>常见问题：</h1><p><strong>电荷数字保留位数：</strong></p>
+<p>Bader电荷分析只是定性的辅助工具，得到的结果肯定也是定性的。大致分析原子上的带电情况即可，不要去较真小数点后多少位，一般来说小数点后两位就足够了。</p>
+<p><strong>ACF.dat 文件怎么看？</strong></p>
+<p><code>ACF.dat</code> 中的<code>CHARGE</code>那一列，对应的是每个原子上<strong>总的</strong>价电子数目。</p>
+<p>划重点： 1）总的 2）价电子数目</p>
+<p><strong>如何判断原子的带电情况？</strong></p>
+<p>你需要用<code>CHARGE</code>那列的数值去减去该原子对应的<code>POTCAR </code>中的价电子数目。</p>
+<p><strong>怎么才能得到POTCAR中原子的价电子数目呢？</strong></p>
+<p>打开<code>POTCAR</code>，查找关键词：<code>ZVAL</code>，后面对应的就是价电子数目，更方便点：</p>
+<p><code>grep ZVAL POTCAR</code></p>
+<p><strong>划重点：</strong>不要以为自己元素周期表倒背如流就可以随便设定原子的价电子数目。</p>
+<p><code>POTCAR</code>中原子的价电子数目有些和周期表是一样的，比如H。</p>
+<p>有些差别是很大的。比如：<code>Europium [Xe]4f76s2</code>,  Lanshipunvboshan<strong>you</strong>gatedihuoerdiuyilu 中的you。</p>
+<p>You有9个价电子，但<code>POTCAR</code>中有17个。</p>
+<p><strong>减完之后怎么分析？</strong></p>
+<p>如果一个原子<code>POTCAR</code>中的电子数为5.</p>
+<p>1） <code>ACF.dat</code>中该原子对应的CHARGE为6.2，6.2 - 5 = 1.2， 这说明该原子得到了1.2个电子。虽然是+1.2，但它的化合价是-1.2价。</p>
+<p>2） <code>ACF.dat</code>中该原子对应的CHARGE 为 4.3， 4.3 – 5 = -0.7, 说明该原子失去了0.7个电子，虽然是负值，但它的化合价是 + 0.7 价。</p>
+<p>注意：这里我们说的化合价，是基于Bader电荷分析得到的。由于Bader电荷分析是一个经验性的定性分析工具，这些化合价的值只能用来参考判断体系中电子的转移情况。</p>
+<p>大家千万不要把这里的化合价跟我们中学所学到的化合价的概念混淆了。因为大部分的情况下，Bader电荷分析出来的化合价与我们在教科书里面所学到的化合价还是有区别的。</p>
+<hr>
+<p>师兄，前面扯了那多么，直接用<code>POTCAR</code>中的价电子数减去<code>CHARGE</code>对应的不就更直接了？</p>
+<p>是的，你很聪明：对应前面的例子：</p>
+<ul>
+<li><p>1） 5 –6.2 = -1.2 说明该原子是-1.2价，得到了1.2个电子，</p>
+</li>
+<li><p>2） 5 - 4.3 = 0.7 说明该原子是 +0.7 价，失去了0.7个电子。</p>
+</li>
+</ul>
+<p>所以得失电子和化学价是反着的。这点你能把握住，就会分析了。</p>
+<h1 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h1><p>Bader电荷分析并不神秘，你需要做的有两点：</p>
+<p>1） 去看VTST的官网，知道怎么去算；<br>2） 怎么通过得失电子判断原子的带电情况。<code>ACF.dat</code>中的<code>CHARGE</code>列，以及<code>POTCAR</code>中的价电子数。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -392,7 +532,7 @@
 
 <div class="copyright">
   &copy; 2018 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="user"></i>
   </span>
