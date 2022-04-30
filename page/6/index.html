@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -195,6 +195,172 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/06/ex14/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2017/12/06/ex14/" class="post-title-link" itemprop="url">Ex14 论合理结构的重要性（二）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-06 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-06T02:06:48-05:00">2017-12-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/06/ex14/" class="post-meta-item leancloud_visitors" data-flag-title="Ex14 论合理结构的重要性（二）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/12/06/ex14/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/06/ex14/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<h1 id="require-mediawiji-texvc"><a href="#require-mediawiji-texvc" class="headerlink" title="$\require{mediawiji-texvc}$"></a>$\require{mediawiji-texvc}$</h1><p>$\require{mediawiki-texvc}$</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>730ac078881f7d9a64a1a595d9a05d291f79a331</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>在ex13中，当初始值为1.5 $\AA$ 的时候，计算共进行了9步。对比下之前我们采用实验值（Ex11）作为初始结构计算时用了4步。从这里我们可以看出来，如果你一个合理的初始结构，可以加快优化的速度，减少机时，节约你的时间。当然，计算的具体时间可以通过OUTCAR尾部的信息查看。</p>
+<h3 id="不同初始结构对结果的影响。"><a href="#不同初始结构对结果的影响。" class="headerlink" title="不同初始结构对结果的影响。"></a>不同初始结构对结果的影响。</h3><p>那么不同的初始结构，除了在时间上，对计算的结构还有影响吗？ 首先我们对比下Ex11和Ex13的结果。 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ tail ex13/nsw10/CONTCAR</span><br><span class="line">     0.0000000000000000    8.0000000000000000    0.0000000000000000</span><br><span class="line">     0.0000000000000000    0.0000000000000000    8.9000000000000004</span><br><span class="line">   O</span><br><span class="line">     2</span><br><span class="line">Direct</span><br><span class="line">  0.0000000000000000  0.0000000000000000  0.0149145061380336</span><br><span class="line">  0.0000000000000000  0.0000000000000000  0.1536248197046605</span><br><span class="line"></span><br><span class="line">  0.00000000E+00  0.00000000E+00  0.00000000E+00</span><br><span class="line">  0.00000000E+00  0.00000000E+00  0.00000000E+00</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ tail ex11/opt/CONTCAR</span><br><span class="line">     0.0000000000000000    8.0000000000000000    0.0000000000000000</span><br><span class="line">     0.0000000000000000    0.0000000000000000    8.9000000000000004</span><br><span class="line">   O</span><br><span class="line">     2</span><br><span class="line">Direct</span><br><span class="line">  0.0000000000000000  0.0000000000000000 -0.0019537557431563</span><br><span class="line">  0.0000000000000000  0.0000000000000000  0.1367852164173130</span><br><span class="line"></span><br><span class="line">  0.00000000E+00  0.00000000E+00  0.00000000E+00</span><br><span class="line">  0.00000000E+00  0.00000000E+00  0.00000000E+00</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在Ex11和Ex13中，两个计算的能量和CONTCAR中的键长值也几乎相等，看下面的结果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ python</span><br><span class="line">Python 2.6.6 (r266:84292, Sep  4 2013, 07:46:00)</span><br><span class="line">[GCC 4.4.7 20120313 (Red Hat 4.4.7-3)] on linux2</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt; 0.1536248197046605-0.0149145061380336</span><br><span class="line">0.13871031356662689</span><br><span class="line">&gt;&gt;&gt; 0.1367852164173130--0.0019537557431563</span><br><span class="line">0.13873897216046929</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="另一个bad结构的计算"><a href="#另一个bad结构的计算" class="headerlink" title="另一个bad结构的计算"></a>另一个bad结构的计算</h3><p>上次我们用了一个大于实验值的初始结构1.5$\AA$。下面我们看下小于实验值的初始情况：0.9 $\AA$ 。</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex14$ cat POSCAR</span><br><span class="line">O</span><br><span class="line"><span class="number">1.0</span></span><br><span class="line"><span class="number">7.5</span> <span class="number">0.0</span> <span class="number">0.0</span></span><br><span class="line"><span class="number">0.0</span> <span class="number">8.0</span> <span class="number">0.0</span></span><br><span class="line"><span class="number">0.0</span> <span class="number">0.0</span> <span class="number">8.9</span></span><br><span class="line">O</span><br><span class="line"><span class="number">2</span></span><br><span class="line">Cartesian</span><br><span class="line"><span class="number">0.0</span> <span class="number">0.0</span> <span class="number">0.0</span></span><br><span class="line"><span class="number">0.0</span> <span class="number">0.0</span> <span class="number">0.9</span></span><br></pre></td></tr></table></figure>
+<p>INCAR，KPOINTS，POTCAR等不变，提交任务，等待计算结束，查看结果。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex14$ tail OSZICAR</span><br><span class="line">DAV:  18     0.141396114006E+03    0.20879E-02   -0.88760E-04   144   0.130E-01    0.579E-01</span><br><span class="line">DAV:  19     0.141397297948E+03    0.11839E-02   -0.52751E-04    96   0.893E-02    0.455E-01</span><br><span class="line">DAV:  20     0.141388687914E+03   -0.86100E-02   -0.28657E-03   144   0.231E-01    0.206E+00</span><br><span class="line">DAV:  21     0.141395321236E+03    0.66333E-02   -0.62073E-03    96   0.361E-01    0.112E+00</span><br><span class="line">DAV:  22     0.141389669824E+03   -0.56514E-02   -0.95109E-03    96   0.429E-01    0.161E-01</span><br><span class="line">DAV:  23     0.141382943017E+03   -0.67268E-02   -0.22808E-03    96   0.216E-01    0.118E+00</span><br><span class="line">DAV:  24     0.141390086243E+03    0.71432E-02   -0.39635E-03    96   0.307E-01    0.825E-01</span><br><span class="line">DAV:  25     0.141385767811E+03   -0.43184E-02   -0.44984E-03    96   0.305E-01    0.480E-01</span><br><span class="line">DAV:  26     0.141385726226E+03   -0.41585E-04   -0.10329E-04    96   0.429E-02</span><br><span class="line">   5 F= 0.14138573E+03 E0= 0.14138680E+03  d E =0.141123E+03  mag=    -2.0000</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>计算共进行了5步，且最后的磁矩看起来是正确的。<strong>思考</strong>： 从这里得出的信息，能确定我们的计算结果是正确的吗？ </p>
+<p>答： 不知道。因为我们还要要去查看一下结构。判断结构是否合理。如果结构不合理，则收敛的计算也是失败了。</p>
+<p>用p4vasp打开CONTCAR后，如下图：</p>
+<p><img src="/2017/12/06/ex14/ex14-1.jpeg" alt=""></p>
+<p>师兄，这是神马情况，两个原子怎么跑这么远？</p>
+<p>不用担心，这是因为周期性的原因。p4vasp中可以进行如下的操作：</p>
+<p><img src="/2017/12/06/ex14/ex14-2.jpeg" alt=""></p>
+<p>首先，点击左侧的Build按钮，然后再点击右侧的 To unit cell。这样你会发现结构调整到下图的样子：</p>
+<p><img src="/2017/12/06/ex14/ex14-3.jpeg" alt=""></p>
+<p>两个原子之间的距离还是很长（7.821 $\AA$），但实际键长不是这么长的。</p>
+<p>而是8.9-7.821 = 1.079 $\AA$。</p>
+<p>师兄你为什么这么算?</p>
+<p>因为我们的体系是周期性的，也就是图中的格子在三维方向上可以无限重复，如果我们向左重复一个单元，那么在新的单元中右侧的氧原子与原来左侧的氧原子距离很短。已知格子在z方向的长度为8.9 $\AA$，减去7.821就是剩下的两个氧原子之间的键长了。</p>
+<p>如果，你还不明白，进行下图的操作：</p>
+<p><img src="/2017/12/06/ex14/ex14-4.jpeg" alt=""></p>
+<p>点击左侧的Control 选项，然后在下面红色框中，将格子在三维方向上重复，效果如下：</p>
+<p><img src="/2017/12/06/ex14/ex14-5.jpeg" alt=""></p>
+<p>注意，该操作只是展示三维方向的结构，如果此时你保存结构，不管你在三维方向上重复了多少次，保存的结构则还是原来的尺寸大小。</p>
+<p><img src="/2017/12/06/ex14/ex14-6.jpeg" alt=""></p>
+<p>键长为1.0785 $\AA$。</p>
+<h5 id="周期性的显示问题"><a href="#周期性的显示问题" class="headerlink" title="周期性的显示问题"></a>周期性的显示问题</h5><p>暂且抛开对错不说，由于周期性导致的原子不在一个格子里面的情况，在今后的计算中你会经常碰到。如果你遇到这种情况，不要立即在群里问：师兄，为什么优化之后，体系中的原子不见了？为什么之前左面原子不见了，右侧本来没有原子，优化完多了？</p>
+<p> 归根结底都是周期性导致的显示问题。你需要做的就是把结构在三维方向上重复一下，查看结构是对还是错。</p>
+<h5 id="结果对还是错？"><a href="#结果对还是错？" class="headerlink" title="结果对还是错？"></a>结果对还是错？</h5><p>现在我们分析下对错，已知O$_2$分子的键长为1.2075 $\AA$，因此该计算与实验值偏差为：（1.0785-1.2075）/1.2075 =10.68 %，这么大的偏差，是不可以忍受的。</p>
+<p>检查一下能量： 为 -8.54642426 eV。 之前正确的能量为： -9.85498627eV。</p>
+<p><img src="/2017/12/06/ex14/ex14-7.jpeg" alt=""></p>
+<p>在第二版的改进中，大师兄又计算了这个任务一次，得到了另外一个结果：2个O原子距离很短。</p>
+<p><img src="/2017/12/06/ex14/ex14-8.png" alt=""></p>
+<p>查看能量：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex14$ grep &#x27;  without&#x27; OUTCAR</span><br><span class="line">  energy  without entropy=        0.26254047  energy(sigma-&gt;0) =        0.26254047</span><br><span class="line">  energy  without entropy=       11.76187113  energy(sigma-&gt;0) =       11.76187113</span><br><span class="line">  energy  without entropy=      142.97353506  energy(sigma-&gt;0) =      142.97353506</span><br><span class="line">  energy  without entropy=  1359169.21650280  energy(sigma-&gt;0) =  1359169.21650280</span><br><span class="line">  energy  without entropy=      141.38788142  energy(sigma-&gt;0) =      141.38680382</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex14$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>思考： 能量为什么会差这么多呢（1.11 eV 或者最新结果140多eV）？ </p>
+<p>答： 我们需要知道体系的能量随键长的变化关系：如下图：</p>
+<p> <img src="/2017/12/06/ex14/ex14-7.jpg" alt=""></p>
+<p>图中X 处是O$_2$的稳定结构，两个原子间距离小于X处的键长时，它们之间的排斥力导致了体系的能量快速升高。</p>
+<p>由于我们已经知道了正确的计算结果，通过分析后，这次的计算失败！但对于不知道结果的时候，怎么判断计算是否成功失败呢？首先根据VASP计算的收敛情况，也就是计算至少应该正常结束，其次，这是远远不够的，我们还要查看输出结构的几何构型，判断是否具有物理或者化学的意义，还要看每一步收敛的能量信息。这些就需要我们化学基础知识了。</p>
+<h3 id="扩展练习及思考"><a href="#扩展练习及思考" class="headerlink" title="扩展练习及思考"></a>扩展练习及思考</h3><p>1 计算为什么会失败?</p>
+<p>2 分析该计算中每一步收敛的情况，以及能量的变化。</p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>1 不合理的结构会增加计算时间；</p>
+<p>2 不合理的结构会导致计算结果没意义；</p>
+<p>3 知道怎么处理周期性结构中，原子不在一个晶格里面的情况；</p>
+<p>4 学会判断计算结果的物理或者化学意义。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3912,132 +4078,6 @@
 <h3 id="第二个网址"><a href="#第二个网址" class="headerlink" title="第二个网址"></a>第二个网址</h3><p>VASP的官方论坛。<a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp-forum/forum.php">http://cms.mpi.univie.ac.at/vasp-forum/forum.php</a> </p>
 <p>如果你在计算中，遇到什么错误的信息，99%都可以在这里找到答案。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本书的初衷是引导大家去主动学习VASP，而不是教会大家VASP，而本节提到的参考书和官网则是新手们学习VASP最简单有效的途径。当然，还有很多有宝贵的参考书籍供大家阅读。如果你是新手的话，能把本节推荐的书啃完，再结合官网的计算一些示例练习，就足够了。如果你能坚持认认真真练习，主动重复网站的例子，认真思考，那么你的计算水平会得到极大的提升。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2011/12/26/A10/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2011/12/26/A10/" class="post-title-link" itemprop="url">A10 超算中心使用前的准备工作（二）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2011-12-26 02:06:48" itemprop="dateCreated datePublished" datetime="2011-12-26T02:06:48-05:00">2011-12-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW%E9%99%84%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW附录</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2011/12/26/A10/" class="post-meta-item leancloud_visitors" data-flag-title="A10 超算中心使用前的准备工作（二）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2011/12/26/A10/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2011/12/26/A10/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="天河二号（吕梁超算）提交VASP作业的脚本和命令"><a href="#天河二号（吕梁超算）提交VASP作业的脚本和命令" class="headerlink" title="天河二号（吕梁超算）提交VASP作业的脚本和命令"></a>天河二号（吕梁超算）提交VASP作业的脚本和命令</h2><hr>
-<p>上一节我们讲了怎么连接天河2号超算中心。这一节，我们主要讲一下VASP提交任务的脚本和命令。在天河2号提交任务非常简单，大家只要记住：<code>一个脚本</code>和<code>一个命令</code>就可以了。首先我们看一下提交任务的实例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex_a09$ ls</span><br><span class="line">INCAR  job_sub  KPOINTS  POSCAR  POTCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex_a09$ yhbatch -p gsc -N 1 -J test job_sub </span><br><span class="line">Submitted batch job 1028912</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex_a09$ yhq</span><br><span class="line">             JOBID    PARTITION                       NAME             USER ST       TIME  NODES NODELIST(REASON)</span><br><span class="line">           1028912          gsc                       test          iciq-lq PD       0:00      1 (None)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>上图中：</p>
-<p>1） job_sub 是提交任务的脚本，内容如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">export LD_LIBRARY_PATH=/THFS/opt/intel/composer_xe_2013_sp1.3.174/mkl/lib/intel64:$LD_LIBRARY_PATH</span><br><span class="line">yhrun -p gsc -n 24 /THFS/opt/vasp/5.4.4/vasp.5.4.4/bin/vasp_std </span><br></pre></td></tr></table></figure>
-<p>2） 提交任务的命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yhbatch -p gsc -N 1 -J test job_sub</span><br></pre></td></tr></table></figure>
-<p>-p  gsc 是指定提交任务的队列</p>
-<p>-N 1 是提交任务的节点数（每个节点24核）</p>
-<p>-J test  是提交任务的名字，这里我们给任务起的名字是：test。</p>
-<p>4）如果你想用2个节点，提交一个名为 bigbro的任务，可以使用下面的命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yhbatch -p gsc -N 2 -J bigbro job_sub</span><br></pre></td></tr></table></figure>
-<hr>
-<h2 id="不同版本的任务提交"><a href="#不同版本的任务提交" class="headerlink" title="不同版本的任务提交"></a>不同版本的任务提交</h2><p>当然，超算中心上上面也安装了不同的VASP版本，5.3，5.4以及用于过渡态计算的VTST系列版本。如果我们使用编译了VTST的5.4.4版本提交一个过渡态的任务。需要做的有2点：</p>
-<p>1） 找到编译了VTST的5.4.4版本的VASP安装目录。在天河2号，所有的软件都装在 /THFS/opt 这个目录下。Vasp也不例外，如果你进入这个目录，就会发现它。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78/step2$ <span class="built_in">cd</span> /THFS/opt/</span><br><span class="line">iciq-lq@ln3:/THFS/opt$ <span class="built_in">cd</span> vasp/</span><br><span class="line">iciq-lq@ln3:/THFS/opt/vasp$ ls</span><br><span class="line">5.2   5.3.5   5.3.5_neb   5.3.5-wannier90-2.0  5.4.1_neb  .... 5.4.1_sol_vtst  5.4.4_neb  ....</span><br><span class="line">iciq-lq@ln3:/THFS/opt/vasp$ <span class="built_in">cd</span> 5.4.4_neb/</span><br><span class="line">iciq-lq@ln3:/THFS/opt/vasp/5.4.4_neb$ ls</span><br><span class="line">vasp.5.4.4  vasp.5.lib  vtstcode-174  vtstcode.gz  vtstscripts-933  vtstscripts.gz</span><br><span class="line">iciq-lq@ln3:/THFS/opt/vasp/5.4.4_neb$ <span class="built_in">cd</span> vasp.5.4.4/</span><br><span class="line">iciq-lq@ln3:/THFS/opt/vasp/5.4.4_neb/vasp.5.4.4$ ls</span><br><span class="line">arch  bin  build  makefile  makefile.include  README  src</span><br><span class="line">iciq-lq@ln3:/THFS/opt/vasp/5.4.4_neb/vasp.5.4.4$ <span class="built_in">cd</span> bin/</span><br><span class="line">iciq-lq@ln3:/THFS/opt/vasp/5.4.4_neb/vasp.5.4.4/bin$ ls</span><br><span class="line">vasp_gam  vasp_ncl  vasp_std</span><br><span class="line">iciq-lq@ln3:/THFS/opt/vasp/5.4.4_neb/vasp.5.4.4/bin$ <span class="built_in">pwd</span></span><br><span class="line">/THFS/opt/vasp/5.4.4_neb/vasp.5.4.4/bin</span><br><span class="line">iciq-lq@ln3:/THFS/opt/vasp/5.4.4_neb/vasp.5.4.4/bin$ </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>一路追踪，直至找到安装目录中bin文件夹下面的vasp_std可执行程序（一般是绿色的）。使用<code>pwd</code>命令得到当前的路径。 </p>
-<p>2） 修改提交任务脚本的最后一行：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">export LD_LIBRARY_PATH=/THFS/opt/intel/composer_xe_2013_sp1.3.174/mkl/lib/intel64:$LD_LIBRARY_PATH</span><br><span class="line">yhrun -p gsc -n 24 /THFS/opt/vasp/5.4.4_neb/vasp.5.4.4/bin/vasp_std</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>将之前的目录，替换成刚刚通过<code>pwd</code>命令输出的内容。记得在目录后面加上<code>vasp_std</code> 表示你要运行这个目录下的<code>vasp_std</code>文件。</p>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>到此为止，连接VPN，天河2号，挂载服务器到本地电脑，互传文件，以及使用脚本提交vasp任务。你已经都掌握了。后面的就是好好利用超算中心，得到自己所期望的数据，好好搞科研了。如果想试用超算中心，加下方的QQ群，或者直接联系超算中心即可。</p>
-<hr>
-<p><img src="/2011/12/26/A10/a10/a10-8.jpeg" alt=""></p>
-<p>超算中心试用联系方式：<a href="mailto:lvlianghpc01@163.com">lvlianghpc01@163.com</a>；</p>
-<p>联系电话（微信）：15383480556 <strong>18903588277</strong></p>
 
       
     </div>

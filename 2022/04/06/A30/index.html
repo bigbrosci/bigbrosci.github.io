@@ -23,29 +23,29 @@
 <meta name="description" content="通过ASE获取原子之间的距离原子之间的距离是计算化学中模型搭建，结果分析中经常需要分析的部分。而计算原子的之间的距离也非常简单，通过可视化软件直接点两个原子就可以直接显示出来，可以通过自写的一些小脚本来实现。跟均相的体系不同，周期性体系由于周期性边界的存在，有时候模型中两个原子之间的距离需要将周期性边界条件考虑进去才能正确得到。今天简单介绍一个通过ASE获取原子之间的距离，并且考虑周期性边界条件的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="通过ASE获取原子之间的距离">
-<meta property="og:url" content="http://www.bigbrosci.com/2022/04/05/A29/index.html">
+<meta property="og:url" content="http://www.bigbrosci.com/2022/04/06/A30/index.html">
 <meta property="og:site_name" content="Learn VASP The Hard Way">
 <meta property="og:description" content="通过ASE获取原子之间的距离原子之间的距离是计算化学中模型搭建，结果分析中经常需要分析的部分。而计算原子的之间的距离也非常简单，通过可视化软件直接点两个原子就可以直接显示出来，可以通过自写的一些小脚本来实现。跟均相的体系不同，周期性体系由于周期性边界的存在，有时候模型中两个原子之间的距离需要将周期性边界条件考虑进去才能正确得到。今天简单介绍一个通过ASE获取原子之间的距离，并且考虑周期性边界条件的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.bigbrosci.com/2022/04/05/A29/A28/1.png">
-<meta property="og:image" content="http://www.bigbrosci.com/2022/04/05/A29/A28/2.png">
-<meta property="og:image" content="http://www.bigbrosci.com/2022/04/05/A29/A28/3.png">
-<meta property="og:image" content="http://www.bigbrosci.com/2022/04/05/A29/A28/qrcode.jpg">
-<meta property="article:published_time" content="2022-04-05T04:30:16.000Z">
-<meta property="article:modified_time" content="2022-04-30T02:00:34.907Z">
+<meta property="og:image" content="http://www.bigbrosci.com/2022/04/06/A30/A28/1.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2022/04/06/A30/A28/2.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2022/04/06/A30/A28/3.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2022/04/06/A30/A28/qrcode.jpg">
+<meta property="article:published_time" content="2022-04-06T04:30:16.000Z">
+<meta property="article:modified_time" content="2022-04-30T02:09:49.451Z">
 <meta property="article:author" content="By BigBro(a)s">
 <meta property="article:tag" content="ASE">
 <meta property="article:tag" content="软件">
 <meta property="article:tag" content="原子距离">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.bigbrosci.com/2022/04/05/A29/A28/1.png">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2022/04/06/A30/A28/1.png">
 
 
-<link rel="canonical" href="http://www.bigbrosci.com/2022/04/05/A29/">
+<link rel="canonical" href="http://www.bigbrosci.com/2022/04/06/A30/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2022/04/05/A29/","path":"2022/04/05/A29/","title":"通过ASE获取原子之间的距离"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2022/04/06/A30/","path":"2022/04/06/A30/","title":"通过ASE获取原子之间的距离"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>通过ASE获取原子之间的距离 | Learn VASP The Hard Way</title>
@@ -218,7 +218,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2022/04/05/A29/">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2022/04/06/A30/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -242,14 +242,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-04-05 00:30:16" itemprop="dateCreated datePublished" datetime="2022-04-05T00:30:16-04:00">2022-04-05</time>
+      <time title="创建时间：2022-04-06 00:30:16" itemprop="dateCreated datePublished" datetime="2022-04-06T00:30:16-04:00">2022-04-06</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-29 22:00:34" itemprop="dateModified" datetime="2022-04-29T22:00:34-04:00">2022-04-29</time>
+      <time title="修改时间：2022-04-29 22:09:49" itemprop="dateModified" datetime="2022-04-29T22:09:49-04:00">2022-04-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -262,7 +262,7 @@
     </span>
 
   
-    <span id="/2022/04/05/A29/" class="post-meta-item leancloud_visitors" data-flag-title="通过ASE获取原子之间的距离" title="阅读次数">
+    <span id="/2022/04/06/A30/" class="post-meta-item leancloud_visitors" data-flag-title="通过ASE获取原子之间的距离" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -277,8 +277,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2022/04/05/A29/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/04/05/A29/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2022/04/06/A30/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/04/06/A30/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -294,13 +294,13 @@
     <div class="post-body" itemprop="articleBody">
         <h2 id="通过ASE获取原子之间的距离"><a href="#通过ASE获取原子之间的距离" class="headerlink" title="通过ASE获取原子之间的距离"></a>通过ASE获取原子之间的距离</h2><p>原子之间的距离是计算化学中模型搭建，结果分析中经常需要分析的部分。而计算原子的之间的距离也非常简单，通过可视化软件直接点两个原子就可以直接显示出来，可以通过自写的一些小脚本来实现。跟均相的体系不同，周期性体系由于周期性边界的存在，有时候模型中两个原子之间的距离需要将周期性边界条件考虑进去才能正确得到。今天简单介绍一个通过ASE获取原子之间的距离，并且考虑周期性边界条件的影响的小脚本。</p>
 <h4 id="具体例子展示一下："><a href="#具体例子展示一下：" class="headerlink" title="具体例子展示一下："></a>具体例子展示一下：</h4><p>图里面是$TiO{_2}(101)$表面上吸附的一个Pt单原子模型，如果直接计算Pt和Ti之间距离的话（图1），测量一下为 7.461 $\AA$。实际上我们把slab模型沿着y轴重复下就会发现，还有一个更短的Pt-Ti距离。</p>
-<p><img src="/2022/04/05/A29/A28/1.png"></p>
+<p><img src="/2022/04/06/A30/A28/1.png"></p>
 <p>图1： Pt-Ti原子之间的距离</p>
 <p>测量下，距离为：3.818 $\AA$。在周期性计算中，如果刚开始模型搭建的时候没有考虑到这一点，或者分子比较大，亦或者AIMD过程中分子到处跑，都会出现类似这样的情形。所以在测量距离时候，要注意周期性边界对数值的影响。当然最理想的情况就是模型搭建的时候将这一情况考虑进来，尽可能将分子放在slab的中间部分。如果出现这种情况，测量的时候加上周期性边界条件的校正即可，这也是本节要介绍的内容。</p>
-<p><img src="/2022/04/05/A29/A28/2.png"></p>
+<p><img src="/2022/04/06/A30/A28/2.png"></p>
 <p>图2：考虑周期性边界条件后Pt-Ti之间的距离</p>
 <p>首先我们看下体系的坐标，在<code>p4vasp</code>的界面中，<code>POSCAR</code>中每个原子对应着不同的序号（序号是从<code>1</code>开始的），比如：Pt在POSCAR中是第109号原子，前面测量的Pt-Ti距离就是109号和23号原子之间的距离。计算两点之间的距离公式相信大家初高中的时候已经学过了。过程很简单（参考下面脚本中注释掉的部分。）：1）获取两个原子之间的坐标； 2）套公式得到距离。本节介绍通过ASE写个小脚本获取两个原子之间的距离。</p>
-<p><img src="/2022/04/05/A29/A28/3.png"></p>
+<p><img src="/2022/04/06/A30/A28/3.png"></p>
 <p>图3：p4vasp中原子的序号</p>
 <h4 id="脚本内容"><a href="#脚本内容" class="headerlink" title="脚本内容"></a>脚本内容</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Created on Fri Apr 22 10:06:51 2022</span></span><br><span class="line"><span class="string">@author: qli</span></span><br><span class="line"><span class="string">Command: python3 get_dis_AB.py  atom_A_index atom_B_index</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> ase.io <span class="keyword">import</span> read, write</span><br><span class="line"><span class="keyword">import</span> os, sys</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">Important Note: Atoms are indexed from 0.</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">atom_A, atom_B = [<span class="built_in">int</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> sys.argv[<span class="number">1</span>:<span class="number">3</span>]]</span><br><span class="line">model = read(<span class="string">&#x27;POSCAR&#x27;</span>)</span><br><span class="line">positions = model.get_positions()</span><br><span class="line">dis_AB_1 = model.get_distance(atom_A, atom_B, mic=<span class="literal">True</span>)</span><br><span class="line">dis_AB_2 = model.get_distance(atom_A, atom_B, mic=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">round</span>(dis_AB_1, <span class="number">4</span>), <span class="string">&#x27;\t&#x27;</span>,<span class="built_in">round</span>(dis_AB_2,<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">## Not Used </span></span><br><span class="line"><span class="comment">#coord_A = positions[atom_A]</span></span><br><span class="line"><span class="comment">#coord_B = positions[atom_B]</span></span><br><span class="line"><span class="comment">#dis_AB = np.linalg.norm(coord_A-coord_B)</span></span><br><span class="line"><span class="comment">#print(round(dis_AB,4))                     </span></span><br></pre></td></tr></table></figure>
 
@@ -322,7 +322,7 @@
 
 <p>没有<code>~/bin</code>的话，自己创建一个即可：<code>mkdir ~/bin</code></p>
 <p>有兴趣的也可以自己尝试着解决周期性边界条件对计算两原子之间距离的影响，GitHub上也有很多类似的代码。也欢迎大家分享自己的代码或者链接；可以发送到我的邮箱：<code>lqcata@gmail.com</code>或者直接Q:<code>122103465</code>，微信：<code>BigBroSci</code> 联系。</p>
-<img src="/2022/04/05/A29/A28/qrcode.jpg" style="zoom:25%;">
+<img src="/2022/04/06/A30/A28/qrcode.jpg" style="zoom:25%;">
 
     </div>
 
@@ -341,14 +341,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/04/04/A28/" rel="prev" title="通过ASE获取原子之间的距离">
+                <a href="/2022/04/05/A29/" rel="prev" title="通过ASE获取原子之间的距离">
                   <i class="fa fa-chevron-left"></i> 通过ASE获取原子之间的距离
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/04/06/A30/" rel="next" title="通过ASE获取原子之间的距离">
-                  通过ASE获取原子之间的距离 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

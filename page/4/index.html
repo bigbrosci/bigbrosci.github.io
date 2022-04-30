@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -195,6 +195,165 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/02/ex55/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/10/02/ex55/" class="post-title-link" itemprop="url">Ex55 简单粗暴地获取初始构型（二）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-10-02 15:30:16" itemprop="dateCreated datePublished" datetime="2018-10-02T15:30:16-04:00">2018-10-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/10/02/ex55/" class="post-meta-item leancloud_visitors" data-flag-title="Ex55 简单粗暴地获取初始构型（二）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/10/02/ex55/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/02/ex55/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面一节，我们通过一个简单的方法获取了一个Cu-O键的键长。因为我们固定了Cu的坐标，当计算完成之后，O原子初始构型的坐标可以直接将计算后的结果复制过来。此时需要注意<code>Direct</code>和<code>Cartesian</code>的坐标问题。</p>
+<h2 id="1-搭建合理的O吸附模型"><a href="#1-搭建合理的O吸附模型" class="headerlink" title="1 搭建合理的O吸附模型"></a>1 搭建合理的O吸附模型</h2><p>1）取Cu(111)表面模型的POSCAR (Cartesian坐标)</p>
+<p><img src="/2018/10/02/ex55/ex55-1.png" alt=""></p>
+<hr>
+<p>2) 复制快速获取初始构型计算(Cu-O dimer)的结果</p>
+<p><img src="/2018/10/02/ex55/ex55-2.png" alt=""></p>
+<center>上图中的最后一行。</center>
+
+<hr>
+<p>3) 构建O的吸附模型：</p>
+<p><img src="/2018/10/02/ex55/ex55-3.png" alt=""></p>
+<p>当然了,我们也可以根据键长或者O在z方向的坐标直接在Cu(111)表面基础上搭建。</p>
+<p><img src="/2018/10/02/ex55/ex55-4.png" alt=""></p>
+<hr>
+<p>这个简单粗暴的方法到此就讲解完了。有以下几个需要注意的地方：</p>
+<p>A）这里我们用的是Cu(111)的 p(1x1) slab模型,表面只有一个原子。一般来说，大家计算吸附的时候，模型都比这个大，我们可以取一层原子。记住，要固定住这层原子。</p>
+<p>B）这个方法基于的是气相中的计算，因此偶极矫正不要加！因为加上去之后，收敛会变得很困难。这个大家可以用自己测试测试。</p>
+<p>下面我们讲一个基于slab模型的方法，虽然比这个计算量大，但也异常的快，相对于后面的计算，花费的时间也可以忽略不计。</p>
+<hr>
+<h2 id="2-快速获取初始构型方法（二）"><a href="#2-快速获取初始构型方法（二）" class="headerlink" title="2 快速获取初始构型方法（二）"></a>2 快速获取初始构型方法（二）</h2><p>1）在这个方法中，第一步我们先取slab模型的结构，这里就不讲了。</p>
+<p>2） 搭建一个初始的吸附模型。此时我们要根据原子半径，大体确认一下键长的合理范围，前面也讲过了，就不再细说了。 由于前面一节我们已经有了一个O原子的坐标数据，可以直接拿过来。如下：</p>
+<p><img src="/2018/10/02/ex55/ex55-5.png" alt=""></p>
+<p>注意：实际操作的时候，这个方法可以使用前面一节的方法的出来的结果；也可以直接设置初始值，这两个方法之间联系不太大。</p>
+<hr>
+<p>3） 固定slab模型中的所有原子！所有原子！所有原子！</p>
+<p>重要的事情说三遍，是把slab模型中的原子全部固定!只放开吸附的分子。这里大师兄在vim里面操作，使用了下面的命令：<code>:12,13s/T/F/g</code>  意思是把12和13行中的T全部替换成F。当然也可以使用sed进行操作，相信大家经过这么长时间的练习，已经掌握基本的Vim和sed操作，就不浪费时间了。效果如下：</p>
+<p><img src="/2018/10/02/ex55/ex55-7.png" alt=""></p>
+<hr>
+<p>4）  设置INCAR，这里是slab模型，把之前Cu(111)表面优化计算的INCAR直接拿过来了。</p>
+<p>EDIFF、EDIFFG 可以适当放宽，下图大师兄懒得改了。</p>
+<p><img src="/2018/10/02/ex55/ex55-8.png" alt=""></p>
+<hr>
+<p>5）  生成对应的POTCAR，K点只用gamma点！K点只用gamma点！K点只用gamma点！</p>
+<p><img src="/2018/10/02/ex55/ex55-9.png" alt=""></p>
+<p>这里需要注意的有两点：</p>
+<p>A）  计算前一定要检查POTCAR和POSCAR是否对应，养成这个好习惯</p>
+<p>B）  一定要用gamma点。因为我们知道，K点越多，计算量越大。</p>
+<hr>
+<p>6）  提交任务等待结束。</p>
+<p>O原子的坐标，从最初的7.950优化到了8.009。</p>
+<p>到此，另外一种快速获取稳定构型的方法，也介绍完了。希望大家可以举一反三，运用到自己实际的课题计算中。</p>
+<hr>
+<h2 id="3-正式优化O的吸附"><a href="#3-正式优化O的吸附" class="headerlink" title="3 正式优化O的吸附"></a>3 正式优化O的吸附</h2><p>前面我们已经获取的初始的一个合理的构型，下面就开始正常计算了。想一想，在上一步的基础上，正式计算的时候，我们有哪几个需要修改的部分。</p>
+<p>1） 结构 </p>
+<p>这个是必须要想到的。怎么做呢？ 直接将CONTCAR 复制成 POSCAR即可。</p>
+<p>PS： 怎么完成复制这一步还不会的话，请从头开始学。</p>
+<p>2） 复制完了并不代表完事，前面一步我们还固定了表层的原子，此时我们需要放开。使用sed命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &#x27;12,13s/F/T/g&#x27; POSCAR</span><br></pre></td></tr></table></figure>
+<p>3）KPOINTS：使用前面Cu slab优化时用的 13x13x1</p>
+<p>4） INCAR中，如果前面一步的计算精度较低，这时，我们就要提高一下了。</p>
+<p>5）POTCAR 不变</p>
+<p>6）提交任务的脚本：由于前面的计算量很小，一般可以使用小队列进行计算，如果计算量增大了，这时我们也需要稍微修改下脚本。</p>
+<p><img src="/2018/10/02/ex55/ex55-12.png" alt=""></p>
+<p>7)   提交任务，等待结束，查看结果。</p>
+<p><img src="/2018/10/02/ex55/ex55-13.png" alt=""></p>
+<p>O原子的坐标从8.009 优化到了8.093。键长从1.75 Å 优化到 1.80 Å，变化很小，这说明我们的初始构型已经很接近优化结果了。</p>
+<h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h2><p>1)   本节的实例中，使用了 <code>&amp;&amp;</code> 这个连接前后的命令，大家学习下是怎么回事</p>
+<p>2)   重复本节练习，掌握其中的关键点。</p>
+<h2 id="5-小结"><a href="#5-小结" class="headerlink" title="5 小结"></a>5 小结</h2><p>一个合理的初始构型可以极大地降低我们的工作量，这一点是大家务必要记在心里的。而获取合理的初始构型，一方面需要我们用化学的知识去搭建结构，另一方面，也需要配合一些简单的低精度的计算去完成。希望大家可以掌握这两节的精髓，运用到自己的课题中，提高自己的计算效率。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3454,159 +3613,6 @@
 <p>10  KPOINTS的取值：经验方法（k * a）， 以及脚本；</p>
 <p>11  POTCAR的生成： 手动方法以及脚本。</p>
 <p>12  以及怎么追女朋友，如何防止被追？</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/04/ex35/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/02/04/ex35/" class="post-title-link" itemprop="url">Ex35 晶格参数的确定（Birch-Murnaghan状态方程-3）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-02-04 02:06:48" itemprop="dateCreated datePublished" datetime="2018-02-04T02:06:48-05:00">2018-02-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/02/04/ex35/" class="post-meta-item leancloud_visitors" data-flag-title="Ex35 晶格参数的确定（Birch-Murnaghan状态方程-3）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/02/04/ex35/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/04/ex35/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>通过上一节（Ex34）的脚本，我们可以拟合出稳定晶体结构的晶格参数，但是，这个脚本是怎么运行的呢？大家在浏览之后，有没有什么疑问？本节我们重点介绍一下：这个脚本的运行原理。</p>
-<h2 id="1-数据"><a href="#1-数据" class="headerlink" title="1  数据"></a>1  数据</h2><p>首先我们看下读取的data文件：</p>
-<p><img src="/2018/02/04/ex35/ex35-1.png" alt=""></p>
-<p>A) 共两列，两列之间用<code>tab</code>分开；</p>
-<p>B) 第一列为缩放系数，第二列为对应结构的能量。</p>
-<p>C) 在本文例子中，晶格参数等于= <code>缩放系数</code> * <code>2.8664</code> $\AA$ （记住这个公式）</p>
-<p>2  脚本内容： 浏览一遍即可，详解在下面： </p>
-<p><img src="/2018/02/04/ex35/ex35-2.png" alt=""></p>
-<p>详解：</p>
-<p><strong>2.1  1-15行：准备部分</strong></p>
-<p><img src="/2018/02/04/ex35/ex35-3.png" alt=""></p>
-<p>A) 1-4 行为脚本的一些基本说明，为养成一个良好的写脚本习惯，以及避免后期不必要的麻烦，第一行必须要放进去。如果你用bash写的话，把python替换为bash即可，其他部分不用动，例如： #!/usr/bin/env bash。</p>
-<p>B）2-3行注释，解释了一下脚本干什么用的，谁写的，怎么用。</p>
-<p>C)  6-7 行调用python库中的math 和 numpy 模块，见下面两个链接：</p>
-<p><a target="_blank" rel="noopener" href="https://docs.python.org/2/library/math.html">https://docs.python.org/2/library/math.html</a></p>
-<p><a target="_blank" rel="noopener" href="http://www.numpy.org/">http://www.numpy.org/</a></p>
-<p>D）9-15行：通过使用 print 命令输出一个警告，因为本文用的是缩放系数，很多人测试的时候保持缩放系数不变，直接采用不同的晶格参数。</p>
-<p><strong>2.2  读取data信息，准备拟合</strong></p>
-<p><img src="/2018/02/04/ex35/ex35-4.png" alt=""></p>
-<p>A)  16-18行为脚本的注释说明，</p>
-<p>B)  第20行中，我们使用 <code>np.loadtxt</code>读取data文件的内容，</p>
-<p>注意：</p>
-<p>1)  <code>data</code> 用单引号括起来，表明我们要读以<code>data</code>命名的文件。 </p>
-<p>2)   <code>usecols=(0,1)</code> 代表我们要读取第一列和第二列的内容。Python中的第一个用0表示，所以这里我们用的（0,1）来表示读取第1和第2列的内容；</p>
-<p>3)   <code>delimiter=&#39;\t&#39;</code>，意思是第一列和第二列之间用tab（’\t’）分开；</p>
-<p>4)  <code>unpack=True</code> 意思是把读取的数据生成一个数列，并分配给a 和 E，具体见链接：</p>
-<p><a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html</a></p>
-<p>通过第20行，我们可以获得两个数列，第一个是 a 包含了data文件中的缩放系数， 第二个是E，包含了data文件中的能量信息</p>
-<p>C) 第22-28行，把缩放系数转换为晶格常数(a<em>2.8664)，然后平方取倒数（*</em>(-2)），用来得到我们前面讲解的x。这是因为：当我们把BM方程写成： $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $ 的形式时，前提是令 (1/a)$^2$ = x。不懂的具体见Ex33中的内容。截止到现在，我们有了三个数列： a, E 和 x</p>
-<p><strong>2.3 第29-40行：拟合多项式方程</strong>： </p>
-<p><img src="/2018/02/04/ex35/ex35-5.png" alt=""></p>
-<p>A) 最小二乘法拟合 $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $这个方程，得到常数系列c，这里我们调用了<code>numpy</code> 的<code>polyfit</code>这个模块来进行拟合。具体见：</p>
-<p><a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html</a></p>
-<p>B) 第31行：本脚本的核心：<code>p = np.polyfit(x, E, 3)</code></p>
-<p>1) np.polyfit 读取x和 E的数值，拟合一个$y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $，</p>
-<p>注意：这里拟合的时候，用的数值是x和E，(1/a)$^2$ = x， 所以，在进行拟合之前，务必确保你已经得到了正确的x数列。具体根据data文件的内容进行修改设置第24行的公式。</p>
-<p>2) 括号中的3代表的是多项式方程中最大的那个次数。</p>
-<p>扩展：如果你想拟合一个$ y = c_4x^4 +c_3x^4  …$的方程，把3改成4 即可。</p>
-<p>3)拟合的结果输出到数列 p 中，数列p中共有4个常数（p[0],  p[1]，p[2]，p[3]），按照次数从高到底的顺序排列，对应着我们Ex33中的（c3，c2, c1, 和 c0 ）</p>
-<p>4) 33-36行, 我们将p 中的数值分别分配给c3，c2, c1, 和 c0。</p>
-<p><strong>2.4   38-40行，获取晶格参数</strong>：</p>
-<p>到目前位置，多项式方程的常数我们已经获得了，下面就是求解问题了。</p>
-<p><img src="/2018/02/04/ex35/ex35-6.png" alt=""></p>
-<p>A)  第42行为下图中公式的代码描述，获取方程的解x，因为前面我们已经有了一个x变量了，这里方程的解用x1表示，</p>
-<script type="math/tex; mode=display">
-x x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}</script><p>B) 第43行获取晶格常数，公式为： (1/a)$^2$= x</p>
-<p>C) 第45行，输出晶格常数的数值。</p>
-<h2 id="3-扩展练习："><a href="#3-扩展练习：" class="headerlink" title="3 扩展练习："></a>3 扩展练习：</h2><p>3.1 根据解释，重新浏览脚本，知道每一行代表的含义。</p>
-<p>3.2 本脚本使用的时候，需要自己根据data数列中的内容，设置更改一下获取 x 数列的公式（第24行）；</p>
-<p>3.3 阅读Ex32-本节的所有内容，整个流程不要再存在什么疑问。</p>
-<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><p>本节我们详细讲解了BM方程拟合脚本，相信大家应该了解的差不多了，拟合的办法有很多，但BM方程只有一个。请务必掌握至少一个拟合的方法。后面的这句话本来想删掉，因为本人已经早就毕业了。暂且留下来吧，权当本书的一个时间证据。</p>
-<hr>
-<p>此外，本人马上就要毕业答辩了，后面更新会有所放缓，努力争取保证每周一篇的速度。如果你有什么科研心得，欢迎分享。</p>
 
       
     </div>

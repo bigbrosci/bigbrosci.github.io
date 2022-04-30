@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -195,6 +195,159 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/04/ex35/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/02/04/ex35/" class="post-title-link" itemprop="url">Ex35 晶格参数的确定（Birch-Murnaghan状态方程-3）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-02-04 02:06:48" itemprop="dateCreated datePublished" datetime="2018-02-04T02:06:48-05:00">2018-02-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/02/04/ex35/" class="post-meta-item leancloud_visitors" data-flag-title="Ex35 晶格参数的确定（Birch-Murnaghan状态方程-3）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/02/04/ex35/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/04/ex35/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>通过上一节（Ex34）的脚本，我们可以拟合出稳定晶体结构的晶格参数，但是，这个脚本是怎么运行的呢？大家在浏览之后，有没有什么疑问？本节我们重点介绍一下：这个脚本的运行原理。</p>
+<h2 id="1-数据"><a href="#1-数据" class="headerlink" title="1  数据"></a>1  数据</h2><p>首先我们看下读取的data文件：</p>
+<p><img src="/2018/02/04/ex35/ex35-1.png" alt=""></p>
+<p>A) 共两列，两列之间用<code>tab</code>分开；</p>
+<p>B) 第一列为缩放系数，第二列为对应结构的能量。</p>
+<p>C) 在本文例子中，晶格参数等于= <code>缩放系数</code> * <code>2.8664</code> $\AA$ （记住这个公式）</p>
+<p>2  脚本内容： 浏览一遍即可，详解在下面： </p>
+<p><img src="/2018/02/04/ex35/ex35-2.png" alt=""></p>
+<p>详解：</p>
+<p><strong>2.1  1-15行：准备部分</strong></p>
+<p><img src="/2018/02/04/ex35/ex35-3.png" alt=""></p>
+<p>A) 1-4 行为脚本的一些基本说明，为养成一个良好的写脚本习惯，以及避免后期不必要的麻烦，第一行必须要放进去。如果你用bash写的话，把python替换为bash即可，其他部分不用动，例如： #!/usr/bin/env bash。</p>
+<p>B）2-3行注释，解释了一下脚本干什么用的，谁写的，怎么用。</p>
+<p>C)  6-7 行调用python库中的math 和 numpy 模块，见下面两个链接：</p>
+<p><a target="_blank" rel="noopener" href="https://docs.python.org/2/library/math.html">https://docs.python.org/2/library/math.html</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.numpy.org/">http://www.numpy.org/</a></p>
+<p>D）9-15行：通过使用 print 命令输出一个警告，因为本文用的是缩放系数，很多人测试的时候保持缩放系数不变，直接采用不同的晶格参数。</p>
+<p><strong>2.2  读取data信息，准备拟合</strong></p>
+<p><img src="/2018/02/04/ex35/ex35-4.png" alt=""></p>
+<p>A)  16-18行为脚本的注释说明，</p>
+<p>B)  第20行中，我们使用 <code>np.loadtxt</code>读取data文件的内容，</p>
+<p>注意：</p>
+<p>1)  <code>data</code> 用单引号括起来，表明我们要读以<code>data</code>命名的文件。 </p>
+<p>2)   <code>usecols=(0,1)</code> 代表我们要读取第一列和第二列的内容。Python中的第一个用0表示，所以这里我们用的（0,1）来表示读取第1和第2列的内容；</p>
+<p>3)   <code>delimiter=&#39;\t&#39;</code>，意思是第一列和第二列之间用tab（’\t’）分开；</p>
+<p>4)  <code>unpack=True</code> 意思是把读取的数据生成一个数列，并分配给a 和 E，具体见链接：</p>
+<p><a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html</a></p>
+<p>通过第20行，我们可以获得两个数列，第一个是 a 包含了data文件中的缩放系数， 第二个是E，包含了data文件中的能量信息</p>
+<p>C) 第22-28行，把缩放系数转换为晶格常数(a<em>2.8664)，然后平方取倒数（*</em>(-2)），用来得到我们前面讲解的x。这是因为：当我们把BM方程写成： $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $ 的形式时，前提是令 (1/a)$^2$ = x。不懂的具体见Ex33中的内容。截止到现在，我们有了三个数列： a, E 和 x</p>
+<p><strong>2.3 第29-40行：拟合多项式方程</strong>： </p>
+<p><img src="/2018/02/04/ex35/ex35-5.png" alt=""></p>
+<p>A) 最小二乘法拟合 $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $这个方程，得到常数系列c，这里我们调用了<code>numpy</code> 的<code>polyfit</code>这个模块来进行拟合。具体见：</p>
+<p><a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html</a></p>
+<p>B) 第31行：本脚本的核心：<code>p = np.polyfit(x, E, 3)</code></p>
+<p>1) np.polyfit 读取x和 E的数值，拟合一个$y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $，</p>
+<p>注意：这里拟合的时候，用的数值是x和E，(1/a)$^2$ = x， 所以，在进行拟合之前，务必确保你已经得到了正确的x数列。具体根据data文件的内容进行修改设置第24行的公式。</p>
+<p>2) 括号中的3代表的是多项式方程中最大的那个次数。</p>
+<p>扩展：如果你想拟合一个$ y = c_4x^4 +c_3x^4  …$的方程，把3改成4 即可。</p>
+<p>3)拟合的结果输出到数列 p 中，数列p中共有4个常数（p[0],  p[1]，p[2]，p[3]），按照次数从高到底的顺序排列，对应着我们Ex33中的（c3，c2, c1, 和 c0 ）</p>
+<p>4) 33-36行, 我们将p 中的数值分别分配给c3，c2, c1, 和 c0。</p>
+<p><strong>2.4   38-40行，获取晶格参数</strong>：</p>
+<p>到目前位置，多项式方程的常数我们已经获得了，下面就是求解问题了。</p>
+<p><img src="/2018/02/04/ex35/ex35-6.png" alt=""></p>
+<p>A)  第42行为下图中公式的代码描述，获取方程的解x，因为前面我们已经有了一个x变量了，这里方程的解用x1表示，</p>
+<script type="math/tex; mode=display">
+x x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}</script><p>B) 第43行获取晶格常数，公式为： (1/a)$^2$= x</p>
+<p>C) 第45行，输出晶格常数的数值。</p>
+<h2 id="3-扩展练习："><a href="#3-扩展练习：" class="headerlink" title="3 扩展练习："></a>3 扩展练习：</h2><p>3.1 根据解释，重新浏览脚本，知道每一行代表的含义。</p>
+<p>3.2 本脚本使用的时候，需要自己根据data数列中的内容，设置更改一下获取 x 数列的公式（第24行）；</p>
+<p>3.3 阅读Ex32-本节的所有内容，整个流程不要再存在什么疑问。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><p>本节我们详细讲解了BM方程拟合脚本，相信大家应该了解的差不多了，拟合的办法有很多，但BM方程只有一个。请务必掌握至少一个拟合的方法。后面的这句话本来想删掉，因为本人已经早就毕业了。暂且留下来吧，权当本书的一个时间证据。</p>
+<hr>
+<p>此外，本人马上就要毕业答辩了，后面更新会有所放缓，努力争取保证每周一篇的速度。如果你有什么科研心得，欢迎分享。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3736,172 +3889,6 @@ E_{ads} = E_{CO + slab} – E_{slab} – E_{CO^{gas}}</script><p>等号后面的
 <p>4 尝试用0.9 $\AA$作为初始结构，<code>POTIM</code>采用默认值，调节其他自己认为会影响计算的参数，查看相关输出，如有错误，复制到<code>google</code>里面查找相关的原因。 </p>
 <h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>体系的初始结构越合理，不仅仅是节约我们的时间，还会我们的计算过程越省心。从前面出现的问题可以看出来，结构不合理，对应出错的地方越多，我们也要绞尽脑汁去纠正。O$_2$分子的例子比较简单，我们简单通过<code>POTIM</code>实现了正确的计算。但是大家计算的体系比O$_2$ 分子复杂的多，处理起来也会更加棘手。所以需要在初始结构上下功夫。更严肃的说：初始结构就是我们的计算模型，如果模型不合理，后续的计算都会出错，甚至失败。</p>
 <p>如果初始结构不合理，用<code>IBRION=2</code>的时候，<code>POTIM</code>可以很好的控制收敛，还是建议初始结构搭建的合理些，省时省力。认真学习化学基础知识，搭建好合理的初始模型才是王道，正应了那句古话：磨刀不误砍柴工！</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/06/ex14/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/12/06/ex14/" class="post-title-link" itemprop="url">Ex14 论合理结构的重要性（二）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-12-06 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-06T02:06:48-05:00">2017-12-06</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2017/12/06/ex14/" class="post-meta-item leancloud_visitors" data-flag-title="Ex14 论合理结构的重要性（二）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2017/12/06/ex14/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/06/ex14/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
-<h1 id="require-mediawiji-texvc"><a href="#require-mediawiji-texvc" class="headerlink" title="$\require{mediawiji-texvc}$"></a>$\require{mediawiji-texvc}$</h1><p>$\require{mediawiki-texvc}$</p>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<blockquote>
-<p>730ac078881f7d9a64a1a595d9a05d291f79a331</p>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-<p>在ex13中，当初始值为1.5 $\AA$ 的时候，计算共进行了9步。对比下之前我们采用实验值（Ex11）作为初始结构计算时用了4步。从这里我们可以看出来，如果你一个合理的初始结构，可以加快优化的速度，减少机时，节约你的时间。当然，计算的具体时间可以通过OUTCAR尾部的信息查看。</p>
-<h3 id="不同初始结构对结果的影响。"><a href="#不同初始结构对结果的影响。" class="headerlink" title="不同初始结构对结果的影响。"></a>不同初始结构对结果的影响。</h3><p>那么不同的初始结构，除了在时间上，对计算的结构还有影响吗？ 首先我们对比下Ex11和Ex13的结果。 </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ tail ex13/nsw10/CONTCAR</span><br><span class="line">     0.0000000000000000    8.0000000000000000    0.0000000000000000</span><br><span class="line">     0.0000000000000000    0.0000000000000000    8.9000000000000004</span><br><span class="line">   O</span><br><span class="line">     2</span><br><span class="line">Direct</span><br><span class="line">  0.0000000000000000  0.0000000000000000  0.0149145061380336</span><br><span class="line">  0.0000000000000000  0.0000000000000000  0.1536248197046605</span><br><span class="line"></span><br><span class="line">  0.00000000E+00  0.00000000E+00  0.00000000E+00</span><br><span class="line">  0.00000000E+00  0.00000000E+00  0.00000000E+00</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ tail ex11/opt/CONTCAR</span><br><span class="line">     0.0000000000000000    8.0000000000000000    0.0000000000000000</span><br><span class="line">     0.0000000000000000    0.0000000000000000    8.9000000000000004</span><br><span class="line">   O</span><br><span class="line">     2</span><br><span class="line">Direct</span><br><span class="line">  0.0000000000000000  0.0000000000000000 -0.0019537557431563</span><br><span class="line">  0.0000000000000000  0.0000000000000000  0.1367852164173130</span><br><span class="line"></span><br><span class="line">  0.00000000E+00  0.00000000E+00  0.00000000E+00</span><br><span class="line">  0.00000000E+00  0.00000000E+00  0.00000000E+00</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>在Ex11和Ex13中，两个计算的能量和CONTCAR中的键长值也几乎相等，看下面的结果。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ python</span><br><span class="line">Python 2.6.6 (r266:84292, Sep  4 2013, 07:46:00)</span><br><span class="line">[GCC 4.4.7 20120313 (Red Hat 4.4.7-3)] on linux2</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt; 0.1536248197046605-0.0149145061380336</span><br><span class="line">0.13871031356662689</span><br><span class="line">&gt;&gt;&gt; 0.1367852164173130--0.0019537557431563</span><br><span class="line">0.13873897216046929</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="另一个bad结构的计算"><a href="#另一个bad结构的计算" class="headerlink" title="另一个bad结构的计算"></a>另一个bad结构的计算</h3><p>上次我们用了一个大于实验值的初始结构1.5$\AA$。下面我们看下小于实验值的初始情况：0.9 $\AA$ 。</p>
-<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex14$ cat POSCAR</span><br><span class="line">O</span><br><span class="line"><span class="number">1.0</span></span><br><span class="line"><span class="number">7.5</span> <span class="number">0.0</span> <span class="number">0.0</span></span><br><span class="line"><span class="number">0.0</span> <span class="number">8.0</span> <span class="number">0.0</span></span><br><span class="line"><span class="number">0.0</span> <span class="number">0.0</span> <span class="number">8.9</span></span><br><span class="line">O</span><br><span class="line"><span class="number">2</span></span><br><span class="line">Cartesian</span><br><span class="line"><span class="number">0.0</span> <span class="number">0.0</span> <span class="number">0.0</span></span><br><span class="line"><span class="number">0.0</span> <span class="number">0.0</span> <span class="number">0.9</span></span><br></pre></td></tr></table></figure>
-<p>INCAR，KPOINTS，POTCAR等不变，提交任务，等待计算结束，查看结果。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex14$ tail OSZICAR</span><br><span class="line">DAV:  18     0.141396114006E+03    0.20879E-02   -0.88760E-04   144   0.130E-01    0.579E-01</span><br><span class="line">DAV:  19     0.141397297948E+03    0.11839E-02   -0.52751E-04    96   0.893E-02    0.455E-01</span><br><span class="line">DAV:  20     0.141388687914E+03   -0.86100E-02   -0.28657E-03   144   0.231E-01    0.206E+00</span><br><span class="line">DAV:  21     0.141395321236E+03    0.66333E-02   -0.62073E-03    96   0.361E-01    0.112E+00</span><br><span class="line">DAV:  22     0.141389669824E+03   -0.56514E-02   -0.95109E-03    96   0.429E-01    0.161E-01</span><br><span class="line">DAV:  23     0.141382943017E+03   -0.67268E-02   -0.22808E-03    96   0.216E-01    0.118E+00</span><br><span class="line">DAV:  24     0.141390086243E+03    0.71432E-02   -0.39635E-03    96   0.307E-01    0.825E-01</span><br><span class="line">DAV:  25     0.141385767811E+03   -0.43184E-02   -0.44984E-03    96   0.305E-01    0.480E-01</span><br><span class="line">DAV:  26     0.141385726226E+03   -0.41585E-04   -0.10329E-04    96   0.429E-02</span><br><span class="line">   5 F= 0.14138573E+03 E0= 0.14138680E+03  d E =0.141123E+03  mag=    -2.0000</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>计算共进行了5步，且最后的磁矩看起来是正确的。<strong>思考</strong>： 从这里得出的信息，能确定我们的计算结果是正确的吗？ </p>
-<p>答： 不知道。因为我们还要要去查看一下结构。判断结构是否合理。如果结构不合理，则收敛的计算也是失败了。</p>
-<p>用p4vasp打开CONTCAR后，如下图：</p>
-<p><img src="/2017/12/06/ex14/ex14-1.jpeg" alt=""></p>
-<p>师兄，这是神马情况，两个原子怎么跑这么远？</p>
-<p>不用担心，这是因为周期性的原因。p4vasp中可以进行如下的操作：</p>
-<p><img src="/2017/12/06/ex14/ex14-2.jpeg" alt=""></p>
-<p>首先，点击左侧的Build按钮，然后再点击右侧的 To unit cell。这样你会发现结构调整到下图的样子：</p>
-<p><img src="/2017/12/06/ex14/ex14-3.jpeg" alt=""></p>
-<p>两个原子之间的距离还是很长（7.821 $\AA$），但实际键长不是这么长的。</p>
-<p>而是8.9-7.821 = 1.079 $\AA$。</p>
-<p>师兄你为什么这么算?</p>
-<p>因为我们的体系是周期性的，也就是图中的格子在三维方向上可以无限重复，如果我们向左重复一个单元，那么在新的单元中右侧的氧原子与原来左侧的氧原子距离很短。已知格子在z方向的长度为8.9 $\AA$，减去7.821就是剩下的两个氧原子之间的键长了。</p>
-<p>如果，你还不明白，进行下图的操作：</p>
-<p><img src="/2017/12/06/ex14/ex14-4.jpeg" alt=""></p>
-<p>点击左侧的Control 选项，然后在下面红色框中，将格子在三维方向上重复，效果如下：</p>
-<p><img src="/2017/12/06/ex14/ex14-5.jpeg" alt=""></p>
-<p>注意，该操作只是展示三维方向的结构，如果此时你保存结构，不管你在三维方向上重复了多少次，保存的结构则还是原来的尺寸大小。</p>
-<p><img src="/2017/12/06/ex14/ex14-6.jpeg" alt=""></p>
-<p>键长为1.0785 $\AA$。</p>
-<h5 id="周期性的显示问题"><a href="#周期性的显示问题" class="headerlink" title="周期性的显示问题"></a>周期性的显示问题</h5><p>暂且抛开对错不说，由于周期性导致的原子不在一个格子里面的情况，在今后的计算中你会经常碰到。如果你遇到这种情况，不要立即在群里问：师兄，为什么优化之后，体系中的原子不见了？为什么之前左面原子不见了，右侧本来没有原子，优化完多了？</p>
-<p> 归根结底都是周期性导致的显示问题。你需要做的就是把结构在三维方向上重复一下，查看结构是对还是错。</p>
-<h5 id="结果对还是错？"><a href="#结果对还是错？" class="headerlink" title="结果对还是错？"></a>结果对还是错？</h5><p>现在我们分析下对错，已知O$_2$分子的键长为1.2075 $\AA$，因此该计算与实验值偏差为：（1.0785-1.2075）/1.2075 =10.68 %，这么大的偏差，是不可以忍受的。</p>
-<p>检查一下能量： 为 -8.54642426 eV。 之前正确的能量为： -9.85498627eV。</p>
-<p><img src="/2017/12/06/ex14/ex14-7.jpeg" alt=""></p>
-<p>在第二版的改进中，大师兄又计算了这个任务一次，得到了另外一个结果：2个O原子距离很短。</p>
-<p><img src="/2017/12/06/ex14/ex14-8.png" alt=""></p>
-<p>查看能量：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex14$ grep &#x27;  without&#x27; OUTCAR</span><br><span class="line">  energy  without entropy=        0.26254047  energy(sigma-&gt;0) =        0.26254047</span><br><span class="line">  energy  without entropy=       11.76187113  energy(sigma-&gt;0) =       11.76187113</span><br><span class="line">  energy  without entropy=      142.97353506  energy(sigma-&gt;0) =      142.97353506</span><br><span class="line">  energy  without entropy=  1359169.21650280  energy(sigma-&gt;0) =  1359169.21650280</span><br><span class="line">  energy  without entropy=      141.38788142  energy(sigma-&gt;0) =      141.38680382</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex14$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>思考： 能量为什么会差这么多呢（1.11 eV 或者最新结果140多eV）？ </p>
-<p>答： 我们需要知道体系的能量随键长的变化关系：如下图：</p>
-<p> <img src="/2017/12/06/ex14/ex14-7.jpg" alt=""></p>
-<p>图中X 处是O$_2$的稳定结构，两个原子间距离小于X处的键长时，它们之间的排斥力导致了体系的能量快速升高。</p>
-<p>由于我们已经知道了正确的计算结果，通过分析后，这次的计算失败！但对于不知道结果的时候，怎么判断计算是否成功失败呢？首先根据VASP计算的收敛情况，也就是计算至少应该正常结束，其次，这是远远不够的，我们还要查看输出结构的几何构型，判断是否具有物理或者化学的意义，还要看每一步收敛的能量信息。这些就需要我们化学基础知识了。</p>
-<h3 id="扩展练习及思考"><a href="#扩展练习及思考" class="headerlink" title="扩展练习及思考"></a>扩展练习及思考</h3><p>1 计算为什么会失败?</p>
-<p>2 分析该计算中每一步收敛的情况，以及能量的变化。</p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>1 不合理的结构会增加计算时间；</p>
-<p>2 不合理的结构会导致计算结果没意义；</p>
-<p>3 知道怎么处理周期性结构中，原子不在一个晶格里面的情况；</p>
-<p>4 学会判断计算结果的物理或者化学意义。</p>
 
       
     </div>

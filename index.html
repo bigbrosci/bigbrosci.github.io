@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">123</span>
+          <span class="site-state-item-count">124</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -195,6 +195,137 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2022/04/06/A30/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/06/A30/" class="post-title-link" itemprop="url">通过ASE获取原子之间的距离</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-06 00:30:16" itemprop="dateCreated datePublished" datetime="2022-04-06T00:30:16-04:00">2022-04-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-04-29 22:09:49" itemprop="dateModified" datetime="2022-04-29T22:09:49-04:00">2022-04-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/04/06/A30/" class="post-meta-item leancloud_visitors" data-flag-title="通过ASE获取原子之间的距离" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/04/06/A30/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/04/06/A30/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="通过ASE获取原子之间的距离"><a href="#通过ASE获取原子之间的距离" class="headerlink" title="通过ASE获取原子之间的距离"></a>通过ASE获取原子之间的距离</h2><p>原子之间的距离是计算化学中模型搭建，结果分析中经常需要分析的部分。而计算原子的之间的距离也非常简单，通过可视化软件直接点两个原子就可以直接显示出来，可以通过自写的一些小脚本来实现。跟均相的体系不同，周期性体系由于周期性边界的存在，有时候模型中两个原子之间的距离需要将周期性边界条件考虑进去才能正确得到。今天简单介绍一个通过ASE获取原子之间的距离，并且考虑周期性边界条件的影响的小脚本。</p>
+<h4 id="具体例子展示一下："><a href="#具体例子展示一下：" class="headerlink" title="具体例子展示一下："></a>具体例子展示一下：</h4><p>图里面是$TiO{_2}(101)$表面上吸附的一个Pt单原子模型，如果直接计算Pt和Ti之间距离的话（图1），测量一下为 7.461 $\AA$。实际上我们把slab模型沿着y轴重复下就会发现，还有一个更短的Pt-Ti距离。</p>
+<p><img src="/2022/04/06/A30/A28/1.png"></p>
+<p>图1： Pt-Ti原子之间的距离</p>
+<p>测量下，距离为：3.818 $\AA$。在周期性计算中，如果刚开始模型搭建的时候没有考虑到这一点，或者分子比较大，亦或者AIMD过程中分子到处跑，都会出现类似这样的情形。所以在测量距离时候，要注意周期性边界对数值的影响。当然最理想的情况就是模型搭建的时候将这一情况考虑进来，尽可能将分子放在slab的中间部分。如果出现这种情况，测量的时候加上周期性边界条件的校正即可，这也是本节要介绍的内容。</p>
+<p><img src="/2022/04/06/A30/A28/2.png"></p>
+<p>图2：考虑周期性边界条件后Pt-Ti之间的距离</p>
+<p>首先我们看下体系的坐标，在<code>p4vasp</code>的界面中，<code>POSCAR</code>中每个原子对应着不同的序号（序号是从<code>1</code>开始的），比如：Pt在POSCAR中是第109号原子，前面测量的Pt-Ti距离就是109号和23号原子之间的距离。计算两点之间的距离公式相信大家初高中的时候已经学过了。过程很简单（参考下面脚本中注释掉的部分。）：1）获取两个原子之间的坐标； 2）套公式得到距离。本节介绍通过ASE写个小脚本获取两个原子之间的距离。</p>
+<p><img src="/2022/04/06/A30/A28/3.png"></p>
+<p>图3：p4vasp中原子的序号</p>
+<h4 id="脚本内容"><a href="#脚本内容" class="headerlink" title="脚本内容"></a>脚本内容</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Created on Fri Apr 22 10:06:51 2022</span></span><br><span class="line"><span class="string">@author: qli</span></span><br><span class="line"><span class="string">Command: python3 get_dis_AB.py  atom_A_index atom_B_index</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> ase.io <span class="keyword">import</span> read, write</span><br><span class="line"><span class="keyword">import</span> os, sys</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">Important Note: Atoms are indexed from 0.</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line">atom_A, atom_B = [<span class="built_in">int</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> sys.argv[<span class="number">1</span>:<span class="number">3</span>]]</span><br><span class="line">model = read(<span class="string">&#x27;POSCAR&#x27;</span>)</span><br><span class="line">positions = model.get_positions()</span><br><span class="line">dis_AB_1 = model.get_distance(atom_A, atom_B, mic=<span class="literal">True</span>)</span><br><span class="line">dis_AB_2 = model.get_distance(atom_A, atom_B, mic=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">round</span>(dis_AB_1, <span class="number">4</span>), <span class="string">&#x27;\t&#x27;</span>,<span class="built_in">round</span>(dis_AB_2,<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">## Not Used </span></span><br><span class="line"><span class="comment">#coord_A = positions[atom_A]</span></span><br><span class="line"><span class="comment">#coord_B = positions[atom_B]</span></span><br><span class="line"><span class="comment">#dis_AB = np.linalg.norm(coord_A-coord_B)</span></span><br><span class="line"><span class="comment">#print(round(dis_AB,4))                     </span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>atom_A，和 atom_B 是要测量的2个原子，<code>注意：ASE中原子的序号是从0开始的</code>，所以上面的例子中，Ti和Pt在ASE中则是22和108号原子。</li>
+<li>脚本里面读的是<code>POSCAR</code>，根据自己的需求改成<code>CONTCAR</code>或者其他的带有坐标的文件。</li>
+<li><code>mic=True</code> 考虑周期性边界的影响。<code>mic=False</code> 则是直接测量两个原子的距离。</li>
+<li>最后面注释的几行是获取原子坐标，通过<code>numpy</code>计算距离的例子，效果等于前面<code>mic=False</code>.</li>
+<li>脚本使用的命令：<code>python3 get_dis_AB.py  22 108 </code></li>
+</ol>
+<h4 id="脚本效果："><a href="#脚本效果：" class="headerlink" title="脚本效果："></a>脚本效果：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/Desktop/example$ python3 get_dis_AB.py  22 108</span><br><span class="line">3.8175 	 7.4611</span><br></pre></td></tr></table></figure>
+
+<h4 id="改进下输出格式"><a href="#改进下输出格式" class="headerlink" title="改进下输出格式"></a>改进下输出格式</h4><p>将前面脚本中<code>print</code>的一行删掉，换成下面的即可，反正数值已经在这里了，怎么输出根据自己爱好，把print对应的效果改改即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Atom_A\tAtom_B\tdis_A-B&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;%s\t%s\t%.4f&#x27;</span> %(atom_A, atom_B, dis_AB_1))</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/Desktop/example$ python3 get_dis_AB.py  22 108</span><br><span class="line">Atom_A Atom_B	dis_A-B</span><br><span class="line">22	108	3.8175</span><br></pre></td></tr></table></figure>
+
+<h4 id="放到-bin目录下，随时可以使用："><a href="#放到-bin目录下，随时可以使用：" class="headerlink" title="放到~/bin目录下，随时可以使用："></a>放到<code>~/bin</code>目录下，随时可以使用：</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/Desktop/example$ chmod u+x get_dis_AB.py </span><br><span class="line">qli@bigbro:~/Desktop/example$ mv get_dis_AB.py  ~/bin/</span><br><span class="line">qli@bigbro:~/Desktop/example$ ls</span><br><span class="line">POSCAR</span><br><span class="line">qli@bigbro:~/Desktop/example$ get_dis_AB.py  22 108 </span><br><span class="line">Atom_A	Atom_B	dis_A-B</span><br><span class="line">22	108	3.8175</span><br></pre></td></tr></table></figure>
+
+<p>没有<code>~/bin</code>的话，自己创建一个即可：<code>mkdir ~/bin</code></p>
+<p>有兴趣的也可以自己尝试着解决周期性边界条件对计算两原子之间距离的影响，GitHub上也有很多类似的代码。也欢迎大家分享自己的代码或者链接；可以发送到我的邮箱：<code>lqcata@gmail.com</code>或者直接Q:<code>122103465</code>，微信：<code>BigBroSci</code> 联系。</p>
+<img src="/2022/04/06/A30/A28/qrcode.jpg" style="zoom:25%;">
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2757,124 +2888,6 @@ D_s=\frac{averageMSD}{2dt}</script><p>$d$ 是离子在材料中的扩散维度�
 <p><img src="/2019/10/13/S04/share04/share0412.png" alt=""></p>
 <p>（未完待续）</p>
 <p>1 Hall, E. O. The deformation and ageing of mild steel: III discussion of results. Proceedings of the Physical Society. Section B 64.9 (1951): 747.<br>2  A.H. Cottrell,: The Mechanical Properties of Matter, Wiley, New York (1964)<br>3 Li, James CM. Petch relation and grain boundary sources. Transactions of the Metallurgical Society of AIME 227.1 (1963): 239.<br>4 Van Swygenhoven, H., P. M. Derlet, and A. Hasnaoui. Atomic mechanism for dislocation emission from nanosized grain boundaries. Physical Review B 66.2 (2002): 024101.<br>本文经ponychen授权发布，版权属于ponychen。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2019/10/13/S03/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/10/13/S03/" class="post-title-link" itemprop="url">基于DFT+U研究应力调控CeO2(111)催化分解水制氢的活性</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-10-13 15:30:16" itemprop="dateCreated datePublished" datetime="2019-10-13T15:30:16-04:00">2019-10-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:29:25" itemprop="dateModified" datetime="2021-12-27T22:29:25-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Share/" itemprop="url" rel="index"><span itemprop="name">Share</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2019/10/13/S03/" class="post-meta-item leancloud_visitors" data-flag-title="基于DFT+U研究应力调控CeO2(111)催化分解水制氢的活性" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2019/10/13/S03/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/13/S03/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><img src="/2019/10/13/S03/share03/s031.png" alt=""></p>
-<p><strong>基于DFT+<em>U</em>研究应力调控CeO2(111)催化分解水制氢的活性</strong></p>
-<p><code>研究背景</code></p>
-<p>氢能清洁无污染，是最具潜力的能量载体。使用太阳能、风能和水能转换得到的清洁电能电解水制氢是人来未来最具发展潜力的、可持续的、绿色环保的制氢技术。传统低温碱性电解水制氢技术的效率受限于液体电解质较低的传质过程和氧电极较慢的反应动力。相比于液体传质技术，新兴发展的高温固体燃料电池 (SOEC)技术以固体作为传质媒介，充分利用工业废热提供反应所需的热能，具有极高的传质效率和水电解效率。然而人们对SOEC制氢反应机理尚缺乏深刻认识。计算模拟技术是揭示能源材料领域中多相催化反应过程及机理的重要手段，可以辅助了解SOEC电解水的关键反应步骤，以开发、低廉且稳定的催化剂用于增强氢电极的稳定性以及提高制氢反应在燃料电池中的效率。兼具优异的电子和离子传质能力的氧化铈（CeO2）是SOEC水分解重要的催化剂和稳定剂。CeO2优越的催化活性归因于Ce3+与Ce4+的氧化还原循环。基于密度泛函理论，该工作使用Hubbard-<em>U<strong>（</strong>U</em>eff=4.5 eV）修正的方法来描述Ce 4<em>f</em>轨道电子的强关联作用，研究表面应力对CeO2(111)催化制氢的影响。</p>
-<p><code>研究内容</code></p>
-<p>水在CeO2表面分解制氢包括三个基本反应步骤：（1）CeO2(111)表面生成一个氧空位；（2）H2O吸附于氧空位附近最终形成表面OH-；（3）表面OH-分解形成H2并留下一个晶格氧，如Figure 1所示水分解过程中形成的反应中间体以及最终生成H2的反应过程。该工作主要研究了三种可能的反应路径，即不同OH- 覆盖率下形成H2的过程如Figure 1所示。通过研究应力对三种不同反应路径中反应中间体形成的影响，以及应力对各反应步骤反应能垒的调控，来探究应力如何增强CeO2催化制氢的性能。</p>
-<p>首先，研究发现拉伸应变有效增强了氧空位和OH-等中间体的稳定性，随之增加了各反应步骤的反应能垒。与之相反的是压缩应变可以通过减弱OH-与表面的结合能，从而降低生成H2的能垒。通过计算不同反应温度下中间体的自由能可以获得沿着2H，4H和5H的反应路径能量图。研究发现不管处于何种应力条件下生成氧空位和氧空位的扩散，以及OH-的形成不需要很高的能量势垒，而OH-分解形成H2是水分解制氢反应路径中能垒最高的一个步骤。然后，通过对比不同反应温度下，研究发现在温度低于1000 K时，沿着5H路径可以最快速地水分解生成H2 如图2所示，且最佳反应路径不受应力的影响。然而，当温度升高到1200 K时，应力有效地调控了制氢的反应路径，即拉伸应力下最优路径沿着5H，而在压缩应力下最优反应路径沿着2H或者4H。此外，研究还发现反应速度随着压缩应力的增大而增快，且当压缩应力大于3%时，反应速度获得显著提升。因此，计算模拟理论研究显示压缩应力（&gt;3%）有利于增强CeO2(111)催化水分解制氢的反应活性。</p>
-<p><img src="/2019/10/13/S03/share03/s032.png" alt=""></p>
-<p>图1. 2H，4H和5H覆盖的CeO2(111)表面生成H2的反应路径示意图。黄色, 红色，蓝色，白色，黑色和灰色原子球分别代表Ce，表面O，次表面O，H，次表面氧空位和表面氧空位。</p>
-<p><img src="/2019/10/13/S03/share03/s033.png" alt=""></p>
-<p>图2不同反应温度与应力条件下最优反应路径生成H2的反应速度对比图。</p>
-<p><code>作者简介</code></p>
-<p>本文第一作者，武甜甜为丹麦科技大学能源转化与储存系博士后研究员。</p>
-<p>Google Scholar： </p>
-<p><a target="_blank" rel="noopener" href="https://scholar.google.com/citations?user=rm84jfsAAAAJ&amp;hl=en">https://scholar.google.com/citations?user=rm84jfsAAAAJ&amp;hl=en</a></p>
-<p>指导老师为：Tejs Vegge教授。</p>
-<p>课题组主页：<a target="_blank" rel="noopener" href="https://www.dtu.dk/english/service/phonebook/person?id=5334&amp;tab=1。">https://www.dtu.dk/english/service/phonebook/person?id=5334&amp;tab=1。</a></p>
-<p>本文经作者授权发布，版权属于第一作者。</p>
 
       
     </div>
