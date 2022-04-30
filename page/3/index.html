@@ -289,30 +289,28 @@
 <h3 id="使用前的准备工作"><a href="#使用前的准备工作" class="headerlink" title="使用前的准备工作"></a>使用前的准备工作</h3><p>2.1）下载脚本，将脚本命名为：POSCARtoolkit.py  </p>
 <p>2.2）可执行化：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u+x POSCARtoolkit.py</span><br></pre></td></tr></table></figure>
-
 <p>2.3）将脚本移到~/bin 文件夹下面： </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv POSCARtoolkit.py ~/bin</span><br></pre></td></tr></table></figure>
-
 <p>注释：</p>
 <p>A) 2.2 和2.3步的顺序可以颠倒，不影响使用；</p>
 <p>B) 如果没有~/bin文件夹，那么 mkdir ~/bin 手动创建一个即可。</p>
 <h3 id="坐标转换"><a href="#坐标转换" class="headerlink" title="坐标转换"></a>坐标转换</h3><p>这个脚本可以实现分数坐标（Direct）向笛卡尔坐标（Cartesian）的转换。VASP的输出结果是以分数坐标的形式存在CONTCAR中，但我们在操作模型的过程中，移动原子都是以Å来进行的，所以将分数坐标转化为笛卡尔坐标对于搭建模型很有帮助。脚本用法：<code>POSCARtoolkit.py -i POSCAR</code></p>
 <p><strong>注意：</strong></p>
 <p>如果你的POSCARtoolkit.py脚本在和POSCAR一个目录下，使用下图中的命令，如果你已经完成了前面2中的步骤，脚本前面的python 不用输入。</p>
-<p> <img src="/2018/11/11/ex73/ex73-1.jpg"></p>
+<p> <img src="/2018/11/11/ex73/ex73-1.jpg" alt=""></p>
 <p>描述1） -i 代表 input的意思, 后面紧跟你要转化的文件，可以是POSCAR，CONTCAR，也可以是其他的VASP的坐标文件。比如你把POSCAR命名成bigbro, 也是可以直接转换的。 POSCARtoolkit.py –i bigbro  即可。</p>
 <p>描述2）：脚本将含有分数坐标的POSCAR 转换成笛卡尔坐标的POSCAR_C。输出的文件被命名为POSCAR_C。</p>
 <p>描述3）如果你预先把POSCAR命名为bigbro， 那么运行程序后，输出结果为 bigbro_C.</p>
 <p>描述4）如果POSCAR已经为笛卡尔坐标，则转换终止，大家可以尝试一下转换一个笛卡尔坐标的POSCAR。</p>
 <h3 id="原子层数的固定"><a href="#原子层数的固定" class="headerlink" title="原子层数的固定"></a>原子层数的固定</h3><p>除了可以实现坐标系的转换，该脚本还可以根据Z方向的原子坐标，固定底部几层原子。</p>
 <p>这在slab模型的相关计算中非常实用，如下图所示，在slab模型中，我们经常将底部的原子层固定，只放开表面的来进行计算。</p>
-<p><img src="/2018/11/11/ex73/ex73-2.jpg"></p>
+<p><img src="/2018/11/11/ex73/ex73-2.jpg" alt=""></p>
 <p>比如我们把底部的三层原子进行固定。脚本的用法如下：<code>POSCARtoolkit.py -i POSCAR_C -f</code></p>
-<p><img src="/2018/11/11/ex73/ex73-3.png"></p>
+<p><img src="/2018/11/11/ex73/ex73-3.png" alt=""></p>
 <p>描述1） 脚本会根据阈值（默认1.5 Å）划分层，这里的1.5 Å指的是层间距。</p>
 <p>描述2） 用户可以通过在脚本后面增加参数 -y 1.0 自己定义更小的阈值</p>
 <p>描述3） 如果不想每次使用的时候使用参数-y，用户也可以直接在脚本里面修改阈值的大小，如下如，在第40行中，默认的阈值1.5被修改0.5。</p>
-<p><img src="/2018/11/11/ex73/ex73-4.png"></p>
+<p><img src="/2018/11/11/ex73/ex73-4.png" alt=""></p>
 <p>当然，修改脚本默认的参数后，如果使用中使用的 –y， 还是会按照 –y 后面的阈值进行操作。</p>
 <p>描述4） 输入完命令，回车后，会提醒用户输入固定的层数，这里我们输入3，回车，即固定底下三层原子，而其他原子放开。</p>
 <p>描述5） 上图命令中，我们对POSCAR_C 进行操作，输出文件问POSCAR_C_C。</p>
@@ -342,37 +340,26 @@
 <p>描述4）其他未选择的原子，限制信息保持不变。</p>
 <p>实例操作1： 如果我们想固定POSCAR_C中所有的原子：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POSCARtoolkit.py -i POSCAR_C  -f  -s  all</span><br></pre></td></tr></table></figure>
-
 <p>注释： -f 表示fix， -s all 表示选择所有的原子</p>
 <p>POSCAR_C 中必须有<code>Selective dynamics</code>这一行</p>
-<p><img src="/2018/11/11/ex73/ex73-5.png"></p>
+<p><img src="/2018/11/11/ex73/ex73-5.png" alt=""></p>
 <p>实例操作2： 将所有的原子只在z方向上放开：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POSCARtoolkit.py -i POSCAR_C  -r FF T  -s  all</span><br></pre></td></tr></table></figure>
-
 <p>注释：放开z方向上使用 –r FF T， FFT之间有无空格均可。</p>
-<p><img src="/2018/11/11/ex73/ex73-6.png"></p>
+<p><img src="/2018/11/11/ex73/ex73-6.png" alt=""></p>
 <p>实例操作3： 将所有的C，H, O 原子在xy方向上放开：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POSCARtoolkit.py -i POSCAR_C  -r TTF  -s  C H O</span><br></pre></td></tr></table></figure>
-
 <p>实例操作4： 将所有的Pt原子和40号原子在z方向放开：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POSCARtoolkit.py -i POSCAR_C  -r  FFT  -s  Pt 40</span><br></pre></td></tr></table></figure>
-
 <h3 id="批量转化"><a href="#批量转化" class="headerlink" title="批量转化"></a>批量转化</h3><p>前面介绍的都是针对一个文件进行操作，由于固定原子层数的功能我们设置了一个交互，需要用户指定需要固定的层数（z轴从下到上）。</p>
 <p>但这对于层数批量固定操作来说是个累赘，我们不想每操作一个文件就输入一次层数。</p>
 <p>所以，如果想跳过交互，可以通过管道连接符 | 实现。比如固定底部4层：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 4 | python POSCARtoolkit.py -i CONTCAR –f</span><br></pre></td></tr></table></figure>
-
 <p>知道了这一点，我们就可以通过一个for循环进行批量固定层数的操作了。比如我们有POSCAR1， POSCAR2 到POSCAR100个文件，</p>
-<ol>
-<li>我们想批量固定它们的底部3层。</li>
-</ol>
+<p>1) 我们想批量固定它们的底部3层。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in POSCAR&#123;1..10&#125;; do echo 3 | python POSCARtoolkit.py  –i  $i  –f ; done </span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>我们想批量将C H O原子在z方向上放开，zy方向上固定。（这个不需要管道连接符）</li>
-</ol>
+<p>2) 我们想批量将C H O原子在z方向上放开，zy方向上固定。（这个不需要管道连接符）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in POSCAR&#123;1..10&#125;; do python POSCARtoolkit.py  –i  $i  –r FFT –s C H O ; done</span><br></pre></td></tr></table></figure>
-
 <h3 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h3><p>这个脚本在模型操作的过程中，实用性很强，也很方便。实在是VASP计算中的一大利器。本脚本是群友tamas-zju-VASP（小塔玛斯）费煞苦心完成的。如果感觉不错，欢迎打赏。下载链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1JJHVM27NdIC-uZlxzlg-Mg">https://pan.baidu.com/s/1JJHVM27NdIC-uZlxzlg-Mg</a>   提取码:mt7e</p>
 
       
@@ -474,7 +461,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><img src="/2018/11/10/ex72/ex72-1.png"></p>
+          <p><img src="/2018/11/10/ex72/ex72-1.png" alt=""></p>
 <p>不好意思，让大家久等了。最近一直很忙，后面还是会很忙。为了不让大家失望，抽时间把简单的过渡态计算讲解一下，这一节我们需要学习的是通过CI-NEB（Climbing Image Nudged Elastic Band）计算H原子在Ru(0001)表面上的扩散过程。</p>
 <h3 id="NEB计算过渡态的准备工作"><a href="#NEB计算过渡态的准备工作" class="headerlink" title="NEB计算过渡态的准备工作"></a>NEB计算过渡态的准备工作</h3><p><strong>准备工作1：</strong></p>
 <p>说到NEB或者CINEB，不得不提的就是Henkelman课题组的VTST：<a target="_blank" rel="noopener" href="http://henkelmanlab.org/">http://henkelmanlab.org/</a> . 我们需要下载VTST的code，然后将VASP编译一下，得到一个可以使用vtst的VASP版本。</p>
@@ -482,13 +469,13 @@
 <p>很不幸，怎么编译，我一窍不通。如果这一关过不了的话，后面的也只能看看热闹，不能亲自实践了。如果你已经编译好了VTST的VASP版本， 那么就可以继续下面的学习了。</p>
 <p><strong>准备工作2：</strong></p>
 <p>我们将VTST的一些实用小脚本下载下来：<a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/vtsttools/download.html">http://theory.cm.utexas.edu/vtsttools/download.html</a> </p>
-<p><img src="/2018/11/10/ex72/ex72-2.png"> </p>
+<p><img src="/2018/11/10/ex72/ex72-2.png" alt=""> </p>
 <p>下载VTST Scripts后解压，把所有脚本都复制到 ~/bin 目录下：效果如下:</p>
-<p><img src="/2018/11/10/ex72/ex72-3.png"></p>
+<p><img src="/2018/11/10/ex72/ex72-3.png" alt=""></p>
 <p>很多脚本估计你一辈子都不会用到，没关系，它们很小，不占存储空间，静悄悄躺在bin文件里面就行了。Linux老手们嫌烦可以把这些脚本放到一个文件夹里面，然后bashrc文件里面修改下路径就可以了。</p>
 <p><strong>准备工作3</strong>：</p>
 <p>修改nebresults.pl 文件，将57到71行注释掉，注释掉就是在每一行的开头加个#号，效果如下：</p>
-<p><img src="/2018/11/10/ex72/ex72-4.png"></p>
+<p><img src="/2018/11/10/ex72/ex72-4.png" alt=""></p>
 <p>为什么需要这么做？</p>
 <p>如果neb运行的时候，你使用这个命令，它就会把你的OUTCAR文件压缩，VASP找不到OUTCAR，就不知道该往哪里存储，然后就挂掉了。大家可以在neb任务运行的时候分别运行下注释前后的脚本，对比下就清楚了。</p>
 <h3 id="扩散的基础知识"><a href="#扩散的基础知识" class="headerlink" title="扩散的基础知识"></a>扩散的基础知识</h3><p>准备工作完成，我们加深下扩散（diffusion）的一些概念：</p>
@@ -499,15 +486,15 @@
 <p>为什么是12% 呢？ 这只是一个经验性的结论，大家可以参考大牛Manos Mavrikakis的俺狗娃文章: (不要留言问我要这个文章…)</p>
 <p>A Simple Rule of Thumb for Diffusion on Transition-Metal Surfaces</p>
 <p><a target="_blank" rel="noopener" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/anie.200602223">https://onlinelibrary.wiley.com/doi/abs/10.1002/anie.200602223</a></p>
-<p><img src="/2018/11/10/ex72/ex72-5.png"></p>
+<p><img src="/2018/11/10/ex72/ex72-5.png" alt=""></p>
 <p>2.3  从结构角度来看，举个面心立方的金属(111)面为例，表面上有fcc, hcp, top, 和 bridge这四个位点。如果fcc或者hcp的位点对应稳定的吸附构型，那么bridge的这个位点就是扩散的过渡态。所以，如果你想简单算一个扩散的过渡态，直接算bridge的吸附就可以了。但是，bridge的位点也不是那么容易就可以算出来的。前面我们讲过Cu(111)表面的吸附计算，很多人就反应bri的结构优化不出来。Bridge 的位点就跟下面的这个独木桥类似，少一不小心就掉下去了。</p>
-<p><img src="/2018/11/10/ex72/ex72-6.jpeg"></p>
+<p><img src="/2018/11/10/ex72/ex72-6.jpeg" alt=""></p>
 <p>换个角度来分析：既然我们直接优化得不到bridge的结构，而这个结构恰恰就是过渡态，那么我们就可以使用算过渡态的方法来得到bridge的结构。当然，能直接优化出来bridge的结构是最好的。</p>
 <h3 id="过渡态计算的步骤"><a href="#过渡态计算的步骤" class="headerlink" title="过渡态计算的步骤"></a>过渡态计算的步骤</h3><p>3.1 第一步：优化初始和末态结构。</p>
 <p> 首先我们先优化一个扩散前后的两个结构： H在FCC和HCP位点上的吸附。这个对于认真练习过前面计算的筒子们来说就是小菜一碟了。直接列出来top view 的示意图：</p>
-<p><img src="/2018/11/10/ex72/ex72-7.png"></p>
+<p><img src="/2018/11/10/ex72/ex72-7.png" alt=""></p>
 <p>FCC site</p>
-<p><img src="/2018/11/10/ex72/ex72-8.png"></p>
+<p><img src="/2018/11/10/ex72/ex72-8.png" alt=""></p>
 <p> HCP site</p>
 <p>3.2 第二步：准备NEB的结构</p>
 <p>这里我们需要用到VTST官网的一个小脚本：nebmake.pl，使用方法如下： </p>
@@ -521,9 +508,9 @@
 <p>可以是其他目录里面的POSCAR或者CONTCAR, 也可以是当前目录下的POSCAR或者CONTCAR。 </p>
 <p>你可以把初始结构的POSCAR命名成你的名字：bigbro ， 末态命名成：bigbra. 运行的时候命令应该这么敲：<code>nebmake.pl   bigbro  bigbra  8</code></p>
 <p>下面图里面的三个事例，是等价的。自己随意领会：</p>
-<p><img src="/2018/11/10/ex72/ex72-9.png"></p>
-<p><img src="/2018/11/10/ex72/ex72-10.png"></p>
-<p><img src="/2018/11/10/ex72/ex72-11.png"></p>
+<p><img src="/2018/11/10/ex72/ex72-9.png" alt=""></p>
+<p><img src="/2018/11/10/ex72/ex72-10.png" alt=""></p>
+<p><img src="/2018/11/10/ex72/ex72-11.png" alt=""></p>
 <p><strong>细节2：</strong> </p>
 <p>插入的点数要保证可以被使用的核数整除。比如我们打算用24个核进行计算，那么N可以是下面的几种情况：</p>
 <table style="width: 618px;" cellspacing="0" cellpadding="0"><tbody><tr class="firstRow"><td style="border: 1px solid windowtext; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">N</span></p></td><td style="border-color: windowtext windowtext windowtext currentcolor; border-style: solid solid solid none; border-width: 1px 1px 1px medium; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">Cores used for each Image</span></p></td><td style="border-color: windowtext windowtext windowtext currentcolor; border-style: solid solid solid none; border-width: 1px 1px 1px medium; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">Total</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">1</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">4</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">6</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">6</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">4</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">2</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">12</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">12</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">2</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">3</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">8</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="color: red; font-size: 14px;">8</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="color: red; font-size: 14px;">3</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="color: red; font-size: 14px;">24</span></p></td></tr></tbody></table>
@@ -653,8 +640,8 @@
 <p>1）  我们为什么要这样做？</p>
 <p>2）  乙烷构型网上到处都是，随便下载一个就可以直接拿来使用，如果将任意取向的结构转化为C—C 键平行于z轴的结构呢？</p>
 <p>下面是我们搭建的乙烷结构，并优化的结果。优化过程中，两个C原子在xy方向的坐标被固定住了。</p>
-<p><img src="/2018/11/09/ex71/ex71-1.png"></p>
-<p><img src="/2018/11/09/ex71/ex71-2.png"></p>
+<p><img src="/2018/11/09/ex71/ex71-1.png" alt=""></p>
+<p><img src="/2018/11/09/ex71/ex71-2.png" alt=""></p>
 <p>很显然，我们的初始结构经过优化后转变成了交错式的构型。</p>
 <hr>
 <h3 id="搭建过渡态的初始构型"><a href="#搭建过渡态的初始构型" class="headerlink" title="搭建过渡态的初始构型"></a>搭建过渡态的初始构型</h3><p>在重叠式的结构中，乙烷分子的两个CH<sub>3</sub>关于穿过CC轴的xy平面是对称的。所以，我们将上面CH<sub>3</sub>中H原子的xy坐标修改的和下面部分一样。</p>
@@ -662,18 +649,18 @@
 <p>1）  只修改xy坐标，z坐标保持不变</p>
 <p>2）  观察图中：3和8， 4和7， 以及5 和6 的xy坐标。</p>
 <p>3）  固定xy坐标，直接优化z方向</p>
-<p><img src="/2018/11/09/ex71/ex71-3.png"></p>
+<p><img src="/2018/11/09/ex71/ex71-3.png" alt=""></p>
 <p>下面是优化完的结果：计算很快就收敛了。</p>
-<p><img src="/2018/11/09/ex71/ex71-4.png"></p>
+<p><img src="/2018/11/09/ex71/ex71-4.png" alt=""></p>
 <hr>
-<h3 id="对比一下交错式和重叠式C—C的键长："><a href="#对比一下交错式和重叠式C—C的键长：" class="headerlink" title="对比一下交错式和重叠式C—C的键长："></a>对比一下交错式和重叠式C—C的键长：</h3><p><img src="/2018/11/09/ex71/ex71-5.png"></p>
-<p><img src="/2018/11/09/ex71/ex71-6.png"></p>
+<h3 id="对比一下交错式和重叠式C—C的键长："><a href="#对比一下交错式和重叠式C—C的键长：" class="headerlink" title="对比一下交错式和重叠式C—C的键长："></a>对比一下交错式和重叠式C—C的键长：</h3><p><img src="/2018/11/09/ex71/ex71-5.png" alt=""></p>
+<p><img src="/2018/11/09/ex71/ex71-6.png" alt=""></p>
 <p>在重叠式中，C—C 稍微拉长了一点。</p>
 <h3 id="频率计算"><a href="#频率计算" class="headerlink" title="频率计算"></a>频率计算</h3><p>在频率计算的时候，本人把所有的原子都放开了，如下图：</p>
-<p><img src="/2018/11/09/ex71/ex71-7.png"></p>
-<p><img src="/2018/11/09/ex71/ex71-8.png"></p>
+<p><img src="/2018/11/09/ex71/ex71-7.png" alt=""></p>
+<p><img src="/2018/11/09/ex71/ex71-8.png" alt=""></p>
 <p>通过命令发现，有个256 cm<sup>-1</sup>的虚频。使用Jmol可视化一下：</p>
-<p><img src="/2018/11/09/ex71/ex71-9.png"></p>
+<p><img src="/2018/11/09/ex71/ex71-9.png" alt=""></p>
 <p>过渡态计算完毕。</p>
 <hr>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>大家等了很久，看完肯定会对本节失望。但过渡态计算里面的一些技巧很多都是自己琢磨出来的。比如我们将分子沿着平行z轴的方向放置，根据对称性手动搭建过渡态的结构，以及固定坐标，选择性地优化等。还是那句话：过渡态只是个结构，我们需要做的就是通过各种各样的办法来实现快速优化这个结构的目的。</p>
@@ -786,9 +773,9 @@
 </li>
 </ul>
 <h3 id="过渡态计算的例子"><a href="#过渡态计算的例子" class="headerlink" title="过渡态计算的例子"></a>过渡态计算的例子</h3><p>我们遵循一个从简单到复杂的顺序，慢慢介绍一下表面化学中过渡态的一般计算思路和方法。简单的例子，本节我们选取的是VASP官网的经典计算：NH<sub>3</sub>的翻转，如下图：</p>
-<p><img src="/2018/11/08/ex70/ex70-1.png"></p>
+<p><img src="/2018/11/08/ex70/ex70-1.png" alt=""></p>
 <p>如果你不太懂这个过程，可以把NH<sub>3</sub>看做一把雨伞。翻转的过程，就相当于大风把伞吹翻。</p>
-<p><img src="/2018/11/08/ex70/ex70-2.jpeg"></p>
+<p><img src="/2018/11/08/ex70/ex70-2.jpeg" alt=""></p>
 <p>对于这个计算的一些参考资料，大家可以点下面这两个链接：</p>
 <p>1） <a target="_blank" rel="noopener" href="http://www.vasp.at/vasp-workshop/tutorials/tutorial_ammonia_flipping.pdf">http://www.vasp.at/vasp-workshop/tutorials/tutorial_ammonia_flipping.pdf</a></p>
 <p>Vasp官网的一个PPT介绍，这个PPT有些年头了，不过对于我们学习还是很有帮助的。建议看完PPT里面的内容（最好是自己练习一遍后），再继续下面的学习。</p>
@@ -799,58 +786,49 @@
 <p>算过渡态，肯定指的是某一个反应或者过程的过渡态。过渡态的两边也分别对应着反应物和反应产物。所以，算一个反应的过渡态，不管计算过程如何，我们最终都会有三个结构：初始和末态结构，以及过渡态。初末态的结构和前我们已经讲过的优化过程是一样的，我们先回顾一番。</p>
 <hr>
 <h4 id="初态结构的优化"><a href="#初态结构的优化" class="headerlink" title="初态结构的优化"></a>初态结构的优化</h4><p><strong>1）搭建结构（POSCAR）</strong></p>
-<p><img src="/2018/11/08/ex70/ex70-3.jpeg"></p>
+<p><img src="/2018/11/08/ex70/ex70-3.jpeg" alt=""></p>
 <p>该图中的三个结构分别对应的是NH3翻转的初始，过渡态以及末态结构。这里反应物和产物都是NH3。首先，我们肯定要有一个NH3的结构。这里大师兄就直接复制PPT里面的坐标快速制备一个POSCAR。</p>
-<p><img src="/2018/11/08/ex70/ex70-4.png"></p>
+<p><img src="/2018/11/08/ex70/ex70-4.png" alt=""></p>
 <p>注意： PPT里面没有写元素符号，大家记得自己加上。下图是本人复制后制作的POSCAR。 （添加了元素行，Cartesian坐标。）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ammonia flipping</span><br><span class="line">1.0</span><br><span class="line"> +9.0000000000  +0.0000000000  +0.0000000000</span><br><span class="line"> +0.0000000000 +10.0000000000  +0.0000000000</span><br><span class="line"> +0.0000000000  +0.0000000000 +11.0000000000</span><br><span class="line">H N</span><br><span class="line"> 3 1</span><br><span class="line">Selective</span><br><span class="line">Cartesian</span><br><span class="line"> +3.8185740000  +3.9721220000  +4.3936400000  T T T</span><br><span class="line"> +3.0000000000  +2.5542720000  +4.3936400000  T T T</span><br><span class="line"> +2.1814260000  +3.9721220000  +4.3936400000  T T T</span><br><span class="line"> +3.0000000000  +3.5000000000  +4.0000000000  F F F</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/11/08/ex70/ex70-5.png"></p>
+<p><img src="/2018/11/08/ex70/ex70-5.png" alt=""></p>
 <hr>
 <p><strong>2） 准备输入文件（INCAR）</strong></p>
 <p>优化NH$_3$的初始结构：(回顾气相分子计算需要注意的地方)</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">System = NH3</span><br><span class="line">ISMEAR = 0</span><br><span class="line">SIMGA = 0.01</span><br><span class="line"></span><br><span class="line">ALGO = FAST</span><br><span class="line">ENCUT = 450</span><br><span class="line">EDIFF = 1E-5</span><br><span class="line"></span><br><span class="line">NWRITE = 0</span><br><span class="line">LWAVE = .FALSE.</span><br><span class="line">LCHARG = .FALSE.</span><br><span class="line"></span><br><span class="line">IBRION = 2</span><br><span class="line">POTIM = 0.1</span><br><span class="line">EDIFFG = -0.02</span><br><span class="line">NSW = 100</span><br></pre></td></tr></table></figure>
-
-
-
 <p><strong>3） 准备输入文件（KPOINTS）</strong></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">K-POINTS</span><br><span class="line"> 0</span><br><span class="line">Gamma</span><br><span class="line"> 1 1 1</span><br><span class="line"> 0 0 0</span><br></pre></td></tr></table></figure>
-
 <p><strong>4） 准备POTCAR 并提交任务</strong></p>
 <p><strong>5) 优化完的结构：</strong></p>
-<p><img src="/2018/11/08/ex70/ex70-6.png"></p>
+<p><img src="/2018/11/08/ex70/ex70-6.png" alt=""></p>
 <p>只需要几步优化就完成了。这是因为我们复制的别人的（VASP官网例子）结构，因为这些结构已经被优化过了。即我们优化过程有一个很好的猜测结构。</p>
 <p>这给我们的启发就是：在你开始计算的时候，一定要善于利用前人的或者自己前面的计算结构。这会大大节省我们的计算工作量。</p>
 <hr>
 <h4 id="末态结构的搭建优化"><a href="#末态结构的搭建优化" class="headerlink" title="末态结构的搭建优化"></a>末态结构的搭建优化</h4><p>在上面结构的基础上，我们很容易搭建初末态的结构。仔细观察这个图，我们可以保持H原子的坐标不变，只需要将N原子的坐标修改一下。初始结构里面，三个H原子在xy平面上，</p>
 <p>N与H原子z方向的距离为0.3929 Å。如果N原子翻转过去，那么它的坐标将会是：</p>
 <p>4.3929 + 0.3929  = 4.7858 Å。</p>
-<p><img src="/2018/11/08/ex70/ex70-7.jpeg"></p>
+<p><img src="/2018/11/08/ex70/ex70-7.jpeg" alt=""></p>
 <p><strong>自行将这个图顺时针旋转90°</strong></p>
-<p><img src="/2018/11/08/ex70/ex70-8.png"></p>
+<p><img src="/2018/11/08/ex70/ex70-8.png" alt=""></p>
 <p>然后跟前面同样的方法，优化一下就可以了。</p>
-<h4 id="过渡态结构的优化"><a href="#过渡态结构的优化" class="headerlink" title="过渡态结构的优化"></a>过渡态结构的优化</h4><p><img src="/2018/11/08/ex70/ex70-9.jpeg"></p>
+<h4 id="过渡态结构的优化"><a href="#过渡态结构的优化" class="headerlink" title="过渡态结构的优化"></a>过渡态结构的优化</h4><p><img src="/2018/11/08/ex70/ex70-9.jpeg" alt=""></p>
 <p>上图中，我们可以发现，过渡态是一个平面的结构，我们可以按照前面末态结构搭建的思想弄一个初始的过渡态结构出来。即直接将N原子的z方向坐标修改成H原子的。如下图：</p>
-<p><img src="/2018/11/08/ex70/ex70-10.png"></p>
+<p><img src="/2018/11/08/ex70/ex70-10.png" alt=""></p>
 <p>对比下前面初末态结构的坐标，你会发现Z 方向上被固定住了（最后一列SZ没有选择）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">+3.8177218605  +3.9717738141  +4.3929644172  T T F</span><br><span class="line">+3.0000000000  +2.5559112549  +4.3926756556  T T F</span><br><span class="line">+2.1822781395  +3.9717738141  +4.3929644172  T T F</span><br><span class="line">+3.0000000000  +3.5000000000  +4.3929644172  F F F</span><br></pre></td></tr></table></figure>
-
 <p>这样做是强制优化过程中，所有的原子都在xy平面上。我们只优化H原面的坐标。原因如下：</p>
-<p><img src="/2018/11/08/ex70/ex70-11.png"></p>
+<p><img src="/2018/11/08/ex70/ex70-11.png" alt=""></p>
 <p>这个三角形对应的就是我们从初始结构（IS）搭建过渡态结构（TS）的过程。在初始结构里面，N在三角形最下面，H在右边的点上，当我们人为把N原子放到H平面上的时候，N从下面的点移动到上面，导致N—H 键变短（从1.022 减小到0.944 Å）。但这个变短的过程是我们人为搭建结构所导致的。所以我们要把H原子在xy表面上放开，继续优化一下。参数（ICNAR，POTCAR， KPOINTS）保持不变，提交优化任务，最终我们的过渡态结构如下：</p>
-<p><img src="/2018/11/08/ex70/ex70-12.png"></p>
+<p><img src="/2018/11/08/ex70/ex70-12.png" alt=""></p>
 <p>N, H 在同一平面内，N—H 键长为：1.004 Å</p>
 <hr>
 <h3 id="频率计算：（过渡态的验证办法之一）"><a href="#频率计算：（过渡态的验证办法之一）" class="headerlink" title="频率计算：（过渡态的验证办法之一）"></a>频率计算：（过渡态的验证办法之一）</h3><p>验证一个算完的过渡态是不是真正过渡态的时候，我们需要用到频率计算。因为过渡态只有一个虚频。（自己看书去学习为什么只有一个虚频？）复习下前面我们讲过的频率计算的细节：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">IBRION = 5</span><br><span class="line">POTIM = 0.015</span><br><span class="line">EDIFF = 1E-6</span><br><span class="line">NFREE = 2</span><br><span class="line">NSW = 1</span><br></pre></td></tr></table></figure>
-
-
-
 <p>5）此外，我们需要另外加一个无关痛痒的参数：NWRITE = 2 （或者不设置，默认值是2）</p>
 <p>大师兄本人喜欢用NWRITE = 0 。但当参数为0，使用Jmol可视化频率计算结果的时候：你会发现所有的原子都是同一个颜色，如下图：</p>
-<p><img src="/2018/11/08/ex70/ex70-13.png"></p>
+<p><img src="/2018/11/08/ex70/ex70-13.png" alt=""></p>
 <p>当使用NWRITE的默认值2的时候，则是正常的：这是因为NWRITE = 0 写入的OUTCAR的数据太少，Jmol无法获取元素相关的参数用来可视化。此处，特别感谢群里的：<strong>连赞小朋友</strong>帮忙分析.</p>
-<p><img src="/2018/11/08/ex70/ex70-14.png"></p>
+<p><img src="/2018/11/08/ex70/ex70-14.png" alt=""></p>
 <p>提取频率相关的参数，可以使用下面的命令：</p>
 <p>grep cm-1 OUTCAR 提取所有的频率（检查频率结果推荐使用）</p>
 <p>grep ‘i=’  OUTCAR  提取所有的虚频 （基本没啥用）</p>
@@ -966,18 +944,18 @@
 <p>2）原子核的能级间隔极大，在一般的物理和化学过程中，原子核总是处于基态。所以这一项也可以忽略。</p>
 <p>3）到现在我们需要考虑的只有平动，转动和振动这三个了。</p>
 <h3 id="分子从气相到表面吸附的过程"><a href="#分子从气相到表面吸附的过程" class="headerlink" title="分子从气相到表面吸附的过程"></a>分子从气相到表面吸附的过程</h3><p>当分子从气相吸附到表面上，打个不恰当的比喻，就如同图中的苍蝇被粘住在纸板上，因此就不能随便乱飞了，更不用说施展什么空中技巧了。</p>
-<p><img src="/2018/11/07/ex69/ex69-1.jpeg"></p>
+<p><img src="/2018/11/07/ex69/ex69-1.jpeg" alt=""></p>
 <p>同样，对分子来说，举个例子，一个非线性的三原子分子，一共有3N个自由度。气相里面为：3个平动，3个转动以及3N-6个振动。但是当它吸附到表面上，由于平动和转动被限制住了，这6个自由度则会转化成振动自由度，也就是在表面上分子有3N个振动模式。如果你可视化表面上吸附分子频率计算的结果，会发现最后6个分别对应的是平动和转动，但它们已经不是气相中的平动和转动了，我们称之为：frustrated translation，frustrated rotation。</p>
-<p><img src="/2018/11/07/ex69/ex69-2.jpeg"></p>
+<p><img src="/2018/11/07/ex69/ex69-2.jpeg" alt=""></p>
 <p>（你大妈(平动转动)已经不是十年前的大妈了，你大爷(振动)永远是你大爷）</p>
 <p>这两个在表面化学里面是非常令人蛋疼的东西。这个我们后面慢慢讲。至少现在我们知道了，表面的吸附物种有3N个振动方式。所以，平动和转动对熵的贡献也不用管了，直接处理振动即可。（不会算的筒子们小开心下。）</p>
 <h3 id="通过振动频率来计算Entropy"><a href="#通过振动频率来计算Entropy" class="headerlink" title="通过振动频率来计算Entropy"></a>通过振动频率来计算Entropy</h3><p>振动频率对熵的贡献，随便查阅一本统计热力学的书，都可以找到答案，这里我们的参考书是第十版Atkins的物理化学。</p>
 <p>Physical Chemistry 第10版的642页。获取方式：QQ群文件，Books文件下里面就有，自己下载。</p>
-<p><img src="/2018/11/07/ex69/ex69-3.jpeg">  <img src="/2018/11/07/ex69/ex69-4.png"></p>
+<p><img src="/2018/11/07/ex69/ex69-3.jpeg" alt="">  <img src="/2018/11/07/ex69/ex69-4.png" alt=""></p>
 <hr>
-<p><img src="/2018/11/07/ex69/ex69-5.png"></p>
+<p><img src="/2018/11/07/ex69/ex69-5.png" alt=""></p>
 <p>图里面圈出来的公式里面，β，h，c，是基本的物理学常数。v （上面加个波浪号）是波数，单位是：m<sup>-1</sup>。我们就是通过这个公式来计算单个振动模式对熵的贡献。这个很简单，直接把数值带入公式即可，可以摁计算器，也可以用excel等其他工具进行计算。本节，我们分享一个对应这个公式的python小脚本。</p>
-<p><img src="/2018/11/07/ex69/ex69-6.png"></p>
+<p><img src="/2018/11/07/ex69/ex69-6.png" alt=""></p>
 <p>通过单个振动频率计算熵的小脚本，图里面的98.485是错的，应该是96.485，kJ/mol 转换为 eV的常数。</p>
 <p>脚本解释：</p>
 <p>i）VASP得到的频率波数是cm<sup>-1</sup>，这也是大家所习惯接受的，所以在12行，单位要乘以100先将 cm<sup>-1</sup> 转化成m<sup>-1</sup>。</p>
@@ -991,26 +969,26 @@
 <p>v）自己对着图片输入一遍就可以得到脚本了，不要问我要现成的。如果自己照着抄的脚本运行出现错误，反复跟图片里面的进行对比，然后进行修改。</p>
 <hr>
 <h3 id="熟悉不同的振动频率对熵的贡献"><a href="#熟悉不同的振动频率对熵的贡献" class="headerlink" title="熟悉不同的振动频率对熵的贡献"></a>熟悉不同的振动频率对熵的贡献</h3><p>有了这个小脚本，我们就可以计算任何振动频率对熵的贡献了。一般来说，我们VASP的频率计算会有3N个波数，我们需要做的就是挨个算（虚频除外），然后求和即可。这里，大师兄想强调的并不是如何去通过这些频率去算熵（相信到现在你也已经学会了），而是要了解频率大小对熵的贡献程度。下图是我们计算了不同波数（从10到500 cm<sup>-1</sup>）的振动所对应的熵，以及TS, 单位分别为：J K<sup>-1</sup>mol<sup>-1</sup> 和 eV。</p>
-<p><img src="/2018/11/07/ex69/ex69-7.png"></p>
+<p><img src="/2018/11/07/ex69/ex69-7.png" alt=""></p>
 <p>通过上图的结果，你会发现：当波数越小的时候，TS越大，随着波数增加，TS越来越小，在490 cm<sup>-1</sup>, 300K 的时候,连0.01eV都不到。一般来说，正常的振动频率（3n-6，过去以及现在的大爷那部分）对熵的贡献，基本上就可以忽略掉了，因为一般来说正常的频率波数在400-3000cm<sup>-1</sup>范围之间。</p>
 <p>我们现在知道，波数越小，他们对熵的贡献也就越大，而前面我们说的frustrated translation 和 rotation，它们恰恰具有很小的波数，尤其是frustrated translation这部分，大部分都在50cm<sup>-1</sup>以下，因此他们对熵的贡献不能忽略。然而，它们既有体相声子谱的一些特征，也有气相分子的平动和转动的样子。因此在处理的时候，要小小心心地将它们剥离开来，非常令人蛋疼。正所谓：雄兔脚扑朔，雌兔眼迷离；双兔傍地走，安能辨我是雄雌？</p>
-<p><img src="/2018/11/07/ex69/ex69-8.jpeg"></p>
+<p><img src="/2018/11/07/ex69/ex69-8.jpeg" alt=""></p>
 <p>另一方面：由于它们的波数很小，而VASP在小波数这部分的计算很烂，软件计算的结果也会导致很大的误差产生。一般来说大家都直接放弃，忽略这部分了。当然这样的理由很多人不服，明明知道它们波数小，对熵的贡献大，却又不得不忽略。这里，大师兄再给你另外一个解释：摘自Computational Catalysis (RSC) 这本书的第32页。如下：</p>
-<p><img src="/2018/11/07/ex69/ex69-9.png"></p>
+<p><img src="/2018/11/07/ex69/ex69-9.png" alt=""></p>
 <p>在这里建议我们将平动单独处理，假设的是分子在二维平面内可以运动。也就是说只损失了一个方向的自由度。经验告诉我们，对不同的过渡金属表面来说，平动部分对熵的贡献可以作为一个常数来处理。所以，又可以不考虑了…. 以上是大家一般都不考虑这部分的贡献的原因。当然，你也可以根据上面的公式计算frustrated translation对熵的贡献，然后其他的按照振动来处理即可。</p>
 <p>如果你对这一部分感兴趣，可以参考下这些人的工作：</p>
 <p>1） Campbell 这个牛牛的JACS，还有一篇Chemical Review，大家自己找下。</p>
-<p><img src="/2018/11/07/ex69/ex69-10.png"></p>
+<p><img src="/2018/11/07/ex69/ex69-10.png" alt=""></p>
 <p>2） 最新的一篇JPCC</p>
-<p><img src="/2018/11/07/ex69/ex69-11.png"></p>
+<p><img src="/2018/11/07/ex69/ex69-11.png" alt=""></p>
 <p>3） Tamkin 这个软件的作者以及她发表的一些文章： <a target="_blank" rel="noopener" href="http://molmod.github.io/tamkin/">http://molmod.github.io/tamkin/</a> </p>
-<p><img src="/2018/11/07/ex69/ex69-12.png"></p>
+<p><img src="/2018/11/07/ex69/ex69-12.png" alt=""></p>
 <p>4）Norskov 这个牛牛的一本书：Fundamental Concepts in Heterogeneous Catalysis （群文件也有，自己去找）</p>
 <p><a target="_blank" rel="noopener" href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781118892114">https://onlinelibrary.wiley.com/doi/book/10.1002/9781118892114</a> </p>
-<p><img src="/2018/11/07/ex69/ex69-13.jpeg"></p>
+<p><img src="/2018/11/07/ex69/ex69-13.jpeg" alt=""></p>
 <p>注意： 在这本书里的P33页，不同的吸附位点，构型数目，也会对熵有贡献：如下图：</p>
-<p><img src="/2018/11/07/ex69/ex69-14.png"></p>
-<p>这个的贡献不是很大，如果你的覆盖度为1/9的时候，R * ln((1/9) / (8/9)) = R * ln (1/8)， 300K的时候，TS = 300 * 8.314 * ln (1/8) / 1000 / 98.485 = 0.053 eV。差不多可以忽略掉。</p>
+<p><img src="/2018/11/07/ex69/ex69-14.png" alt=""></p>
+<p>这个的贡献不是很大，如果你的覆盖度为1/9的时候，R <em> ln((1/9) / (8/9)) = R </em> ln (1/8)， 300K的时候，TS = 300 <em> 8.314 </em> ln (1/8) / 1000 / 98.485 = 0.053 eV。差不多可以忽略掉。</p>
 <h3 id="再提零点能"><a href="#再提零点能" class="headerlink" title="再提零点能"></a>再提零点能</h3><p>师兄，既然前面的frustrated的平动和转动我们都忽略了，那么他们的零点能矫正的时候还用不用考虑。</p>
 <p>答：小波数范围对零点能的贡献很小，一般来说，考虑或者不考虑它们的贡献，无关紧要。本人一般直接都加上。</p>
 <h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>1）表面化学中，熵的贡献主要在吸附/脱附的阶段，因为分子损失/获得了大部分的平动和转动，对于表面吸附物种的熵：</p>
@@ -1148,24 +1126,22 @@
 <p>小技巧2）： 只提取虚频，使用 grep  f/i OUTCAR</p>
 <p>下面是我们测试的结果。H<sub>2</sub>O为三原子非线性的分子，振动的自由度为：3N - 6 = 3; 也就是有三个振动方式。减去的那6个分别为平动和转动。</p>
 <p>对比下不同K点振动波数的区别，都在下面图里了，大家自己看下。</p>
-<p><img src="/2018/11/06/ex68/ex68-1.png"></p>
+<p><img src="/2018/11/06/ex68/ex68-1.png" alt=""></p>
 <p>上面图中，前三个为振动的一些能量信息，通过对比可以发现：</p>
 <p>i）使用 111 的KPOINTS的时候，我们得到了一个虚频，而其他的KPOINTS没有。</p>
 <p>ii）对于振动来说，所有的KPOINTS的结果基本保持不变。</p>
 <hr>
-<ol start="2">
-<li>看下不同K值对计算时间的影响。</li>
-</ol>
-<p><img src="/2018/11/06/ex68/ex68-2.png"></p>
+<p>2) 看下不同K值对计算时间的影响。</p>
+<p><img src="/2018/11/06/ex68/ex68-2.png" alt=""></p>
 <p>啥也不想说了，111所花的时间也仅仅是441的一个零头。如果你是个糙哥，111的结果完全够用。如果你是个细心的软男，不敢用111，但又害怕浪费机时，221则是个很好地选择。</p>
 <hr>
-<p>**3 EDIFFG的测试 **</p>
+<p><strong>3 EDIFFG的测试 </strong></p>
 <p>这里之所以测试EDIFFG这个参数，是因为它决定了每一个离子步中电子步的步数。收敛条件越苛刻，需要的时间也就越多。</p>
 <p>1） 下面是EDIFFG分别为1E-5，1E-6和1E-7的结果， 所有的计算中：KPOINTS为441</p>
-<p><img src="/2018/11/06/ex68/ex68-3.png"></p>
+<p><img src="/2018/11/06/ex68/ex68-3.png" alt=""></p>
 <p>通过上面，你可以发现：EDIFFG  从1E-5到1E-7，振动频率变化很小。这个给我们的启示是，1E-5够用了。</p>
 <p>2） 我们看一下时间：</p>
-<p><img src="/2018/11/06/ex68/ex68-4.png"></p>
+<p><img src="/2018/11/06/ex68/ex68-4.png" alt=""></p>
 <p>K点都为441的时候，1E-5所花的时间是1E-7的一半。</p>
 <hr>
 <p><strong>4  思考与测试</strong></p>
@@ -1184,23 +1160,23 @@
 <hr>
 <p><strong>7  熵的计算</strong></p>
 <p> 零点能算完之后，我们还可以继续算以算熵。通过振动频率计算熵的做法我们下一节具体讨论。本节先介绍一下气相分子熵的获取。对于H<sub>2</sub>O来说，有3个平动和3个转动，而VASP在这方面做的实在是太差了。如果你有兴趣，可以翻阅一下<strong>Gaussian</strong>对于熵的计算细节：（<strong>下载链接</strong>：<a target="_blank" rel="noopener" href="http://gaussian.com/thermo/">http://gaussian.com/thermo/</a> ）</p>
-<p><img src="/2018/11/06/ex68/ex68-5.png"></p>
+<p><img src="/2018/11/06/ex68/ex68-5.png" alt=""></p>
 <p>我们可以根据这个，手动去计算平动和转动对熵的贡献，但相信大部分人不知道怎么去计算。庆幸的是，气相分子的熵值有热力学数据可以查。这里大师兄推荐2个数据库：</p>
 <p><strong>1）CRC Handbook</strong></p>
 <p>这是本人使用频率最高的数据库了。只要数据库里有的东西，写文章的时候直接引用这本书即可，非常方便。</p>
 <p>如果有师弟师妹再问你类似相关的问题，也可以用这本书直接砸砸砸！真可谓是绝世好板砖！</p>
-<p><img src="/2018/11/06/ex68/ex68-6.jpeg"></p>
+<p><img src="/2018/11/06/ex68/ex68-6.jpeg" alt=""></p>
 <hr>
-<p>**2) NIST 数据库 ** </p>
+<p><strong>2) NIST 数据库 </strong> </p>
 <p>网址： <a target="_blank" rel="noopener" href="https://janaf.nist.gov/">https://janaf.nist.gov/</a> </p>
 <p>如果你看一些原子热力学或者其他相关的计算，你会发现很多人在这个数据库里面获取熵值。很多人不仔细阅读文献，经常给我抱怨说找不到别人怎么算的。是的，你肯定不知道别人怎么算的，因为人家直接查的表，没有算。下面是这个数据库的简单用法：</p>
 <p>1）点击红圈中的箭头： </p>
-<p><img src="/2018/11/06/ex68/ex68-7.png"></p>
+<p><img src="/2018/11/06/ex68/ex68-7.png" alt=""></p>
 <p>2） 出来的下拉菜单中，点下H，然后找到H<sub>2</sub>O</p>
-<p><img src="/2018/11/06/ex68/ex68-8.png"></p>
+<p><img src="/2018/11/06/ex68/ex68-8.png" alt=""></p>
 <p>3） 点view ，你会得到下面的界面：</p>
 <p>-</p>
-<p><img src="/2018/11/06/ex68/ex68-9.png"></p>
+<p><img src="/2018/11/06/ex68/ex68-9.png" alt=""></p>
 <p>不同温度下的熵值已经在表中了。直接拿过来用，气相的T*S到手！</p>
 <hr>
 <p><strong>8 吉布斯自由能的计算(气相分子)</strong></p>
@@ -1210,7 +1186,7 @@
 <p>iii）TS 查表获取</p>
 <p>iV) 注意单位要统一。</p>
 <hr>
-<p>**9 总结: **</p>
+<p><strong>9 总结: </strong></p>
 <p>通过本节，你应该学会</p>
 <p>1）怎么计算表面吸附物种的振动；</p>
 <p>2）计算零点能；</p>
@@ -1343,43 +1319,44 @@
 <p>答：完全可以，只是本人不经常用这种办法而已。个人偏好将INCAR保持不变，以避免ENCUT不同所导致的计算结果错误。</p>
 <hr>
 <h2 id="1-H-2-O-吸附构型的第一步筛选："><a href="#1-H-2-O-吸附构型的第一步筛选：" class="headerlink" title="1. H$_2$O 吸附构型的第一步筛选："></a>1. H$_2$O 吸附构型的第一步筛选：</h2><p>这里，大师兄采用的是前面提到的第一个办法，即固定住表面，采用gamma点，然后优化H$_2$O。</p>
-<p><img src="/2018/11/05/ex67/ex67-01.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-01.png" alt=""></p>
 <ul>
 <li><p>1） 准备INCAR，KPOINTS(1x1x1)；</p>
 </li>
 <li><p>2） 批量固定表面： </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &#x27;10,27s/T/F/g&#x27;  */*/POSCAR </span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &#x27;10,27s/T/F/g&#x27;  */*/POSCAR </span><br></pre></td></tr></table></figure>
+</li>
 <li><p>3） 将准备好的INCAR和KPOINTS批量复制到各个文件夹中: </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in */*； do cp INCAR KPOINTS $i ; done</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in */*； do cp INCAR KPOINTS $i ; done</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>4） 批量提交任务qsuball.sh</p>
 </li>
 </ul>
 <hr>
 <p>任务结束后，首先查看一下能量信息：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in */*; do echo $i $(grep &#x27;  without&#x27; $i/OUTCAR | tail -n 1| awk &#x27;&#123;print $7&#125;&#x27;) ; done</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/11/05/ex67/ex67-02.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-02.png" alt=""></p>
 <p>上图，我们发现能量数值相近的差不多，这表明它们很可能是同一个结构。我们把数值sort一下，如下图：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in */*; do echo $i $(grep &#x27;  without&#x27; $i/OUTCAR | tail -n 1| awk &#x27;&#123;print $7&#125;&#x27;) ; done | sort -k 2</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/11/05/ex67/ex67-03.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-03.png" alt=""></p>
 <hr>
 <p>通过使用p4vasp 批量查看：（p4v <em>/</em>/CONTCAR） 你会发现能量为-145.56XXX的都是H$_2$O平行吸附在Cu表面，O在Cu的top位上。</p>
-<p><img src="/2018/11/05/ex67/ex67-04.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-04.png" alt=""></p>
 <hr>
 <p>而剩下的，就只有两种结构了：</p>
 <ul>
 <li>结构1） type_3/bri 为V型吸附，O在桥式位置上。</li>
 </ul>
-<p><img src="/2018/11/05/ex67/ex67-05.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-05.png" alt=""></p>
 <ul>
 <li>结构2）type_3/top为V型结构，O在top位置上。</li>
 </ul>
-<p><img src="/2018/11/05/ex67/ex67-06.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-06.png" alt=""></p>
 <h2 id="2-进一步优化"><a href="#2-进一步优化" class="headerlink" title="2. 进一步优化"></a>2. 进一步优化</h2><p>到现在位置，前面的12个初始结构，可以快速的被筛选成了3个。将这三个结构复制step2的文件夹中。在此基础上，开始正常计算：</p>
 <ul>
 <li><p>1） 将CONTCAR批量复制成POSCAR：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *； <span class="keyword">do</span> mv <span class="variable">$i</span>/CONTCAR <span class="variable">$i</span>/POSCAR ; <span class="keyword">done</span></span><br></pre></td></tr></table></figure></li>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *； <span class="keyword">do</span> mv <span class="variable">$i</span>/CONTCAR <span class="variable">$i</span>/POSCAR ; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+</li>
 <li><p>2） KPOINTS变回原来的（4x4x1）:  sed 批量操作</p>
 </li>
 <li><p>3） 表面两层原子放开： sed 批量操作</p>
@@ -1391,17 +1368,22 @@
 <li><p>6）等待结束，查看结果</p>
 </li>
 </ul>
-<p><img src="/2018/11/05/ex67/ex67-07.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-07.png" alt=""></p>
 <p>你会发现两个top的能量也一样了，说明这两个结构很可能优化到一块去了。查看后发现都是平行吸附的结构了。</p>
 <ul>
 <li>7） 结构细节：化学上，我们对键长，键角这些信息一定不要放过。测量一下Cu—O 的距离，为： 2.343 $\AA$。</li>
 </ul>
-<p><img src="/2018/11/05/ex67/ex67-08.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-08.png" alt=""></p>
 <ul>
-<li>8） 计算吸附能：<br>$$<br>\begin{align}<br>E_{ads} &amp;= E_{slab+H_2O} – E_{slab} – E_{H_2O^{gas}} \<br>&amp;= (-140.33072118 eV) – (-125.93154318 eV) – (-14.21915741 eV)  \<br>&amp;= - 0.18 eV。<br>\end{align}<br>$$</li>
+<li>8） 计算吸附能：<script type="math/tex; mode=display">
+\begin{align}
+E_{ads} &= E_{slab+H_2O} – E_{slab} – E_{H_2O^{gas}} \\
+&= (-140.33072118 eV) – (-125.93154318 eV) – (-14.21915741 eV)  \\
+&= - 0.18 eV。
+\end{align}</script></li>
 </ul>
 <p>与本人4年前的计算结果（-0.17 eV）相差0.01 eV。<a target="_blank" rel="noopener" href="https://pubs.acs.org/doi/abs/10.1021/cs501698w">ACS Catal., 2015, 5, 1027-1036： https://pubs.acs.org/doi/abs/10.1021/cs501698w </a> </p>
-<p><img src="/2018/11/05/ex67/ex67-09.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-09.png" alt=""></p>
 <p>本人发表文章支持信息里面的数据。</p>
 <p><strong>☆☆☆注意1：</strong></p>
 <p>这里吸附能计算的时候，我们取的是最稳定的结构。文献里面提到的也通常是作者所找到的稳定结构。当然，对于不稳定的结构，吸附能也就是顺带的事情了。写在文章里面的话，要标明什么结构对应的吸附能是多少。</p>
@@ -1521,7 +1503,7 @@
     <div class="post-body" itemprop="articleBody">
           <p>结合上一节的内容，下面主要讲解一下H$_2$O分子在Cu(111)表面吸附的初始模型搭建。</p>
 <h2 id="1-计算H-2-O气相分子的能量"><a href="#1-计算H-2-O气相分子的能量" class="headerlink" title="1. 计算H$_2$O气相分子的能量"></a>1. 计算H$_2$O气相分子的能量</h2><p>相信大家已经轻车熟路了（老司机）。只将INCAR，KPOINTS，POSCAR列出来，不再详细解释。如下图：</p>
-<p><img src="/2018/11/04/ex66/ex66-01.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-01.png" alt=""></p>
 <p>提交任务，结束后，将CONTCAR中的Direct坐标转换为Cartesian，方便后面的表面模型搭建。</p>
 <p>怎么转换前面也讲过了，这里也不再啰嗦。</p>
 <hr>
@@ -1543,16 +1525,16 @@
 <hr>
 <h2 id="2-搭建H-2-O的吸附模型"><a href="#2-搭建H-2-O的吸附模型" class="headerlink" title="2. 搭建H$_2$O的吸附模型"></a>2. 搭建H$_2$O的吸附模型</h2><p><strong>1） 打开p(3x3)-Cu(111)的slab结构。</strong></p>
 <p>先点击左侧的Build，然后点击右上方的text 按钮，进入编辑的部分。如下面的示意图：</p>
-<p><img src="/2018/11/04/ex66/ex66-02.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-02.png" alt=""></p>
 <p>注意：上面的只是p4vasp的一个界面，不是p(3x3)-Cu(111)的slab结构。</p>
 <hr>
 <p><strong>2） 元素行，原子数目</strong></p>
 <p>在元素行，添加O和H，下面一行，添加对应的原子数。</p>
-<h2 id=""><a href="#" class="headerlink" title=""></a><img src="/2018/11/04/ex66/ex66-03.png"></h2><p><strong>3）添加H$_2$O分子坐标</strong></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="/2018/11/04/ex66/ex66-03.png" alt=""></h2><p><strong>3）添加H$_2$O分子坐标</strong></p>
 <p> 在坐标的最后面，将前面CONTCAR的Cartesian坐标直接复制过来即可。</p>
-<p><img src="/2018/11/04/ex66/ex66-04.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-04.png" alt=""></p>
 <p><strong>4） 结果：</strong></p>
-<p><img src="/2018/11/04/ex66/ex66-05.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-05.png" alt=""></p>
 <p>师兄，水分子跑到slab里面去了，这可怎么办？ 答：往上平移下即可。</p>
 <p>选择O H 以及表面上的任意一个Cu原子。回顾前面的平移操作：</p>
 <p>From 那行点 1st 代表的是O原子</p>
@@ -1562,7 +1544,7 @@
 <p>Vector的第三个数字，这个是O和Cu在垂直方向上的距离。我们知道，H$_2$O在Cu上吸附的时候，Cu—O有一定的距离，不妨先给个初始值2A。所以，我们需要把 1.246改成3.246。</p>
 <hr>
 <p><strong>小窍门</strong>：在下面红色圈出来的部分，可以通过一些快捷的操作来实现原子的选择。</p>
-<p><img src="/2018/11/04/ex66/ex66-06.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-06.png" alt=""></p>
 <ul>
 <li>i） 在p4vasp 里面可以直接通过写元素符号，选择该元素所有的原子；</li>
 <li>ii） -10 代表从第一个到第10个原子；</li>
@@ -1573,14 +1555,14 @@
 </ul>
 <hr>
 <p>上面移动的效果如下：</p>
-<p><img src="/2018/11/04/ex66/ex66-07.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-07.png" alt=""></p>
 <p><strong>5） 周期性显示的小技巧</strong></p>
 <p>刚开始选择的4号原子在两个格子之间的界面上，本人喜欢将分子放到表面的中间。操作如上图：</p>
 <ul>
 <li>i） 选择表面上的2个原子： 4 和 5 来定义平移的一个vector。</li>
 <li>ii） 平移一下O和H原子，效果如下：</li>
 </ul>
-<p><img src="/2018/11/04/ex66/ex66-08.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-08.png" alt=""></p>
 <p>当然，在开始的时候，你也可以将H$_2$O分子直接移动到5号原子的表面，大师兄这里做了一些无用的分解操作，主要是为了加深大家的操作印象。</p>
 <hr>
 <h2 id="3-考虑不同的可能性"><a href="#3-考虑不同的可能性" class="headerlink" title="3. 考虑不同的可能性"></a>3. 考虑不同的可能性</h2><p>到目前为止，我们已经顺利搭建了一个H$_2$O分子的吸附模型。把它保存到type_1目录下，名字为POSCAR。</p>
@@ -1589,33 +1571,33 @@
 <ul>
 <li>1） 一个H原子指向天空，另外的O—H 键平行于表面。这个结构怎么实现？ 回想上一节我们讲到的绕着O—H键旋转的操作。看下图，不解释。</li>
 </ul>
-<p><img src="/2018/11/04/ex66/ex66-09.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-09.png" alt=""></p>
 <ul>
 <li>2） 2个H原子都指向天空，只留一个O原子在表面。（剪刀手V）</li>
 </ul>
-<p><img src="/2018/11/04/ex66/ex66-10.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-10.png" alt=""></p>
 <hr>
 <p>操作思路： 定义一个穿过O原子的y 轴，然后旋转氢原子。</p>
 <p>将这两个结构分别保存到type_2 和 type_3 目录下，名字为POSCAR。按照这样完成的话，你的目录应该是这个样子的：</p>
-<p><img src="/2018/11/04/ex66/ex66-11.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-11.png" alt=""></p>
 <p><strong>☆小窍门</strong>：p4vasp  */POSCAR  打开当前所有目录下的POSCAR，然后：</p>
-<p><img src="/2018/11/04/ex66/ex66-12.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-12.png" alt=""></p>
 <p><strong>☆☆☆注意</strong>：本操作是在Ubuntu系统下操作的。Windows的用户可能不能实现p4v */POSCAR 这样的操作，下面讲解的搭建模型可能会多花出一些时间。在这里大师兄表示无能为力。</p>
 <hr>
 <h2 id="4-不同的吸附位点"><a href="#4-不同的吸附位点" class="headerlink" title="4. 不同的吸附位点"></a>4. 不同的吸附位点</h2><p>我们前面了解到Cu(111)表面也有很多不同的位点：Top，Fcc，Hcp，和 Bri。所以这三种的初始构型在这四个位点上也要考虑。</p>
 <p>Bridge的操作，选择5 和 6， 然后将Vector的数值减小一半，然后平移。</p>
-<p><img src="/2018/11/04/ex66/ex66-13.png"></p>
-<p><img src="/2018/11/04/ex66/ex66-14.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-13.png" alt=""></p>
+<p><img src="/2018/11/04/ex66/ex66-14.png" alt=""></p>
 <p>平移完了，将结构保存到bri目录下。</p>
 <p><strong>此时不要关闭平移的对话框（这是☆重点1）</strong></p>
 <p><strong>点system对应的这个框，选择type_2 的POSCAR（☆重点2）</strong></p>
 <p>再点一下move，就完成这个类型的bri结构了。</p>
-<p><img src="/2018/11/04/ex66/ex66-15.png"></p>
-<p><img src="/2018/11/04/ex66/ex66-16.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-15.png" alt=""></p>
+<p><img src="/2018/11/04/ex66/ex66-16.png" alt=""></p>
 <p>同样，不要关闭对话框，打开type_3的结构，继续平移，获取对应的bri位结构。</p>
-<p><img src="/2018/11/04/ex66/ex66-17.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-17.png" alt=""></p>
 <p>这样操作的话，避免了重复获取平移Vector的那些鼠标点点的操作。点一次，可以继续用于其他结构的操作。希望大家可以掌握这个小窍门，提高自己搭模型的速度。Windows的用户，可以通过将Vector的数值先记下，然后打开另一个结构的时候，直接输入vector就可以了。类似的，我们可以快速搭建完FCC，HCP的结构，最后，你的目录应该是这样子的：</p>
-<p><img src="/2018/11/04/ex66/ex66-18.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-18.png" alt=""></p>
 <p>将这些结构复制到服务器里面，准备提交任务。</p>
 <hr>
 <h2 id="5-扩展练习："><a href="#5-扩展练习：" class="headerlink" title="5. 扩展练习："></a>5. 扩展练习：</h2><ul>
@@ -1746,15 +1728,15 @@
           <p>经过前面的学习，相信对于：单原子和双原子分子的吸附，大家已经掌握了怎么搭建模型，以及计算吸附能了。下一节我们要讲的是三原子分子的吸附。在进行三原子分子吸附的计算之前，我想是时候祭出本人使用p4vasp搭结构的一个法宝了。古人语，工欲善其事，必先利其器。所以，本人认为这一节的学习对于以后的结构搭建非常重要，尤其是对于那些使用p4vasp的筒子们来说。说了这么多废话，本节主要内容是手动搭建一个H$_2$O分子，并实现分子的任意旋转。</p>
 <hr>
 <h2 id="1-获取结构"><a href="#1-获取结构" class="headerlink" title="1. 获取结构"></a>1. 获取结构</h2><p>首先我们先知道H$_2$O分子的基本结构。本人的做法是去NIST数据库查找资料。操作如下图：</p>
-<p><img src="/2018/11/03/ex65/ex65-01.png"></p>
+<p><img src="/2018/11/03/ex65/ex65-01.png" alt=""></p>
 <p>点击上的链接，或者点击 <a target="_blank" rel="noopener" href="https://cccbdb.nist.gov/expgeom1x.asp">NIST网址</a>查询得到下面的信息：</p>
-<p><img src="/2018/11/03/ex65/ex65-02.png"></p>
+<p><img src="/2018/11/03/ex65/ex65-02.png" alt=""></p>
 <p>在NIST的数据库里面，基本的热力学数据，结构都有了。大家完全可以按照上图中的<code>Cartesian</code>坐标搭建一个H$_2$O的结构，直接复制到POSCAR即可。不过，这个操作我们先缓一下，以后你有的是机会操作。本节主要介绍下如何是从头开始搭建一个H$_2$O分子模型，整个操作过程的学习比搭建模型的结果更加重要。</p>
 <hr>
 <h2 id="2-模型搭建："><a href="#2-模型搭建：" class="headerlink" title="2. 模型搭建："></a>2. 模型搭建：</h2><h3 id="1）数据库结构"><a href="#1）数据库结构" class="headerlink" title="1）数据库结构"></a>1）数据库结构</h3><p>O—H的键长为0.9578 A，∠HOH = 104.478°。</p>
 <h3 id="2）直角形H2O分子"><a href="#2）直角形H2O分子" class="headerlink" title="2）直角形H2O分子"></a>2）直角形H2O分子</h3><p>首先，我们在xy平面内搭建一个直角形的H$_2$O分子。O放到原点： 0, 0, 0，H_1沿着x轴， 0.96, 0, 0，H_2 沿着y轴： 0, 0.96, 0</p>
-<p><img src="/2018/11/03/ex65/ex65-03.png"></p>
-<p><img src="/2018/11/03/ex65/ex65-04.png"></p>
+<p><img src="/2018/11/03/ex65/ex65-03.png" alt=""></p>
+<p><img src="/2018/11/03/ex65/ex65-04.png" alt=""></p>
 <h3 id="3）修改角度"><a href="#3）修改角度" class="headerlink" title="3）修改角度"></a>3）修改角度</h3><p> 前面说了，∠HOH = 104.478°， 我们该怎么做呢？</p>
 <ul>
 <li><p>i) 可以自己手动算一算，其中一个H原子的坐标，然后更新坐标信息。三角公式大师兄早就忘的一干二净了，暂时跳过。</p>
@@ -1770,10 +1752,10 @@
 <li>iii) 弹出的界面点击：<code>Get Group</code>；</li>
 <li>iv）<code>Center</code> 那一行，点击<code>1st</code>的按钮；</li>
 <li>v) <code>Second point</code>那一行，点击<code>1st</code>的按钮；</li>
-<li>vi) <code>Axis </code>那一行，点击 <code>Z </code>的按钮。</li>
+<li>vi) <code>Axis</code>那一行，点击 <code>Z</code>的按钮。</li>
 </ul>
 <p>这样我们就定义了一个穿过O原子的z轴。</p>
-<p><img src="/2018/11/03/ex65/ex65-05.png"></p>
+<p><img src="/2018/11/03/ex65/ex65-05.png" alt=""></p>
 <h3 id="5）-p4vasp选择要旋转的原子和角度："><a href="#5）-p4vasp选择要旋转的原子和角度：" class="headerlink" title="5） p4vasp选择要旋转的原子和角度："></a>5） p4vasp选择要旋转的原子和角度：</h3><ul>
 <li>i)把鼠标分别移动要要旋转的H上，通过键盘的<code>space</code> 空格键选择。</li>
 <li>ii)在上一步<code>Edit</code> –&gt; <code>Rotate Atoms</code> 弹出的对话框中，再点一下： <code>Get Group</code>。</li>
@@ -1781,11 +1763,11 @@
 </ul>
 <p><strong>注意1</strong>： +15 和 -15 顺时针和逆时针旋转15°。 如果你旋转错了，不要心慌，把数值改下，重新旋转即可。</p>
 <p><strong>注意2</strong>： 你也可以先选中O和H原子，然后在center 和 second point 那两行都选择1st来获取旋转轴。</p>
-<p><img src="/2018/11/03/ex65/ex65-06.png"></p>
+<p><img src="/2018/11/03/ex65/ex65-06.png" alt=""></p>
 <p>点击最下面的： Rotate，效果如下：</p>
-<p><img src="/2018/11/03/ex65/ex65-07.png"></p>
+<p><img src="/2018/11/03/ex65/ex65-07.png" alt=""></p>
 <p>由于我们绕着O原子旋转，所以O原子选中或者不选中，旋转操作都对其坐标都没有影响。通过Structure – Measure 测定一下 三个原子的角度。</p>
-<p><img src="/2018/11/03/ex65/ex65-08.png"></p>
+<p><img src="/2018/11/03/ex65/ex65-08.png" alt=""></p>
 <hr>
 <h2 id="3-绕任意轴旋转"><a href="#3-绕任意轴旋转" class="headerlink" title="3.  绕任意轴旋转"></a>3.  绕任意轴旋转</h2><p>上面我们介绍了一下，绕一个单原子的轴进行的旋转操作。而实际的模型调整，搭建的过程中，这种情况并不多，大多时候我们需要绕着一个3D空间里面的轴进行旋转，而不仅仅局限在xyz这样简单的情况。我们知道，两点可以确定一条直线，所以，对于旋转轴来说，我们可以通过两个原子来定义。下面我们讲解一下，H$_2$O分子绕着一个O—H键的旋转操作。</p>
 <h3 id="1）定义旋转轴："><a href="#1）定义旋转轴：" class="headerlink" title="1）定义旋转轴："></a>1）定义旋转轴：</h3><ul>
@@ -1796,11 +1778,11 @@
 <li>v) Second point那一行，点 last。</li>
 </ul>
 <p>点完之后，下面一行会自动填充我们选择的旋转轴。即从1st原子指向last原子的一个轴。最后一部分，我们写的是60，即绕着O—H键 旋转60°。</p>
-<p><img src="/2018/11/03/ex65/ex65-09.png"></p>
+<p><img src="/2018/11/03/ex65/ex65-09.png" alt=""></p>
 <p>选择要旋转的原子，由于前面两个原子已经用来定义旋转轴了，剩下的第三个就是我们旋转操作的对象。选中所有的原子，然后点击 Get group。 下面的图是：H$_2$O 的一个H原子绕着另外两个原子的轴旋转 -60 °的效果。我们绕着一个O—H 键旋转，旋转操作对轴上的原子坐标没有影响，所以大家可以选中这些原子，也可以先通过这两个原子定义旋转轴，进行最后一步操作的时候，取消选择也可以。</p>
-<p><img src="/2018/11/03/ex65/ex65-10.png"></p>
+<p><img src="/2018/11/03/ex65/ex65-10.png" alt=""></p>
 <h3 id="2）移动水分子"><a href="#2）移动水分子" class="headerlink" title="2）移动水分子"></a>2）移动水分子</h3><p> 一般对于分子的计算来说，如果分子在原点附近的话，由于周期性的原因，结构的一部分会进入到另外一个相邻的格子里面，虽然对于计算没有什么影响，但对后面的其他可视化过程（比如，频率计算等）会造成一定的影响。所以本人经常把原子移到格子里面。选择所有的原子，在最后的Vector部分，选择5 5 5， 即在xyz三个方向上都移动5A的距离。点击move，效果如下图，然后保存结构。</p>
-<p><img src="/2018/11/03/ex65/ex65-11.png"></p>
+<p><img src="/2018/11/03/ex65/ex65-11.png" alt=""></p>
 <hr>
 <h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4. 扩展练习："></a>4. 扩展练习：</h2><ul>
 <li>1） 重复本节的所有操作；</li>
@@ -1908,25 +1890,25 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><img src="/2018/11/02/ex64/ex64-00.png"></p>
+          <p><img src="/2018/11/02/ex64/ex64-00.png" alt=""></p>
 <p>前面我们讲解了一堆单原子的吸附计算和一些日常的操作，现在是时候来点复杂的操练了。这次，我们拿CO开刷，计算它在Cu(111)表面上的吸附。由于CO比前面的O多了一个原子，复杂性稍微提高了些，但也不是太复杂。作为一个由简单向复杂体系的过渡，是一个很好地例子。</p>
 <p>在计算CO的吸附之前，我们首先要了解以下3点：（都是教科书里面的经典内容，下面只列出来，不再细说，如果不懂的话，找本结构化学书好好啃一啃。）</p>
-<h2 id="1-CO分子信息："><a href="#1-CO分子信息：" class="headerlink" title="1. CO分子信息："></a>1. CO分子信息：</h2><h3 id="1）CO的分子结构，如下图："><a href="#1）CO的分子结构，如下图：" class="headerlink" title="1）CO的分子结构，如下图："></a>1）CO的分子结构，如下图：</h3><p><img src="/2018/11/02/ex64/ex64-01.png"></p>
-<h3 id="2）-CO的几何结构：（用来搭建吸附和气相的模型）"><a href="#2）-CO的几何结构：（用来搭建吸附和气相的模型）" class="headerlink" title="2） CO的几何结构：（用来搭建吸附和气相的模型）"></a>2） CO的几何结构：（用来搭建吸附和气相的模型）</h3><p><img src="/2018/11/02/ex64/ex64-02.png"><br><img src="/2018/11/02/ex64/ex64-03.png"></p>
-<h3 id="3）-CO与金属的成键方式-（用来搭建吸附模型）"><a href="#3）-CO与金属的成键方式-（用来搭建吸附模型）" class="headerlink" title="3） CO与金属的成键方式 （用来搭建吸附模型）"></a>3） CO与金属的成键方式 （用来搭建吸附模型）</h3><p><img src="/2018/11/02/ex64/ex64-04.png"></p>
+<h2 id="1-CO分子信息："><a href="#1-CO分子信息：" class="headerlink" title="1. CO分子信息："></a>1. CO分子信息：</h2><h3 id="1）CO的分子结构，如下图："><a href="#1）CO的分子结构，如下图：" class="headerlink" title="1）CO的分子结构，如下图："></a>1）CO的分子结构，如下图：</h3><p><img src="/2018/11/02/ex64/ex64-01.png" alt=""></p>
+<h3 id="2）-CO的几何结构：（用来搭建吸附和气相的模型）"><a href="#2）-CO的几何结构：（用来搭建吸附和气相的模型）" class="headerlink" title="2） CO的几何结构：（用来搭建吸附和气相的模型）"></a>2） CO的几何结构：（用来搭建吸附和气相的模型）</h3><p><img src="/2018/11/02/ex64/ex64-02.png" alt=""><br><img src="/2018/11/02/ex64/ex64-03.png" alt=""></p>
+<h3 id="3）-CO与金属的成键方式-（用来搭建吸附模型）"><a href="#3）-CO与金属的成键方式-（用来搭建吸附模型）" class="headerlink" title="3） CO与金属的成键方式 （用来搭建吸附模型）"></a>3） CO与金属的成键方式 （用来搭建吸附模型）</h3><p><img src="/2018/11/02/ex64/ex64-04.png" alt=""></p>
 <h2 id="2-搭建CO吸附的模型："><a href="#2-搭建CO吸附的模型：" class="headerlink" title="2. 搭建CO吸附的模型："></a>2. 搭建CO吸附的模型：</h2><p>上一节我们学到了闭着眼操作的一些方式，这一节我们继续闭着眼搭结构。操作流程如下：</p>
 <h3 id="1）-将上一节中-C-原子吸附的那几个模型复制过来，进行修改："><a href="#1）-将上一节中-C-原子吸附的那几个模型复制过来，进行修改：" class="headerlink" title="1） 将上一节中 C 原子吸附的那几个模型复制过来，进行修改："></a>1） 将上一节中 C 原子吸附的那几个模型复制过来，进行修改：</h3><ul>
 <li>i) 修改POSCAR中的元素（第6行）和原子数目部分（第七行），添加O原子。</li>
 </ul>
-<p><img src="/2018/11/02/ex64/ex64-05.png"></p>
+<p><img src="/2018/11/02/ex64/ex64-05.png" alt=""></p>
 <ul>
 <li>iii）在POSCAR的尾部，添加O原子的坐标：</li>
 </ul>
-<p><img src="/2018/11/02/ex64/ex64-06.png"></p>
+<p><img src="/2018/11/02/ex64/ex64-06.png" alt=""></p>
 <p>可以看到上图中，最后两行的坐标一模一样，这是因为CO在表面上吸附的时候，我们假定的是直立吸附。所以C 和 O原子的坐标在x和y方向上一样。不同的区别在z方向上，即CO的键长。CO如果吸附在表面上，肯定会和表面原子有作用，也就是所谓的活化，如果原子被活化了，那么CO键就会被削弱，具体体现在键长上。与气相的键长相比，表面上CO的键长数值更大一些。前面我们查数据库得到CO键长为：1.138A.这里我们不妨设置成1.2A。根据这些，我们设置O原子的坐标，如下：</p>
-<p><img src="/2018/11/02/ex64/ex64-07.png"></p>
+<p><img src="/2018/11/02/ex64/ex64-07.png" alt=""></p>
 <p>同样，我们可以对其他吸附位点的坐标进行类似的修改，结果如下图：</p>
-<p><img src="/2018/11/02/ex64/ex64-08.png"></p>
+<p><img src="/2018/11/02/ex64/ex64-08.png" alt=""></p>
 <h2 id="3-背一遍VASP的输入文件，检查还有那些需要修改的："><a href="#3-背一遍VASP的输入文件，检查还有那些需要修改的：" class="headerlink" title="3. 背一遍VASP的输入文件，检查还有那些需要修改的："></a>3. 背一遍VASP的输入文件，检查还有那些需要修改的：</h2><ul>
 <li>i） INCAR： 跟之前保持一致；</li>
 <li>ii）KPOINTS：跟之前保持一致；</li>
@@ -1934,16 +1916,15 @@
 <li>iV） POTCAR：提交任务的脚本里面自动生成</li>
 <li>V）提交任务命令： qsuball （前面已经讲解过了）</li>
 </ul>
-<h2 id="4-提交任务："><a href="#4-提交任务：" class="headerlink" title="4. 提交任务："></a>4. 提交任务：</h2><p><img src="/2018/11/02/ex64/ex64-09.png"></p>
+<h2 id="4-提交任务："><a href="#4-提交任务：" class="headerlink" title="4. 提交任务："></a>4. 提交任务：</h2><p><img src="/2018/11/02/ex64/ex64-09.png" alt=""></p>
 <p>上图，我们删除了slab的计算，因为前面我们已经计算过了，没有必要浪费机时再算一遍。</p>
-<h2 id="5-思考下吸附能的计算公式："><a href="#5-思考下吸附能的计算公式：" class="headerlink" title="5. 思考下吸附能的计算公式："></a>5. 思考下吸附能的计算公式：</h2><p>$$<br>E_{ads}(CO) = E_{slab+CO} - E_{slab} - E_{CO^{gas}}<br>$$</p>
-<p>前面我们还忘记了CO的气相结构优化。现在我们回忆一下前面所讲的气相分子的优化：</p>
+<h2 id="5-思考下吸附能的计算公式："><a href="#5-思考下吸附能的计算公式：" class="headerlink" title="5. 思考下吸附能的计算公式："></a>5. 思考下吸附能的计算公式：</h2><script type="math/tex; mode=display">
+E_{ads}(CO) = E_{slab+CO} - E_{slab} - E_{CO^{gas}}</script><p>前面我们还忘记了CO的气相结构优化。现在我们回忆一下前面所讲的气相分子的优化：</p>
 <h3 id="1）-气相分子的结构模型搭建。"><a href="#1）-气相分子的结构模型搭建。" class="headerlink" title="1） 气相分子的结构模型搭建。"></a>1） 气相分子的结构模型搭建。</h3><p>直接将一个Cu(111)表面上吸附的POSCAR拿过来修改一下即可：</p>
-<p><img src="/2018/11/02/ex64/ex64-10.png"></p>
+<p><img src="/2018/11/02/ex64/ex64-10.png" alt=""></p>
 <h3 id="2）-INCAR：直接拿Cu-111-吸附的修改下。"><a href="#2）-INCAR：直接拿Cu-111-吸附的修改下。" class="headerlink" title="2） INCAR：直接拿Cu(111)吸附的修改下。"></a>2） INCAR：直接拿Cu(111)吸附的修改下。</h3><p>对于气相分子的优化来说：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ISMEAR = 0 </span><br><span class="line">SIGMA = 0.01</span><br></pre></td></tr></table></figure>
-
-<h3 id="3）-KPOINTS：-gamma-点即可。"><a href="#3）-KPOINTS：-gamma-点即可。" class="headerlink" title="3） KPOINTS： gamma 点即可。"></a>3） KPOINTS： gamma 点即可。</h3><h3 id="4）-这里我们没有批量提交，手动运行一下：pospot-sh脚本，生成对应的POTCAR。"><a href="#4）-这里我们没有批量提交，手动运行一下：pospot-sh脚本，生成对应的POTCAR。" class="headerlink" title="4） 这里我们没有批量提交，手动运行一下：pospot.sh脚本，生成对应的POTCAR。"></a>4） 这里我们没有批量提交，手动运行一下：<code>pospot.sh</code>脚本，生成对应的POTCAR。</h3><h3 id="5）-使用提交单个任务的脚本：-qsub-提交任务。具体操作如下图："><a href="#5）-使用提交单个任务的脚本：-qsub-提交任务。具体操作如下图：" class="headerlink" title="5） 使用提交单个任务的脚本： qsub  提交任务。具体操作如下图："></a>5） 使用提交单个任务的脚本： qsub  提交任务。具体操作如下图：</h3><p><img src="/2018/11/02/ex64/ex64-11.png"></p>
+<h3 id="3）-KPOINTS：-gamma-点即可。"><a href="#3）-KPOINTS：-gamma-点即可。" class="headerlink" title="3） KPOINTS： gamma 点即可。"></a>3） KPOINTS： gamma 点即可。</h3><h3 id="4）-这里我们没有批量提交，手动运行一下：pospot-sh脚本，生成对应的POTCAR。"><a href="#4）-这里我们没有批量提交，手动运行一下：pospot-sh脚本，生成对应的POTCAR。" class="headerlink" title="4） 这里我们没有批量提交，手动运行一下：pospot.sh脚本，生成对应的POTCAR。"></a>4） 这里我们没有批量提交，手动运行一下：<code>pospot.sh</code>脚本，生成对应的POTCAR。</h3><h3 id="5）-使用提交单个任务的脚本：-qsub-提交任务。具体操作如下图："><a href="#5）-使用提交单个任务的脚本：-qsub-提交任务。具体操作如下图：" class="headerlink" title="5） 使用提交单个任务的脚本： qsub  提交任务。具体操作如下图："></a>5） 使用提交单个任务的脚本： qsub  提交任务。具体操作如下图：</h3><p><img src="/2018/11/02/ex64/ex64-11.png" alt=""></p>
 <h2 id="6-扩展练习："><a href="#6-扩展练习：" class="headerlink" title="6. 扩展练习："></a>6. 扩展练习：</h2><ul>
 <li>1）完成CO吸附的计算；</li>
 <li>2）进一步熟练简单模型的闭着眼操作方式；</li>
@@ -2052,64 +2033,57 @@
     <div class="post-body" itemprop="articleBody">
           <p>在进行本文的内容之前，大家先玩个人尽皆知的小游戏：</p>
 <h2 id="找不同"><a href="#找不同" class="headerlink" title="找不同"></a>找不同</h2><p><strong>（一）</strong>找出下面两幅图中不同的部分。</p>
-<p><img src="/2018/10/11/ex63/ex63-1.jpeg"></p>
+<p><img src="/2018/10/11/ex63/ex63-1.jpeg" alt=""></p>
 <p>相信这个大家很快都能找出来，找不出来的话，不建议继续浏览下面的部分。</p>
 <p>（二）下面两个截图中，找出不同的部分</p>
-<p><img src="/2018/10/11/ex63/ex63-2.png"> </p>
-<p><img src="/2018/10/11/ex63/ex63-3.png"></p>
+<p><img src="/2018/10/11/ex63/ex63-2.png" alt=""> </p>
+<p><img src="/2018/10/11/ex63/ex63-3.png" alt=""></p>
 <p>（三）下面两个截图中，找出不同的部分</p>
-<p><img src="/2018/10/11/ex63/ex63-4.png">  <img src="/2018/10/11/ex63/ex63-5.png"></p>
+<p><img src="/2018/10/11/ex63/ex63-4.png" alt="">  <img src="/2018/10/11/ex63/ex63-5.png" alt=""></p>
 <p>聪明美丽能干活泼善良可爱宇宙超级无敌的你会发现： </p>
 <p>在找不同2中，两个图中内容的区别在于：  POSCAR 的第6行<br>在找不同3中，两个图中内容的区别在于：  POTCAR 的第二个元素</p>
 <p>当你发现了这些不同之处，就应该差不多明白了，这是2个计算任务文件，一个是C原子在Cu(111), 另一个是O原子在Cu(111)上的计算。</p>
 <p>仔细分析不同的地方，你就应该想到: 既然我们有了O吸附相关的计算文件，那么就可以在此模板基础上，快速编辑C的吸附模型，然后进行计算。</p>
 <p>在进行下面的快速编辑模型的内容，先给大家介绍一个Linux下面常用的比较不同的命令：diff。简单操作如下，更高级的大家自由去百度学习，并加以发挥拓展。 </p>
-<p><img src="/2018/10/11/ex63/ex63-6.png"></p>
+<p><img src="/2018/10/11/ex63/ex63-6.png" alt=""></p>
 <h2 id="批量搭结构"><a href="#批量搭结构" class="headerlink" title="批量搭结构"></a>批量搭结构</h2><p>快速准备C原子在Cu(111)上吸附的计算文件：</p>
 <p>1）<code>INCAR</code> 保持一样<br>2）<code>KPOINTS</code> 保持一样<br>3）<code>POSCAR</code>: 将 O 直接替换成C就OK了。<br>i）直接编辑，无数种编辑器任你选。不过 Windows下一定要记得编辑完后运行下: <code>dos2unix</code><br>ii）使用sed命令： <code>sed -i &#39;6s/O/C/g&#39; POSCAR</code></p>
 <p>4）<code>POTCAR</code>: </p>
 <p>i) 使用前面我们介绍的脚本：potcar.sh， 脚本运行例子如下图：（去本书的附录章节里面找脚本）</p>
 <p><a href="https://www.bigbrosci.com/2017/12/21/A05/">https://www.bigbrosci.com/2017/12/21/A05/</a></p>
-<p><img src="/2018/10/11/ex63/ex63-7.png"></p>
+<p><img src="/2018/10/11/ex63/ex63-7.png" alt=""></p>
 <p>直接输入脚本名，后面跟你想要的元素名。</p>
 <p>看下本人在天河II号服务器上的设置。</p>
 <p>1） potcar.sh 在本人账号的： <code>~/bin</code> 目录下<br>2） VASP所有的POTCAR文件在： <code>~/bin/pot</code> 目录下<br>3） pot目录下，每个元素的文件夹中有2两个文件：<code>POTCAR</code> 和 <code>PSCTR</code> （PSCTR这个我也不知道有什么用。）<br>4）新手，没有经验，不会用超算的，不会Linux的，可以效仿下：</p>
-<p><img src="/2018/10/11/ex63/ex63-8.png"></p>
+<p><img src="/2018/10/11/ex63/ex63-8.png" alt=""></p>
 <p>脚本下载后，将POTCAR所在的目录替换成你的： path=”你的目录”。<br>怎么知道目录呢？ 使用上图中的pwd 这个命令。</p>
-<p><img src="/2018/10/11/ex63/ex63-9.png"></p>
+<p><img src="/2018/10/11/ex63/ex63-9.png" alt=""></p>
 <p>ii) 我很多时候都懒得去看POSCAR中的元素以及顺序，便打算根据POSCAR中的内容生成对应的POTCAR，于是便写了一个脚本：<code>pospot.sh</code>。使用方法如下： </p>
-<p><img src="/2018/10/11/ex63/ex63-10.png"></p>
-<p>上图运行了这个脚本两次：<br>1） 第一次运行的时候，目录下没有POTCAR，于是脚本直接生成新的<br>2） 第二次运行的时候，目录下有了一个POTCAR，于是脚本将POTCAR中的元素顺序读出来，然后删掉旧的POTCAR，重复1）的操作，生成新的POTCAR。（大师兄本人的扯淡逻辑，大家可以忽略，脚本文章末尾下载直接使用即可。）<br>3） 注意：这个脚本读取的仅仅是以 元素 命名文件夹中的POTCAR。什么意思呢？ 举个例子：Cu的POTCAR有：Cu，Cu_GW, Cu_pv，Cu_sv_GW这四种。脚本读取的仅仅是Cu中的POTCAR。如果你想用<code>Cu_pv</code>，那么请使用： <code>potcar.sh Cu_pv C H O </code>这个命令。<br>4） 脚本内容如下：大家可以自己手动敲一遍，找找感觉。</p>
+<p><img src="/2018/10/11/ex63/ex63-10.png" alt=""></p>
+<p>上图运行了这个脚本两次：<br>1） 第一次运行的时候，目录下没有POTCAR，于是脚本直接生成新的<br>2） 第二次运行的时候，目录下有了一个POTCAR，于是脚本将POTCAR中的元素顺序读出来，然后删掉旧的POTCAR，重复1）的操作，生成新的POTCAR。（大师兄本人的扯淡逻辑，大家可以忽略，脚本文章末尾下载直接使用即可。）<br>3） 注意：这个脚本读取的仅仅是以 元素 命名文件夹中的POTCAR。什么意思呢？ 举个例子：Cu的POTCAR有：Cu，Cu_GW, Cu_pv，Cu_sv_GW这四种。脚本读取的仅仅是Cu中的POTCAR。如果你想用<code>Cu_pv</code>，那么请使用： <code>potcar.sh Cu_pv C H O</code>这个命令。<br>4） 脚本内容如下：大家可以自己手动敲一遍，找找感觉。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash  </span></span><br><span class="line"><span class="comment"># show old POTCAR </span></span><br><span class="line"><span class="keyword">if</span> [ -e POTCAR ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;old POTCAR containes....&#x27;</span></span><br><span class="line">  grep TIT POTCAR| awk <span class="string">&#x27;&#123;print $4&#125;&#x27;</span> | xargs</span><br><span class="line"><span class="comment"># Remove old POTCAR  </span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Removing OLD POTCAR.....&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line">  rm POTCAR -f</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># generate new POTCAR </span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Generating NEW POTCAR...&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line">potcar.sh $(sed -n 6p POSCAR)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Done&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># compare elements in new POTCAR and POSCAR</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;NEW POTCAR containes....&#x27;</span></span><br><span class="line">grep TIT POTCAR| awk <span class="string">&#x27;&#123;print $4&#125;&#x27;</span> | xargs</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Elements in POSCAR&quot;</span> </span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line">sed -n 6p POSCAR</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
 <p>5）提交任务的脚本保持一样</p>
 <p>前面所说的都是一些具体的做法，用化学的思维来说，应该叫基元反应。当你掌握了这些具体的做法后，可以通过批处理的方式将它们集成起来。本人的做法如下：</p>
 <p>1）批量编辑POSCAR：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed  -i  &#x27;6s/O/C/g&#x27; */POSCAR </span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/11/ex63/ex63-12.png"></p>
+<p><img src="/2018/10/11/ex63/ex63-12.png" alt=""></p>
 <p>i） 将O原子的计算直接复制成C原子的<br>ii）使用sed 批量编辑POSCAR中的元素行。</p>
 <p>2）完成前面的一步，直接批量提交任务： 提交任务的时候，脚本自动根据POSCAR生成对应的POTCAR.</p>
-<p><img src="/2018/10/11/ex63/ex63-13.png"><br><img src="/2018/10/11/ex63/ex63-14.png"></p>
+<p><img src="/2018/10/11/ex63/ex63-13.png" alt=""><br><img src="/2018/10/11/ex63/ex63-14.png" alt=""></p>
 <p>我是怎么做的呢？</p>
 <p>在<code>~/.bashrc</code> 文件中 将<code>pospot.sh</code> 写到 <code>qsuball</code>里面了。大家可以看下我的<code>~/bashrc</code>文件：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">alias q=&#x27;yhqueue&#x27;</span><br><span class="line">alias qsuball=&#x27;for i in * ; do cd $i ; pospot.sh &amp;&amp; qsub ; cd $OLDPWD; done&#x27;</span><br><span class="line">alias qdel=&#x27;yhcancel&#x27;</span><br><span class="line">alias fenergy=&#x27;grep &quot;  without&quot; OUTCAR&#x27;</span><br><span class="line">alias ..=&#x27;cd ..&#x27;</span><br><span class="line">alias ...=&#x27;cd ../..&#x27;</span><br><span class="line">alias ....=&#x27;cd ../../..&#x27;</span><br><span class="line">alias gl=&#x27;grep LOOP OUTCAR&#x27;</span><br></pre></td></tr></table></figure>
-
-
-
 <h2 id="批量删除任务"><a href="#批量删除任务" class="headerlink" title="批量删除任务"></a>批量删除任务</h2><p>前面批量提交了任务，但这些任务已经算起来了，但这些结果对我没有用出，纯属浪费机时，所以我要杀死它们。这里介绍给大家一个简单的批量删除任务的命令： {..} 操作如下：</p>
-<p><img src="/2018/10/11/ex63/ex63-16.png"></p>
+<p><img src="/2018/10/11/ex63/ex63-16.png" alt=""></p>
 <p><code>qdel</code> 就是天河II号中的<code>yhcancel</code>命令，本人根据自己的习惯，修改了一下<code>alias</code>中的内容（见前面<code>~/bashrc</code>文件的内容）</p>
 <p>如果你的任务不是连续的，也可以使用这个命令， 只要把第一个和最后一个任务的ID号写在花括号里两个点<code>..</code>的两端即可。非常简单，暴力和直接。</p>
 <p>中间如果有些任务不是你的，即使你想杀死也没有权限，系统会报错，直接忽视即可。</p>
 <h2 id="找不同-1"><a href="#找不同-1" class="headerlink" title="找不同"></a>找不同</h2><p>前面我们弄完了C原子的计算任务，下面我们再玩一次找不同的游戏</p>
 <p>找不同4：下面2个截图中找出不同的地方：</p>
-<p><img src="/2018/10/11/ex63/ex63-17.png">  <img src="/2018/10/11/ex63/ex63-18.png"></p>
+<p><img src="/2018/10/11/ex63/ex63-17.png" alt="">  <img src="/2018/10/11/ex63/ex63-18.png" alt=""></p>
 <p>师兄，这个题很简单，你要算H原子的吸附。跟前面的操作是一样的。</p>
 <p><strong>但是</strong>，请看最后一行。</p>
-<p>仔细的你会发现，这个题跟前面的有些不一样，原因在于最底部的坐标也稍微变化了一下，从<code>7.935 </code>变成 <code>7.635</code>了。 这是为什么呢？<br>原因在于和C，O原子比起来，H原子很小，它在表面上吸附的时候，会更贴近表面。因此我们把z方向的坐标稍微修改了一下： 减小了 0.3 A。这样做的话可以保证我们的初始结构更<strong>具有合理的物理化学意义</strong>，从而加快计算的收敛，节约时间。大家在搭建模型的时候，结构合理是必须要考虑的，也是脑子里要时刻思考的事情。</p>
+<p>仔细的你会发现，这个题跟前面的有些不一样，原因在于最底部的坐标也稍微变化了一下，从<code>7.935</code>变成 <code>7.635</code>了。 这是为什么呢？<br>原因在于和C，O原子比起来，H原子很小，它在表面上吸附的时候，会更贴近表面。因此我们把z方向的坐标稍微修改了一下： 减小了 0.3 A。这样做的话可以保证我们的初始结构更<strong>具有合理的物理化学意义</strong>，从而加快计算的收敛，节约时间。大家在搭建模型的时候，结构合理是必须要考虑的，也是脑子里要时刻思考的事情。</p>
 <p>通过<code>sed</code>命令批量操作在H原子的吸附上，只能完成一半的任务，也就是把元素行中的C或者O改成H。而另一半的任务：坐标的修改，则需要大家自己手动操作一下（记得在<code>Cartesian</code>坐标下修改，如果你脑子转的很快，可以迅速将<code>Direct</code>转化为<code>Cartesian</code>的话，也可以直接编辑<code>Direct</code>坐标）。</p>
 <h2 id="扩展练习："><a href="#扩展练习：" class="headerlink" title="扩展练习："></a>扩展练习：</h2><p>1） 完成本节的所有操作；<br>2） 计算C,H，O在Cu(111)表面上，不同位点上的吸附；<br>3） 思考脚本的运行原理；<br>4） 思考如何通过：（找不同 + 写脚本）来节省自己的体力；<br>5） 思考自己平时常见的人工错误，并尝试用脚本来解决或者避免。</p>
 <h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本文的题目是闭着眼算，不是让你真正闭着眼去提交任务，而是不通过可视化的界面进行结构的批量搭建，输入文件的批量处理以及提交任务。希望大家在搭结构的时候，多一些思考，少一些操作，在搭建合理结构的路上突飞猛进。</p>
@@ -2215,24 +2189,20 @@
     <div class="post-body" itemprop="articleBody">
           <p>前面我们得到了不同吸附位点上吸附能的顺序，但结构是什么样子的呢？我们优化完的结果对不对？这还是一个问题。因此我们需要查看一下优化完的结果。</p>
 <h2 id="1-获取（下载）CONTCAR"><a href="#1-获取（下载）CONTCAR" class="headerlink" title="1  获取（下载）CONTCAR"></a>1  获取（下载）CONTCAR</h2><p>没有结构，我们看个屁啊？所以第一步就是把超算中心的计算结果下载到自己的电脑里面。这里我们说获取或者下载CONTCAR，而不是OUTCAR等其他VASP的输入文件，原因在于本人这边网速传输太慢了。所以我的策略是能量等信息在服务器里面直接获取，结构的话只下载CONTCAR。如果网速允许的话，可以把所有的计算结果下载到自己电脑里面，这样查看更加方便。</p>
-<p><img src="/2018/10/10/ex62/ex62-1.png"></p>
-<p><img src="/2018/10/10/ex62/ex62-2.png"></p>
+<p><img src="/2018/10/10/ex62/ex62-1.png" alt=""></p>
+<p><img src="/2018/10/10/ex62/ex62-2.png" alt=""></p>
 <p>上图中，我们先挂载超算中心到本地电脑上，然后将计算目录下的CONTCAR复制到本地桌面上。（ccall 这个命令）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in * ; do if [ -e $i/CONTCAR ]; then mkdir ~/Desktop/$i; cp $i/CONTCAR ~/Desktop/$i ; fi; done</span><br></pre></td></tr></table></figure>
-
 <p>备注：<br>由于本人这边传输很慢，即使挂载了超算中心到本地电脑上，访问内容的时候，后台依然有数据传输。所以先下载再查看。</p>
 <h2 id="2-使用ASE查看结构："><a href="#2-使用ASE查看结构：" class="headerlink" title="2 使用ASE查看结构："></a>2 使用ASE查看结构：</h2><p>ASE 是Atomic Simulation Environment的简称，下载安装见：<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/">https://wiki.fysik.dtu.dk/ase/</a>  本人只会在Linux下面使用，Windows用户自行解决。解决不了，我也没有办法。如果Linux用户解决不了，那么使用后面的第二种方法：p4vasp查看结构。</p>
 <p>如果你的网速很给力，可以直接通过自己电脑进入超算中心的目录，进行下面的操作。</p>
-<p><img src="/2018/10/10/ex62/ex62-3.png"></p>
+<p><img src="/2018/10/10/ex62/ex62-3.png" alt=""></p>
 <p>这个软件的<strong>优点</strong>就是： 我们可以一次性打开当前目录下，所有计算的CONTCAR， 从而避免了使用软件挨个导入结构查看。无形中会减少我们很多的工作量。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ase-gui  */CONTCAR </span><br></pre></td></tr></table></figure>
-
-
-
 <h2 id="3-使用p4vasp-查看结构"><a href="#3-使用p4vasp-查看结构" class="headerlink" title="3 使用p4vasp 查看结构"></a>3 使用p4vasp 查看结构</h2><p>Ubuntu下面唯一推荐的软件：下面图片拍的不是很好，大家凑活着看吧。</p>
-<p><img src="/2018/10/10/ex62/ex62-4.png"></p>
+<p><img src="/2018/10/10/ex62/ex62-4.png" alt=""></p>
 <p>这里，p4vasp和前面说的ASE一样，也可以一个命令打开所有的计算结果。</p>
-<p><img src="/2018/10/10/ex62/ex62-5.png"></p>
+<p><img src="/2018/10/10/ex62/ex62-5.png" alt=""></p>
 <p>作为<code>p4vasp</code>的忠实粉丝，这也是本人唯一推荐的<code>Ubuntu</code>系统下查看，搭建结构的软件。</p>
 <ul>
 <li>i）使用p4vasp可以非常容易地进行原子替换，平移，旋转等基本操作。</li>
@@ -2242,7 +2212,7 @@
 <li>如果你刚开始接触这个软件，认真用鼠标各个地方点点操作一下，查看各个功能按钮的作用。</li>
 <li>此外，VASP官网的<code>ppt</code>教程中也有一些零星的<code>p4vasp</code>操作教程，大家可以参考一下。</li>
 </ul>
-<h2 id="4-其他软件："><a href="#4-其他软件：" class="headerlink" title="4 其他软件："></a>4 其他软件：</h2><p>当然了， 不论在linux还是Windows下面，都有很多查看结构的软件，比如：<code>Jmol</code>，<code> Xcrysden</code>，<code> Molden</code>， <code>VESTA</code>， <code>Material Studio</code>等等。这里就不再详细介绍了，主要原因是本人不太会使用这些软件操作。目前大家需要做的就是根据自己的喜好，掌握一个软件：学会查看结构，键长，键角等信息即可。切记不可贪多，等一个软件掌握好了之后，有余力的话再去学习另一个的操作。</p>
+<h2 id="4-其他软件："><a href="#4-其他软件：" class="headerlink" title="4 其他软件："></a>4 其他软件：</h2><p>当然了， 不论在linux还是Windows下面，都有很多查看结构的软件，比如：<code>Jmol</code>，<code>Xcrysden</code>，<code>Molden</code>， <code>VESTA</code>， <code>Material Studio</code>等等。这里就不再详细介绍了，主要原因是本人不太会使用这些软件操作。目前大家需要做的就是根据自己的喜好，掌握一个软件：学会查看结构，键长，键角等信息即可。切记不可贪多，等一个软件掌握好了之后，有余力的话再去学习另一个的操作。</p>
 <h2 id="5-扩展练习："><a href="#5-扩展练习：" class="headerlink" title="5 扩展练习："></a>5 扩展练习：</h2><p>1） 自己优化O在Cu(111)表面上不同位点的吸附，计算吸附能<br>2） 选择一款自己喜欢的软件，查看不同的吸附结构。<br>3） 思考其他单原子在其他金属表面上的吸附，该如何计算？<br>4） 思考原子在表面上，为什么不同吸附位点的吸附能不一样？</p>
 <h2 id="6-总结："><a href="#6-总结：" class="headerlink" title="6 总结："></a>6 总结：</h2><p>本节没有什么技术难度，全靠自己亲自手动操作，使用一个软件并不是一蹴而就的过程，大家先把基本的简单操作掌握了，后面再逐渐提高自己的其他技能。此外，本节学习完之后，单原子在表面上的吸附对大家来说应该不是什么困难的事情了。</p>
 
@@ -2350,47 +2320,40 @@
 <h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作:"></a>1 准备工作:</h2><p><code>INCAR</code>：和前面p(1x1)的计算一样<br><code>KPOINTS</code>：根据前面我们经常提到的经验规则：k*a=30 </p>
 <p>链接：<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html">https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html</a><br><code>POSCAR</code>：已经准备好<br><code>POTCAR</code>: 根据POSCAR生成对应的POTCAR，脚本见本书的附录章节。<br>提交任务的脚本或者命令。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">A rule of thumb for choosing the initial k-point sampling is, that the product, ka, between the number of k-points, k, in any direction, and the length of the basis vector in this direction, a, should be:</span><br><span class="line"></span><br><span class="line">    ka ~ 30 Å, for d band metals</span><br><span class="line">    ka ~ 25 Å, for simple metals</span><br><span class="line">    ka ~ 20 Å, for semiconductors</span><br><span class="line">    ka ~ 15 Å, for insulators</span><br><span class="line"></span><br><span class="line">Remember that convergence in this parameter should always be checked.</span><br></pre></td></tr></table></figure>
-
 <h2 id="2-天河II号提交任务"><a href="#2-天河II号提交任务" class="headerlink" title="2 天河II号提交任务"></a>2 天河II号提交任务</h2><p>前面我们已经讲解了如何在天河2号上提交任务，Learn VASP 系列的前面几节也介绍了一些相关的批量操作知识。下面简单通过实例操作展示下批量提交任务的一个流程。</p>
-<p><img src="/2018/10/09/ex61/ex61-1.png"></p>
+<p><img src="/2018/10/09/ex61/ex61-1.png" alt=""></p>
 <p>其中<code>qsuball</code>是本人在<code>~/.bashrc</code>文件中，给批量提交任务的命令行随便起的一个名字，详见前面关于alias的使用介绍。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias qsuball=&#x27;for i in *; do cd $i ; qsub ; cd $OLDPWD; done&#x27;</span><br></pre></td></tr></table></figure>
-
 <p><code>qsub</code> 是我们在超算中心提交单个任务的脚本，内容如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line">rm job_sub </span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;#!/bin/bash&#x27;</span> &gt;&gt; job_sub</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export LD_LIBRARY_PATH=/THFS/opt/intel/composer_xe_2013_sp1.3.174/mkl/lib/intel64:$LD_LIBRARY_PATH&#x27;</span> &gt;&gt; job_sub </span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;yhrun -p gsc -n 24 /THFS/opt/vasp/5.4.4/vasp.5.4.4/bin/vasp_std &#x27;</span> &gt;&gt; job_sub </span><br><span class="line">yhbatch -p gsc -N 1 -J <span class="built_in">test</span> job_sub </span><br></pre></td></tr></table></figure>
-
-<p>将上面内容复制到一个文件里面，将文件命名为<code>qsub</code>，然后走一遍下面的2个步骤。<br>1）<code>chmod u+x qsub</code> (赋予可执行权限)<br>2)  <code> mv  qsub  ~/bin</code>  （放到 ~/bin 文件夹下）</p>
+<p>将上面内容复制到一个文件里面，将文件命名为<code>qsub</code>，然后走一遍下面的2个步骤。<br>1）<code>chmod u+x qsub</code> (赋予可执行权限)<br>2)  <code>mv  qsub  ~/bin</code>  （放到 ~/bin 文件夹下）</p>
 <h2 id="3-查看结果"><a href="#3-查看结果" class="headerlink" title="3 查看结果"></a>3 查看结果</h2><p>等待任务排队，计算，结束。一个任务结束后，我们需要做的肯定就是检查结果了。那么改怎么样检查结果呢？这里列举出本人常用的几个方法和步骤。</p>
 <h3 id="1）查看OSZICAR"><a href="#1）查看OSZICAR" class="headerlink" title="1）查看OSZICAR"></a>1）查看OSZICAR</h3><p>i)  在查看<code>OSZICAR</code>之前，我们回顾下前面的INCAR。</p>
-<p><img src="/2018/10/09/ex61/ex61-2.png"> </p>
+<p><img src="/2018/10/09/ex61/ex61-2.png" alt=""> </p>
 <p>这里我们设置了<code>NSW = 500</code>,也就是允许本计算最大的离子步数。</p>
-<p>ii） 再看下<code>OSZICAR</code>的末尾部分， 命令： <code>tail  OSZICAR </code></p>
-<p><img src="/2018/10/09/ex61/ex61-3.png"></p>
+<p>ii） 再看下<code>OSZICAR</code>的末尾部分， 命令： <code>tail  OSZICAR</code></p>
+<p><img src="/2018/10/09/ex61/ex61-3.png" alt=""></p>
 <p>从这里可以看出来，经过25个离子步，我们的计算就已经停止了，说明收敛了。</p>
-<h2 id="2）-查看OUTCAR"><a href="#2）-查看OUTCAR" class="headerlink" title="2） 查看OUTCAR"></a>2） 查看OUTCAR</h2><p><img src="/2018/10/09/ex61/ex61-4.png"></p>
+<h2 id="2）-查看OUTCAR"><a href="#2）-查看OUTCAR" class="headerlink" title="2） 查看OUTCAR"></a>2） 查看OUTCAR</h2><p><img src="/2018/10/09/ex61/ex61-4.png" alt=""></p>
 <p>对于VASP的所有计算来说，只要你看到这样的结果，说明你的任务已经算完了。这里你要记住：算完和收敛不是一回事。比如你设置的<code>NSW = 500</code>， VASP优化了<code>500</code>步没有收敛的话，会自动停止，也会出现上图的结果。</p>
 <p><strong>怎么查看收敛呢？</strong> </p>
-<p>i) 可以对比计算的离子步和我们设置的离子步。如果实际计算得了离子步小于<code>INCAR</code>中的，任务就收敛了。这也是前面查看<code>OSZICAR</code>的目的。<br>ii）可以通过<code>OUTCAR</code>里面的关键词： <code>reached </code></p>
-<p><img src="/2018/10/09/ex61/ex61-5.png"></p>
+<p>i) 可以对比计算的离子步和我们设置的离子步。如果实际计算得了离子步小于<code>INCAR</code>中的，任务就收敛了。这也是前面查看<code>OSZICAR</code>的目的。<br>ii）可以通过<code>OUTCAR</code>里面的关键词： <code>reached</code></p>
+<p><img src="/2018/10/09/ex61/ex61-5.png" alt=""></p>
 <p>如果你看到最后面的： <code>Stopping structural energy minimisation</code>  这就表明你的优化任务已经完成。<br>而事实上，的确有很多人把这句话误认为是计算出错了，然后在群里面求助，本人实在是想不通。</p>
-<h2 id="4-删除VASP乱七八糟的输出文件"><a href="#4-删除VASP乱七八糟的输出文件" class="headerlink" title="4 删除VASP乱七八糟的输出文件"></a>4 删除VASP乱七八糟的输出文件</h2><p><img src="/2018/10/09/ex61/ex61-6.png"></p>
+<h2 id="4-删除VASP乱七八糟的输出文件"><a href="#4-删除VASP乱七八糟的输出文件" class="headerlink" title="4 删除VASP乱七八糟的输出文件"></a>4 删除VASP乱七八糟的输出文件</h2><p><img src="/2018/10/09/ex61/ex61-6.png" alt=""></p>
 <p>计算完成之后，VASP会出现很多平时我们用不到的文件，<code>CHG</code> <code>CHGCAR</code> <code>WAVECAR</code> 这三个占用的空间很大，容易把应胖撑爆。</p>
 <p>由于计算目录下的存储空间有限，本人计算的时候，一般都默认VASP不写入这些文件。</p>
 <p>此外，在表面结构优化的时候，<code>EIGENCAL, IBZKPT, REPORT,DOSCAR``以及超算中心与任务相关的输出文件：slurm-XXX</code> 文件，一般来说正常计算结束后，我们也不需要。</p>
 <p>因此，本人写了一个小脚本，用来删除这些乱七八糟的文件。脚本运行效果如上，脚本内容如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"><span class="keyword">for</span>  i  <span class="keyword">in</span> $(find . -name INCAR); <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">cd</span> $(dirname <span class="variable">$i</span>)</span><br><span class="line">    rm CHG  CHGCAR  job_sub  PCDAT REPORT  slurm-*.out  WAVECAR  XDATCAR -f</span><br><span class="line">    <span class="built_in">cd</span> <span class="variable">$OLDPWD</span>;</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-
 <p>大家可以针对自己的计算任务，修改<code>rm XXX</code> 哪一行中的文件名。</p>
-<p><img src="/2018/10/09/ex61/ex61-7.png"></p>
+<p><img src="/2018/10/09/ex61/ex61-7.png" alt=""></p>
 <p>上图中还运行了一个脚本（ta.sh），就是提取当前目录下，所有计算结果的能量。也是本人临时写的。有兴趣的可以自己照着写一遍，然后运行下。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash </span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *; <span class="keyword">do</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="variable">$i</span>/OUTCAR ]; <span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> -e  <span class="variable">$i</span> <span class="string">&quot;\t&quot;</span> $(grep <span class="string">&#x27;  without&#x27;</span> <span class="variable">$i</span>/OUTCAR |tail -n 1 | awk <span class="string">&#x27;&#123;print $7&#125;&#x27;</span>) </span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-
-
-
 <h2 id="5-获取能量，计算吸附能"><a href="#5-获取能量，计算吸附能" class="headerlink" title="5 获取能量，计算吸附能"></a>5 获取能量，计算吸附能</h2><p>有了上面的数据，我们就可以进行吸附能的计算，如下图：</p>
-<p><img src="/2018/10/09/ex61/ex61-8.png"></p>
+<p><img src="/2018/10/09/ex61/ex61-8.png" alt=""></p>
 <p>一般来说，使用eV作为单位，精确到小数点后面2位即可。整理下表格：</p>
-<p><img src="/2018/10/09/ex61/ex61-9.png"></p>
+<p><img src="/2018/10/09/ex61/ex61-9.png" alt=""></p>
 <p>从上图我们可以看出来，这四个位点的吸附能强弱顺序为： fcc ≈ hcp &gt; bridge &gt; top</p>
 <h2 id="6-扩展练习"><a href="#6-扩展练习" class="headerlink" title="6  扩展练习"></a>6  扩展练习</h2><p>1） 学会如何判断计算正常结束，并且优化达到收敛的标准了？<br>2） 总结并思考不同位点的吸附能的计算。<br>3） 学会判断稳定的吸附位点。<br>4） 思考下计算结束之后，除了我们讲的这些，还有那些需要检查的？<br>5） 本节的三个脚本：<br>i)   qsub （天河II号提交任务）<br>ii） rmvasp.sh (删除乱七八糟文件)<br>iii）ta.sh (获取当前目录下，所有计算任务的能量)</p>
 
@@ -2494,20 +2457,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>前面我们发现将p(1x1)-Cu(111)的表面扩展成p(2x2)后，由于O的覆盖度降低了，O原子的吸附能能+1.2 eV降低到 0.2 eV作用，说明O原子更加容易吸附在表面上了。当你仔细观察p(2x2)的表面，你会发现，表面上不仅仅有Cu原子的上方可以放O原子，还有其他的位点。如下图：</p>
-<p><img src="/2018/10/08/ex60/ex60-1.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-1.png" alt=""></p>
 <p>如果我们想分析下不同位点对吸附能的影响，首先我们需要搭建模型，然后重复O原子的吸附优化步骤。本节主要简单介绍一下如何快速搭建不同的吸附位点模型。</p>
 <h2 id="1-不同表面位点："><a href="#1-不同表面位点：" class="headerlink" title="1 不同表面位点："></a>1 不同表面位点：</h2><p>观察不同位点的结构特征，在面心立方金属的(111)表面上有4种不同的位点:</p>
-<ol>
-<li>Top位，前面已经花了很多时间介绍了，本节就不再啰嗦</li>
-<li>Bridge位：从名字大家就可以推断这个位点的吸附为两个Top原子的中间。</li>
-<li>Fcc位和Hcp位：这两个吸附位点都是在三个原子的中心，为hollow位。</li>
-</ol>
+<p>1) Top位，前面已经花了很多时间介绍了，本节就不再啰嗦<br>2) Bridge位：从名字大家就可以推断这个位点的吸附为两个Top原子的中间。<br>3) Fcc位和Hcp位：这两个吸附位点都是在三个原子的中心，为hollow位。</p>
 <p>那么这两个位点怎么区分呢？ </p>
 <p>如果表面的Hollow位正下方（即第二层，图中黄色的）有原子，为Hcp位，在第三层的话（图中红色的），则这个hollow为Fcc位。<br>由于Fcc位点的原子在第三层，离表面最远（far），大家把英文单词的far 和 Fcc位的第一个字母关联起来即可。远的那个就是Fcc，近的是Hcp。<br>注意： Fcc 和 Hcp 分别是 face centered cubic 和  hexagonal close-packed 的缩写。</p>
 <h2 id="2-不同位点的吸附模型"><a href="#2-不同位点的吸附模型" class="headerlink" title="2 不同位点的吸附模型"></a>2 不同位点的吸附模型</h2><p>怎么搭建Bridge和Fcc，以及Hcp位的吸附模型？</p>
-<ol>
-<li>Bridge位: </li>
-</ol>
+<p>1) Bridge位: </p>
 <p>这个位点在两个原子的中心。设两个原子的坐标分别为（x1，y1， z1）和（x2， y2， z2），它们中心得坐标为： （x1+x2）/ 2， （y1+y2）/ 2， （z1+z2）/ 2。在这里，z1和z2 是相等的。所以我们可以通过两个原子的坐标，计算一下中心的坐标，然后按照之前O原子搭建的步骤，添加O原子的Bridge位的坐标即可。<br>2) Fcc位和Hcp</p>
 <ul>
 <li><p>这两个位点就更容易了，前面我们知道它们正下方分别为第三层和第二层的原子。那么我们在这两层随便取个原子，x和y 方向的坐标就确定了。</p>
@@ -2517,34 +2474,34 @@
 </ul>
 <h2 id="3-使用p4vasp搭结构"><a href="#3-使用p4vasp搭结构" class="headerlink" title="3 使用p4vasp搭结构"></a>3 使用p4vasp搭结构</h2><p>前面介绍的方法是直接修改POSCAR来搭建模型，对于O原子的吸附这种简单的模型，大家都还可以胜任，但如果体系复杂了，比如一个苯环，乙醇分子等等，这样我们的计算坐标的工作量就有点大了。此时，p4vasp的优势就开始慢慢显示出来了。</p>
 <h3 id="3-1-从Top到Bri"><a href="#3-1-从Top到Bri" class="headerlink" title="3.1 从Top到Bri"></a>3.1 从Top到Bri</h3><p>1） 首先，我们要有一个O原子在Top位上的吸附结构<br>2） 然后选择Top位的原子和相邻的那个原子，（p4vasp选中的结构看起来不是很清楚，见黄圈标出来的那两个）</p>
-<p><img src="/2018/10/08/ex60/ex60-2.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-2.png" alt=""></p>
 <p>3） 选则 Edit –&gt; Move Atoms 后会弹出这样的界面：</p>
-<p><img src="/2018/10/08/ex60/ex60-3.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-3.png" alt=""></p>
 <p>按照图中的1 2 3依次点击， 你便会获得一个<code>Vector</code>。也就是从5到7号原子的一个向量。</p>
 <p>但我们如果按照这个向量平移O原子的话，只会把它从5号原子移动到7号原子上，而不是Bridge的位点。 </p>
 <p>前面我们说了，Bridge的坐标就是这两个原子连线的中心。所以，我们把Vector减小一半就可以了。</p>
-<p><img src="/2018/10/08/ex60/ex60-4.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-4.png" alt=""></p>
 <p>修改完Vector之后，我们便可以移动O原子了。</p>
 <p><strong>这里注意</strong></p>
 <p>要把前面选中的5 和 7 号原子换成 O，要不然你移动的是 5和7 号原子而不是O。最后点move，效果如下：</p>
-<p><img src="/2018/10/08/ex60/ex60-5.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-5.png" alt=""></p>
 <p>这样我们便获得了Bridge的吸附结构。</p>
 <p>前面提到，我们在搭建Bridge结构的时候，O原子的坐标可以比Top位的稍微低一些，这个操作怎么实现呢？<br>1） 首先选中氧原子，<br>2） 在Vector那一行修改移动的位置即可。如下图：</p>
-<p><img src="/2018/10/08/ex60/ex60-6.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-6.png" alt=""></p>
 <p>点击move ，保存POSCAR即可。</p>
 <h3 id="3-2-从Bridge-到-Hcp："><a href="#3-2-从Bridge-到-Hcp：" class="headerlink" title="3.2 从Bridge 到 Hcp："></a>3.2 从Bridge 到 Hcp：</h3><p>1） 选中O原子和Hcp位下面的Cu原子，并获取Vector</p>
-<p><img src="/2018/10/08/ex60/ex60-7.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-7.png" alt=""></p>
 <p>2） 修改Vector在z方向的大小。</p>
-<p><img src="/2018/10/08/ex60/ex60-8.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-8.png" alt=""></p>
 <p>点击 Move，效果如下：</p>
-<p><img src="/2018/10/08/ex60/ex60-9.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-9.png" alt=""></p>
 <p>保存成Hcp对应的POSCAR即可。</p>
 <h3 id="3-3-从Hcp到Fcc"><a href="#3-3-从Hcp到Fcc" class="headerlink" title="3.3 从Hcp到Fcc"></a>3.3 从Hcp到Fcc</h3><p>1）选中O原子和Fcc的一个原子，获取Vector：</p>
-<p><img src="/2018/10/08/ex60/ex60-10.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-10.png" alt=""></p>
 <p>2）修改Vector在z方向的大小，由于Fcc和Hcp的吸附很接近，直接平移即可，也就是z方向大小为0</p>
-<p><img src="/2018/10/08/ex60/ex60-11.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-11.png" alt=""></p>
 <p>点击move，最终的Fcc结构，如下图，保存POSCAR。</p>
-<p><img src="/2018/10/08/ex60/ex60-12.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-12.png" alt=""></p>
 <p><strong>注意：</strong></p>
 <p>保存结构的时候，可以自己建对应的文件夹，在文件夹里面将结构保存成POSCAR，也可以保存成类似<code>POSCAR-Fcc</code>， <code>POSCAR-Hcp</code>， <code>POSCAR-Top</code>这一种的名字，计算的时候，将它们重新命名为<code>POSCAR</code>就行了。</p>
 <h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本节，大师兄主要给大家介绍了如何在表面上，使用<code>p4vasp</code>平移原子来搭建不同的吸附位点模型。使用p4vasp搭结构非常方便简单，也会加深你对模型结构的理解，另一方面，使用这一种操作的话准确性更高，搭建出来的模型比自己手动放原子要合理很多。所以强烈推荐大家使用<code>p4vasp</code>。</p>
@@ -2649,58 +2606,51 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>丑话说在前头，本节内容有点多，大家慢慢消化。掌握本节的核心思想，对于后面提高你的工作效率，节省时间有着很大的帮助。前面一节，我们在扩展练习中提到了扩胞后，原子坐标的后面T T T 和 F F F 修改的问题。因为扩展后原子坐标是按照单胞为顺序排列的，如果想要将表面的原子快速固定或者放开，那么我们就需要知道表面原子所在的行数。</p>
-<h2 id="方法一：找规律-sed命令"><a href="#方法一：找规律-sed命令" class="headerlink" title="方法一：找规律+sed命令"></a>方法一：找规律+sed命令</h2><p><img src="/2018/10/07/ex59/ex59-1.png"></p>
-<p>上图中，p(2x2)的POSCAR命名为POSCAR-2x2，最表层原子所在的行数为：13，17， 21， 25，次表层的原子所在的行数为： 12， 16， 20， 24。仔细分析下，你会发现，表层原子的行数为： 9 + 4*n ；次表层的行数为：8 + 4 * n，其中n = 1-4，4表示在扩完后的slab模型里面有4个(1x1)的单元。有了这个关系，我们就可以通过sed命令任意固定这两层的原子了, 命令如下：</p>
+<h2 id="方法一：找规律-sed命令"><a href="#方法一：找规律-sed命令" class="headerlink" title="方法一：找规律+sed命令"></a>方法一：找规律+sed命令</h2><p><img src="/2018/10/07/ex59/ex59-1.png" alt=""></p>
+<p>上图中，p(2x2)的POSCAR命名为POSCAR-2x2，最表层原子所在的行数为：13，17， 21， 25，次表层的原子所在的行数为： 12， 16， 20， 24。仔细分析下，你会发现，表层原子的行数为： 9 + 4<em>n ；次表层的行数为：8 + 4 </em> n，其中n = 1-4，4表示在扩完后的slab模型里面有4个(1x1)的单元。有了这个关系，我们就可以通过sed命令任意固定这两层的原子了, 命令如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in &#123;1..4&#125;; do sed -i &quot;$((8+4*$i)), $((9+4*$i))s/T T T/F F F/g&quot; POSCAR</span><br></pre></td></tr></table></figure>
-
 <p>或者：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in &#123;1..4&#125;; do sed -i &quot;$((8+4*$i)), $((9+4*$i))s/T/F/g&quot; POSCAR</span><br></pre></td></tr></table></figure>
-
 <p>效果如下图：通过sed命令快速将表层原子批量固定住。</p>
-<p><img src="/2018/10/07/ex59/ex59-2.png"></p>
+<p><img src="/2018/10/07/ex59/ex59-2.png" alt=""></p>
 <p>我们还可以只放开最表层的原子，使用sed命令快速将最表层的原子批量放开！</p>
 <p>在前面结果的基础上可以使用命令：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for  i  in &#123;1..4&#125;; do sed -i &quot;$((9+4*$i))s/ F F F/ T T T/g&quot; POSCAR</span><br></pre></td></tr></table></figure>
-
 <p>或者：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for  i  in &#123;1..4&#125;; do sed -i &quot;$((9+4*$i))s/F/T/g&quot; POSCAR</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/10/07/ex59/ex59-3.png"></p>
+<p><img src="/2018/10/07/ex59/ex59-3.png" alt=""></p>
 <p>Soooo Easy！！！再也不用挨行修改T T T 或者F F F 了。</p>
 <h2 id="方法二：分层处理-sed命令"><a href="#方法二：分层处理-sed命令" class="headerlink" title="方法二：分层处理+sed命令"></a>方法二：分层处理+sed命令</h2><p>什么，原来还有第二种方法？ 这种方法是本人常用的。前面我们提到，在p(2x2)的slab模型中，原子坐标是按照p(1x1)的单元排列的。既然我们想根据层数固定原子，那么我们可以先将原子按照层数来排列，这样就可以方便的选择同一层的原子了。</p>
 <p>那么该怎么将它们按照层数排列呢？ 这时候你应该想到，不同层之间的原子，它们的坐标在z方向是不同的。有了这个依据，我们就可以根据z方向坐标的大小来排列原子了。</p>
 <p>首先我们先用一个笨方法实现所预想的小目标。</p>
 <p><strong>第一步：</strong>将坐标复制到excel表格里面。本人用的是libre office(Linux下面的Microsoft)。不过功能大同小异，Windows用户按照做就可以了。</p>
 <p><strong>第二步：</strong>选中所复制的数据，然后根据图中的D列来排序。</p>
-<p><img src="/2018/10/07/ex59/ex59-4.png"></p>
+<p><img src="/2018/10/07/ex59/ex59-4.png" alt=""></p>
 <p>排序完的结果, 如下图：</p>
-<p><img src="/2018/10/07/ex59/ex59-5.png"></p>
+<p><img src="/2018/10/07/ex59/ex59-5.png" alt=""></p>
 <p>从图中，我们可以看出，原子根据在z方向上的坐标分成了4部分。</p>
 <p><strong>注意：</strong>这里我们所有原子都是Cu原子，因此可以全部选中然后直接排序。如果你的体系中有好几种不同的原子，你需要按照元素，逐一进行排序。 比如体系中有C H O，我们先将C原子按照Z方向坐标排序，然后再排H原子的，最后再排O原子的。要保持和POSCAR前面元素顺序一致。</p>
 <p>排序完成之后，将POSCAR中的坐标替换为Excel中的数据。</p>
-<p><img src="/2018/10/07/ex59/ex59-6.png"></p>
+<p><img src="/2018/10/07/ex59/ex59-6.png" alt=""></p>
 <p>这样的话，我们的模型就搞定了。剩下的就是使用sed命令批量替换T T T和 F F F了</p>
 <p>但是，师兄等等，上图看起来坐标很乱啊，结构能用吗？ 放心，绝对可以用。</p>
 <p>如果不放心的话，可以用p4vasp打开一下，然后重新保存成POSCAR即可。最终我们的POSCAR如下图：</p>
-<p><img src="/2018/10/07/ex59/ex59-7.png"></p>
-<p><img src="/2018/10/07/ex59/ex59-8.png"></p>
+<p><img src="/2018/10/07/ex59/ex59-7.png" alt=""></p>
+<p><img src="/2018/10/07/ex59/ex59-8.png" alt=""></p>
 <p>从图中可以看出来，次表层的原子在18-21行，最表层的原子在22-25行。所以可以这样使用sed命令来快速实现表层原子的固定与弛豫。</p>
-<p><img src="/2018/10/07/ex59/ex59-9.png"></p>
-<p><img src="/2018/10/07/ex59/ex59-10.png"></p>
+<p><img src="/2018/10/07/ex59/ex59-9.png" alt=""></p>
+<p><img src="/2018/10/07/ex59/ex59-10.png" alt=""></p>
 <h2 id="方法三：-使用脚本分层"><a href="#方法三：-使用脚本分层" class="headerlink" title="方法三： 使用脚本分层"></a>方法三： 使用脚本分层</h2><p>师兄，这个问题竟然还可以使用脚本来解决？</p>
 <p>当然了，使用鼠标拖拖点点的事情，一般都可以用脚本来实现。脚本是用python写的，本人给它起了一个高大上的响亮名字：sortcar.py。（适用于python2.6以及以上的版本，低于2.6或者python3可能会出错。）</p>
 <p>由于p(2x2)的slab坐标前面已经用过了，下面我们用p(3x3)的slab来演示一下脚本的使用。</p>
-<p><img src="/2018/10/07/ex59/ex59-11.png"></p>
+<p><img src="/2018/10/07/ex59/ex59-11.png" alt=""></p>
 <p>新鲜出炉的，等待被sort的p(3x3)slab的POSCAR。被sort过的POSCAR如下图：</p>
-<p><img src="/2018/10/07/ex59/ex59-12.png"></p>
+<p><img src="/2018/10/07/ex59/ex59-12.png" alt=""></p>
 <p>使用sortcar.py 将坐标按照z方向大小排列。输出文件为XXX_sorted，其中 XXX为我们想要排列的POSCAR或者CONTCAR。如果你的VASP坐标结构文件名字为：BigBro，那么被sort之后，输出文件就是: BigBro_sorted。</p>
 <p>脚本这么神奇，内容如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> sys </span><br><span class="line"></span><br><span class="line">in_file = sys.argv[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">### READ input file ###</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_inputcar</span>(<span class="params">in_file</span>):</span></span><br><span class="line">    f = <span class="built_in">open</span>(in_file, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    lines = f.readlines()</span><br><span class="line">    f.close()</span><br><span class="line">    ele_name  = lines[<span class="number">5</span>].strip().split()</span><br><span class="line">    ele_num = [<span class="built_in">int</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> lines[<span class="number">6</span>].strip().split()]</span><br><span class="line">    dict_contcar =  &#123;ele_name[i]:ele_num[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(ele_name))&#125; </span><br><span class="line">    dict_contcar2 = defaultdict(<span class="built_in">list</span>)</span><br><span class="line">    <span class="keyword">for</span> element <span class="keyword">in</span> ele_name: </span><br><span class="line">        indice  = ele_name.index(element)</span><br><span class="line">        n_start = <span class="built_in">sum</span>(ele_num[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, indice+<span class="number">1</span>)) - dict_contcar.get(element) +<span class="number">1</span></span><br><span class="line">        n_end = <span class="built_in">sum</span>(ele_num[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, indice+<span class="number">1</span>)) +<span class="number">1</span></span><br><span class="line">        dict_contcar2[element].append(<span class="built_in">range</span>(n_start, n_end)) </span><br><span class="line">    <span class="keyword">return</span> lines, ele_name, ele_num, dict_contcar2, dict_contcar</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_elements</span>(<span class="params">ele</span>):</span></span><br><span class="line">    lines, ele_name, ele_num, dict_contcar2, dict_contar = read_inputcar(in_file)</span><br><span class="line">    coord_total = []</span><br><span class="line">    my_list = []</span><br><span class="line">    my_dict = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> dict_contcar2.get(ele)[<span class="number">0</span>]:</span><br><span class="line">        coord_list = lines[j+<span class="number">8</span>].strip().split()[<span class="number">0</span>:<span class="number">3</span>]</span><br><span class="line">        tf_list = lines[j+<span class="number">8</span>].strip().split()[<span class="number">3</span>:]</span><br><span class="line">        my_list.append(coord_list)</span><br><span class="line">        dict_key = <span class="string">&#x27;-&#x27;</span>.join(coord_list)</span><br><span class="line">        my_dict[dict_key] = tf_list</span><br><span class="line">       </span><br><span class="line">    data = np.array(my_list)</span><br><span class="line">    data=data[np.argsort(data[:,<span class="number">2</span>])]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> data:</span><br><span class="line">         coord = <span class="string">&#x27;  &#x27;</span>.join(k)</span><br><span class="line">         tf = <span class="string">&#x27;  &#x27;</span>.join(my_dict.get(<span class="string">&#x27;-&#x27;</span>.join(k)))</span><br><span class="line">         coord_total.append(coord + <span class="string">&#x27;  &#x27;</span> + tf )</span><br><span class="line">    <span class="keyword">return</span> coord_total</span><br><span class="line"></span><br><span class="line"><span class="comment">## Generate the New POSCAR file</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Get_and_Save_lines</span>(<span class="params">file_name, start_line, end_line</span>):</span></span><br><span class="line">    f = <span class="built_in">open</span>(file_name)</span><br><span class="line">    lines =  f.readlines()</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> lines[<span class="built_in">int</span>(start_line):<span class="built_in">int</span>(end_line)]:</span><br><span class="line">        file_out.write(line.rstrip()+<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">out_name = in_file + <span class="string">&#x27;_sorted&#x27;</span></span><br><span class="line">file_out = <span class="built_in">open</span>(out_name, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">Get_and_Save_lines(in_file, <span class="number">0</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">ele_name = read_inputcar(in_file)[<span class="number">1</span>]</span><br><span class="line">dict_contcar = read_inputcar(in_file)[-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> ele_name:</span><br><span class="line">    <span class="keyword">if</span> dict_contcar.get(i) &gt; <span class="number">1</span> :</span><br><span class="line">        file_out.write(<span class="string">&#x27;\n&#x27;</span>.join(get_elements(i)))</span><br><span class="line">    <span class="keyword">else</span>: </span><br><span class="line">        file_out.write(<span class="string">&#x27;\n %s \n&#x27;</span> %(<span class="string">&#x27;  &#x27;</span>.join(get_elements(i))))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
 <p><strong>注意事项：</strong></p>
-<p>1） 这里我们用的是Cu(111)的例子，比较简答，脚本的威力展示不出来。<br>2） 如果你的体系有很多不同的原子，脚本首先会将同一种元素原子的坐标排列，然后依次类推。<br>3） 有些地方可能有些冗余。但本人一直在用，效果还不错。<br>4） 本人建议，只针对表面使用这个脚本。也就是吸附前的slab模型。如果你放了吸附物种，不建议使用，因为吸附物种间不同原子之间的连接顺序可能会被打乱。<br>5） 在放吸附物种之前，最好将表面先排序完，怎么做，前面三种方法任选。<br>6） 脚本的话已经上传，大家可以通过链接下载：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1X5xLRsvRmFfNE8IlKwvbFQ%EF%BC%89">https://pan.baidu.com/s/1X5xLRsvRmFfNE8IlKwvbFQ）</a></p>
+<p>1） 这里我们用的是Cu(111)的例子，比较简答，脚本的威力展示不出来。<br>2） 如果你的体系有很多不同的原子，脚本首先会将同一种元素原子的坐标排列，然后依次类推。<br>3） 有些地方可能有些冗余。但本人一直在用，效果还不错。<br>4） 本人建议，只针对表面使用这个脚本。也就是吸附前的slab模型。如果你放了吸附物种，不建议使用，因为吸附物种间不同原子之间的连接顺序可能会被打乱。<br>5） 在放吸附物种之前，最好将表面先排序完，怎么做，前面三种方法任选。<br>6） 脚本的话已经上传，大家可以通过链接下载：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1X5xLRsvRmFfNE8IlKwvbFQ）">https://pan.baidu.com/s/1X5xLRsvRmFfNE8IlKwvbFQ）</a></p>
 <p>7）如果使用脚本出错的话，可能是因为你的python版本太低。这个脚本只适用于python2.6及以上的。Python3可能也不适用。出现错误，直接放弃，掌握了这个方面的思想就足够了。</p>
 <h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本节讨论的内容与科研关系说大不大，说小也不小，主要是在解决工作效率和时间上。想象一下，如果你的slab中有很多原子（金属氧化物，硫化物等），而且还不是同一种的，你用前两种方法的时候，就得十分小心了，此时脚本的作用就显示出来了。</p>
 
@@ -2818,7 +2768,7 @@
 <p>继续回到上一节留的另一个问题：扩胞时有什么需要注意的事项。</p>
 <p>1）扩胞的操作已经展示给大家了，相信这不再是什么难事了；</p>
 <p>扩胞后的结果见下图： </p>
-<p><img src="/2018/10/05/ex58/ex58-1.png"></p>
+<p><img src="/2018/10/05/ex58/ex58-1.png" alt=""></p>
 <p>2）扩胞后计算，我们需要注意的主要是KPOINTS这个文件。前面p(1x1)-Cu(111)，我们用的K点是：13x13x1。那我们扩完胞后，晶格变大了，还能继续用$13\times13\times1$吗？</p>
 <p>答：可以用来计算。但结果不能用来和其他K点的进行比较。</p>
 <hr>
@@ -2832,7 +2782,7 @@
 <p>师兄，你说了这么多废话。那我们该怎么办呢？</p>
 <p>很简单，将K点数目减小就可以了。 前面p(1x1)我们使用的是$13\times13\times1$，那么扩胞成p(2x2)后，K点就需要相应的减小到$7\times7\times1$。更简单一点，回想我们前面说到的那个经验选择。<code>K * a</code> 的取值范围。</p>
 <p><a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html">https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html</a></p>
-<p><img src="/2018/10/05/ex58/ex58-2.png"></p>
+<p><img src="/2018/10/05/ex58/ex58-2.png" alt=""></p>
 <p>我们只要保证所有计算中： K * a 的数值差不多就OK了。所以，当你看到这里，你就可以随便扩胞了，什么p(2x2),  p(3x3),  p(4x4)啦，扩胞后都知道该怎么选择K点并修改KPOINTS了。</p>
 <hr>
 <p>那对于其他输入文件呢？</p>
@@ -2872,10 +2822,10 @@
 <p>目前计算能力基本上可以完全满足放开表面原子的计算。所以，大家不要纠结这个问题。表面的原子能放开，尽量放开。如果实在是不放心，那么就找一篇和你工作很相近，体系类似的计算文章，看看别人怎么设置的，照猫画虎就可以了。</p>
 <hr>
 <h2 id="参考阅读："><a href="#参考阅读：" class="headerlink" title="参考阅读："></a>参考阅读：</h2><p>Density Functional Theory：A Practical Introduction, <strong>Chapter 3</strong>：Nuts and bolts of DFT calculations</p>
-<p><img src="/2018/10/05/ex58/ex58-3.png"></p>
+<p><img src="/2018/10/05/ex58/ex58-3.png" alt=""></p>
 <hr>
 <h2 id="扩展练习："><a href="#扩展练习：" class="headerlink" title="扩展练习："></a>扩展练习：</h2><p>另一个无关痛痒，但对后面工作效率会造成影响的问题就是：</p>
-<p><img src="/2018/10/05/ex58/ex58-4.png"></p>
+<p><img src="/2018/10/05/ex58/ex58-4.png" alt=""></p>
 <p>当扩展完之后，你会看到，Cu原子的坐标，是按照每个单胞中的坐标来排列的。在p(2x2)中有4个p(1x1)的单胞，先列出来第一个(1x1)中4个原子的坐标，然后再列出来第二个(1x1)的，以此类推。但是，比如我们想仅仅放开表面的第一层原子（也就是纵坐标为6.26的所有原子），就得把纵坐标为4.189的原子挨个由T T T 改成 F F F （图中箭头所指的部分）。这样会很麻烦，还浪费很多时间。</p>
 <p>怎么解决这个问题，快速将表层，次表层原子固定或者放开呢 ? 看下一节的内容。</p>
 <hr>
@@ -2988,50 +2938,42 @@
 <li>末态为O吸附的slab</li>
 </ul>
 </li>
-<li><p> O$_2$分子优化计算的时候，要注意: </p>
-</li>
-<li><p>从数据库获取O$_2$分子的键长，作为初始值；</p>
-</li>
-<li><p>ISPIN = 2  </p>
-</li>
-<li><p>ISMEAR = 0; SIMGA = 0.05 </p>
-</li>
-<li><p> IBRION= 2; POTIM = 0.1</p>
-</li>
-<li><p>用gamma点。</p>
-</li>
-<li><p>O 原子优化计算的时候，注意的计算细节与前面相同。额外注意的是：</p>
+<li><p>O$_2$分子优化计算的时候，要注意: </p>
 <ul>
+<li>从数据库获取O$_2$分子的键长，作为初始值；</li>
+<li>ISPIN = 2  </li>
+<li>ISMEAR = 0; SIMGA = 0.05 </li>
+<li>IBRION= 2; POTIM = 0.1</li>
+<li>用gamma点。</li>
+</ul>
+</li>
+<li>O 原子优化计算的时候，注意的计算细节与前面相同。额外注意的是：<ul>
 <li>O 原子再怎么优化还是一个O原子，所以上一行表述是不恰当的，应该是O原子的单点计算；</li>
 <li>Box的尺寸为：$13\times14\times15~\AA^3$  或者$13.1\times13.2\times13.3 \AA^3$ 但绝对不能为$13\times13\times13$这种正方体的</li>
 </ul>
 </li>
-<li><p>怎么优化Bulk的结构，扫晶格拟合和ISIF = 3直接优化（ENCUT要大，不妨取个700~eV）</p>
-</li>
-<li><p>slab怎么优化，Selective 和 坐标后面 T F 的关系</p>
-</li>
-<li><p>O吸附模型怎么搭建，如何得到合理的初始模型（有实验值优先使用，没有的话用粗精度的初算一下）。</p>
-</li>
-<li><p>此外，还要学会怎么判断计算结束，不同类型任务结束的特征是什么？</p>
-</li>
+<li>怎么优化Bulk的结构，扫晶格拟合和ISIF = 3直接优化（ENCUT要大，不妨取个700~eV）</li>
+<li>slab怎么优化，Selective 和 坐标后面 T F 的关系</li>
+<li>O吸附模型怎么搭建，如何得到合理的初始模型（有实验值优先使用，没有的话用粗精度的初算一下）。</li>
+<li>此外，还要学会怎么判断计算结束，不同类型任务结束的特征是什么？</li>
 </ul>
 <hr>
 <h2 id="打个比方"><a href="#打个比方" class="headerlink" title="打个比方"></a>打个比方</h2><p>回到上一节我们留的问题，为什么O在p-(1x1)-Cu(111)表面上的吸附能是正的呢？在解释这个问题先，我们先看下面一组照片：</p>
-<p><img src="/2018/10/04/ex57/ex57-1.jpeg"></p>
-<p><img src="/2018/10/04/ex57/ex57-2.jpeg"></p>
-<p><img src="/2018/10/04/ex57/ex57-3.jpeg"></p>
+<p><img src="/2018/10/04/ex57/ex57-1.jpeg" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-2.jpeg" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-3.jpeg" alt=""></p>
 <hr>
 <p>第一张里面，地铁车厢里面是空的，这时候你上去，座位随便挑。</p>
 <p>第二张里面，有些人了已经占了，但还是有座位的，你的选择并没有那么多了。</p>
 <p>第三张里面，人太多，能不能出来都是个问题，有没有座位想都不敢想了。</p>
 <p>那么回到我们的这个问题，我们把O的吸附结构在xy平面上重复一下：</p>
-<p><img src="/2018/10/04/ex57/ex57-4.png"></p>
+<p><img src="/2018/10/04/ex57/ex57-4.png" alt=""></p>
 <p>你会发现，表面上密密麻麻全是O原子（绿色的为Cu原子）！空间这么小，如果你是O原子，你愿意在这上面挤么？ 你是选择空旷的车厢还是人满为患的呢？如果我是氧原子，我肯定不愿意。所以，如果非得在这个表面上挤的话。我们就需要一些外力的作用，比如下图中的这俩年轻力壮的小伙子协警。</p>
-<p><img src="/2018/10/04/ex57/ex57-5.jpeg"></p>
+<p><img src="/2018/10/04/ex57/ex57-5.jpeg" alt=""></p>
 <p>这俩人使的劲就是O原子的吸附能。正值的意思表明我们需要额外的力才能将其吸附在表面上。表面越挤，正值越大。</p>
 <hr>
 <p>如果你还是不理解的话，我们看另外一个例子：</p>
-<p><img src="/2018/10/04/ex57/ex57-6.jpeg"></p>
+<p><img src="/2018/10/04/ex57/ex57-6.jpeg" alt=""></p>
 <p>早上，开学了。老师有1个苹果，需要将这个苹果分给教室里面的学生。而学生还没有来齐，当你第一个到达教室时，发现整个苹果都是你的。开心程度 100%。正要吃的时候，小明进来了，老师说你俩要分一下，你只能得到一半了，开心程度 50%; 你俩正要吃的时候，小红和小白也进来了，老师说，打住，你们四个分，于是每人只能拿1/4，你的开心程度掉到 25%了。</p>
 <p>表面就是这个苹果，O原子就是学生，总共就这一个苹果，学生越多，平均分到的就越少。学生之间可能还会因为分的不均匀而打架（相互排斥），导致开心程度越来越低。当开心程度成负的时候，老师就需要施展神通费心思（额外的功）逗你们开心。</p>
 <hr>
@@ -3039,24 +2981,24 @@
 <hr>
 <h2 id="搭建p-2x2-Cu-111-表面"><a href="#搭建p-2x2-Cu-111-表面" class="headerlink" title="搭建p-(2x2)-Cu(111)表面"></a>搭建p-(2x2)-Cu(111)表面</h2><p>1 用p4vasp打开p-(1x1)-Cu(111)的CONTCAR</p>
 <p>2 选择Edit —&gt; Multiply cell</p>
-<p><img src="/2018/10/04/ex57/ex57-7.png"></p>
+<p><img src="/2018/10/04/ex57/ex57-7.png" alt=""></p>
 <p>3 弹出的窗口，如图填入扩展的倍数：</p>
-<p><img src="/2018/10/04/ex57/ex57-8.png"></p>
+<p><img src="/2018/10/04/ex57/ex57-8.png" alt=""></p>
 <p>这代表我们在x和y方向上分别扩展到原来的2倍。点击Multiply，效果如下图：</p>
-<p><img src="/2018/10/04/ex57/ex57-9.png"></p>
-<p>4 关闭Multiply这个窗口，p4vasp主界面左上角选择：<code>File</code> –&gt; <code>Save system as</code></p>
+<p><img src="/2018/10/04/ex57/ex57-9.png" alt=""></p>
+<p>4 关闭Multiply这个窗口，p4vasp主界面左上角选择：<code>File</code> —&gt; <code>Save system as</code></p>
 <p>5 在弹出的窗口，选择目录，保存成POSCAR，点击OK即可。</p>
-<p><img src="/2018/10/04/ex57/ex57-10.png"></p>
+<p><img src="/2018/10/04/ex57/ex57-10.png" alt=""></p>
 <p>6 这样我们就有了一个p-(2x2)的slab模型了。</p>
 <hr>
 <h2 id="搭建O在p-2x2-Cu-111-上的吸附结构"><a href="#搭建O在p-2x2-Cu-111-上的吸附结构" class="headerlink" title="搭建O在p-(2x2)-Cu(111)上的吸附结构"></a>搭建O在p-(2x2)-Cu(111)上的吸附结构</h2><p>1 我们可以用之前计算的结果搭建这个初始结构,O吸附优化的CONTCAR：</p>
-<p><img src="/2018/10/04/ex57/ex57-11.png"></p>
+<p><img src="/2018/10/04/ex57/ex57-11.png" alt=""></p>
 <p>O原子在$z$方向的坐标为8.0928$\AA$。先记住这个数字。</p>
 <hr>
 <p>p-(2x2)的Slab坐标（在p-(1x1)基础上扩展的）:</p>
-<p><img src="/2018/10/04/ex57/ex57-12.png"></p>
+<p><img src="/2018/10/04/ex57/ex57-12.png" alt=""></p>
 <p>在这个坐标上面修改，搭建结构：</p>
-<p><img src="/2018/10/04/ex57/ex57-13.png"></p>
+<p><img src="/2018/10/04/ex57/ex57-13.png" alt=""></p>
 <p>1）添加O原子元素</p>
 <p>2）添加O原子数目</p>
 <p>3）添加O原子坐标</p>
@@ -3064,18 +3006,22 @@
 <p>到现在，p-(2x2)的slab以及O原子的吸附模型都有了，准备INCAR,KPOINTS,POTCAR以及任务脚本，提交这两个结构的优化计算。等待结束。</p>
 <hr>
 <p>计算吸附能：</p>
-<p>公式1：<br>$$<br>E_{ads1}(O) = E_{slab+O} – E_{slab} – E_{O_2}/2<br>$$<br>公式2：<br>$$<br>E_{ads2}(O) = E_{slab+O} – E_{slab} – E_{O}<br>$$<br>带入数据：</p>
-<p>$$<br>E_{ads1}(O) = -60.61682891<del>eV – (-55.96049190</del>eV )- (-9.85498627<del>eV)/2 = 0.271</del>eV<br>$$</p>
-<p>$$<br>E_{ads2}(O) = -60.61682891<del>eV – (-55.96049190</del>eV )- (-1.89237882<del>eV)= -2.764</del>eV<br>$$</p>
-<p>发现吸附能$E_{ads1}(O)$从正的1.216降低到0.271 eV了。看来空间对O原子的吸附影响很大。</p>
+<p>公式1： </p>
+<script type="math/tex; mode=display">
+E_{ads1}(O) = E_{slab+O} – E_{slab} – E_{O_2}/2</script><p>公式2： </p>
+<script type="math/tex; mode=display">
+E_{ads2}(O) = E_{slab+O} – E_{slab} – E_{O}</script><p>带入数据：</p>
+<script type="math/tex; mode=display">
+E_{ads1}(O) = -60.61682891~eV – (-55.96049190~eV )- (-9.85498627~eV)/2 = 0.271~eV</script><script type="math/tex; mode=display">
+E_{ads2}(O) = -60.61682891~eV – (-55.96049190~eV )- (-1.89237882~eV)= -2.764~eV</script><p>发现吸附能$E_{ads1}(O)$从正的1.216降低到0.271 eV了。看来空间对O原子的吸附影响很大。</p>
 <hr>
 <p>地铁里面空间稍微大了些，现在不需要年轻小伙子暴力推搡了，大妈指挥下就可以了。</p>
-<p><img src="/2018/10/04/ex57/ex57-14.jpeg"></p>
+<p><img src="/2018/10/04/ex57/ex57-14.jpeg" alt=""></p>
 <p>分的苹果稍微多了些，虽然还是有些不情愿，稍微诱导一下，就开心了。</p>
-<p><img src="/2018/10/04/ex57/ex57-15.png"></p>
+<p><img src="/2018/10/04/ex57/ex57-15.png" alt=""></p>
 <hr>
 <p>前面的解释只是用现实的例子瞎扯一顿。但发表文章的时候不能这样说啊，我们就需要一些科学和专业的解释。而在实际表面上，覆盖度影响吸附能的因素有很多。体相中电子的分布转移，与吸附物种的成键，吸附物种之间的排斥和吸引等等。如果你想了解的更多，更专业！阅读下面这篇文献：</p>
-<p><img src="/2018/10/04/ex57/ex57-16.png"></p>
+<p><img src="/2018/10/04/ex57/ex57-16.png" alt=""></p>
 <p>谷歌上可以下载免费的，有权限的也可以直接下载。类似这样已经注明的文献，请不要花时间找我要，自己去下载。</p>
 <p>（每设一道坎，就会把很多懒家伙挡住！跨过一道又一道坎，你就把别人远远甩在后面了。所以，请自己主动起来！）</p>
 <hr>
@@ -3193,11 +3139,11 @@
 <ul>
 <li><p>O$_2$分子的能量</p>
 </li>
-<li><p> 以及O原子在气相中的能量。</p>
+<li><p>以及O原子在气相中的能量。</p>
+<p>有了这几个能量，我们就可以计算O在p(1x1)的Cu(111)表面上的吸附能了。这也是本节的主要内容。</p>
 </li>
 </ul>
-<p> 有了这几个能量，我们就可以计算O在p(1x1)的Cu(111)表面上的吸附能了。这也是本节的主要内容。</p>
-<h2 id="1-什么是吸附能？"><a href="#1-什么是吸附能？" class="headerlink" title="1 什么是吸附能？"></a>1 什么是吸附能？</h2><p><img src="/2018/10/03/ex56/ex56-1.png"></p>
+<h2 id="1-什么是吸附能？"><a href="#1-什么是吸附能？" class="headerlink" title="1 什么是吸附能？"></a>1 什么是吸附能？</h2><p><img src="/2018/10/03/ex56/ex56-1.png" alt=""></p>
 <p>从字面上不难理解，就是分子或者原子从气相中吸附到表面上所释放的能量。计算吸附能的时候，需要注意的有两点：起始和终态。</p>
 <p>1）  <strong>终态：</strong>这里说的终态就是O原子在表面吸附，并且优化完的构型。我们标记为 slab+O，它的能量为  E(slab+O)。</p>
 <p>2）  <strong>初态：</strong>我们计算O的吸附能，起始状态是O$_2$ 和 纯净的slab表面。因为在实际反应中，O$_2$在气相中解离成2个O原子，然后再吸附，这种可能性微乎其微。前面我们讲了O$_2$分子的优化，这里我们直接把O$_2$分子的能量拿来用。起始的两个结构能量分别标记为：E(O$_2$) 和 E(slab)。</p>
@@ -3206,37 +3152,35 @@
 <p>4）  所以，大家在计算的时候，一定要把自己的计算公式标出来，此外，大家看到直接用O原子能量计算出来的吸附能，不要用O$_2$作为参考能量的结果进行对比。</p>
 <p>5） 这两个计算方法，哪个对，哪个错呢？ 答：都是对的。因为O$_2$的解离能是一个常数，加上去（用O$_2$能量作为起始）或者忽略掉（用O原子能量作为起始）得到的结果之间的区别无非也是这个常数。看下面的计算。</p>
 <hr>
-<h2 id="2-计算吸附能（单个O原子）"><a href="#2-计算吸附能（单个O原子）" class="headerlink" title="2 计算吸附能（单个O原子）"></a>2 计算吸附能（单个O原子）</h2><p>公式1:<br>$$<br>E_{ads1}(O) = E_{slab+O} – E_{slab} – E_{O_2}/2<br>$$<br>公式2:<br>$$<br>E_{ads2}(O) = E_{slab+O} – E_{slab} – E_{O}<br>$$</p>
-<p>$E_{slab+O}$ ：O 在Slab上，优化完结构的能量；</p>
+<h2 id="2-计算吸附能（单个O原子）"><a href="#2-计算吸附能（单个O原子）" class="headerlink" title="2 计算吸附能（单个O原子）"></a>2 计算吸附能（单个O原子）</h2><p>公式1: </p>
+<script type="math/tex; mode=display">
+E_{ads1}(O) = E_{slab+O} – E_{slab} – E_{O_2}/2</script><p>公式2: </p>
+<script type="math/tex; mode=display">
+E_{ads2}(O) = E_{slab+O} – E_{slab} – E_{O}</script><p>$E_{slab+O}$ ：O 在Slab上，优化完结构的能量；</p>
 <p>$E_{slab}$: 优化的slab的能量；</p>
 <p>$E_{O_2}$: O$_2$ 分子在气相中的能量；</p>
 <p>$E_{O}$: O原子在气相中的能量；</p>
 <p>带入数据后：</p>
-<p>$$<br>E_{ads1}(O) =  -17.68238420<del>eV – (-13.97082922</del>eV) – (-9.85498627<del>eV) = 1.216</del>eV<br>$$</p>
-<p>$$<br>E_{ads2}(O) =  -17.68238420<del>eV – (-13.97082922</del>eV) – (-1.89237882<del>eV) = -1.819</del>eV<br>$$</p>
-<hr>
+<script type="math/tex; mode=display">
+E_{ads1}(O) =  -17.68238420~eV – (-13.97082922~eV) – (-9.85498627~eV) = 1.216~eV</script><script type="math/tex; mode=display">
+E_{ads2}(O) =  -17.68238420~eV – (-13.97082922~eV) – (-1.89237882~eV) = -1.819~eV</script><hr>
 <p>前面我们说了，如果直接用O原子在气相中的能量，则忽略了O$_2$分子解离的能量（或者是O原子结合能）。</p>
 <p>我们知道O$_2$ 分子解离是一个吸热反应，那么，解离能可以通过以下两个方式来获取：</p>
-<ol>
-<li><pre><code>两个吸附能量相减来得到：
-</code></pre>
-<p>$$<br>E_{ads1}(O) - E_{ads2}(O) = 1.216<del>eV – (-1.819</del>eV) = 3.035~eV<br>$$</p>
-</li>
-<li><p>   直接通过O$_2$分子和O原子的能量得到。单个O原子的结合能为：</p>
-</li>
-</ol>
-<p>$$<br>E_{binding} = [ E_{O_2} – E_O * 2] /2，<br>$$</p>
-<p>代入数据后得到：</p>
-<p>$$<br>E_{binding} =[ -9.85498627<del>eV – (-1.89237882</del>eV *2) ] / 2 = -3.035~eV<br>$$</p>
-<hr>
+<p>1)     两个吸附能量相减来得到：</p>
+<script type="math/tex; mode=display">
+E_{ads1}(O) - E_{ads2}(O) = 1.216~eV – (-1.819~eV) = 3.035~eV</script><p>2)    直接通过O$_2$分子和O原子的能量得到。单个O原子的结合能为：</p>
+<script type="math/tex; mode=display">
+E_{binding} = [ E_{O_2} – E_O * 2] /2，</script><p>代入数据后得到：</p>
+<script type="math/tex; mode=display">
+E_{binding} =[ -9.85498627~eV – (-1.89237882~eV *2) ] / 2 = -3.035~eV</script><hr>
 <h2 id="3-思考问题："><a href="#3-思考问题：" class="headerlink" title="3 思考问题："></a>3 思考问题：</h2><p>1）  前面我们计算的$E_{ads1}(O)$ = 1.216 eV 是一个正值，为什么会这样？ 算错了吗？还是有其他物理意义？</p>
 <p>2）  如何计算H，CO，CH$_4$, CH$_3$OH 等的吸附能，把计算的公式列出来。每个能量计算的细节，注意部分有哪些？</p>
 <p>3） 如何计算脱附能？</p>
 <hr>
 <h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h2><p>1）  推荐阅读下面这两篇文章（本人的，当然喜欢大家多多引用了。）讲的是关于甲醇，乙醇，乙二醇，以及甘油在Cu, Ru, Pd以及Pt的(111)上面的解离。Ex系列的后续文章，表面反应的优化，过渡态的计算等，基本都以这两篇文章的内容为主。希望大家能够好好学习，并多多引用。此外，计算的很多细节都在支持信息里面，大家不要错过。一时半会看不完没有关系，下载后结合本书慢慢看。</p>
-<p><img src="/2018/10/03/ex56/ex56-2.png"></p>
+<p><img src="/2018/10/03/ex56/ex56-2.png" alt=""></p>
 <p>链接：<a target="_blank" rel="noopener" href="https://pubs.acs.org/doi/abs/10.1021/cs501698w">https://pubs.acs.org/doi/abs/10.1021/cs501698w</a></p>
-<p><img src="/2018/10/03/ex56/ex56-3.png"></p>
+<p><img src="/2018/10/03/ex56/ex56-3.png" alt=""></p>
 <p><strong>链接：</strong><a target="_blank" rel="noopener" href="https://www.nature.com/articles/s41467-018-02884-y"><strong>https://www.nature.com/articles/s41467-018-02884-y</strong></a> </p>
 <hr>
 <p>2）  回顾并重复本节所涉及到的计算，以及注意细节部分。</p>
@@ -3350,21 +3294,17 @@
     <div class="post-body" itemprop="articleBody">
           <p>前面一节，我们通过一个简单的方法获取了一个Cu-O键的键长。因为我们固定了Cu的坐标，当计算完成之后，O原子初始构型的坐标可以直接将计算后的结果复制过来。此时需要注意<code>Direct</code>和<code>Cartesian</code>的坐标问题。</p>
 <h2 id="1-搭建合理的O吸附模型"><a href="#1-搭建合理的O吸附模型" class="headerlink" title="1 搭建合理的O吸附模型"></a>1 搭建合理的O吸附模型</h2><p>1）取Cu(111)表面模型的POSCAR (Cartesian坐标)</p>
-<p><img src="/2018/10/02/ex55/ex55-1.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-1.png" alt=""></p>
 <hr>
-<ol start="2">
-<li>复制快速获取初始构型计算(Cu-O dimer)的结果</li>
-</ol>
-<p><img src="/2018/10/02/ex55/ex55-2.png"></p>
+<p>2) 复制快速获取初始构型计算(Cu-O dimer)的结果</p>
+<p><img src="/2018/10/02/ex55/ex55-2.png" alt=""></p>
 <center>上图中的最后一行。</center>
 
 <hr>
-<ol start="3">
-<li>构建O的吸附模型：</li>
-</ol>
-<p><img src="/2018/10/02/ex55/ex55-3.png"></p>
+<p>3) 构建O的吸附模型：</p>
+<p><img src="/2018/10/02/ex55/ex55-3.png" alt=""></p>
 <p>当然了,我们也可以根据键长或者O在z方向的坐标直接在Cu(111)表面基础上搭建。</p>
-<p><img src="/2018/10/02/ex55/ex55-4.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-4.png" alt=""></p>
 <hr>
 <p>这个简单粗暴的方法到此就讲解完了。有以下几个需要注意的地方：</p>
 <p>A）这里我们用的是Cu(111)的 p(1x1) slab模型,表面只有一个原子。一般来说，大家计算吸附的时候，模型都比这个大，我们可以取一层原子。记住，要固定住这层原子。</p>
@@ -3373,19 +3313,19 @@
 <hr>
 <h2 id="2-快速获取初始构型方法（二）"><a href="#2-快速获取初始构型方法（二）" class="headerlink" title="2 快速获取初始构型方法（二）"></a>2 快速获取初始构型方法（二）</h2><p>1）在这个方法中，第一步我们先取slab模型的结构，这里就不讲了。</p>
 <p>2） 搭建一个初始的吸附模型。此时我们要根据原子半径，大体确认一下键长的合理范围，前面也讲过了，就不再细说了。 由于前面一节我们已经有了一个O原子的坐标数据，可以直接拿过来。如下：</p>
-<p><img src="/2018/10/02/ex55/ex55-5.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-5.png" alt=""></p>
 <p>注意：实际操作的时候，这个方法可以使用前面一节的方法的出来的结果；也可以直接设置初始值，这两个方法之间联系不太大。</p>
 <hr>
 <p>3） 固定slab模型中的所有原子！所有原子！所有原子！</p>
 <p>重要的事情说三遍，是把slab模型中的原子全部固定!只放开吸附的分子。这里大师兄在vim里面操作，使用了下面的命令：<code>:12,13s/T/F/g</code>  意思是把12和13行中的T全部替换成F。当然也可以使用sed进行操作，相信大家经过这么长时间的练习，已经掌握基本的Vim和sed操作，就不浪费时间了。效果如下：</p>
-<p><img src="/2018/10/02/ex55/ex55-7.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-7.png" alt=""></p>
 <hr>
 <p>4）  设置INCAR，这里是slab模型，把之前Cu(111)表面优化计算的INCAR直接拿过来了。</p>
 <p>EDIFF、EDIFFG 可以适当放宽，下图大师兄懒得改了。</p>
-<p><img src="/2018/10/02/ex55/ex55-8.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-8.png" alt=""></p>
 <hr>
 <p>5）  生成对应的POTCAR，K点只用gamma点！K点只用gamma点！K点只用gamma点！</p>
-<p><img src="/2018/10/02/ex55/ex55-9.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-9.png" alt=""></p>
 <p>这里需要注意的有两点：</p>
 <p>A）  计算前一定要检查POTCAR和POSCAR是否对应，养成这个好习惯</p>
 <p>B）  一定要用gamma点。因为我们知道，K点越多，计算量越大。</p>
@@ -3400,23 +3340,16 @@
 <p>PS： 怎么完成复制这一步还不会的话，请从头开始学。</p>
 <p>2） 复制完了并不代表完事，前面一步我们还固定了表层的原子，此时我们需要放开。使用sed命令：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &#x27;12,13s/F/T/g&#x27; POSCAR</span><br></pre></td></tr></table></figure>
-
 <p>3）KPOINTS：使用前面Cu slab优化时用的 13x13x1</p>
 <p>4） INCAR中，如果前面一步的计算精度较低，这时，我们就要提高一下了。</p>
 <p>5）POTCAR 不变</p>
 <p>6）提交任务的脚本：由于前面的计算量很小，一般可以使用小队列进行计算，如果计算量增大了，这时我们也需要稍微修改下脚本。</p>
-<p><img src="/2018/10/02/ex55/ex55-12.png"></p>
-<ol start="7">
-<li>  提交任务，等待结束，查看结果。</li>
-</ol>
-<p><img src="/2018/10/02/ex55/ex55-13.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-12.png" alt=""></p>
+<p>7)   提交任务，等待结束，查看结果。</p>
+<p><img src="/2018/10/02/ex55/ex55-13.png" alt=""></p>
 <p>O原子的坐标从8.009 优化到了8.093。键长从1.75 Å 优化到 1.80 Å，变化很小，这说明我们的初始构型已经很接近优化结果了。</p>
-<h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h2><ol>
-<li><p>  本节的实例中，使用了 <code>&amp;&amp;</code> 这个连接前后的命令，大家学习下是怎么回事</p>
-</li>
-<li><p>  重复本节练习，掌握其中的关键点。</p>
-</li>
-</ol>
+<h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h2><p>1)   本节的实例中，使用了 <code>&amp;&amp;</code> 这个连接前后的命令，大家学习下是怎么回事</p>
+<p>2)   重复本节练习，掌握其中的关键点。</p>
 <h2 id="5-小结"><a href="#5-小结" class="headerlink" title="5 小结"></a>5 小结</h2><p>一个合理的初始构型可以极大地降低我们的工作量，这一点是大家务必要记在心里的。而获取合理的初始构型，一方面需要我们用化学的知识去搭建结构，另一方面，也需要配合一些简单的低精度的计算去完成。希望大家可以掌握这两节的精髓，运用到自己的课题中，提高自己的计算效率。</p>
 
       
@@ -3522,17 +3455,17 @@
 <p>Ex54-Ex56主要介绍一下如何计算：单个氧原子在p(1x1)-Cu(111)表面top位上的吸附。在实际的计算过程中，一个好的初始结构会极大地加快并节约你的计算时间，这不仅仅体现在服务器运行的时间上，也会避免很多错误的结果，因为这些错误结果的纠正耗时费力，通常折磨得新手们心力交瘁。可以回顾下前面我们O$_2$ 分子的优化过程：不合理的初始结构导致的错误结果以及计算时间的增加。本节主要介绍一个快速获取优化初始构型的方法。该方法简单粗暴，可以让你在极短的时间内快速获得一个化学的feeling。</p>
 <hr>
 <h2 id="1-Top-site-的构型"><a href="#1-Top-site-的构型" class="headerlink" title="1 Top site 的构型"></a>1 Top site 的构型</h2><p>在Cu(111)表面上，top位指的是直接吸附在Cu原子上方。其他的位点是什么，先不要着急，后面会慢慢学。如果一个O原子吸附在Cu原子上方，在空间坐标上，大家很容易想到，O和Cu在xy方向的坐标应该是差不多的，z方向O的坐标为：Cu的z坐标 + Cu-O键的键长。如下图：</p>
-<p><img src="/2018/10/01/ex54/ex54-1.png"></p>
+<p><img src="/2018/10/01/ex54/ex54-1.png" alt=""></p>
 <hr>
 <h2 id="2-确定O原子在z方向上的坐标"><a href="#2-确定O原子在z方向上的坐标" class="headerlink" title="2  确定O原子在z方向上的坐标"></a>2  确定O原子在z方向上的坐标</h2><p>知道了前面的基本原理，O原子的坐标我们就可以通过Cu-O的键长来初步获得了。那么Cu-O的键长怎么获得呢？这里列举了一下几个常用的方法。</p>
 <p>1）查数据库：</p>
 <p>2）查文献：自己去查，不要在QQ群里让别人给你发文献。</p>
-<p><img src="/2018/10/01/ex54/ex54-2.png"></p>
+<p><img src="/2018/10/01/ex54/ex54-2.png" alt=""></p>
 <p>这两条主要考验的是大家查询资料的能力，这里暂且不详细介绍了。有兴趣的可以加入大师兄文献互助超级群，跟众多文献检索大牛学习。(群号:<strong>157099073</strong>)</p>
 <hr>
 <p>3）自己估算</p>
 <p>估算的话，可以根据Cu和O原子的半径：Cu和O成键，键长肯定要小于两者的半径之和。搜一下维基百科，Cu的半径为1.35 Å，O的为0.60 Å。(<a target="_blank" rel="noopener" href="https://www.wikipedia.org/">维基百科</a>，搜索<code>Atomic Radius</code>就可以得到下面这个表)</p>
-<p><img src="/2018/10/01/ex54/ex54-4.png"></p>
+<p><img src="/2018/10/01/ex54/ex54-4.png" alt=""></p>
 <p>从上面的数据我们可以得出：Cu-O键要小于1.95 Å。在吸附构型搭建的时候设置比1.95 Å小点的值作为初始，进行优化。一般来说，原子半径之和减去0.1-0.3 Å都是可以的。但是不能太小，否则第一步优化的时候排斥力太大，会导致计算出错。</p>
 <hr>
 <p>4）自己初算：</p>
@@ -3548,45 +3481,45 @@
 <p>为了加深大家对搭建模型的印象，我们从<code>p(1x1)-Cu(111)</code>表面的结构出发，然后一步一步搭建CuO的气相结构模型，并计算。</p>
 <hr>
 <h2 id="3-搭建初算的模型-Cu-O双原子结构"><a href="#3-搭建初算的模型-Cu-O双原子结构" class="headerlink" title="3  搭建初算的模型(Cu-O双原子结构)"></a>3  搭建初算的模型(Cu-O双原子结构)</h2><p>1）p(1x1)-Cu(111)表面的结构</p>
-<p><img src="/2018/10/01/ex54/ex54-5.png"></p>
+<p><img src="/2018/10/01/ex54/ex54-5.png" alt=""></p>
 <p>将前面几节计算的一个真空层为15 $\AA$的例子直接拿过来。表层原子在z方向的坐标为6.259 (第十二行)。</p>
 <hr>
 <p>2）修改格子大小(3-5行)</p>
 <p>这里修改的很随意，第三行中直接把2.571改成了12.571；</p>
 <p>第四行中把2.227改成了12.227。</p>
 <p>第五行中将21.299改成了12.299</p>
-<p><img src="/2018/10/01/ex54/ex54-6.png"></p>
+<p><img src="/2018/10/01/ex54/ex54-6.png" alt=""></p>
 <p>效果如下:</p>
-<p><img src="/2018/10/01/ex54/ex54-7.png"></p>
+<p><img src="/2018/10/01/ex54/ex54-7.png" alt=""></p>
 <p>注意：</p>
 <p>A）当然也可以用其他大小的格子；(例如：8x8x8 $\AA^3$)</p>
 <p>B）格子大小直接影响计算量和时间。(回顾下前面所学)</p>
 <hr>
 <p>3）保留表层的Cu原子，删除其他的Cu原子。</p>
-<p><img src="/2018/10/01/ex54/ex54-8.png"></p>
+<p><img src="/2018/10/01/ex54/ex54-8.png" alt=""></p>
 <p>注意：</p>
 <p>A）我们这里将表层以下的三个原子删掉了，只保留z坐标为6.259的这个原子；</p>
 <p>B） 第7行中原子数目也要相应的改变。从4 改成1。</p>
 <p>C） 效果如下图：</p>
-<p><img src="/2018/10/01/ex54/ex54-9.png"></p>
+<p><img src="/2018/10/01/ex54/ex54-9.png" alt=""></p>
 <hr>
 <p>4）加入O原子</p>
-<p><img src="/2018/10/01/ex54/ex54-10.png"></p>
+<p><img src="/2018/10/01/ex54/ex54-10.png" alt=""></p>
 <p>注意：</p>
 <p>A）第6行中，在Cu的后面加上了一个O，不是数字0；</p>
 <p>B）Cu 和 O 之间用1个或者几个空格隔开，不要用<code>Tab</code>；</p>
 <p>C）第7行中，记得加上O原子的数目</p>
 <p>D）最后一行添加O原子的坐标，这里我们直接把Cu原子的复制过来了。</p>
-<p><img src="/2018/10/01/ex54/ex54-11.png"></p>
+<p><img src="/2018/10/01/ex54/ex54-11.png" alt=""></p>
 <p>由于两个原子坐标一样，Cu和O堆在一起了。</p>
 <hr>
 <p>5）修改O原子坐标</p>
-<p><img src="/2018/10/01/ex54/ex54-12.png"></p>
+<p><img src="/2018/10/01/ex54/ex54-12.png" alt=""></p>
 <p>注意:</p>
 <p>A）这里我们把Cu固定住了;为了方便下一步的计算。</p>
 <p>B）Cu-O之间的键长，设置的为1.8 Å；</p>
 <p>C）O的z坐标为：6.259 + 1.8 = 8.059。</p>
-<p><img src="/2018/10/01/ex54/ex54-13.png"></p>
+<p><img src="/2018/10/01/ex54/ex54-13.png" alt=""></p>
 <hr>
 <p>6）到这里，Cu-O双原子分子的气相结构就搭建完毕了，保存成POSCAR即可。</p>
 <p>上面的效果图是本人每一步打开展示给大家的。实际操作中，完全没有必要。我们需要学习的是：</p>
@@ -3596,7 +3529,7 @@
 <p>D）怎么添加原子坐标。</p>
 <p>E）怎么通过改坐标修改原子位置。</p>
 <hr>
-<h2 id="4-INCAR检查"><a href="#4-INCAR检查" class="headerlink" title="4 INCAR检查"></a>4 INCAR检查</h2><p><img src="/2018/10/01/ex54/ex54-14.png"></p>
+<h2 id="4-INCAR检查"><a href="#4-INCAR检查" class="headerlink" title="4 INCAR检查"></a>4 INCAR检查</h2><p><img src="/2018/10/01/ex54/ex54-14.png" alt=""></p>
 <p>注意:</p>
 <p>1）算的是气相中的：ISMEAR = 0；SIGMA = 0.05 (本书前面就讲过了)</p>
 <p>2）IBRION = 2；POTIM = 0.1；NSW =100 是优化的参数</p>
@@ -3612,8 +3545,8 @@
 <p><strong>注意：</strong></p>
 <p>在提交一个任务前，一定要将INCAR、KPOINTS、POSCAR、POTCAR以及脚本在心里默念一遍。然后对应的检查一下，是否有些遗漏的地方。否则等算完了，发现错了，又得浪费很多时间重新计算了。</p>
 <hr>
-<h2 id="6-检查结果"><a href="#6-检查结果" class="headerlink" title="6 检查结果"></a>6 检查结果</h2><p><img src="/2018/10/01/ex54/ex54-16.png"></p>
-<p>1）上个厕所的功夫，任务就结束了，共算了6步。(其实是切换电脑系统的功夫)<img src="/2018/10/01/ex54/ex54-17.gif"></p>
+<h2 id="6-检查结果"><a href="#6-检查结果" class="headerlink" title="6 检查结果"></a>6 检查结果</h2><p><img src="/2018/10/01/ex54/ex54-16.png" alt=""></p>
+<p>1）上个厕所的功夫，任务就结束了，共算了6步。(其实是切换电脑系统的功夫)<img src="/2018/10/01/ex54/ex54-17.gif" alt=""></p>
 <p>2）Cu—O 的键长：7.95-6.26 = 1.69 Å</p>
 <p><strong>注意：</strong> </p>
 <p>此时的键长只作为下一步的初始猜测，如果和文献去比有点差异，也不要太较真。</p>

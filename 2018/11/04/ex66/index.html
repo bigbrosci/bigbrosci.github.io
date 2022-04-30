@@ -308,7 +308,7 @@
     <div class="post-body" itemprop="articleBody">
         <p>结合上一节的内容，下面主要讲解一下H$_2$O分子在Cu(111)表面吸附的初始模型搭建。</p>
 <h2 id="1-计算H-2-O气相分子的能量"><a href="#1-计算H-2-O气相分子的能量" class="headerlink" title="1. 计算H$_2$O气相分子的能量"></a>1. 计算H$_2$O气相分子的能量</h2><p>相信大家已经轻车熟路了（老司机）。只将INCAR，KPOINTS，POSCAR列出来，不再详细解释。如下图：</p>
-<p><img src="/2018/11/04/ex66/ex66-01.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-01.png" alt=""></p>
 <p>提交任务，结束后，将CONTCAR中的Direct坐标转换为Cartesian，方便后面的表面模型搭建。</p>
 <p>怎么转换前面也讲过了，这里也不再啰嗦。</p>
 <hr>
@@ -330,16 +330,16 @@
 <hr>
 <h2 id="2-搭建H-2-O的吸附模型"><a href="#2-搭建H-2-O的吸附模型" class="headerlink" title="2. 搭建H$_2$O的吸附模型"></a>2. 搭建H$_2$O的吸附模型</h2><p><strong>1） 打开p(3x3)-Cu(111)的slab结构。</strong></p>
 <p>先点击左侧的Build，然后点击右上方的text 按钮，进入编辑的部分。如下面的示意图：</p>
-<p><img src="/2018/11/04/ex66/ex66-02.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-02.png" alt=""></p>
 <p>注意：上面的只是p4vasp的一个界面，不是p(3x3)-Cu(111)的slab结构。</p>
 <hr>
 <p><strong>2） 元素行，原子数目</strong></p>
 <p>在元素行，添加O和H，下面一行，添加对应的原子数。</p>
-<h2 id=""><a href="#" class="headerlink" title=""></a><img src="/2018/11/04/ex66/ex66-03.png"></h2><p><strong>3）添加H$_2$O分子坐标</strong></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="/2018/11/04/ex66/ex66-03.png" alt=""></h2><p><strong>3）添加H$_2$O分子坐标</strong></p>
 <p> 在坐标的最后面，将前面CONTCAR的Cartesian坐标直接复制过来即可。</p>
-<p><img src="/2018/11/04/ex66/ex66-04.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-04.png" alt=""></p>
 <p><strong>4） 结果：</strong></p>
-<p><img src="/2018/11/04/ex66/ex66-05.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-05.png" alt=""></p>
 <p>师兄，水分子跑到slab里面去了，这可怎么办？ 答：往上平移下即可。</p>
 <p>选择O H 以及表面上的任意一个Cu原子。回顾前面的平移操作：</p>
 <p>From 那行点 1st 代表的是O原子</p>
@@ -349,7 +349,7 @@
 <p>Vector的第三个数字，这个是O和Cu在垂直方向上的距离。我们知道，H$_2$O在Cu上吸附的时候，Cu—O有一定的距离，不妨先给个初始值2A。所以，我们需要把 1.246改成3.246。</p>
 <hr>
 <p><strong>小窍门</strong>：在下面红色圈出来的部分，可以通过一些快捷的操作来实现原子的选择。</p>
-<p><img src="/2018/11/04/ex66/ex66-06.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-06.png" alt=""></p>
 <ul>
 <li>i） 在p4vasp 里面可以直接通过写元素符号，选择该元素所有的原子；</li>
 <li>ii） -10 代表从第一个到第10个原子；</li>
@@ -360,14 +360,14 @@
 </ul>
 <hr>
 <p>上面移动的效果如下：</p>
-<p><img src="/2018/11/04/ex66/ex66-07.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-07.png" alt=""></p>
 <p><strong>5） 周期性显示的小技巧</strong></p>
 <p>刚开始选择的4号原子在两个格子之间的界面上，本人喜欢将分子放到表面的中间。操作如上图：</p>
 <ul>
 <li>i） 选择表面上的2个原子： 4 和 5 来定义平移的一个vector。</li>
 <li>ii） 平移一下O和H原子，效果如下：</li>
 </ul>
-<p><img src="/2018/11/04/ex66/ex66-08.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-08.png" alt=""></p>
 <p>当然，在开始的时候，你也可以将H$_2$O分子直接移动到5号原子的表面，大师兄这里做了一些无用的分解操作，主要是为了加深大家的操作印象。</p>
 <hr>
 <h2 id="3-考虑不同的可能性"><a href="#3-考虑不同的可能性" class="headerlink" title="3. 考虑不同的可能性"></a>3. 考虑不同的可能性</h2><p>到目前为止，我们已经顺利搭建了一个H$_2$O分子的吸附模型。把它保存到type_1目录下，名字为POSCAR。</p>
@@ -376,33 +376,33 @@
 <ul>
 <li>1） 一个H原子指向天空，另外的O—H 键平行于表面。这个结构怎么实现？ 回想上一节我们讲到的绕着O—H键旋转的操作。看下图，不解释。</li>
 </ul>
-<p><img src="/2018/11/04/ex66/ex66-09.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-09.png" alt=""></p>
 <ul>
 <li>2） 2个H原子都指向天空，只留一个O原子在表面。（剪刀手V）</li>
 </ul>
-<p><img src="/2018/11/04/ex66/ex66-10.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-10.png" alt=""></p>
 <hr>
 <p>操作思路： 定义一个穿过O原子的y 轴，然后旋转氢原子。</p>
 <p>将这两个结构分别保存到type_2 和 type_3 目录下，名字为POSCAR。按照这样完成的话，你的目录应该是这个样子的：</p>
-<p><img src="/2018/11/04/ex66/ex66-11.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-11.png" alt=""></p>
 <p><strong>☆小窍门</strong>：p4vasp  */POSCAR  打开当前所有目录下的POSCAR，然后：</p>
-<p><img src="/2018/11/04/ex66/ex66-12.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-12.png" alt=""></p>
 <p><strong>☆☆☆注意</strong>：本操作是在Ubuntu系统下操作的。Windows的用户可能不能实现p4v */POSCAR 这样的操作，下面讲解的搭建模型可能会多花出一些时间。在这里大师兄表示无能为力。</p>
 <hr>
 <h2 id="4-不同的吸附位点"><a href="#4-不同的吸附位点" class="headerlink" title="4. 不同的吸附位点"></a>4. 不同的吸附位点</h2><p>我们前面了解到Cu(111)表面也有很多不同的位点：Top，Fcc，Hcp，和 Bri。所以这三种的初始构型在这四个位点上也要考虑。</p>
 <p>Bridge的操作，选择5 和 6， 然后将Vector的数值减小一半，然后平移。</p>
-<p><img src="/2018/11/04/ex66/ex66-13.png"></p>
-<p><img src="/2018/11/04/ex66/ex66-14.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-13.png" alt=""></p>
+<p><img src="/2018/11/04/ex66/ex66-14.png" alt=""></p>
 <p>平移完了，将结构保存到bri目录下。</p>
 <p><strong>此时不要关闭平移的对话框（这是☆重点1）</strong></p>
 <p><strong>点system对应的这个框，选择type_2 的POSCAR（☆重点2）</strong></p>
 <p>再点一下move，就完成这个类型的bri结构了。</p>
-<p><img src="/2018/11/04/ex66/ex66-15.png"></p>
-<p><img src="/2018/11/04/ex66/ex66-16.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-15.png" alt=""></p>
+<p><img src="/2018/11/04/ex66/ex66-16.png" alt=""></p>
 <p>同样，不要关闭对话框，打开type_3的结构，继续平移，获取对应的bri位结构。</p>
-<p><img src="/2018/11/04/ex66/ex66-17.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-17.png" alt=""></p>
 <p>这样操作的话，避免了重复获取平移Vector的那些鼠标点点的操作。点一次，可以继续用于其他结构的操作。希望大家可以掌握这个小窍门，提高自己搭模型的速度。Windows的用户，可以通过将Vector的数值先记下，然后打开另一个结构的时候，直接输入vector就可以了。类似的，我们可以快速搭建完FCC，HCP的结构，最后，你的目录应该是这样子的：</p>
-<p><img src="/2018/11/04/ex66/ex66-18.png"></p>
+<p><img src="/2018/11/04/ex66/ex66-18.png" alt=""></p>
 <p>将这些结构复制到服务器里面，准备提交任务。</p>
 <hr>
 <h2 id="5-扩展练习："><a href="#5-扩展练习：" class="headerlink" title="5. 扩展练习："></a>5. 扩展练习：</h2><ul>

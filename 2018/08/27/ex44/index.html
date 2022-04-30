@@ -294,7 +294,7 @@
 <p>VASP中固定原子需要在POSCAR中进行操作。有两个关键点：</p>
 <p>1）在POSCAR的第7行后添加一行，改行内容为<code>Selective Dynamics</code>，VASP只认第一个字母，你可以直接在这一行只加 S或者s。也可以换成其他的S开头的单词，比如<code>SB</code>，<code>Sexy BigBro</code> ， <code>Super BigBro</code>等等；<br>2）在原子坐标后面加上 F 或者 T 表示固定或者放开，因为坐标有xyz三个数值，因此我们需要三个F或者T。我们可以通过设置允许原子在某一方向上移动，而其他方向上固定。</p>
 <ul>
-<li> <code>F F F </code>表示xyz全部固定； </li>
+<li><code>F F F</code>表示xyz全部固定； </li>
 <li><code>T T T</code> 表示xyz全部放开，</li>
 <li><code>F F T</code> 表示 xy方向固定，只允许原子在z方向上移动。</li>
 </ul>
@@ -304,28 +304,24 @@
 <li>如果前面的<code>POSCAR</code>直接拿过来直接用，那么在优化过程中所有的原子都会被放开。回想一下我们计算Fe, Cu单胞的例子，计算中我们没有设置F或者T，晶胞尺寸和原子的坐标在优化过程前后都发生了变化。因此你不设置<code>Selective</code> 以及 F或者T，VASP默认是所有的原子都放开的。</li>
 <li><code>Selective</code> 和 F 或者 T同时出现，不要只设置<code>Selective</code>忘了FT，也不要只设置FT忘了Selective.</li>
 </ul>
-<h2 id="2-如何修改？"><a href="#2-如何修改？" class="headerlink" title="2 如何修改？"></a>2 如何修改？</h2><p>根据前面说，我们需要做的无非有两步，<br>1）  在第7行后加入<code>Selective Dynamics</code><br>2）  在坐标后面加入<code>T T T </code>或者 <code>F F F</code><br>我们在本节中，将底部的两层原子固定，上面两层放开。</p>
+<h2 id="2-如何修改？"><a href="#2-如何修改？" class="headerlink" title="2 如何修改？"></a>2 如何修改？</h2><p>根据前面说，我们需要做的无非有两步，<br>1）  在第7行后加入<code>Selective Dynamics</code><br>2）  在坐标后面加入<code>T T T</code>或者 <code>F F F</code><br>我们在本节中，将底部的两层原子固定，上面两层放开。</p>
 <p>实现本目的，有以下几种方式： </p>
 <p>2.1）这个用文本编辑器就可以做到，很多编辑器都有列块模式，允许你同时添加N列到每行的最后。你可以使用下<code>Notepad++</code>，<code>Atom</code>这些免费开源的软件来操作</p>
 <p>2.2）使用<code>p4vasp</code>，详见前面的练习Ex24</p>
 <p>2.3） 本节我们重温一下<code>sed</code>的用法，直接使用命令进行操作。</p>
 <p>A) 在第 7行 后添加一行：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed  -i  &#x27;7aSelective Dynamics&#x27;  POSCAR</span><br></pre></td></tr></table></figure>
-
 <p>7a 代表在第7行后面添加一行，a 是append的缩写。注意，a 和 Selective之间可以没有空格，也可以有空格，这里我们没有加空格。</p>
 <p>B） 添加了Selective这一行之后，原子坐标的行数也发生了变化，为10-13行。</p>
 <p>C） 第10，11行为底部的两层原子坐标，我们在最后面加上<code>F F F</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed  -i  &#x27;10,11s/$/ F F F/g&#x27; POSCAR</span><br></pre></td></tr></table></figure>
-
 <p><strong>注意：</strong> 第一个F前面有个空格。</p>
 <p>d） 在12-13行最后面加上 <code>T T T</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed  -i  &#x27;12,13s/$/ T T T/g&#x27; POSCAR</span><br></pre></td></tr></table></figure>
-
 <p>这样，我们就顺利完成POSCAR的改造了，可以用来进行slab的优化计算了。</p>
 <h2 id="3-KPOINTS-和-POTCAR"><a href="#3-KPOINTS-和-POTCAR" class="headerlink" title="3 KPOINTS 和 POTCAR"></a>3 KPOINTS 和 POTCAR</h2><p>保持原来的样子不变</p>
-<h2 id="4-INCAR"><a href="#4-INCAR" class="headerlink" title="4 INCAR"></a>4 INCAR</h2><p>优化的时候，我门回想一下要设置的东西：<br>4.1<code> IBRION</code> 和 <code>POTIM</code><br>IBRION可以使用 1 和2，我们这里用2。（1的话适合初始结构比较好的情况，这里我们也可以用。）<br><code>POTIM =0.1</code>  官网默认值是0.5，个人感觉比较大， 0.1是一个很不错的选择。<br>4.2 <code>EDIFFG = -0.01</code>优化时以力作为收敛标准。注意 -0.01 已经很严格了，除非特殊需要，不要设置-0.001，这样你就会在QQ群里求助大家，为什么我优化的时候一直不收敛啊。如果设置-0.01，很多步过后仍然不收敛，可以尝试一下-0.02，也是一个很安全的选择。<br>4.3 <code>NSW = 500</code>  设置最大的优化步数。<br>4.4 <code>ISIF = 2</code>   slab 模型优化的时候，我们用<code>ISIF =2</code> ，也就是VASP的默认值，不用设置， 最终<code>INCAR</code>如下：</p>
+<h2 id="4-INCAR"><a href="#4-INCAR" class="headerlink" title="4 INCAR"></a>4 INCAR</h2><p>优化的时候，我门回想一下要设置的东西：<br>4.1<code>IBRION</code> 和 <code>POTIM</code><br>IBRION可以使用 1 和2，我们这里用2。（1的话适合初始结构比较好的情况，这里我们也可以用。）<br><code>POTIM =0.1</code>  官网默认值是0.5，个人感觉比较大， 0.1是一个很不错的选择。<br>4.2 <code>EDIFFG = -0.01</code>优化时以力作为收敛标准。注意 -0.01 已经很严格了，除非特殊需要，不要设置-0.001，这样你就会在QQ群里求助大家，为什么我优化的时候一直不收敛啊。如果设置-0.01，很多步过后仍然不收敛，可以尝试一下-0.02，也是一个很安全的选择。<br>4.3 <code>NSW = 500</code>  设置最大的优化步数。<br>4.4 <code>ISIF = 2</code>   slab 模型优化的时候，我们用<code>ISIF =2</code> ，也就是VASP的默认值，不用设置， 最终<code>INCAR</code>如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">System = Cu111</span><br><span class="line"></span><br><span class="line">ISMEAR = 1</span><br><span class="line">SIGMA = 0.1</span><br><span class="line">ALGO = FAST</span><br><span class="line">ENCUT = 450</span><br><span class="line">EDIFF = 1E-5</span><br><span class="line"></span><br><span class="line">LDIPOL = .TRUE.</span><br><span class="line">IDIPOL = 3</span><br><span class="line"></span><br><span class="line">NWRITE = 0</span><br><span class="line">LWAVE = .FALSE.</span><br><span class="line">LCHARG = .FALSE.</span><br><span class="line"></span><br><span class="line">IBRION = 2</span><br><span class="line">POTIM = 0.1</span><br><span class="line">EDIFFG = -0.01</span><br><span class="line">NSW = 500</span><br></pre></td></tr></table></figure>
-
 <p>注意：<br>上一节我们提到Cu没有磁性，表述是不准确的，应该是纯净的Cu(111) slab模型中，Cu不需要考虑自旋。如果你算的是CuO(111)表面，则需要考虑自旋了。</p>
 <h2 id="5-提交任务"><a href="#5-提交任务" class="headerlink" title="5 提交任务"></a>5 提交任务</h2><p>计算结束后，查看OUTCAR，OSZICAR的最后几行检查下是不是正常结束。</p>
 <h2 id="6-扩展练习"><a href="#6-扩展练习" class="headerlink" title="6 扩展练习"></a>6 扩展练习</h2><p>6.1 掌握本节提到的固定原子的三种做法：文本编辑器，p4vasp,  sed， 当然啦，更可以直接使用Vim 这个强大的工具来执行<br>6.2 查看结构优化相关的这几个参数，复习下它们的VASP官网说明。<br>6.3 运行本文的例子，然后将EDIFFG设置成 -0.02或者-0.001进行测试，查看与-0.01的区别。<br>6.4 VASP官网查找表面能计算的案例，结合本节以及前面的学习，尝试算一下Cu(111)面的表面能。</p>

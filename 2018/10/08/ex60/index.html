@@ -301,20 +301,14 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>前面我们发现将p(1x1)-Cu(111)的表面扩展成p(2x2)后，由于O的覆盖度降低了，O原子的吸附能能+1.2 eV降低到 0.2 eV作用，说明O原子更加容易吸附在表面上了。当你仔细观察p(2x2)的表面，你会发现，表面上不仅仅有Cu原子的上方可以放O原子，还有其他的位点。如下图：</p>
-<p><img src="/2018/10/08/ex60/ex60-1.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-1.png" alt=""></p>
 <p>如果我们想分析下不同位点对吸附能的影响，首先我们需要搭建模型，然后重复O原子的吸附优化步骤。本节主要简单介绍一下如何快速搭建不同的吸附位点模型。</p>
 <h2 id="1-不同表面位点："><a href="#1-不同表面位点：" class="headerlink" title="1 不同表面位点："></a>1 不同表面位点：</h2><p>观察不同位点的结构特征，在面心立方金属的(111)表面上有4种不同的位点:</p>
-<ol>
-<li>Top位，前面已经花了很多时间介绍了，本节就不再啰嗦</li>
-<li>Bridge位：从名字大家就可以推断这个位点的吸附为两个Top原子的中间。</li>
-<li>Fcc位和Hcp位：这两个吸附位点都是在三个原子的中心，为hollow位。</li>
-</ol>
+<p>1) Top位，前面已经花了很多时间介绍了，本节就不再啰嗦<br>2) Bridge位：从名字大家就可以推断这个位点的吸附为两个Top原子的中间。<br>3) Fcc位和Hcp位：这两个吸附位点都是在三个原子的中心，为hollow位。</p>
 <p>那么这两个位点怎么区分呢？ </p>
 <p>如果表面的Hollow位正下方（即第二层，图中黄色的）有原子，为Hcp位，在第三层的话（图中红色的），则这个hollow为Fcc位。<br>由于Fcc位点的原子在第三层，离表面最远（far），大家把英文单词的far 和 Fcc位的第一个字母关联起来即可。远的那个就是Fcc，近的是Hcp。<br>注意： Fcc 和 Hcp 分别是 face centered cubic 和  hexagonal close-packed 的缩写。</p>
 <h2 id="2-不同位点的吸附模型"><a href="#2-不同位点的吸附模型" class="headerlink" title="2 不同位点的吸附模型"></a>2 不同位点的吸附模型</h2><p>怎么搭建Bridge和Fcc，以及Hcp位的吸附模型？</p>
-<ol>
-<li>Bridge位: </li>
-</ol>
+<p>1) Bridge位: </p>
 <p>这个位点在两个原子的中心。设两个原子的坐标分别为（x1，y1， z1）和（x2， y2， z2），它们中心得坐标为： （x1+x2）/ 2， （y1+y2）/ 2， （z1+z2）/ 2。在这里，z1和z2 是相等的。所以我们可以通过两个原子的坐标，计算一下中心的坐标，然后按照之前O原子搭建的步骤，添加O原子的Bridge位的坐标即可。<br>2) Fcc位和Hcp</p>
 <ul>
 <li><p>这两个位点就更容易了，前面我们知道它们正下方分别为第三层和第二层的原子。那么我们在这两层随便取个原子，x和y 方向的坐标就确定了。</p>
@@ -324,34 +318,34 @@
 </ul>
 <h2 id="3-使用p4vasp搭结构"><a href="#3-使用p4vasp搭结构" class="headerlink" title="3 使用p4vasp搭结构"></a>3 使用p4vasp搭结构</h2><p>前面介绍的方法是直接修改POSCAR来搭建模型，对于O原子的吸附这种简单的模型，大家都还可以胜任，但如果体系复杂了，比如一个苯环，乙醇分子等等，这样我们的计算坐标的工作量就有点大了。此时，p4vasp的优势就开始慢慢显示出来了。</p>
 <h3 id="3-1-从Top到Bri"><a href="#3-1-从Top到Bri" class="headerlink" title="3.1 从Top到Bri"></a>3.1 从Top到Bri</h3><p>1） 首先，我们要有一个O原子在Top位上的吸附结构<br>2） 然后选择Top位的原子和相邻的那个原子，（p4vasp选中的结构看起来不是很清楚，见黄圈标出来的那两个）</p>
-<p><img src="/2018/10/08/ex60/ex60-2.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-2.png" alt=""></p>
 <p>3） 选则 Edit –&gt; Move Atoms 后会弹出这样的界面：</p>
-<p><img src="/2018/10/08/ex60/ex60-3.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-3.png" alt=""></p>
 <p>按照图中的1 2 3依次点击， 你便会获得一个<code>Vector</code>。也就是从5到7号原子的一个向量。</p>
 <p>但我们如果按照这个向量平移O原子的话，只会把它从5号原子移动到7号原子上，而不是Bridge的位点。 </p>
 <p>前面我们说了，Bridge的坐标就是这两个原子连线的中心。所以，我们把Vector减小一半就可以了。</p>
-<p><img src="/2018/10/08/ex60/ex60-4.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-4.png" alt=""></p>
 <p>修改完Vector之后，我们便可以移动O原子了。</p>
 <p><strong>这里注意</strong></p>
 <p>要把前面选中的5 和 7 号原子换成 O，要不然你移动的是 5和7 号原子而不是O。最后点move，效果如下：</p>
-<p><img src="/2018/10/08/ex60/ex60-5.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-5.png" alt=""></p>
 <p>这样我们便获得了Bridge的吸附结构。</p>
 <p>前面提到，我们在搭建Bridge结构的时候，O原子的坐标可以比Top位的稍微低一些，这个操作怎么实现呢？<br>1） 首先选中氧原子，<br>2） 在Vector那一行修改移动的位置即可。如下图：</p>
-<p><img src="/2018/10/08/ex60/ex60-6.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-6.png" alt=""></p>
 <p>点击move ，保存POSCAR即可。</p>
 <h3 id="3-2-从Bridge-到-Hcp："><a href="#3-2-从Bridge-到-Hcp：" class="headerlink" title="3.2 从Bridge 到 Hcp："></a>3.2 从Bridge 到 Hcp：</h3><p>1） 选中O原子和Hcp位下面的Cu原子，并获取Vector</p>
-<p><img src="/2018/10/08/ex60/ex60-7.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-7.png" alt=""></p>
 <p>2） 修改Vector在z方向的大小。</p>
-<p><img src="/2018/10/08/ex60/ex60-8.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-8.png" alt=""></p>
 <p>点击 Move，效果如下：</p>
-<p><img src="/2018/10/08/ex60/ex60-9.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-9.png" alt=""></p>
 <p>保存成Hcp对应的POSCAR即可。</p>
 <h3 id="3-3-从Hcp到Fcc"><a href="#3-3-从Hcp到Fcc" class="headerlink" title="3.3 从Hcp到Fcc"></a>3.3 从Hcp到Fcc</h3><p>1）选中O原子和Fcc的一个原子，获取Vector：</p>
-<p><img src="/2018/10/08/ex60/ex60-10.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-10.png" alt=""></p>
 <p>2）修改Vector在z方向的大小，由于Fcc和Hcp的吸附很接近，直接平移即可，也就是z方向大小为0</p>
-<p><img src="/2018/10/08/ex60/ex60-11.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-11.png" alt=""></p>
 <p>点击move，最终的Fcc结构，如下图，保存POSCAR。</p>
-<p><img src="/2018/10/08/ex60/ex60-12.png"></p>
+<p><img src="/2018/10/08/ex60/ex60-12.png" alt=""></p>
 <p><strong>注意：</strong></p>
 <p>保存结构的时候，可以自己建对应的文件夹，在文件夹里面将结构保存成POSCAR，也可以保存成类似<code>POSCAR-Fcc</code>， <code>POSCAR-Hcp</code>， <code>POSCAR-Top</code>这一种的名字，计算的时候，将它们重新命名为<code>POSCAR</code>就行了。</p>
 <h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本节，大师兄主要给大家介绍了如何在表面上，使用<code>p4vasp</code>平移原子来搭建不同的吸附位点模型。使用p4vasp搭结构非常方便简单，也会加深你对模型结构的理解，另一方面，使用这一种操作的话准确性更高，搭建出来的模型比自己手动放原子要合理很多。所以强烈推荐大家使用<code>p4vasp</code>。</p>

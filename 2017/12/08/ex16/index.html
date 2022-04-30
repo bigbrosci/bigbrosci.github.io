@@ -293,13 +293,12 @@
 <h3 id="1-体系的磁性-EX8"><a href="#1-体系的磁性-EX8" class="headerlink" title="1 体系的磁性 (EX8)"></a>1 体系的磁性 (EX8)</h3><p>考虑自旋后（<code>ISPIN=2</code>），VASP计算时会将电子分为两部分处理，一部分是$\alpha$电子，另一部分是$\beta$电子，我们在氧原子的自旋极化计算中提到过了，忘了的可以查看Ex8，Ex11中的内容。</p>
 <p>补充一下：如果原子的<code>MAGMOM</code>为负值：应该这么写：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MAGMOM = 10*-2 # 有10个原子，每个原子的初始磁矩为 -2</span><br></pre></td></tr></table></figure>
-
 <p>注意： -2 不用括号（）括起来</p>
 <hr>
 <h3 id="2-对称性-EX8"><a href="#2-对称性-EX8" class="headerlink" title="2 对称性 (EX8)"></a>2 对称性 (EX8)</h3><p>体系的对称性降低，会增加相应的计算量。查看O原子计算时，改变晶胞大小，取消对称性前后的计算时间。</p>
 <hr>
 <h3 id="3-SIGMA的取值-EX1"><a href="#3-SIGMA的取值-EX1" class="headerlink" title="3  SIGMA的取值 (EX1)"></a>3  SIGMA的取值 (EX1)</h3><p>我们看一下VASP练习手册：handonsession-I 里面的一句话说明：</p>
-<p><img src="/2017/12/08/ex16/ex16-1.jpg"></p>
+<p><img src="/2017/12/08/ex16/ex16-1.jpg" alt=""></p>
 <p>因此，设置一个较小的SIGMA值会使收敛变慢。大家对于ISMEAR的选择，一定要多看官网的说明！</p>
 <hr>
 <h4 id="3-1-半导体和绝缘体："><a href="#3-1-半导体和绝缘体：" class="headerlink" title="3.1 半导体和绝缘体："></a>3.1 半导体和绝缘体：</h4><p>1） K点小于4 的时候，用<code>ISMEAR=0</code>, <code>SIGMA</code>取值小一些；比如SIGMA=0.05; 此时用ISMEAR = -5 会出错；</p>
@@ -307,15 +306,12 @@
 <p>3） 注意： 我们算的气体分子，是绝缘体，且只用了gamma点，所以我们参数的设置如下： </p>
 <hr>
 <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ISMEAR=<span class="number">0</span> </span><br><span class="line">SIGMA=<span class="number">0.01</span> </span><br></pre></td></tr></table></figure>
-
-
-
 <hr>
 <h4 id="3-2-金属体系："><a href="#3-2-金属体系：" class="headerlink" title="3.2 金属体系："></a>3.2 金属体系：</h4><p>ISMEAR一般用<code>ISMEAR=0</code> 或者整数1，2即可。</p>
 <p><code>SIGMA =0.1</code> 足够。</p>
 <hr>
 <h3 id="4-合理的初始结构-（Ex13-15）"><a href="#4-合理的初始结构-（Ex13-15）" class="headerlink" title="4 合理的初始结构 （Ex13-15）"></a>4 合理的初始结构 （Ex13-15）</h3><p>前面我们刚讲到，一个合理的初始结构，可以避免很多意外的错误以及快速得到正确的结果。</p>
-<p>如果你的初始结构不合理导致的计算出错，首先应该去调整结构，最后才是去调节参数，比如上一节中<code>IBRION=2 </code>时的POTIM值。</p>
+<p>如果你的初始结构不合理导致的计算出错，首先应该去调整结构，最后才是去调节参数，比如上一节中<code>IBRION=2</code>时的POTIM值。</p>
 <hr>
 <h3 id="5-EDIFF-（Ex9）"><a href="#5-EDIFF-（Ex9）" class="headerlink" title="5 EDIFF （Ex9）"></a>5 EDIFF （Ex9）</h3><p>EDIFF 控制了电子迭代的收敛标准，如果你设置的标准比较严格，则每一个离子步需要更多的电子步数，需要的时间也会随着离子步的增加成线性关系增长。</p>
 <hr>

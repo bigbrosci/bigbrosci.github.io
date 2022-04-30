@@ -298,7 +298,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="/2018/11/10/ex72/ex72-1.png"></p>
+        <p><img src="/2018/11/10/ex72/ex72-1.png" alt=""></p>
 <p>不好意思，让大家久等了。最近一直很忙，后面还是会很忙。为了不让大家失望，抽时间把简单的过渡态计算讲解一下，这一节我们需要学习的是通过CI-NEB（Climbing Image Nudged Elastic Band）计算H原子在Ru(0001)表面上的扩散过程。</p>
 <h3 id="NEB计算过渡态的准备工作"><a href="#NEB计算过渡态的准备工作" class="headerlink" title="NEB计算过渡态的准备工作"></a>NEB计算过渡态的准备工作</h3><p><strong>准备工作1：</strong></p>
 <p>说到NEB或者CINEB，不得不提的就是Henkelman课题组的VTST：<a target="_blank" rel="noopener" href="http://henkelmanlab.org/">http://henkelmanlab.org/</a> . 我们需要下载VTST的code，然后将VASP编译一下，得到一个可以使用vtst的VASP版本。</p>
@@ -306,13 +306,13 @@
 <p>很不幸，怎么编译，我一窍不通。如果这一关过不了的话，后面的也只能看看热闹，不能亲自实践了。如果你已经编译好了VTST的VASP版本， 那么就可以继续下面的学习了。</p>
 <p><strong>准备工作2：</strong></p>
 <p>我们将VTST的一些实用小脚本下载下来：<a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/vtsttools/download.html">http://theory.cm.utexas.edu/vtsttools/download.html</a> </p>
-<p><img src="/2018/11/10/ex72/ex72-2.png"> </p>
+<p><img src="/2018/11/10/ex72/ex72-2.png" alt=""> </p>
 <p>下载VTST Scripts后解压，把所有脚本都复制到 ~/bin 目录下：效果如下:</p>
-<p><img src="/2018/11/10/ex72/ex72-3.png"></p>
+<p><img src="/2018/11/10/ex72/ex72-3.png" alt=""></p>
 <p>很多脚本估计你一辈子都不会用到，没关系，它们很小，不占存储空间，静悄悄躺在bin文件里面就行了。Linux老手们嫌烦可以把这些脚本放到一个文件夹里面，然后bashrc文件里面修改下路径就可以了。</p>
 <p><strong>准备工作3</strong>：</p>
 <p>修改nebresults.pl 文件，将57到71行注释掉，注释掉就是在每一行的开头加个#号，效果如下：</p>
-<p><img src="/2018/11/10/ex72/ex72-4.png"></p>
+<p><img src="/2018/11/10/ex72/ex72-4.png" alt=""></p>
 <p>为什么需要这么做？</p>
 <p>如果neb运行的时候，你使用这个命令，它就会把你的OUTCAR文件压缩，VASP找不到OUTCAR，就不知道该往哪里存储，然后就挂掉了。大家可以在neb任务运行的时候分别运行下注释前后的脚本，对比下就清楚了。</p>
 <h3 id="扩散的基础知识"><a href="#扩散的基础知识" class="headerlink" title="扩散的基础知识"></a>扩散的基础知识</h3><p>准备工作完成，我们加深下扩散（diffusion）的一些概念：</p>
@@ -323,15 +323,15 @@
 <p>为什么是12% 呢？ 这只是一个经验性的结论，大家可以参考大牛Manos Mavrikakis的俺狗娃文章: (不要留言问我要这个文章…)</p>
 <p>A Simple Rule of Thumb for Diffusion on Transition-Metal Surfaces</p>
 <p><a target="_blank" rel="noopener" href="https://onlinelibrary.wiley.com/doi/abs/10.1002/anie.200602223">https://onlinelibrary.wiley.com/doi/abs/10.1002/anie.200602223</a></p>
-<p><img src="/2018/11/10/ex72/ex72-5.png"></p>
+<p><img src="/2018/11/10/ex72/ex72-5.png" alt=""></p>
 <p>2.3  从结构角度来看，举个面心立方的金属(111)面为例，表面上有fcc, hcp, top, 和 bridge这四个位点。如果fcc或者hcp的位点对应稳定的吸附构型，那么bridge的这个位点就是扩散的过渡态。所以，如果你想简单算一个扩散的过渡态，直接算bridge的吸附就可以了。但是，bridge的位点也不是那么容易就可以算出来的。前面我们讲过Cu(111)表面的吸附计算，很多人就反应bri的结构优化不出来。Bridge 的位点就跟下面的这个独木桥类似，少一不小心就掉下去了。</p>
-<p><img src="/2018/11/10/ex72/ex72-6.jpeg"></p>
+<p><img src="/2018/11/10/ex72/ex72-6.jpeg" alt=""></p>
 <p>换个角度来分析：既然我们直接优化得不到bridge的结构，而这个结构恰恰就是过渡态，那么我们就可以使用算过渡态的方法来得到bridge的结构。当然，能直接优化出来bridge的结构是最好的。</p>
 <h3 id="过渡态计算的步骤"><a href="#过渡态计算的步骤" class="headerlink" title="过渡态计算的步骤"></a>过渡态计算的步骤</h3><p>3.1 第一步：优化初始和末态结构。</p>
 <p> 首先我们先优化一个扩散前后的两个结构： H在FCC和HCP位点上的吸附。这个对于认真练习过前面计算的筒子们来说就是小菜一碟了。直接列出来top view 的示意图：</p>
-<p><img src="/2018/11/10/ex72/ex72-7.png"></p>
+<p><img src="/2018/11/10/ex72/ex72-7.png" alt=""></p>
 <p>FCC site</p>
-<p><img src="/2018/11/10/ex72/ex72-8.png"></p>
+<p><img src="/2018/11/10/ex72/ex72-8.png" alt=""></p>
 <p> HCP site</p>
 <p>3.2 第二步：准备NEB的结构</p>
 <p>这里我们需要用到VTST官网的一个小脚本：nebmake.pl，使用方法如下： </p>
@@ -345,9 +345,9 @@
 <p>可以是其他目录里面的POSCAR或者CONTCAR, 也可以是当前目录下的POSCAR或者CONTCAR。 </p>
 <p>你可以把初始结构的POSCAR命名成你的名字：bigbro ， 末态命名成：bigbra. 运行的时候命令应该这么敲：<code>nebmake.pl   bigbro  bigbra  8</code></p>
 <p>下面图里面的三个事例，是等价的。自己随意领会：</p>
-<p><img src="/2018/11/10/ex72/ex72-9.png"></p>
-<p><img src="/2018/11/10/ex72/ex72-10.png"></p>
-<p><img src="/2018/11/10/ex72/ex72-11.png"></p>
+<p><img src="/2018/11/10/ex72/ex72-9.png" alt=""></p>
+<p><img src="/2018/11/10/ex72/ex72-10.png" alt=""></p>
+<p><img src="/2018/11/10/ex72/ex72-11.png" alt=""></p>
 <p><strong>细节2：</strong> </p>
 <p>插入的点数要保证可以被使用的核数整除。比如我们打算用24个核进行计算，那么N可以是下面的几种情况：</p>
 <table style="width: 618px;" cellspacing="0" cellpadding="0"><tbody><tr class="firstRow"><td style="border: 1px solid windowtext; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">N</span></p></td><td style="border-color: windowtext windowtext windowtext currentcolor; border-style: solid solid solid none; border-width: 1px 1px 1px medium; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">Cores used for each Image</span></p></td><td style="border-color: windowtext windowtext windowtext currentcolor; border-style: solid solid solid none; border-width: 1px 1px 1px medium; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">Total</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">1</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">4</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">6</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">6</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">4</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">2</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">12</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">12</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">2</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">3</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">8</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="font-size: 14px;">24</span></p></td></tr><tr><td style="border-color: currentcolor windowtext windowtext; border-style: none solid solid; border-width: medium 1px 1px; border-image: none 100% / 1 / 0 stretch; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="color: red; font-size: 14px;">8</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="color: red; font-size: 14px;">3</span></p></td><td style="border-color: currentcolor windowtext windowtext currentcolor; border-style: none solid solid none; border-width: medium 1px 1px medium; padding: 0in 7px;" width="189" valign="top"><p style="margin-bottom: 0px; text-align: center; line-height: 1.5em;"><span style="color: red; font-size: 14px;">24</span></p></td></tr></tbody></table>

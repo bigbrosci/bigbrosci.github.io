@@ -301,9 +301,9 @@
     <div class="post-body" itemprop="articleBody">
         <p>前面我们学会了通过使用 <strong>Jmol</strong> 查看分子振动。但分子振动频率在<code>OUTCAR</code>是什么样子的呢？今天我们就分析一下<code>OUTCAR</code>文件中的频率信息，以及如何写脚本计算零点能矫正。</p>
 <hr>
-<h2 id="1-OUTCAR分析"><a href="#1-OUTCAR分析" class="headerlink" title="1 OUTCAR分析"></a>1 OUTCAR分析</h2><h3 id="1-1-回顾一下Jmol中的频率振动"><a href="#1-1-回顾一下Jmol中的频率振动" class="headerlink" title="1.1 回顾一下Jmol中的频率振动"></a>1.1 回顾一下Jmol中的频率振动</h3><p><img src="/2017/12/17/ex26/ex26-1.jpeg"></p>
+<h2 id="1-OUTCAR分析"><a href="#1-OUTCAR分析" class="headerlink" title="1 OUTCAR分析"></a>1 OUTCAR分析</h2><h3 id="1-1-回顾一下Jmol中的频率振动"><a href="#1-1-回顾一下Jmol中的频率振动" class="headerlink" title="1.1 回顾一下Jmol中的频率振动"></a>1.1 回顾一下Jmol中的频率振动</h3><p><img src="/2017/12/17/ex26/ex26-1.jpeg" alt=""></p>
 <p><strong>Jmol</strong> 提取了<code>OUTCAR</code>中的振动信息，将每个振动模式的频率列了出来。</p>
-<h3 id="1-2-OUTCAR中的信息："><a href="#1-2-OUTCAR中的信息：" class="headerlink" title="1.2 OUTCAR中的信息："></a>1.2 OUTCAR中的信息：</h3><p><img src="/2017/12/17/ex26/ex26-2.jpeg"></p>
+<h3 id="1-2-OUTCAR中的信息："><a href="#1-2-OUTCAR中的信息：" class="headerlink" title="1.2 OUTCAR中的信息："></a>1.2 OUTCAR中的信息：</h3><p><img src="/2017/12/17/ex26/ex26-2.jpeg" alt=""></p>
 <p>对比一下这两个振动频率和·中的前两个。</p>
 <hr>
 <p>1）<code>1 f =</code> 代表第一个振动模式，细心的你仔细观察，会发现每一行有四个单位的数值：<code>THz</code>, <code>2PiTHz</code>, <code>cm-1</code>,和 <code>meV</code>，这四个是完全等同的；</p>
@@ -312,140 +312,133 @@
 <p>4)后面的振动模式的频率和第一个的格式一样。</p>
 <hr>
 <h2 id="2-频率单位的换算"><a href="#2-频率单位的换算" class="headerlink" title="2 频率单位的换算"></a>2 频率单位的换算</h2><p>我们先讲一下这四个单位的换算公式：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">Relevant    Formulas:</th>
+<th style="text-align:left">Relevant    Formulas:</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">$ E =   hc / \lambda $</td>
+<tbody>
+<tr>
+<td style="text-align:left">$ E =   hc / \lambda $</td>
 </tr>
 <tr>
-<td align="left">$ \nu = c / \lambda $</td>
+<td style="text-align:left">$ \nu = c / \lambda $</td>
 </tr>
 <tr>
-<td align="left">$\tilde{\nu} = 1 / \lambda $</td>
+<td style="text-align:left">$\tilde{\nu} = 1 / \lambda $</td>
 </tr>
 <tr>
-<td align="left">$ T =   1 / \nu $</td>
+<td style="text-align:left">$ T =   1 / \nu $</td>
 </tr>
 <tr>
-<td align="left"></td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td align="left"><strong>Definitions:</strong></td>
+<td style="text-align:left"><strong>Definitions:</strong></td>
 </tr>
 <tr>
-<td align="left">$E$ =   energy ($eV$)</td>
+<td style="text-align:left">$E$ =   energy ($eV$)</td>
 </tr>
 <tr>
-<td align="left">$\lambda$ =   wavelength  ($m$)</td>
+<td style="text-align:left">$\lambda$ =   wavelength  ($m$)</td>
 </tr>
 <tr>
-<td align="left">$\tilde{\nu}$ =   wavenumber  ($m^{-1}$)</td>
+<td style="text-align:left">$\tilde{\nu}$ =   wavenumber  ($m^{-1}$)</td>
 </tr>
 <tr>
-<td align="left">$T$ =   period ($s$)</td>
+<td style="text-align:left">$T$ =   period ($s$)</td>
 </tr>
 <tr>
-<td align="left">$\nu$  =   frequency  ($s^{-1}$ or $\textrm{Hz}$)</td>
+<td style="text-align:left">$\nu$  =   frequency  ($s^{-1}$ or $\textrm{Hz}$)</td>
 </tr>
 <tr>
-<td align="left">$h$ = Planck’s constant = $4.135667516 \times 10^{-15}~eV \cdot s$</td>
+<td style="text-align:left">$h$ = Planck’s constant = $4.135667516 \times 10^{-15}~eV \cdot s$</td>
 </tr>
 <tr>
-<td align="left">$c$ =   speed of  light = $ 299792458~m/s$</td>
+<td style="text-align:left">$c$ =   speed of  light = $ 299792458~m/s$</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>以第一个振动为例：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="left">1f   =</th>
-<th align="right"></th>
+<th style="text-align:left">1f   =</th>
+<th style="text-align:right"></th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">111.907</td>
-<td align="right">$\textrm{THz}$</td>
+<tbody>
+<tr>
+<td style="text-align:left">111.907</td>
+<td style="text-align:right">$\textrm{THz}$</td>
 </tr>
 <tr>
-<td align="left">703.134</td>
-<td align="right">2PiTHz</td>
+<td style="text-align:left">703.134</td>
+<td style="text-align:right">2PiTHz</td>
 </tr>
 <tr>
-<td align="left">3732.82</td>
-<td align="right">$cm^{-1} $</td>
+<td style="text-align:left">3732.82</td>
+<td style="text-align:right">$cm^{-1} $</td>
 </tr>
 <tr>
-<td align="left">462.811</td>
-<td align="right">$meV$</td>
+<td style="text-align:left">462.811</td>
+<td style="text-align:right">$meV$</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>1） THz 和 2PiTHz 的换算： $2\pi$ 的关系：</p>
-<p>$$ 111.907230<del>(\rm{THz})  \times 2 \pi  = 703.133866</del>(\rm{2PiTHz}) $$</p>
-<p>2） THz 和 cm-1 的关系：$\nu = c / \lambda = c \tilde{\nu} $， $c$ 是光速，$\lambda$ 是波长，$\tilde{\nu}$ 是波数，单位是 $m^{-1}$。计算前先换算成标准单位： 1 THz = 1012 Hz, 1 $cm^{-1}$ = 100 $m^{-1}$，因此：</p>
-<p>$$ 111.907230 \times 1012<del>(\textrm{Hz}) = 299792458</del>(m/s) \times 3732.823294 \times 100 (m^{-1}) $$</p>
-<p>3）THz 和能量 eV 的关系：</p>
+<script type="math/tex; mode=display">111.907230~(\rm{THz})  \times 2 \pi  = 703.133866~(\rm{2PiTHz})</script><p>2） THz 和 cm-1 的关系：$\nu = c / \lambda = c \tilde{\nu} $， $c$ 是光速，$\lambda$ 是波长，$\tilde{\nu}$ 是波数，单位是 $m^{-1}$。计算前先换算成标准单位： 1 THz = 1012 Hz, 1 $cm^{-1}$ = 100 $m^{-1}$，因此：</p>
+<script type="math/tex; mode=display">111.907230 \times 1012~(\textrm{Hz}) = 299792458~(m/s) \times 3732.823294 \times 100 (m^{-1})</script><p>3）THz 和能量 eV 的关系：</p>
 <p>$ E = h\nu $， $h$ 为普朗克常数：$4.135667516 \times 10^{-15}~eV \cdot s$ <strong>(注意此时：Plank constant 的单位！！！)</strong></p>
-<p>$$ 462.811270 (meV) = 0.4628 eV = 4.135667516 \times 10^{-15} (eV*s) *  111.907230 \times 1012 (Hz) $$</p>
-<p>4） 波数（$cm^{-1}$）和能量（$meV$）的关系：<br>$E = hc / \lambda = h \tilde \nu $<br>$ 462.811270<del>meV = 0.4628</del>eV<br> = 4.135667516 \times 10^{-15}<del>(eV*s) \times 299792458</del>(m/s) \times 3732.823294 \times 100~(m^{-1}) $</p>
+<script type="math/tex; mode=display">462.811270 (meV) = 0.4628 eV = 4.135667516 \times 10^{-15} (eV*s) *  111.907230 \times 1012 (Hz)</script><p>4） 波数（$cm^{-1}$）和能量（$meV$）的关系：<br>$E = hc / \lambda = h \tilde \nu $<br>$ 462.811270~meV = 0.4628~eV<br> = 4.135667516 \times 10^{-15}~(eV*s) \times 299792458~(m/s) \times 3732.823294 \times 100~(m^{-1}) $</p>
 <p>大家根据上面的公式自己手动算一遍就明白了，还可以使用下面这个网址进行计算：<a target="_blank" rel="noopener" href="http://halas.rice.edu/conversions">http://halas.rice.edu/conversions</a> 这里就不再多说了。</p>
 <hr>
 <h2 id="3-OUTCAR频率信息的提取："><a href="#3-OUTCAR频率信息的提取：" class="headerlink" title="3  OUTCAR频率信息的提取："></a>3  OUTCAR频率信息的提取：</h2><p>我们可以使用<code>grep</code>命令提取，有以下两个方式。在进行之前，首先强调一点：下面的解释<strong>只适用于</strong>NWRITE= 0、1或者2 的时候。因为NWRITE = 3 的时候，会额外再输出一次频率的信息。</p>
 <h3 id="3-1-使用以下几个命令："><a href="#3-1-使用以下几个命令：" class="headerlink" title="3.1 使用以下几个命令："></a>3.1 使用以下几个命令：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grep THz OUTCAR</span><br><span class="line">grep 2PiTHz OUTCAR</span><br><span class="line">grep cm-1 OUTCAR</span><br><span class="line">grep meV OUTCAR；</span><br></pre></td></tr></table></figure>
-
 <p>这几个命令中，我们分别以振动的不同单位作为提取对象，便可以得到所有的振动信息（这里的所有指的是包含虚频）：以大师兄常用的 <code>grep cm-1 OUTCAR</code> 为例：</p>
-<p><img src="/2017/12/17/ex26/ex26-3.jpeg"></p>
+<p><img src="/2017/12/17/ex26/ex26-3.jpeg" alt=""></p>
 <p>黄色标出来的第一列：$9 \times 3 = 27$ 个振动模式，第二列是以<code>cm-1</code>为单位的振动频率大小，最后三行 <code>f/i=</code> 指的是虚频。</p>
 <hr>
 <p>前面我们提到过，虚频可以判断结构是否稳定。那这里，我们计算出的乙醇分子结构肯定不稳定喽？不一定。</p>
 <p>因为频率计算和软件的数值积分有关（我也不清楚数值积分怎么进行的）；</p>
-<p>计算过程中我们的设置对频率计算影响很大，<code>KPOINTS</code>, <code>ENCUT</code>, <code>EDIFF</code>, <code>POTIM</code>等都会影响计算的精度（下一节讨论）；综合这些因素，对于分子的振动频率来说（注意：声子谱不适用）一般低于 $100<del>cm^{-1}$ 的频率可以忽略。严格点可以降到 $50</del>cm^{-1}$，也就是说：如果你在计算中发现有个 $50~cm^{-1}$ 左右的虚频，完全可以不考虑。</p>
+<p>计算过程中我们的设置对频率计算影响很大，<code>KPOINTS</code>, <code>ENCUT</code>, <code>EDIFF</code>, <code>POTIM</code>等都会影响计算的精度（下一节讨论）；综合这些因素，对于分子的振动频率来说（注意：声子谱不适用）一般低于 $100~cm^{-1}$ 的频率可以忽略。严格点可以降到 $50~cm^{-1}$，也就是说：如果你在计算中发现有个 $50~cm^{-1}$ 左右的虚频，完全可以不考虑。</p>
 <hr>
-<h3 id="3-2-grep-39-f-39-OUTCAR"><a href="#3-2-grep-39-f-39-OUTCAR" class="headerlink" title="3.2 grep &#39;f  =&#39; OUTCAR"></a>3.2 <code>grep &#39;f  =&#39; OUTCAR</code></h3><p><img src="/2017/12/17/ex26/ex26-4.jpeg"></p>
+<h3 id="3-2-grep-39-f-39-OUTCAR"><a href="#3-2-grep-39-f-39-OUTCAR" class="headerlink" title="3.2 grep &#39;f  =&#39; OUTCAR"></a>3.2 <code>grep &#39;f  =&#39; OUTCAR</code></h3><p><img src="/2017/12/17/ex26/ex26-4.jpeg" alt=""></p>
 <p><strong>注意：图中虚频部分没有显示出来！严格按照我用的这个命令</strong></p>
 <p>使用这个命令的时候，不提取虚频部分。查看虚频的时候，可以用之前的方式，也可以用这个命令：</p>
-<p><img src="/2017/12/17/ex26/ex26-5.jpeg"></p>
-<p>在零点能的计算时，虚频是不能考虑在内的，因为它不是分子的真实的振动模式。在我们这个例子中，虚频的出现是软件的误差所导致。在过渡态中，虚频代表的是反应方向。从另一个角度去分析：乙醇分子的零点能（下面讲到）为：$2.117<del>eV$，图中三个虚频对应的能量为：$0.76 + 2.31 + 8.14 = 11.11</del>meV = 0.01111~ eV$，所占比例为：$0.0111/2.117 = 0.5% $ 这个可以忽略不计。</p>
+<p><img src="/2017/12/17/ex26/ex26-5.jpeg" alt=""></p>
+<p>在零点能的计算时，虚频是不能考虑在内的，因为它不是分子的真实的振动模式。在我们这个例子中，虚频的出现是软件的误差所导致。在过渡态中，虚频代表的是反应方向。从另一个角度去分析：乙醇分子的零点能（下面讲到）为：$2.117~eV$，图中三个虚频对应的能量为：$0.76 + 2.31 + 8.14 = 11.11~meV = 0.01111~ eV$，所占比例为：$0.0111/2.117 = 0.5\% $ 这个可以忽略不计。</p>
 <hr>
-<h2 id="4-零点能校正"><a href="#4-零点能校正" class="headerlink" title="4 零点能校正"></a>4 零点能校正</h2><h3 id="4-1-明白什么是零点能：回顾频率计算第一节的内容："><a href="#4-1-明白什么是零点能：回顾频率计算第一节的内容：" class="headerlink" title="4.1 明白什么是零点能：回顾频率计算第一节的内容："></a>4.1 明白什么是零点能：回顾频率计算第一节的内容：</h3><p><img src="/2017/12/17/ex26/ex26-6.jpeg"></p>
-<p><img src="/2017/12/17/ex26/ex26-7.jpeg"></p>
-<h3 id="4-2-获取振动能量数据："><a href="#4-2-获取振动能量数据：" class="headerlink" title="4.2 获取振动能量数据："></a>4.2 获取振动能量数据：</h3><p><img src="/2017/12/17/ex26/ex26-8.jpeg"></p>
+<h2 id="4-零点能校正"><a href="#4-零点能校正" class="headerlink" title="4 零点能校正"></a>4 零点能校正</h2><h3 id="4-1-明白什么是零点能：回顾频率计算第一节的内容："><a href="#4-1-明白什么是零点能：回顾频率计算第一节的内容：" class="headerlink" title="4.1 明白什么是零点能：回顾频率计算第一节的内容："></a>4.1 明白什么是零点能：回顾频率计算第一节的内容：</h3><p><img src="/2017/12/17/ex26/ex26-6.jpeg" alt=""></p>
+<p><img src="/2017/12/17/ex26/ex26-7.jpeg" alt=""></p>
+<h3 id="4-2-获取振动能量数据："><a href="#4-2-获取振动能量数据：" class="headerlink" title="4.2 获取振动能量数据："></a>4.2 获取振动能量数据：</h3><p><img src="/2017/12/17/ex26/ex26-8.jpeg" alt=""></p>
 <p>分析下结构：</p>
-<p><img src="/2017/12/17/ex26/ex26-9.jpeg"></p>
-<p>上图输出共有11列（列之间用空格分开）：我们要的零点能在第10列，使用下面的命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">&#x27;f  =&#x27;</span> OUTCAR | awk <span class="string">&#x27;&#123;print $10&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>如果想同时输出第 1 和 10 两列：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">&#x27;f  =&#x27;</span> OUTCAR | awk<span class="string">&#x27;&#123;print $1 &quot; &quot;$10&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
-<p><code>$1</code> 和 <code>$10</code> 之间有 2个 双引号：**” “**，两个双引号里面有一个空格用来分开），否则两列会连在一起。</p>
+<p><img src="/2017/12/17/ex26/ex26-9.jpeg" alt=""></p>
+<p>上图输出共有11列（列之间用空格分开）：我们要的零点能在第10列，使用下面的命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">&#x27;f  =&#x27;</span> OUTCAR | awk <span class="string">&#x27;&#123;print $10&#125;&#x27;</span></span><br></pre></td></tr></table></figure></p>
+<p>如果想同时输出第 1 和 10 两列：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">&#x27;f  =&#x27;</span> OUTCAR | awk<span class="string">&#x27;&#123;print $1 &quot; &quot;$10&#125;&#x27;</span></span><br></pre></td></tr></table></figure><br><code>$1</code> 和 <code>$10</code> 之间有 2个 双引号：<strong>“ “</strong>，两个双引号里面有一个空格用来分开），否则两列会连在一起。</p>
 <p><strong>注意！注意！注意！</strong></p>
 <p><strong>这里我们提取的能量为：$h\nu$ ！！！</strong></p>
 <p><strong>而零点能为 $1/2 h \nu$！！！</strong></p>
 <h3 id="4-3-将所有振动的能量求和："><a href="#4-3-将所有振动的能量求和：" class="headerlink" title="4.3 将所有振动的能量求和："></a>4.3 将所有振动的能量求和：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">qli@BigBroSci:~/Desktop/freq$ grep <span class="string">&#x27;f  =&#x27;</span> OUTCAR | awk <span class="string">&#x27;&#123;print $10&#125;&#x27;</span> | paste -sd+ | bc</span><br><span class="line">qli@BigBroSci:~/Desktop/freq$ 4233.962325</span><br></pre></td></tr></table></figure>
-
 <p>输出的4233.96就是所有的 hv 之和。</p>
 <p>1）不要忘记除以 $2$</p>
 <p>2）此时单位是 $meV$，换算成 $eV$ 还需要除以 $1000$。</p>
 <p>3）所以，我们的零点能是 $4233.962325/2/1000~ eV= 2.117~eV$</p>
-<h3 id="4-4-写脚本"><a href="#4-4-写脚本" class="headerlink" title="4.4 写脚本"></a>4.4 写脚本</h3><p>将前面的命令写到一个文件里面就成为了脚本：怎么写呢？本人平时喜欢使用类似 $4233.962325$ 这个数字，除以 $2000$ 这一步在后面的工作中进行。因此只用到了</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">&#x27;f =&#x27;</span> OUTCAR | awk <span class="string">&#x27;&#123;print $10&#125;&#x27;</span> | paste -sd+ | bc</span><br></pre></td></tr></table></figure>
-<p>这个命令。写脚本的具体操作：</p>
-<p><img src="/2017/12/17/ex26/ex26-10.jpeg"></p>
+<h3 id="4-4-写脚本"><a href="#4-4-写脚本" class="headerlink" title="4.4 写脚本"></a>4.4 写脚本</h3><p>将前面的命令写到一个文件里面就成为了脚本：怎么写呢？本人平时喜欢使用类似 $4233.962325$ 这个数字，除以 $2000$ 这一步在后面的工作中进行。因此只用到了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">&#x27;f =&#x27;</span> OUTCAR | awk <span class="string">&#x27;&#123;print $10&#125;&#x27;</span> | paste -sd+ | bc</span><br></pre></td></tr></table></figure><br>这个命令。写脚本的具体操作：</p>
+<p><img src="/2017/12/17/ex26/ex26-10.jpeg" alt=""></p>
 <p>1）把这行命令写到一个文件中，文件名为 <code>fsum</code> （本人不喜欢 <code>.sh</code> 尾缀，加不加都一样）；</p>
-<p>2）赋予可执行权限</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u+x ~/bin/fsum</span><br></pre></td></tr></table></figure>
-
-<p>3）移到 <code>~/bin</code> 文件夹</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv fsum ~/bin</span><br></pre></td></tr></table></figure>
-
+<p>2）赋予可执行权限<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u+x ~/bin/fsum</span><br></pre></td></tr></table></figure></p>
+<p>3）移到 <code>~/bin</code> 文件夹<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv fsum ~/bin</span><br></pre></td></tr></table></figure></p>
 <p>4）在任何一个频率计算的目录下运行：敲命令 <code>fsum</code> 即可；</p>
 <p>5）不喜欢 <code>fsum</code> 这个命令，将文件名改成你自己喜欢的名字：</p>
 <p>如果想在脚本里面直接完成除以 $2000$ 的任务，可以这么写：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hv_sum=$(grep<span class="string">&quot;f  =&quot;</span> OUTCAR | awk <span class="string">&#x27;&#123;print  $10&#125;&#x27;</span>| paste -sd+ | bc)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;scale =6; <span class="variable">$hv_sum</span>/2000&quot;</span> | bc</span><br></pre></td></tr></table></figure>
-<p><img src="/2017/12/17/ex26/ex26-11.jpeg"></p>
+<p><img src="/2017/12/17/ex26/ex26-11.jpeg" alt=""></p>
 <p>此时结果的单位为：$eV$。</p>
 <hr>
 <h2 id="5-扩展练习："><a href="#5-扩展练习：" class="headerlink" title="5 扩展练习："></a>5 扩展练习：</h2><p>5.1 <code>OUTCAR</code>中的频率输出要看明白是怎么回事；</p>

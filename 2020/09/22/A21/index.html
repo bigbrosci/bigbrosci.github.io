@@ -293,25 +293,19 @@
 <h5 id="下载并解压"><a href="#下载并解压" class="headerlink" title="下载并解压"></a>下载并解压</h5><p>下载链接：<a target="_blank" rel="noopener" href="http://www.p4vasp.at/#/download">http://www.p4vasp.at/#/download</a> </p>
 <p>这里本人把安装包解压缩到了<code>~/Documents/</code> 目录下。</p>
 <h5 id="安装步骤-1"><a href="#安装步骤-1" class="headerlink" title="安装步骤-1"></a>安装步骤-1</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbrosci:~/Documents/p4vasp-0.3.30$ ls</span><br><span class="line">BUGS           install           odpdom                setenvironment.sh</span><br><span class="line">ChangeLog      install-local.sh  p4v                   src</span><br><span class="line">data           install.sh        p4vasp-0.3.30-1.spec  <span class="built_in">test</span></span><br><span class="line">diagnostic.py  lib               p4vasp.log            uninstall.sh</span><br><span class="line">doc            LICENSE           p4v.py                utils</span><br><span class="line">ext            Makefile          README                vinfo.py</span><br><span class="line">FAQS           Makefile.MacOS    README.MacOS          vinfo.pyc</span><br><span class="line">qli@bigbrosci:~/Documents/p4vasp-0.3.30$ sudo apt-get install gcc make</span><br><span class="line">qli@bigbrosci:~/Documents/p4vasp-0.3.30$ sudo apt-get install make</span><br><span class="line">qli@bigbrosci:~/Documents/p4vasp-0.3.30$ sudo apt-get install python2-dev</span><br></pre></td></tr></table></figure>
-
-
-
 <h5 id="安装步骤-2："><a href="#安装步骤-2：" class="headerlink" title="安装步骤-2："></a>安装步骤-2：</h5><p><a target="_blank" rel="noopener" href="http://archive.ubuntu.com/ubuntu/pool/universe/p/pygtk/">http://archive.ubuntu.com/ubuntu/pool/universe/p/pygtk/</a></p>
 <p>从这个网站下载：python-gtk2 和 python-glade2的deb文件，下载后，双击即可安装。</p>
 <p><strong>注意：</strong>先安装gtk2，再安装glade2。</p>
-<img src="/2020/09/22/A21/A21.png" style="zoom:50%;">
-
-
-
+<p><img src="/2020/09/22/A21/A21.png" style="zoom:50%;"></p>
 <h5 id="安装步骤-3："><a href="#安装步骤-3：" class="headerlink" title="安装步骤-3："></a>安装步骤-3：</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbrosci:~/Documents/p4vasp-0.3.30$ sudo apt-get install libxft-dev</span><br><span class="line">qli@bigbrosci:~/Documents/p4vasp-0.3.30$ sudo apt-get install libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev</span><br><span class="line">qli@bigbrosci:~/Documents/p4vasp-0.3.30$ bash install/install-ubuntu-dependencies.sh</span><br><span class="line">qli@bigbrosci:~/Documents/p4vasp-0.3.30$ bash install.sh</span><br></pre></td></tr></table></figure>
-
 <h5 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h5><p><code>bash install/install-ubuntu-dependencies.sh</code> 这一步最后可能会出<code>python-epydoc</code>的报错，可以忽略。</p>
 <h5 id="反馈："><a href="#反馈：" class="headerlink" title="反馈："></a>反馈：</h5><p>上面的命令是Ubuntu20里面安装用的，如果安装过程出现问题，或者有更好的安装方法，欢迎交流讨论：</p>
 <p>QQ：122103465</p>
-<p>E-mail：<a href="mailto:&#x6c;&#x71;&#99;&#x61;&#116;&#x61;&#x40;&#103;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;">&#x6c;&#x71;&#99;&#x61;&#116;&#x61;&#x40;&#103;&#x6d;&#x61;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
+<p>E-mail：lqcata@gmail.com</p>
 <p>至于其他的Linux系统，本人没有测试，如果你有比较好的安装方法，也欢迎分享讨论。</p>
-<h5 id="打赏"><a href="#打赏" class="headerlink" title="打赏"></a>打赏</h5><p>如果感觉本文对你的相关研究有帮助，欢迎打赏，支持作者的热心付出。如果你也有自己的骚操作，热烈欢迎无私分享，可以通过QQ（122103465）或者邮件（<a href="mailto:&#108;&#x71;&#x63;&#x61;&#116;&#x61;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#109;">&#108;&#x71;&#x63;&#x61;&#116;&#x61;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#99;&#111;&#109;</a>）联系。</p>
-<img src="/2020/09/22/A21/打赏码.jpg" style="zoom:25%;">
+<h5 id="打赏"><a href="#打赏" class="headerlink" title="打赏"></a>打赏</h5><p>如果感觉本文对你的相关研究有帮助，欢迎打赏，支持作者的热心付出。如果你也有自己的骚操作，热烈欢迎无私分享，可以通过QQ（122103465）或者邮件（lqcata@gmail.com）联系。</p>
+<p><img src="/2020/09/22/A21/打赏码.jpg" style="zoom:25%;"></p>
+
     </div>
 
     

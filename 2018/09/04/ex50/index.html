@@ -303,11 +303,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="/2018/09/04/ex50/ex50-1.png"></p>
+        <p><img src="/2018/09/04/ex50/ex50-1.png" alt=""></p>
 <p>前面一节我们介绍了计算功函数的具体流程，以及用p4vasp获取真空能级的方法。</p>
 <p>本节我们介绍另外两个方法，从本质上来说，这些方法是一样的，都是基于对 LOCPOT 中数据的处理。</p>
 <h3 id="1-使用-vtotav-v5-2f-脚本"><a href="#1-使用-vtotav-v5-2f-脚本" class="headerlink" title="1 使用 vtotav-v5.2f 脚本"></a>1 使用 vtotav-v5.2f 脚本</h3><p>操作流程如下：</p>
-<p><img src="/2018/09/04/ex50/ex50-2.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-2.jpeg" alt=""></p>
 <p><strong>注意：</strong></p>
 <ol>
 <li><p><code>gfortran -o vtotav.x vtotav-5.2f</code></p>
@@ -328,14 +328,13 @@
 <li>从上一级目录下拷贝了一个 python 脚本，名为：<code>wplot-f.py</code>；</li>
 <li>运行这个 python 脚本，效果如下：</li>
 </ol>
-<p><img src="/2018/09/04/ex50/ex50-3.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-3.jpeg" alt=""></p>
 <p>我们又得到了前面一节的功函数的图像。真空能级，大家从 150 前后取个值即可，也可以在一段直线的区间范围内求个平均数。</p>
 <p>对比下前面一节和本节中的数据：</p>
-<p><img src="/2018/09/04/ex50/ex50-4.png"></p>
+<p><img src="/2018/09/04/ex50/ex50-4.png" alt=""></p>
 <p>左图为本节的，右图为上节的。</p>
 <p>Python 脚本这么神奇，是怎么写出来的呢？脚本内容如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># Written By Qiang for workfunction Visualization from VLINE file</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">x = []</span><br><span class="line">y = []</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;VLINE&quot;</span>, mode=<span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="built_in">next</span>(f)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        xy=line.rstrip().split()</span><br><span class="line">        x.append(<span class="built_in">float</span>(xy[<span class="number">0</span>]))</span><br><span class="line">        y.append(<span class="built_in">float</span>(xy[<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">plt.plot(x,y) </span><br><span class="line">plt.savefig(<span class="string">&#x27;workfunction&#x27;</span> + <span class="string">&#x27;.pdf&#x27;</span>, dpi=<span class="number">400</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
 <p>思路如下：</p>
 <ol>
 <li>读取 VLINE 文件；</li>
@@ -347,12 +346,12 @@
 <p><strong>注意：</strong></p>
 <ol>
 <li>如果你想保存成 eps, png, jpg,只需将 .pdf 改成 .eps, .png, .jpg 即可；</li>
-<li> 如果想要分辨率更高，可以修改400这个数值；</li>
+<li>如果想要分辨率更高，可以修改400这个数值；</li>
 <li>如果只想保存成 pdf 文件，不想弹出图片的查看窗口，把 plt.show() 这一行注释掉就可以了， # plt.show()；</li>
 <li>如果只想看一下图，不想保存 pdf 文件，将第 16 行注释掉就可以了。</li>
 </ol>
 <h3 id="2-使用-vtotav-py-脚本"><a href="#2-使用-vtotav-py-脚本" class="headerlink" title="2 使用 vtotav.py 脚本"></a>2 使用 vtotav.py 脚本</h3><p>第一个脚本就讲到这里了，这个脚本不错，唯一的缺点就是横坐标不是 z 方向的数值，那么我们看一下第二个脚本的操作。</p>
-<p><img src="/2018/09/04/ex50/ex50-5.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-5.jpeg" alt=""></p>
 <p><strong>注意：</strong></p>
 <ol>
 <li><p>这里用到的脚本名字为：<code>vtotav.py</code>；</p>
@@ -360,7 +359,7 @@
 <li><p>vtotav.py LOCPOT z  这个命令意思是，用 vtotav.py 读取 LOCPOT 文件，并处理生成 z 方向的数据；</p>
 </li>
 <li><p>脚本运行完毕后，目录中多了一个 LOCPOT_Z 文件，这个文件内容如下：</p>
-<p><img src="/2018/09/04/ex50/ex50-6.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-6.jpeg" alt=""></p>
 </li>
 <li><p>图中最后两行，</p>
 <ol>
@@ -369,14 +368,13 @@
 </ol>
 </li>
 </ol>
-<p><img src="/2018/09/04/ex50/ex50-7.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-7.jpeg" alt=""></p>
 <p>这个脚本中，横坐标为 z 方向的大小，比前面的脚本有所改进，和 p4vasp 的数据是一样的。首先我们先看一下可视化的脚本，然后再讲解 vtotav.py 这个脚本的获取和使用。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># Written By Qiang for workfunction Visualization from LOCPOT_Z file</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">x = []</span><br><span class="line">y = []</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;LOCPOT_Z&quot;</span>, mode=<span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    first_line = f.readline()</span><br><span class="line">    name_x = first_line.split()[<span class="number">1</span>]</span><br><span class="line">    name_y = first_line.split()[<span class="number">2</span>]</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        xy=line.rstrip().split()</span><br><span class="line">        x.append(<span class="built_in">float</span>(xy[<span class="number">0</span>]))</span><br><span class="line">        y.append(<span class="built_in">float</span>(xy[<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">plt.plot(x,y) </span><br><span class="line">plt.xlabel(name_x) </span><br><span class="line">plt.ylabel(name_y) </span><br><span class="line">plt.savefig(<span class="string">&#x27;workfunction&#x27;</span> + <span class="string">&#x27;.pdf&#x27;</span>, dpi=<span class="number">400</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
 <p>这个跟前面的那个脚本很像，不同的地方在于这个脚本中读取了第一行的内容，并将它们作为横坐标和纵坐标的名字。(Distance 和 Potential)</p>
 <h3 id="3-vtotav-py-脚本的获取和使用"><a href="#3-vtotav-py-脚本的获取和使用" class="headerlink" title="3 vtotav.py 脚本的获取和使用"></a>3 vtotav.py 脚本的获取和使用</h3><p>这个脚本可以在github网站免费下载，网址为：</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/compphys/ase_tools/blob/master/scripts/vtotav.py">https://github.com/compphys/ase_tools/blob/master/scripts/vtotav.py</a> </p>
-<p><img src="/2018/09/04/ex50/ex50-8.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-8.jpeg" alt=""></p>
 <p>本人的做法是：</p>
 <ol>
 <li>把图中的代码复制下来，然后保存到一个文本里面，将文本命名为：vtotav.py；</li>
@@ -386,30 +384,29 @@
 </ol>
 <p>不过本人刚刚发现这个脚本可以按照下面的方法下载，下载完成后，重复前面的 2-4 步即可：</p>
 <ol>
-<li> 点击 scripts</li>
-</ol>
-<p>   <img src="/2018/09/04/ex50/ex50-9.png"></p>
-<ol start="2">
+<li><p>点击 scripts</p>
+<p><img src="/2018/09/04/ex50/ex50-9.png" alt=""></p>
+</li>
 <li><p>鼠标右击这个脚本</p>
-<p><img src="/2018/09/04/ex50/ex50-10.png"></p>
+<p><img src="/2018/09/04/ex50/ex50-10.png" alt=""></p>
 </li>
 <li><p>另存为，然后选择保存的目录</p>
-<p><img src="/2018/09/04/ex50/ex50-11.png"></p>
+<p><img src="/2018/09/04/ex50/ex50-11.png" alt=""></p>
 </li>
 <li><p>这里本人保存到电脑桌面上了</p>
-<p><img src="/2018/09/04/ex50/ex50-12.png"></p>
+<p><img src="/2018/09/04/ex50/ex50-12.png" alt=""></p>
 </li>
 </ol>
 <p><strong>注意：</strong></p>
 <p>如果你运行脚本的时候，没有得到下面图中的这个结果：</p>
-<p><img src="/2018/09/04/ex50/ex50-13.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-13.jpeg" alt=""></p>
 <p>原因可能在与：</p>
-<p><img src="/2018/09/04/ex50/ex50-14.png"></p>
+<p><img src="/2018/09/04/ex50/ex50-14.png" alt=""></p>
 <p>这个脚本需要调用 ase 这个程序中的模块，那么什么是 ase 呢？ase 怎么安装呢？</p>
 <p>对于 ase，本书的 ex0 中就已经提到了，可能大家也忘记了。ASE 是 Atomic Simulation Environment 的缩写，这是一个非常强大的工具。官方网址：</p>
 <p><a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/">https://wiki.fysik.dtu.dk/ase/</a></p>
 <p>是大大师兄(本人的师兄)做博后的课题组开发出来。Linux 系统下面，安装 ASE 很简单：</p>
-<p><img src="/2018/09/04/ex50/ex50-15.png"></p>
+<p><img src="/2018/09/04/ex50/ex50-15.png" alt=""></p>
 <p>一个命令就可以搞定了，Soooo eeeeeasy! 至于 Windows 下面嘛，本人不会。不想用 Linux，还想用 ASE 的就只能自己捣鼓捣鼓了。捣鼓好了也不要给我发教程，因为本人不推荐用 Windows 做计算。</p>
 <h3 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h3><ol>
 <li>下载本节的例子，以及所有的脚本，按照讲解的操作一遍流程，链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1dEHvHr7">https://pan.baidu.com/s/1dEHvHr7</a> 密码：ponm；</li>

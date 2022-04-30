@@ -295,30 +295,32 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>前面一节，我们讲解了一下 VASP 官网 Hand-On-Session-III 中表面能的计算。 </p>
-<h3 id="1-首先我们要指出一点-VASP-官网的错误"><a href="#1-首先我们要指出一点-VASP-官网的错误" class="headerlink" title="1 首先我们要指出一点 VASP 官网的错误"></a>1 首先我们要指出一点 VASP 官网的错误</h3><p><img src="/2018/09/02/ex48/ex48-1.jpeg"></p>
+<h3 id="1-首先我们要指出一点-VASP-官网的错误"><a href="#1-首先我们要指出一点-VASP-官网的错误" class="headerlink" title="1 首先我们要指出一点 VASP 官网的错误"></a>1 首先我们要指出一点 VASP 官网的错误</h3><p><img src="/2018/09/02/ex48/ex48-1.jpeg" alt=""></p>
 <p>最后的表面能应该是： 0.86 - 0.015 = 0.845 eV 而不是 0.71 eV。</p>
 <h3 id="2-为什么要除以-2？"><a href="#2-为什么要除以-2？" class="headerlink" title="2  为什么要除以 2？"></a>2  为什么要除以 2？</h3><p>很多人困惑为什么我们在计算的时候，上图中要除以 2。这是因为我们的单点计算中包含有 2 个面。前一节解释说是因为把 Bulk 切成了两半，以至于把大家给弄糊涂了。为什么我们的计算中会有两个面呢？首先我们看下 Slab 模型：</p>
-<p><img src="/2018/09/02/ex48/ex48-2.jpeg"></p>
+<p><img src="/2018/09/02/ex48/ex48-2.jpeg" alt=""></p>
 <p>问题： 上图的结构中有几个表面呢？</p>
 <p>答案是 2 个，因为我们的 slab 模型在 z 方向上也具有周期性，虽然我们把底部的两层原子固定来模拟体相，但实际上它们还是表面。如下图：</p>
-<p><img src="/2018/09/02/ex48/ex48-3.jpeg"></p>
+<p><img src="/2018/09/02/ex48/ex48-3.jpeg" alt=""></p>
 <p>那么，为什么 E<sup>rel</sup> 没有除以 2 呢？</p>
 <p>这是因为我们只优化了一个表面啊。</p>
 <p>如果我们两个表面都要优化的时候，是不是 E<sup>rel</sup> 也除以 2 了呢？</p>
 <p>答：是的。</p>
 <p>如果你喜欢上下两个面都优化的话，那么这将引申出 slab 模型的两种情况，对称性和非对称性模型。前面我们讲的都是非对称的 slab 模型。那么什么是对称的 slab 模型呢？ 如下图：</p>
-<p><img src="/2018/09/02/ex48/ex48-4.png"></p>
+<p><img src="/2018/09/02/ex48/ex48-4.png" alt=""></p>
 <p>在这个模型中，中间的三层原子被固定用来模拟体相，上下三层的原子放开用来模拟表面。此时，如果你计算表面能的时候，E<sup>rel</sup> 的数值就要除以 2 了。计算公式可以简化为：</p>
-<p>$$ \begin{align*}<br>\sigma &amp;=\frac{1}{2A}(E_{surf}-N_{atoms}\times E_{bulk}+E^{rel})\<br>&amp;=\frac{1}{2A}(E_{surf}^{rel} -N_{atoms}\times E_{bulk})\<br>\end{align*} $$</p>
-<p>其中： $E_{surf}^{rel}$ 直接就是我们优化完毕之后的对称slab模型的能量。</p>
-<p>单个表面的面积 A， slab 模型中的原子数 $N_{atoms}$ 和 $E_{bulk}$ 这些能量的获取和前面一节讲的内容一致。</p>
+<script type="math/tex; mode=display">\begin{align*}
+\sigma &=\frac{1}{2A}(E_{surf}-N_{atoms}\times E_{bulk}+E^{rel})\\
+&=\frac{1}{2A}(E_{surf}^{rel} -N_{atoms}\times E_{bulk})\\
+\end{align*}</script><p>其中： $E_{surf}^{rel}$ 直接就是我们优化完毕之后的对称slab模型的能量。</p>
+<p>单个表面的面积 A， slab 模型中的原子数 $N<em>{atoms}$ 和 $E</em>{bulk}$ 这些能量的获取和前面一节讲的内容一致。</p>
 <p>注意： 将这个公式和参考书 96 页底部的公式对比一下。然后仔细阅读参考书 97 页的公式各项的说明。</p>
 <h3 id="3-对称和非对称slab模型的区别："><a href="#3-对称和非对称slab模型的区别：" class="headerlink" title="3 对称和非对称slab模型的区别："></a>3 对称和非对称slab模型的区别：</h3><ol>
 <li>对称 slab 明显具有更多的原子数，在 z 方向更长，需要更多的真空层(上下两层)，这就不可避免地出现了计算量大的缺点，尤其是对于机时捉襟见肘的筒子们来说，这个模型就不用考虑啦；</li>
 <li>非对称模型由于其非对称性，在计算过程中会产生偶极矩，注意这个偶极矩是由于模型引入的，并非我们常说的分子中的偶极矩。尤其是当我们要计算一些表面吸附或者反应的时候，两个 slab 之间偶极矩的相互作用会对我们的结果产生影响。但这不是什么大问题，很多计算软件都可以通过控制计算参数来消除或者将这一影响减至最小。</li>
 <li>VASP 中可以通过设置：<ol>
-<li><code>LDIPOL=.TRUE. </code>(打开偶极校正)</li>
-<li><code>IDIPOL = 1-4 </code>来解决。 1，2，3分表代表在x，y和z 方向上进行校正。4代表在所有方向上。</li>
+<li><code>LDIPOL=.TRUE.</code>(打开偶极校正)</li>
+<li><code>IDIPOL = 1-4</code>来解决。 1，2，3分表代表在x，y和z 方向上进行校正。4代表在所有方向上。</li>
 </ol>
 </li>
 </ol>
@@ -329,7 +331,7 @@
 <ul>
 <li>Slab的层数：如参考书中的结果。</li>
 </ul>
-<p><img src="/2018/09/02/ex48/ex48-5.jpeg"></p>
+<p><img src="/2018/09/02/ex48/ex48-5.jpeg" alt=""></p>
 <ul>
 <li>slab 表面的大小，一般来说 p(1x1) 的即可。当然啦，你可也比较下 p(1x1) 和 p(2x2) 的区别： 这里要注意的是： 改变表面的大小，KPOINTS 也要发生相应的变化，只有这样，两个计算的结果才具有可比性。 </li>
 <li>真空层的厚度 这些大家都可以测试一下。</li>
@@ -340,9 +342,9 @@
 <li><p>此外，大师兄还要推荐一本进阶版的参考书：Theoretical Surface Science: A Microscopic Perspective，作者是 Axel Groβ。课题组主页：<a target="_blank" rel="noopener" href="https://www.uni-ulm.de/en/nawi/institute-of-theoretical-chemistry/">https://www.uni-ulm.de/en/nawi/institute-of-theoretical-chemistry/</a></p>
 </li>
 </ol>
-<p><img src="/2018/09/02/ex48/ex48-6.jpeg"></p>
-<p>​    <img src="/2018/09/02/ex48/ex48-7.jpeg"></p>
-<p><img src="/2018/09/02/ex48/ex48-8.jpeg"></p>
+<p><img src="/2018/09/02/ex48/ex48-6.jpeg" alt=""></p>
+<p>​    <img src="/2018/09/02/ex48/ex48-7.jpeg" alt=""></p>
+<p><img src="/2018/09/02/ex48/ex48-8.jpeg" alt=""></p>
 <p>本书关于表面能的介绍在第68页，具体内容大家认真阅读，必定受益匪浅。</p>
 <h3 id="5-扩展练习："><a href="#5-扩展练习：" class="headerlink" title="5 扩展练习："></a>5 扩展练习：</h3><ol>
 <li>请务必认真阅读参考书中表面能， slab 模型的相关介绍；</li>

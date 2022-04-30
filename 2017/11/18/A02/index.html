@@ -300,22 +300,20 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="/2017/11/18/A02/A02-1.png"></p>
+        <p><img src="/2017/11/18/A02/A02-1.png" alt=""></p>
 <p>使用vasp计算，后处理的小程序、小脚本有很多。其中最为出名的非p4vasp莫属了。从搭建模型，调整结构，DOS、能带计算，功函数等等，都可以使用它来完成。举个例子，本人博士四年，一直用它来查看和处理结果，再结合一些其他辅助的小程序和脚本，可以说是极大地提高了自己的工作效率。今天因写脚本需要，浏览了一下p4vasp官网，发现官网对p4vasp的安装解释非常简单。于是便测试了一下。本节主要包含3部分:</p>
 <ul>
 <li>第一部分：p4vasp官方的安装流程，相信大家按照这一步都可以完成安装；</li>
-<li> 第二部分：本人亲自安装的具体流程；</li>
-<li> 第三部分：傻瓜化安装流程。</li>
+<li>第二部分：本人亲自安装的具体流程；</li>
+<li>第三部分：傻瓜化安装流程。</li>
 </ul>
-<h3 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h3><p>p4vasp官网： <a target="_blank" rel="noopener" href="http://www.p4vasp.at/%E3%80%82%E7%82%B9%E5%87%BB%E4%B8%8B%E6%96%B9%E7%9A%84%E9%93%BE%E6%8E%A5%EF%BC%8C%E6%A0%B9%E6%8D%AE%E6%93%8D%E4%BD%9C%E8%BF%9B%E8%A1%8C%EF%BC%9A">http://www.p4vasp.at/。点击下方的链接，根据操作进行：</a> </p>
+<h3 id="第一部分"><a href="#第一部分" class="headerlink" title="第一部分"></a>第一部分</h3><p>p4vasp官网： <a target="_blank" rel="noopener" href="http://www.p4vasp.at/。点击下方的链接，根据操作进行：">http://www.p4vasp.at/。点击下方的链接，根据操作进行：</a> </p>
 <p><a target="_blank" rel="noopener" href="http://www.p4vasp.at/#/doc/getstarted">http://www.p4vasp.at/#/doc/getstarted</a></p>
-<p><img src="/2017/11/18/A02/A02-2.png"></p>
+<p><img src="/2017/11/18/A02/A02-2.png" alt=""></p>
 <h3 id="第二部分：动手安装流程："><a href="#第二部分：动手安装流程：" class="headerlink" title="第二部分：动手安装流程："></a>第二部分：动手安装流程：</h3><p>这一部分内容，是根据前面的官方介绍，亲自操刀实践的部分。</p>
 <p>1） 首先说明下，本人的操作系统是：Ubuntu 16.04.3 LTS</p>
-<p><img src="/2017/11/18/A02/A02-3.png"></p>
-<ol start="2">
-<li>下载p4vasp：</li>
-</ol>
+<p><img src="/2017/11/18/A02/A02-3.png" alt=""></p>
+<p>2) 下载p4vasp：</p>
 <p>目前，对Linux系统来说，最新的貌似只有source版本的了，binary的已经成为了历史。</p>
 <p>对Windows用户来说，更可怜，p4vasp都没有更新，版本还是老样子，Windows的获取方法：</p>
 <ul>
@@ -323,16 +321,12 @@
 <li>也可以在QQ群文件中下载： 217821116 </li>
 </ul>
 <p>Linux用户则可以通过p4vasp官网下载：</p>
-<p><img src="/2017/11/18/A02/A02-4.png"></p>
-<ol start="3">
-<li>解压：</li>
-</ol>
-<p><img src="/2017/11/18/A02/A02-5.png"></p>
+<p><img src="/2017/11/18/A02/A02-4.png" alt=""></p>
+<p>3) 解压：</p>
+<p><img src="/2017/11/18/A02/A02-5.png" alt=""></p>
 <p>这里将p4vasp软件包解压到Documents目录下，当然，也可以使用官网介绍的解压命令进行。</p>
-<ol start="4">
-<li>进入解压的目录，然后按照官网说的，Ubuntu用户，使用 <code>install-ubuntu-dependencies.sh</code> 这个脚本安装一些一些必须的dependencies. 如下图：运行命令后，会提示你是不是下载，输入<code>Y</code> 或者 <code>y</code> ，然后回车。屏幕此时开始疯狂地颤抖，说明正在下载安装。</li>
-</ol>
-<p><img src="/2017/11/18/A02/A02-6.png"></p>
+<p>4) 进入解压的目录，然后按照官网说的，Ubuntu用户，使用 <code>install-ubuntu-dependencies.sh</code> 这个脚本安装一些一些必须的dependencies. 如下图：运行命令后，会提示你是不是下载，输入<code>Y</code> 或者 <code>y</code> ，然后回车。屏幕此时开始疯狂地颤抖，说明正在下载安装。</p>
+<p><img src="/2017/11/18/A02/A02-6.png" alt=""></p>
 <p>注意： </p>
 <ul>
 <li><p>解压到什么地方不用要，可以放到桌面上，也可以直接解压在Download里面，本人习惯解压到Documents这个文件下。</p>
@@ -340,32 +334,27 @@
 <li><p>这里大师兄先进入的 install 这个目录， 然后运行的脚本。安装完记得再返回去。</p>
 </li>
 </ul>
-<ol start="5">
-<li>安装完成后，返回上一级目录，然后正式安装p4vasp。</li>
-</ol>
-<p><img src="/2017/11/18/A02/A02-7.png"></p>
+<p>5) 安装完成后，返回上一级目录，然后正式安装p4vasp。</p>
+<p><img src="/2017/11/18/A02/A02-7.png" alt=""></p>
 <p>等待屏幕颤抖完毕。</p>
-<p><img src="/2017/11/18/A02/A02-8.png"></p>
+<p><img src="/2017/11/18/A02/A02-8.png" alt=""></p>
 <p>看到这里，基本上99.99% 成功安装了。</p>
-<ol start="6">
-<li>测试一下： 终端直接输入： <code>p4v</code> ，效果如下：</li>
-</ol>
-<p><img src="/2017/11/18/A02/A02-9.png"></p>
+<p>6) 测试一下： 终端直接输入： <code>p4v</code> ，效果如下：</p>
+<p><img src="/2017/11/18/A02/A02-9.png" alt=""></p>
 <p>打开p4vap了，说明安装成功。</p>
 <p>7）检查下版本：（点击右上角的help）</p>
-<p><img src="/2017/11/18/A02/A02-10.png"></p>
+<p><img src="/2017/11/18/A02/A02-10.png" alt=""></p>
 <p>最新版的p4vasp已经顺利安装成功。欢呼吧，少年！！</p>
 <h3 id="傻瓜化安装"><a href="#傻瓜化安装" class="headerlink" title="傻瓜化安装"></a>傻瓜化安装</h3><p>在进行第二部分操作的前4年，本人一直用的这个办法：</p>
 <p>1） 终端一个命令搞定：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install p4vasp</span><br></pre></td></tr></table></figure>
-
 <p>效果如下：</p>
-<p><img src="/2017/11/18/A02/A02-11.png"></p>
+<p><img src="/2017/11/18/A02/A02-11.png" alt=""></p>
 <p>输入Y，等待屏幕颤抖结束</p>
 <p>2） 运行p4vasp：</p>
-<p><img src="/2017/11/18/A02/A02-12.png"></p>
+<p><img src="/2017/11/18/A02/A02-12.png" alt=""></p>
 <p>3） 检查下版本：该版本为v0.3.29r1，比官网的最新版稍微旧一点。但不影响使用。</p>
-<p><img src="/2017/11/18/A02/A02-13.png"></p>
+<p><img src="/2017/11/18/A02/A02-13.png" alt=""></p>
 <h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>对于Ubuntu用户：</p>
 <ul>
 <li>建议大家使用官网介绍的办法。安装最新版的p4vasp。</li>
@@ -397,8 +386,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2017/11/27/M_02/" rel="next" title="通过关键词判断优化任务收敛">
-                  通过关键词判断优化任务收敛 <i class="fa fa-chevron-right"></i>
+                <a href="/2017/11/27/M_01/" rel="next" title="Ubuntu18.使用VESTA报错的解决办法">
+                  Ubuntu18.使用VESTA报错的解决办法 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

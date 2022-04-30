@@ -20,12 +20,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="最近，群里有人在问Bader电荷分析的问题，在这里，将Bader分析的基本流程，以及本人写的一个后处理的脚本分享一下，希望大家不要再纠缠这个问题了。大家务必认真浏览参考网址的内容。http:&#x2F;&#x2F;theory.cm.utexas.edu&#x2F;henkelman&#x2F;code&#x2F;bader&#x2F;   计算流程优化自己的体系结构:使用VASP计算，获得稳定的结构，过程略过。 Bader电荷分析的计算部分: 将前面优化">
+<meta name="description" content="最近，群里有人在问Bader电荷分析的问题，在这里，将Bader分析的基本流程，以及本人写的一个后处理的脚本分享一下，希望大家不要再纠缠这个问题了。大家务必认真浏览参考网址的内容。http:&#x2F;&#x2F;theory.cm.utexas.edu&#x2F;henkelman&#x2F;code&#x2F;bader&#x2F;   计算流程优化自己的体系结构:使用VASP计算，获得稳定的结构，过程略过。 Bader电荷分析的计算部分:1) 将前面">
 <meta property="og:type" content="article">
 <meta property="og:title" content="A07 Bader电荷计算">
 <meta property="og:url" content="http://www.bigbrosci.com/2011/12/23/A07/index.html">
 <meta property="og:site_name" content="Learn VASP The Hard Way">
-<meta property="og:description" content="最近，群里有人在问Bader电荷分析的问题，在这里，将Bader分析的基本流程，以及本人写的一个后处理的脚本分享一下，希望大家不要再纠缠这个问题了。大家务必认真浏览参考网址的内容。http:&#x2F;&#x2F;theory.cm.utexas.edu&#x2F;henkelman&#x2F;code&#x2F;bader&#x2F;   计算流程优化自己的体系结构:使用VASP计算，获得稳定的结构，过程略过。 Bader电荷分析的计算部分: 将前面优化">
+<meta property="og:description" content="最近，群里有人在问Bader电荷分析的问题，在这里，将Bader分析的基本流程，以及本人写的一个后处理的脚本分享一下，希望大家不要再纠缠这个问题了。大家务必认真浏览参考网址的内容。http:&#x2F;&#x2F;theory.cm.utexas.edu&#x2F;henkelman&#x2F;code&#x2F;bader&#x2F;   计算流程优化自己的体系结构:使用VASP计算，获得稳定的结构，过程略过。 Bader电荷分析的计算部分:1) 将前面">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://www.bigbrosci.com/2011/12/23/A07/A07-1.jpeg">
 <meta property="og:image" content="http://www.bigbrosci.com/2011/12/23/A07/A07-2.jpeg">
@@ -295,25 +295,16 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>最近，群里有人在问Bader电荷分析的问题，在这里，将Bader分析的基本流程，以及本人写的一个后处理的脚本分享一下，希望大家不要再纠缠这个问题了。大家务必认真浏览参考网址的内容。<a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/henkelman/code/bader/">http://theory.cm.utexas.edu/henkelman/code/bader/</a> </p>
-<p><img src="/2011/12/23/A07/A07-1.jpeg"></p>
+<p><img src="/2011/12/23/A07/A07-1.jpeg" alt=""></p>
 <h1 id="计算流程"><a href="#计算流程" class="headerlink" title="计算流程"></a>计算流程</h1><h2 id="优化自己的体系结构"><a href="#优化自己的体系结构" class="headerlink" title="优化自己的体系结构:"></a>优化自己的体系结构:</h2><p>使用VASP计算，获得稳定的结构，过程略过。</p>
-<h2 id="Bader电荷分析的计算部分"><a href="#Bader电荷分析的计算部分" class="headerlink" title="Bader电荷分析的计算部分:"></a>Bader电荷分析的计算部分:</h2><ol>
-<li><p>将前面优化完的<code>CONTCAR</code> 重命名为<code>POSCAR</code></p>
-</li>
-<li><p>设置INCAR:</p>
-</li>
-</ol>
+<h2 id="Bader电荷分析的计算部分"><a href="#Bader电荷分析的计算部分" class="headerlink" title="Bader电荷分析的计算部分:"></a>Bader电荷分析的计算部分:</h2><p>1) 将前面优化完的<code>CONTCAR</code> 重命名为<code>POSCAR</code></p>
+<p>2) 设置INCAR:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">LAECHG=.TRUE. </span><br><span class="line">LCHARG = .TRUE.</span><br><span class="line">NSW = 0</span><br><span class="line">IBRION = -1 ## 前面有了NSW = 0， 这个也可以不设置 </span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li><p><code>KPOINTS</code>可以用之前优化计算的，也可设置的稍微大些。</p>
-</li>
-<li><p><code>WAVECAR</code>，<code>CHGCAR</code>等有的话就读一下(在第二步加上读它们的相关参数)。没有的话就不读了，这个无关紧要，不要纠结。<strong>但是</strong>，如果你的体系很难收敛的时候，建议保留上一步的WAVECAR以便节省计算时间，如果没有的话电子步数适当增加(NELM=200) 。 </p>
-</li>
-</ol>
+<p>3) <code>KPOINTS</code>可以用之前优化计算的，也可设置的稍微大些。</p>
+<p>4) <code>WAVECAR</code>，<code>CHGCAR</code>等有的话就读一下(在第二步加上读它们的相关参数)。没有的话就不读了，这个无关紧要，不要纠结。<strong>但是</strong>，如果你的体系很难收敛的时候，建议保留上一步的WAVECAR以便节省计算时间，如果没有的话电子步数适当增加(NELM=200) 。 </p>
 <h2 id="获取VTST的脚本"><a href="#获取VTST的脚本" class="headerlink" title="获取VTST的脚本"></a>获取VTST的脚本</h2><p>1)下载网址:</p>
 <ul>
-<li><p> <a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/vasp/scripts.html">http://theory.cm.utexas.edu/vasp/scripts.html</a>  (用到里面的chgsum.pl这个脚本)</p>
+<li><p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/vasp/scripts.html">http://theory.cm.utexas.edu/vasp/scripts.html</a>  (用到里面的chgsum.pl这个脚本)</p>
 </li>
 <li><p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/henkelman/code/bader/">http://theory.cm.utexas.edu/henkelman/code/bader/</a>  (下载bader处理的脚本)</p>
 </li>
@@ -322,60 +313,43 @@
 <p>3)如果后面运行的时候遇到权限问题:执行:</p>
 <p><code>chmod u+x  ~/bin/chgsum.pl</code></p>
 <p><code>chmod u+x  ~/bin/bader</code></p>
-<h2 id="使用VTST的脚本处理结果"><a href="#使用VTST的脚本处理结果" class="headerlink" title="使用VTST的脚本处理结果"></a>使用VTST的脚本处理结果</h2><ol>
-<li><p>进入计算的目录下面</p>
-</li>
-<li><p><code>chgsum.pl AECCAR0 AECCAR2</code></p>
-</li>
-</ol>
+<h2 id="使用VTST的脚本处理结果"><a href="#使用VTST的脚本处理结果" class="headerlink" title="使用VTST的脚本处理结果"></a>使用VTST的脚本处理结果</h2><p>1) 进入计算的目录下面</p>
+<p>2) <code>chgsum.pl AECCAR0 AECCAR2</code></p>
 <p>注意: <code>AECCAR0</code>和<code>AECCAR2</code> 是由<code>LAECHG=.TRUE.</code>这个参数控制输出的。如果你计算没有得到这两个文件，仔细检查一下这个参数。</p>
 <p>运行这个命令:你会得到类似这样的输出结果:</p>
-<p><img src="/2011/12/23/A07/A07-2.jpeg"></p>
+<p><img src="/2011/12/23/A07/A07-2.jpeg" alt=""></p>
 <p>结束后，你会得到 <code>CHGCAR_sum</code> 这个文件。</p>
-<ol start="3">
-<li><code>bader CHGCAR -ref CHGCAR_sum</code></li>
-</ol>
-<p><img src="/2011/12/23/A07/A07-3.jpeg"></p>
+<p>3) <code>bader CHGCAR -ref CHGCAR_sum</code></p>
+<p><img src="/2011/12/23/A07/A07-3.jpeg" alt=""></p>
 <p>注意:</p>
 <p>i) 图中大师兄不小心把<code>CHGCAR</code>删掉了…所以没办法呈现完整的流程。放图上去只是想告诉大家，命令是正确的。ii) 如果你在服务器上运行，得到了这样的错误。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FATAL:kernel too old</span><br><span class="line">Segmentationfault</span><br></pre></td></tr></table></figure>
-
 <p>那么，你需要将计算复制到本地电脑上(由于<code>CHGCAR</code>等文件很大，该过程比较蛋疼，需要忍一会儿)，然后用自己的电脑运行这个命令。(前提是电脑有<code>Linux</code>系统，没有的话，我也没办法。)</p>
 <p>iii) 命令结束后，你会得到一些相应输出的文件：ACF.dat， BCF.dat， AVF.dat…</p>
 <p>iv) 本人一般查看的是<code>ACF.dat</code>文件：（以SiH$_4$为例）</p>
 <p>如下图:</p>
-<p><img src="/2011/12/23/A07/A07-4.jpeg"></p>
+<p><img src="/2011/12/23/A07/A07-4.jpeg" alt=""></p>
 <p>ACF.dat文件中，第一列的数字对应的是POSCAR中的原子顺序。</p>
 <p>每个原子的电荷对应的是<code>CHARGE</code>那一列。注意，该列中的电荷是该原子价层电子中的电子总数。如果你想要知道这个原子是带正电或者负电荷，需要减去<code>POTCAR</code>中的电子数目。</p>
-<p><img src="/2011/12/23/A07/A07-5.jpeg"></p>
+<p><img src="/2011/12/23/A07/A07-5.jpeg" alt=""></p>
 <p>图中Si为第一个原子:有1.58个电子 ，减去POTCAR中的4，为 -2.42。</p>
 <p>这表明Si失去了电子。2.42个电子分别转移到了4个H上面。</p>
-<p>每个H有$$1+2.42/4 = 1.6$$ 个电子。(对比下4个H中的电子)</p>
+<p>每个H有<script type="math/tex">1+2.42/4 = 1.6</script> 个电子。(对比下4个H中的电子)</p>
 <h2 id="得到任意原子的电荷信息"><a href="#得到任意原子的电荷信息" class="headerlink" title="得到任意原子的电荷信息"></a>得到任意原子的电荷信息</h2><p>如果你对自己体系中的某一个或者某些特定的原子感兴趣，又不想每次打开<code>ACF.dat</code>文件或者已经导出来的excel文件。那么可以通过使用下面这个脚本提取相关的电荷信息。</p>
-<ol>
-<li>脚本运行命令如下图：<code>get-charge.py  Natom</code> Natom 是你感兴趣的原子序数</li>
-</ol>
-<p><img src="/2011/12/23/A07/A07-6.jpeg"></p>
+<p>1) 脚本运行命令如下图：<code>get-charge.py  Natom</code> Natom 是你感兴趣的原子序数</p>
+<p><img src="/2011/12/23/A07/A07-6.jpeg" alt=""></p>
 <p>注意:</p>
 <p>A) 目前只支持一个，如果想查看多个，可以运行该命令若干次，或者使用一个for 循环即可: </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in 1 2 3 4 5 ; do get-charge.py $i ; done </span><br></pre></td></tr></table></figure>
-
 <p>B) 使用该命令前，请务必确认自己所关注的原子在POSCAR中的序数，如果不知道，可以通过p4vasp查看。</p>
-<p><img src="/2011/12/23/A07/A07-7.jpeg"></p>
-<ol start="2">
-<li>脚本内容如下:</li>
-</ol>
+<p><img src="/2011/12/23/A07/A07-7.jpeg" alt=""></p>
+<p>2) 脚本内容如下:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"> </span><br><span class="line">script, Natom = sys.argv</span><br><span class="line"> </span><br><span class="line"><span class="comment"># Natom is the atom number when run ths script </span></span><br><span class="line"><span class="comment"># Convert Natom into integer </span></span><br><span class="line"> </span><br><span class="line">Natom = <span class="built_in">int</span>(Natom)</span><br><span class="line"> </span><br><span class="line"><span class="comment"># Creat an empty list </span></span><br><span class="line">charge_list = []</span><br><span class="line"> </span><br><span class="line"><span class="comment"># read ACF.dat file and add all lines with charges into the charge_list </span></span><br><span class="line"><span class="comment"># These lines are started with atom numbers: line.rstrip().split()[0]</span></span><br><span class="line"><span class="comment"># line.rstrip() : &#x27;    19     -1.2426      6.3529      5.9723      9.9947      1.0601     10.4547&#x27;</span></span><br><span class="line"><span class="comment"># line.rstrip().split(): &#x27;19&#x27;, &#x27;-1.2426&#x27;, &#x27;6.3529&#x27;, &#x27;5.9723&#x27;, &#x27;9.9947&#x27;, &#x27;1.0601&#x27;, &#x27;10.4547&#x27;</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span> (<span class="string">&#x27;ACF.dat&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> infile:</span><br><span class="line">    lines = infile.readlines()</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> lines:</span><br><span class="line">        <span class="keyword">if</span> line.rstrip().split()[<span class="number">0</span>].isdigit(): <span class="comment"># == True: # escape the first 2 and last 4 lines  </span></span><br><span class="line">            charge_list.append(line.rstrip())    </span><br><span class="line"> </span><br><span class="line"><span class="comment"># Print the charge information of Natom</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span>  charge_list:</span><br><span class="line"><span class="comment"># i.split() is used to split the whole line into different columns </span></span><br><span class="line">    <span class="keyword">if</span> Natom == <span class="built_in">int</span>(i.split()[<span class="number">0</span>]):</span><br><span class="line"><span class="comment"># The 5th data in each line is the charge value, so we print i.split()[4]   </span></span><br><span class="line">        <span class="built_in">print</span> Natom, i.split()[<span class="number">4</span>]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>原理:</p>
 <p>将<code>ACF.dat</code>中的信息以行的形式保存到一个列表里面。</p>
 <p>然后根据用户输入的原子序数，调出来对应行中的电荷信息。</p>
-<h1 id="扩展练习"><a href="#扩展练习" class="headerlink" title="扩展练习"></a>扩展练习</h1><ol>
-<li><p>浏览VTST官网Bader电荷分析的有关内容。</p>
-</li>
-<li><p>找几个简单的气相分子或者自己的体系练练手。</p>
-</li>
-</ol>
+<h1 id="扩展练习"><a href="#扩展练习" class="headerlink" title="扩展练习"></a>扩展练习</h1><p>1) 浏览VTST官网Bader电荷分析的有关内容。</p>
+<p>2) 找几个简单的气相分子或者自己的体系练练手。</p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本节简单介绍了一下Bader电荷分析的计算流程，电荷分析的过程，以及本人自己写的一个小脚本。大家如果还有其他遇到的问题，可以在本文后面留言。我会持续更新相关的问题解答。</p>
 
     </div>

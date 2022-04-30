@@ -20,12 +20,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="本节介绍一下ASE的另一个骚操作—扩胞。说到扩胞，这个大家都不陌生，可以有很多种方式来实现，本教程中就介绍了p4vasp的一种操作，今天就看一下ASE的骚操作吧。废话不多说，直接上例子和脚本。 例子：本例子中，主要把优化好的一个(1x1)-Ru(0001)的slab 扩胞为（4x4）的slab。为什么这样做呢？因为直接优化刚刚切好的（4x4)slab会有些费时间。先优化（1x1)的，在CONTCA">
+<meta name="description" content="本节介绍一下ASE的另一个骚操作—-扩胞。说到扩胞，这个大家都不陌生，可以有很多种方式来实现，本教程中就介绍了p4vasp的一种操作，今天就看一下ASE的骚操作吧。废话不多说，直接上例子和脚本。 例子：本例子中，主要把优化好的一个(1x1)-Ru(0001)的slab 扩胞为（4x4）的slab。为什么这样做呢？因为直接优化刚刚切好的（4x4)slab会有些费时间。先优化（1x1)的，在CONTC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ASE的骚操作系列（扩胞）">
 <meta property="og:url" content="http://www.bigbrosci.com/2020/09/11/A19/index.html">
 <meta property="og:site_name" content="Learn VASP The Hard Way">
-<meta property="og:description" content="本节介绍一下ASE的另一个骚操作—扩胞。说到扩胞，这个大家都不陌生，可以有很多种方式来实现，本教程中就介绍了p4vasp的一种操作，今天就看一下ASE的骚操作吧。废话不多说，直接上例子和脚本。 例子：本例子中，主要把优化好的一个(1x1)-Ru(0001)的slab 扩胞为（4x4）的slab。为什么这样做呢？因为直接优化刚刚切好的（4x4)slab会有些费时间。先优化（1x1)的，在CONTCA">
+<meta property="og:description" content="本节介绍一下ASE的另一个骚操作—-扩胞。说到扩胞，这个大家都不陌生，可以有很多种方式来实现，本教程中就介绍了p4vasp的一种操作，今天就看一下ASE的骚操作吧。废话不多说，直接上例子和脚本。 例子：本例子中，主要把优化好的一个(1x1)-Ru(0001)的slab 扩胞为（4x4）的slab。为什么这样做呢？因为直接优化刚刚切好的（4x4)slab会有些费时间。先优化（1x1)的，在CONTC">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://www.bigbrosci.com/2020/09/11/A19/1x1.png">
 <meta property="og:image" content="http://www.bigbrosci.com/2020/09/11/A19/4x4.png">
@@ -291,24 +291,23 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>本节介绍一下ASE的另一个骚操作—扩胞。说到扩胞，这个大家都不陌生，可以有很多种方式来实现，本教程中就介绍了p4vasp的一种操作，今天就看一下ASE的骚操作吧。废话不多说，直接上例子和脚本。</p>
+        <p>本节介绍一下ASE的另一个骚操作—-扩胞。说到扩胞，这个大家都不陌生，可以有很多种方式来实现，本教程中就介绍了p4vasp的一种操作，今天就看一下ASE的骚操作吧。废话不多说，直接上例子和脚本。</p>
 <h4 id="例子："><a href="#例子：" class="headerlink" title="例子："></a>例子：</h4><p>本例子中，主要把优化好的一个(1x1)-Ru(0001)的slab 扩胞为（4x4）的slab。为什么这样做呢？因为直接优化刚刚切好的（4x4)slab会有些费时间。先优化（1x1)的，在CONTCAR的基础上扩展为（4x4）的，再优化会相对来说快一些。但现在大家服务器一般都很给力，从刚切好的（1x1) slab直接扩展到（4x4），然后再优化也可以的。不管怎么样，扩胞这个操作都是必须的。如果你硬要抬扛说，我可以直接从bulk切出来（4x4)的，不用扩胞这么麻烦。OK，这也是可以的。但等你需要扩胞操作的时候，记得回来看这个骚操作就行。</p>
 <p>先展示一下效果吧： </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/Desktop/A19$ ls</span><br><span class="line">CONTCAR  expand.py </span><br><span class="line">qli@bigbro:~/Desktop/A19$ python3 expand.py  CONTCAR  4 4 1 </span><br><span class="line">qli@bigbro:~/Desktop/A19$ ls</span><br><span class="line">CONTCAR  expand.py  POSCAR</span><br><span class="line">qli@bigbro:~/Desktop/A19$ ase gui <span class="string">&quot;-R -90x&quot;</span> CONTCAR </span><br><span class="line">qli@bigbro:~/Desktop/A19$ ase gui <span class="string">&quot;-R -90x&quot;</span> POSCAR </span><br></pre></td></tr></table></figure>
-
 <p>扩胞前：（CONTCAR）</p>
-<p><img src="/2020/09/11/A19/1x1.png"></p>
+<p><img src="/2020/09/11/A19/1x1.png" alt=""></p>
 <p>扩胞后：（POSCAR）</p>
-<p><img src="/2020/09/11/A19/4x4.png"></p>
+<p><img src="/2020/09/11/A19/4x4.png" alt=""></p>
 <h4 id="脚本："><a href="#脚本：" class="headerlink" title="脚本："></a>脚本：</h4><p>脚本可以通过git-hub下载，链接：</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/BigBroSci-LVTHW/LVTHW/tree/master/source/_posts/A19">https://github.com/BigBroSci-LVTHW/LVTHW/tree/master/source/_posts/A19</a></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Created on Wed Oct  2 10:54:36 2019</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">@author: qli</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> sys, os</span><br><span class="line"><span class="keyword">import</span> ase.io.vasp</span><br><span class="line"></span><br><span class="line">file_read = sys.argv[<span class="number">1</span>]</span><br><span class="line">x,y,z     = [<span class="built_in">int</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> sys.argv[<span class="number">2</span>:<span class="number">5</span>]]</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    cell = ase.io.vasp.read_vasp(<span class="string">&quot;CONTCAR&quot;</span>)</span><br><span class="line">    ase.io.vasp.write_vasp(<span class="string">&quot;POSCAR&quot;</span>,cell*(x, y, z), direct=<span class="literal">True</span>,sort=<span class="literal">True</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="built_in">print</span>(os.getcwd())</span><br></pre></td></tr></table></figure>
-
-<p>前面的扩胞命令：<code>expand.py  CONTCAR  4 4 1 </code></p>
+<p>前面的扩胞命令：<code>expand.py  CONTCAR  4 4 1</code></p>
 <p><code>CONTCAR</code> 对应的为 <code>sys.argv[1]</code></p>
 <p><code>4 4 1</code> 分别为在<code>x,y,z</code> 三个方向扩胞的倍数。</p>
-<h4 id="打赏"><a href="#打赏" class="headerlink" title="打赏"></a>打赏</h4><p>如果感觉本文对你的相关研究有帮助，欢迎打赏，支持作者的热心付出。如果你也有自己的骚操作，热烈欢迎无私分享，可以通过QQ（122103465）或者邮件（<a href="mailto:&#108;&#x71;&#x63;&#x61;&#x74;&#97;&#x40;&#103;&#x6d;&#x61;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;">&#108;&#x71;&#x63;&#x61;&#x74;&#97;&#x40;&#103;&#x6d;&#x61;&#105;&#108;&#46;&#x63;&#x6f;&#x6d;</a>）联系。</p>
-<img src="/2020/09/11/A19/打赏码.jpg" style="zoom:25%;">
+<h4 id="打赏"><a href="#打赏" class="headerlink" title="打赏"></a>打赏</h4><p>如果感觉本文对你的相关研究有帮助，欢迎打赏，支持作者的热心付出。如果你也有自己的骚操作，热烈欢迎无私分享，可以通过QQ（122103465）或者邮件（lqcata@gmail.com）联系。</p>
+<p><img src="/2020/09/11/A19/打赏码.jpg" style="zoom:25%;"></p>
+
     </div>
 
     

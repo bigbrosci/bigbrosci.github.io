@@ -20,12 +20,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="本节主要介绍如何使用p4vasp获取DOS数据。  1 计算实例：计算的体系是一个Ru的单胞，含有2个Ru原子。结构优化完毕后进行以下操作。 1.1 cp  CONTCAR  POSCAR  1.2 INCAR的设置（一步计算）： 1234IBRION &#x3D; -1NSW &#x3D; 0ISMEAR &#x3D; -5LORBIT &#x3D; 11   1.3 KPOINTS 采用: 21 21 21 （gamma cente">
+<meta name="description" content="本节主要介绍如何使用p4vasp获取DOS数据。  1 计算实例：计算的体系是一个Ru的单胞，含有2个Ru原子。结构优化完毕后进行以下操作。 1.1 cp  CONTCAR  POSCAR 1.2 INCAR的设置（一步计算）： 1234IBRION &#x3D; -1NSW &#x3D; 0ISMEAR &#x3D; -5LORBIT &#x3D; 11  1.3 KPOINTS 采用: 21 21 21 （gamma centere">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ex-39 DOS 计算(三)">
 <meta property="og:url" content="http://www.bigbrosci.com/2018/02/08/ex39/index.html">
 <meta property="og:site_name" content="Learn VASP The Hard Way">
-<meta property="og:description" content="本节主要介绍如何使用p4vasp获取DOS数据。  1 计算实例：计算的体系是一个Ru的单胞，含有2个Ru原子。结构优化完毕后进行以下操作。 1.1 cp  CONTCAR  POSCAR  1.2 INCAR的设置（一步计算）： 1234IBRION &#x3D; -1NSW &#x3D; 0ISMEAR &#x3D; -5LORBIT &#x3D; 11   1.3 KPOINTS 采用: 21 21 21 （gamma cente">
+<meta property="og:description" content="本节主要介绍如何使用p4vasp获取DOS数据。  1 计算实例：计算的体系是一个Ru的单胞，含有2个Ru原子。结构优化完毕后进行以下操作。 1.1 cp  CONTCAR  POSCAR 1.2 INCAR的设置（一步计算）： 1234IBRION &#x3D; -1NSW &#x3D; 0ISMEAR &#x3D; -5LORBIT &#x3D; 11  1.3 KPOINTS 采用: 21 21 21 （gamma centere">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://www.bigbrosci.com/2018/02/08/ex39/ex39-1.png">
 <meta property="og:image" content="http://www.bigbrosci.com/2018/02/08/ex39/ex39-2.png">
@@ -303,10 +303,9 @@
         <p>本节主要介绍如何使用p4vasp获取DOS数据。</p>
 <hr>
 <h2 id="1-计算实例："><a href="#1-计算实例：" class="headerlink" title="1 计算实例："></a><strong>1</strong> <strong>计算实例：</strong></h2><p>计算的体系是一个Ru的单胞，含有2个Ru原子。结构优化完毕后进行以下操作。</p>
-<p>1.1 <code>cp  CONTCAR  POSCAR </code></p>
+<p>1.1 <code>cp  CONTCAR  POSCAR</code></p>
 <p>1.2 INCAR的设置（一步计算）：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IBRION = -1</span><br><span class="line">NSW = 0</span><br><span class="line">ISMEAR = -5</span><br><span class="line">LORBIT = 11 </span><br></pre></td></tr></table></figure>
-
 <p>1.3 KPOINTS 采用: <code>21 21 21</code> （gamma centered：Ru为六方堆积结构！！！）</p>
 <p>1.4 提交任务等待结束。</p>
 <p>1.5 该计算的所有文件可以通过百度网盘下载： <a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1kVebDWz">http://pan.baidu.com/s/1kVebDWz</a> </p>
@@ -316,16 +315,16 @@
 <p><strong>注意：</strong>前面的2步，Linux系统下面直接输入命令 ：</p>
 <p><code>p4v &amp;</code>或者 <code>p4v vasprun.xm</code>即可。</p>
 <p>2.3 查看DOS：<strong>Electronic –&gt; DOS+bands</strong></p>
-<p><img src="/2018/02/08/ex39/ex39-1.png"></p>
+<p><img src="/2018/02/08/ex39/ex39-1.png" alt=""></p>
 <p>效果如下如：</p>
-<p> <img src="/2018/02/08/ex39/ex39-2.png"></p>
+<p> <img src="/2018/02/08/ex39/ex39-2.png" alt=""></p>
 <hr>
 <p>2.4 获取d轨道的DOS: </p>
 <p>这里我们取d band作为例子，大家根据自己的需要选择：</p>
-<p><code>Electronic</code> –&gt; <code>Local DOS+bands control </code></p>
-<p> <img src="/2018/02/08/ex39/ex39-3.png"></p>
+<p><code>Electronic</code> –&gt; <code>Local DOS+bands control</code></p>
+<p> <img src="/2018/02/08/ex39/ex39-3.png" alt=""></p>
 <p> 点击后如下图： </p>
-<p>  <img src="/2018/02/08/ex39/ex39-4.png"></p>
+<p>  <img src="/2018/02/08/ex39/ex39-4.png" alt=""></p>
 <p>注意：</p>
 <p>1） 这里我们填的是Ru，表示选择所有的Ru原子，具体到大家自己的计算中，</p>
 <p>换成自己感兴趣的原子即可，怎么选择，我们前面已经讲到过了。（通过左侧的show按钮，以及鼠标和空格选择）</p>
@@ -333,19 +332,19 @@
 <p>3）选择感兴趣的轨道：</p>
 <p>如果计算中你设置的<code>LORBIT=10</code>，点击 <code>dxy</code>的时候，则其他的d轨道也会同时被选中，</p>
 <p>如果你设置的<code>LORBIT=11</code>，点击<code>dxy</code>时，则仅仅选择<code>dxy</code>，其他的d轨道不会选中。如下图： </p>
-<p>  <img src="/2018/02/08/ex39/ex39-5.png"></p>
+<p>  <img src="/2018/02/08/ex39/ex39-5.png" alt=""></p>
 <p>如果看不明白：</p>
 <p>a）VASP官网查看 <code>LORBIT = 10</code> 和11 的含义；</p>
 <p>b）亲自动手操作一下就明白了。</p>
 <p>选择完毕后，点击 <code>Add New line</code>，效果如下：</p>
-<p>  <img src="/2018/02/08/ex39/ex39-6.png"></p>
+<p>  <img src="/2018/02/08/ex39/ex39-6.png" alt=""></p>
 <p>图中增加了一条红色的曲线，为Ru的d轨道的DOS图， 如果你选择了s，点击Add New line，就会增加另外一条曲线。不想要某个曲线了，可以点击remove line，大家自己随意操作，直至熟练为止！！</p>
 <hr>
 <h2 id="3-后处理："><a href="#3-后处理：" class="headerlink" title="3 后处理："></a><strong>3</strong> <strong>后处理：</strong></h2><p>3.1  导出数据：</p>
 <p>p4vasp导出数据通过中间的一个按钮： （注意，这里不通过左上角的File按钮！），如下图：点击 <code>Graph</code> –&gt; <code>Export</code> </p>
-<p> <img src="/2018/02/08/ex39/ex39-7.png"></p>
+<p> <img src="/2018/02/08/ex39/ex39-7.png" alt=""></p>
 <p>弹出的窗口中，选择保存的目录和数据的文件名称 </p>
-<p> <img src="/2018/02/08/ex39/ex39-8.png"></p>
+<p> <img src="/2018/02/08/ex39/ex39-8.png" alt=""></p>
 <p>注意：</p>
 <p>1）choose 选择保存的目录；</p>
 <p>2）我们选择的D盘下的VASP目录；</p>
@@ -353,24 +352,20 @@
 <p>a）文件名处 <strong>.dat</strong> 记得写上，要不然后面可能会导不出数据！</p>
 <p>b）为了保证导出数据，Export 多点几遍！！！</p>
 <p>c）去导出的目录里面查看一下，如有了数据的文件名，说明保存成功，没有的话，继续点Export.</p>
-<p> <img src="/2018/02/08/ex39/ex39-9.png"></p>
+<p> <img src="/2018/02/08/ex39/ex39-9.png" alt=""></p>
 <p>图中说明：导出数据成功。</p>
 <p> d）为了避免浪费时间，一定要保存成功后再关闭窗口，否则你还要重复一遍前面的步骤。 </p>
 <p>4） 保存成功后，点击OK，关闭窗口。</p>
-<p>3.2 查看数据：（Notepad++直接打开，无视**.dat**尾缀！）</p>
-<p> <img src="/2018/02/08/ex39/ex39-10.png"></p>
+<p>3.2 查看数据：（Notepad++直接打开，无视<strong>.dat</strong>尾缀！）</p>
+<p> <img src="/2018/02/08/ex39/ex39-10.png" alt=""></p>
 <hr>
 <p><strong>问题1： 为什么在301行后面有一个空行？ （重点是301）</strong></p>
 <hr>
-<ol>
-<li><p>这是因为DOS计算的点VASP默认是301个，该数目由NEDOS这个参数来确定。NEDOS决定了DOS曲线中间隔的点数，如果你想要自己的DOS曲线更加平滑，可以设置一个较大的NEDOS数值，比如：<code>NEDOS = 3000</code></p>
-</li>
-<li><p>如果你设置了<code>NEDOS = 500</code>， 那么会在500行以后出现一个空行。</p>
-</li>
-</ol>
+<p>1) 这是因为DOS计算的点VASP默认是301个，该数目由NEDOS这个参数来确定。NEDOS决定了DOS曲线中间隔的点数，如果你想要自己的DOS曲线更加平滑，可以设置一个较大的NEDOS数值，比如：<code>NEDOS = 3000</code></p>
+<p>2) 如果你设置了<code>NEDOS = 500</code>， 那么会在500行以后出现一个空行。</p>
 <p>问题2：为什么会有一个空行？？？(<strong>一定要搞明白</strong>！！！)</p>
 <p>我们看一下前面DOS的图：</p>
-<p> <img src="/2018/02/08/ex39/ex39-11.png"> </p>
+<p> <img src="/2018/02/08/ex39/ex39-11.png" alt=""> </p>
 <p>图中有2个DOS曲线，黑色的为空行前面的部分，红色为后面的部分。</p>
 <p>同样，如果DOS图中有N个曲线，则导出的数据中会有N-1个空行将它们分开。</p>
 <p>N个曲线的横坐标坐标（也就是能量）是完全一样的。知道了这一点，你就知道了自己想要的数据在哪里了！！！</p>
@@ -378,11 +373,11 @@
 <hr>
 <p>3.3 作图：</p>
 <p>有了数据之后，就可以随心所欲地作图了。将数据导入excel或者origin作图，也可以使用其他小脚本，程序。这里我们使用Excel简单说下：</p>
-<p>  <img src="/2018/02/08/ex39/ex39-12.png"></p>
+<p>  <img src="/2018/02/08/ex39/ex39-12.png" alt=""></p>
 <p>左侧为空行前面的数据，Ru总的DOS， DOS曲线1 （黑色的那个）</p>
 <p>右侧为空行后面的数据，Ru d轨道的DOS， DOS曲线2（红色的那个）</p>
 <p>作出来的图跟p4vasp的结果一样。图像就不美化了。关键是有了数据，并且知道数据里面空行前后代表的内容。</p>
-<p> <img src="/2018/02/08/ex39/ex39-13.png"></p>
+<p> <img src="/2018/02/08/ex39/ex39-13.png" alt=""></p>
 <hr>
 <h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a><strong>4</strong> <strong>扩展练习：</strong></h2><p>4.1 下载本节的练习，可以在自己的服务器上提交，也可以直接使用结果；</p>
 <p>4.2 通过p4vasp读取vasprun.xml文件，熟练进行本节的所有操作；</p>

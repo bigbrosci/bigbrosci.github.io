@@ -20,12 +20,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="前面一节，我们通过一个简单的方法获取了一个Cu-O键的键长。因为我们固定了Cu的坐标，当计算完成之后，O原子初始构型的坐标可以直接将计算后的结果复制过来。此时需要注意Direct和Cartesian的坐标问题。 1 搭建合理的O吸附模型1）取Cu(111)表面模型的POSCAR (Cartesian坐标)    复制快速获取初始构型计算(Cu-O dimer)的结果   上图中的最后一行。">
+<meta name="description" content="前面一节，我们通过一个简单的方法获取了一个Cu-O键的键长。因为我们固定了Cu的坐标，当计算完成之后，O原子初始构型的坐标可以直接将计算后的结果复制过来。此时需要注意Direct和Cartesian的坐标问题。 1 搭建合理的O吸附模型1）取Cu(111)表面模型的POSCAR (Cartesian坐标)   2) 复制快速获取初始构型计算(Cu-O dimer)的结果  上图中的最后一行。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ex55 简单粗暴地获取初始构型（二）">
 <meta property="og:url" content="http://www.bigbrosci.com/2018/10/02/ex55/index.html">
 <meta property="og:site_name" content="Learn VASP The Hard Way">
-<meta property="og:description" content="前面一节，我们通过一个简单的方法获取了一个Cu-O键的键长。因为我们固定了Cu的坐标，当计算完成之后，O原子初始构型的坐标可以直接将计算后的结果复制过来。此时需要注意Direct和Cartesian的坐标问题。 1 搭建合理的O吸附模型1）取Cu(111)表面模型的POSCAR (Cartesian坐标)    复制快速获取初始构型计算(Cu-O dimer)的结果   上图中的最后一行。">
+<meta property="og:description" content="前面一节，我们通过一个简单的方法获取了一个Cu-O键的键长。因为我们固定了Cu的坐标，当计算完成之后，O原子初始构型的坐标可以直接将计算后的结果复制过来。此时需要注意Direct和Cartesian的坐标问题。 1 搭建合理的O吸附模型1）取Cu(111)表面模型的POSCAR (Cartesian坐标)   2) 复制快速获取初始构型计算(Cu-O dimer)的结果  上图中的最后一行。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://www.bigbrosci.com/2018/10/02/ex55/ex55-1.png">
 <meta property="og:image" content="http://www.bigbrosci.com/2018/10/02/ex55/ex55-2.png">
@@ -299,21 +299,17 @@
     <div class="post-body" itemprop="articleBody">
         <p>前面一节，我们通过一个简单的方法获取了一个Cu-O键的键长。因为我们固定了Cu的坐标，当计算完成之后，O原子初始构型的坐标可以直接将计算后的结果复制过来。此时需要注意<code>Direct</code>和<code>Cartesian</code>的坐标问题。</p>
 <h2 id="1-搭建合理的O吸附模型"><a href="#1-搭建合理的O吸附模型" class="headerlink" title="1 搭建合理的O吸附模型"></a>1 搭建合理的O吸附模型</h2><p>1）取Cu(111)表面模型的POSCAR (Cartesian坐标)</p>
-<p><img src="/2018/10/02/ex55/ex55-1.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-1.png" alt=""></p>
 <hr>
-<ol start="2">
-<li>复制快速获取初始构型计算(Cu-O dimer)的结果</li>
-</ol>
-<p><img src="/2018/10/02/ex55/ex55-2.png"></p>
+<p>2) 复制快速获取初始构型计算(Cu-O dimer)的结果</p>
+<p><img src="/2018/10/02/ex55/ex55-2.png" alt=""></p>
 <center>上图中的最后一行。</center>
 
 <hr>
-<ol start="3">
-<li>构建O的吸附模型：</li>
-</ol>
-<p><img src="/2018/10/02/ex55/ex55-3.png"></p>
+<p>3) 构建O的吸附模型：</p>
+<p><img src="/2018/10/02/ex55/ex55-3.png" alt=""></p>
 <p>当然了,我们也可以根据键长或者O在z方向的坐标直接在Cu(111)表面基础上搭建。</p>
-<p><img src="/2018/10/02/ex55/ex55-4.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-4.png" alt=""></p>
 <hr>
 <p>这个简单粗暴的方法到此就讲解完了。有以下几个需要注意的地方：</p>
 <p>A）这里我们用的是Cu(111)的 p(1x1) slab模型,表面只有一个原子。一般来说，大家计算吸附的时候，模型都比这个大，我们可以取一层原子。记住，要固定住这层原子。</p>
@@ -322,19 +318,19 @@
 <hr>
 <h2 id="2-快速获取初始构型方法（二）"><a href="#2-快速获取初始构型方法（二）" class="headerlink" title="2 快速获取初始构型方法（二）"></a>2 快速获取初始构型方法（二）</h2><p>1）在这个方法中，第一步我们先取slab模型的结构，这里就不讲了。</p>
 <p>2） 搭建一个初始的吸附模型。此时我们要根据原子半径，大体确认一下键长的合理范围，前面也讲过了，就不再细说了。 由于前面一节我们已经有了一个O原子的坐标数据，可以直接拿过来。如下：</p>
-<p><img src="/2018/10/02/ex55/ex55-5.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-5.png" alt=""></p>
 <p>注意：实际操作的时候，这个方法可以使用前面一节的方法的出来的结果；也可以直接设置初始值，这两个方法之间联系不太大。</p>
 <hr>
 <p>3） 固定slab模型中的所有原子！所有原子！所有原子！</p>
 <p>重要的事情说三遍，是把slab模型中的原子全部固定!只放开吸附的分子。这里大师兄在vim里面操作，使用了下面的命令：<code>:12,13s/T/F/g</code>  意思是把12和13行中的T全部替换成F。当然也可以使用sed进行操作，相信大家经过这么长时间的练习，已经掌握基本的Vim和sed操作，就不浪费时间了。效果如下：</p>
-<p><img src="/2018/10/02/ex55/ex55-7.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-7.png" alt=""></p>
 <hr>
 <p>4）  设置INCAR，这里是slab模型，把之前Cu(111)表面优化计算的INCAR直接拿过来了。</p>
 <p>EDIFF、EDIFFG 可以适当放宽，下图大师兄懒得改了。</p>
-<p><img src="/2018/10/02/ex55/ex55-8.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-8.png" alt=""></p>
 <hr>
 <p>5）  生成对应的POTCAR，K点只用gamma点！K点只用gamma点！K点只用gamma点！</p>
-<p><img src="/2018/10/02/ex55/ex55-9.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-9.png" alt=""></p>
 <p>这里需要注意的有两点：</p>
 <p>A）  计算前一定要检查POTCAR和POSCAR是否对应，养成这个好习惯</p>
 <p>B）  一定要用gamma点。因为我们知道，K点越多，计算量越大。</p>
@@ -349,23 +345,16 @@
 <p>PS： 怎么完成复制这一步还不会的话，请从头开始学。</p>
 <p>2） 复制完了并不代表完事，前面一步我们还固定了表层的原子，此时我们需要放开。使用sed命令：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &#x27;12,13s/F/T/g&#x27; POSCAR</span><br></pre></td></tr></table></figure>
-
 <p>3）KPOINTS：使用前面Cu slab优化时用的 13x13x1</p>
 <p>4） INCAR中，如果前面一步的计算精度较低，这时，我们就要提高一下了。</p>
 <p>5）POTCAR 不变</p>
 <p>6）提交任务的脚本：由于前面的计算量很小，一般可以使用小队列进行计算，如果计算量增大了，这时我们也需要稍微修改下脚本。</p>
-<p><img src="/2018/10/02/ex55/ex55-12.png"></p>
-<ol start="7">
-<li>  提交任务，等待结束，查看结果。</li>
-</ol>
-<p><img src="/2018/10/02/ex55/ex55-13.png"></p>
+<p><img src="/2018/10/02/ex55/ex55-12.png" alt=""></p>
+<p>7)   提交任务，等待结束，查看结果。</p>
+<p><img src="/2018/10/02/ex55/ex55-13.png" alt=""></p>
 <p>O原子的坐标从8.009 优化到了8.093。键长从1.75 Å 优化到 1.80 Å，变化很小，这说明我们的初始构型已经很接近优化结果了。</p>
-<h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h2><ol>
-<li><p>  本节的实例中，使用了 <code>&amp;&amp;</code> 这个连接前后的命令，大家学习下是怎么回事</p>
-</li>
-<li><p>  重复本节练习，掌握其中的关键点。</p>
-</li>
-</ol>
+<h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h2><p>1)   本节的实例中，使用了 <code>&amp;&amp;</code> 这个连接前后的命令，大家学习下是怎么回事</p>
+<p>2)   重复本节练习，掌握其中的关键点。</p>
 <h2 id="5-小结"><a href="#5-小结" class="headerlink" title="5 小结"></a>5 小结</h2><p>一个合理的初始构型可以极大地降低我们的工作量，这一点是大家务必要记在心里的。而获取合理的初始构型，一方面需要我们用化学的知识去搭建结构，另一方面，也需要配合一些简单的低精度的计算去完成。希望大家可以掌握这两节的精髓，运用到自己的课题中，提高自己的计算效率。</p>
 
     </div>

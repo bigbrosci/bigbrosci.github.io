@@ -295,14 +295,14 @@
 <p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/henkelman/code/bader/">http://theory.cm.utexas.edu/henkelman/code/bader/</a></p>
 <p>VTST脚本链接：</p>
 <p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/vtsttools/">http://theory.cm.utexas.edu/vtsttools/</a> </p>
-<p><img src="/2011/12/24/A08/A07/A07-1.jpeg"></p>
+<p><img src="/2011/12/24/A08/A07/A07-1.jpeg" alt=""></p>
 <h1 id="常见问题："><a href="#常见问题：" class="headerlink" title="常见问题："></a>常见问题：</h1><p><strong>电荷数字保留位数：</strong></p>
 <p>Bader电荷分析只是定性的辅助工具，得到的结果肯定也是定性的。大致分析原子上的带电情况即可，不要去较真小数点后多少位，一般来说小数点后两位就足够了。</p>
 <p><strong>ACF.dat 文件怎么看？</strong></p>
 <p><code>ACF.dat</code> 中的<code>CHARGE</code>那一列，对应的是每个原子上<strong>总的</strong>价电子数目。</p>
 <p>划重点： 1）总的 2）价电子数目</p>
 <p><strong>如何判断原子的带电情况？</strong></p>
-<p>你需要用<code>CHARGE</code>那列的数值去减去该原子对应的<code>POTCAR </code>中的价电子数目。</p>
+<p>你需要用<code>CHARGE</code>那列的数值去减去该原子对应的<code>POTCAR</code>中的价电子数目。</p>
 <p><strong>怎么才能得到POTCAR中原子的价电子数目呢？</strong></p>
 <p>打开<code>POTCAR</code>，查找关键词：<code>ZVAL</code>，后面对应的就是价电子数目，更方便点：</p>
 <p><code>grep ZVAL POTCAR</code></p>

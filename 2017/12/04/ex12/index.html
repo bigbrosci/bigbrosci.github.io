@@ -296,16 +296,15 @@
         <p> 很多师弟师妹问到：”师兄， 我见上一节计算的时候打开自旋极化的时候，设置MAGMOM怎么没有讲啊？”</p>
 <p>为了解答师弟师妹们的疑惑（主要是给师妹讲的），本节介绍一下INCAR中MAGMOM的设置以及易出错的地方。</p>
 <h3 id="MAGMOM-的设定"><a href="#MAGMOM-的设定" class="headerlink" title="MAGMOM 的设定"></a>MAGMOM 的设定</h3><p>谈到自旋极化计算，避免不了的就是MAGMOM这个参数。通过MAGMOM我们可以指定体系中原子的初始磁矩。通俗点说，就是给VASP指条计算的明路。对于复杂体系来说，合理的初始值可以加快计算速度，并保持计算结果的正确性。但是对于一些简单的磁性体系，我们可以直接使用<code>ISPIN=2</code>, MAGMOM不必进行设置。</p>
-<p><img src="/2017/12/04/ex12/ex12-1.jpeg"></p>
+<p><img src="/2017/12/04/ex12/ex12-1.jpeg" alt=""></p>
 <p>我们通过上图可以知道：O$_2$ 分子的基态是三重态，也就是每个原子都有一点单电子，所以每个氧原子的初始的磁矩可以设置为1。但VASP对MAGMOM的要求不一定非得是1，也就是初始值是一个可以模糊也可以精确的数值。因为很多时候，我们不知道确切的磁矩是多少。如果我们已经知道磁矩是多少（比如O$_2$），可以直接写上去，也可以差不多写一个； 但如果不知道的话，就需要根据自己的假设，猜一个初始值了。</p>
 <p>下面通过一个问题，先简单看下MAGMOM 应该怎么设置。 对于O$_2$分子的计算，以下几行中，MAGMOM设置错误的是第几行？</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">MAGMOM = 2 * 1 </span><br><span class="line">MAGMOM = 1 * 2 </span><br><span class="line">MAGMOM = 1  1 </span><br><span class="line">MAGMOM = 2  2</span><br><span class="line">MAGMOM = 3  3 </span><br><span class="line">MAGMOM = 2*1</span><br><span class="line">MAGMOM = 1*2</span><br><span class="line">MAGMOM = 1.5*2</span><br><span class="line">MAGMOM = 2*1.5</span><br></pre></td></tr></table></figure>
-
 <p>有兴趣的可以尝试一下前面中的各个选项。<strong>答案</strong>是：1，2，7，8 行。当你用了1，2，7，8行中任何一个时，会得到这样的错误信息： </p>
-<p><img src="/2017/12/04/ex12/ex12-2.jpeg"></p>
+<p><img src="/2017/12/04/ex12/ex12-2.jpeg" alt=""></p>
 <p>（此时的你，应该知道从哪里找到的这个错误信息，不知道的请查看前面几节的内容）</p>
 <p>显示的错误告诉我们MAGMOM设置的不合理。为什么会出错呢？ 我们看下官网MAGMOM的说明：</p>
-<p><img src="/2017/12/04/ex12/ex12-3.jpeg"></p>
+<p><img src="/2017/12/04/ex12/ex12-3.jpeg" alt=""></p>
 <p><strong>敲黑板：</strong></p>
 <ul>
 <li><p>首先：MAGMOM是一个实数的排列（real array）</p>
@@ -331,15 +330,15 @@
 </li>
 <li><p>如果你不知道体系的磁矩是多少，可以根据原子所处的化学环境， 根据成键情况，大体推测有多少个未成对电子，然后将未成对电子数目*1.5即可。</p>
 </li>
-<li><p> VASP的wiki版中：* 前面有空格，这是不对的。</p>
+<li><p>VASP的wiki版中：* 前面有空格，这是不对的。</p>
+<p><img src="/2017/12/04/ex12/ex12-4.jpeg" alt=""></p>
 </li>
 </ul>
-<p> <img src="/2017/12/04/ex12/ex12-4.jpeg"></p>
 <p>当我们正确解决了POSCAR的结构搭建，懂得了POTCAR和POSCAR的关系，以及如何设置MAGMOM时，就可以计算O$_2$的单点能量了。当然，本例中MAGMOM不用设置，因为默认值就是1，如果你的体系很简单，那么直接ISPIN = 2 就可以了，MAGMOM可以不管。</p>
 <h5 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h5><p>大师兄计算了一个复杂大分子在Ni(111)表面上的吸附情况。有56个Ni，17个C，20个H，以及6个O原子。前面已经学到，当体系中含有Ni的时候，要考虑自旋的情况。 Ni(111)表面是一个简单的自旋体系，完全可以使用默认值。因为体相的Ni磁矩为0.56 μB左右。默认值为1.0，已经足够大。为了让大家有一个更加清晰的印象。大师兄专门设置了一个MAGMOM。 如下图：</p>
-<p><img src="/2017/12/04/ex12/ex12-5.jpeg"></p>
+<p><img src="/2017/12/04/ex12/ex12-5.jpeg" alt=""></p>
 <p>INCAR 中MAGMOM的设置：</p>
-<p><img src="/2017/12/04/ex12/ex12-6.jpeg"></p>
+<p><img src="/2017/12/04/ex12/ex12-6.jpeg" alt=""></p>
 <p>通过该例子，相比大家对MAGMOM的设置以及该注意的地方已经熟练掌握了，当然还有非线性的MAGMOM设置，这个在后面详细描述。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>1） 对于简单体系来说，MAGMOM可以采用默认值；</p>
 <p>2） MAGMOM设置的时候，初始值不要求与实验值完全一致，一般取大些（1.5倍）比较好。</p>

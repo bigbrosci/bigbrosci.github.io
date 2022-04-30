@@ -303,46 +303,44 @@
 </ul>
 <p>下面两节我们先讨论一下第一个方法：BM方程拟合。</p>
 <h2 id="1-什么是Birch-Murnaghan方程？"><a href="#1-什么是Birch-Murnaghan方程？" class="headerlink" title="1 什么是Birch-Murnaghan方程？"></a>1 什么是Birch-Murnaghan方程？</h2><p>BM方程为块体材料的体积随着外压变化的状态方程。大师兄参考了维基百科的说明，大家下载维基百科导出的PDF文件参考。在学习下面的内容前，请务必阅读这个文件，了解什么是Birch-Murnaghan方程。下载：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1bUSYbs">http://pan.baidu.com/s/1bUSYbs</a> </p>
-<p><img src="/2018/02/02/ex33/ex33-1.jpeg"></p>
-<p><img src="/2018/02/02/ex33/ex33-2.jpeg"></p>
+<p><img src="/2018/02/02/ex33/ex33-1.jpeg" alt=""></p>
+<p><img src="/2018/02/02/ex33/ex33-2.jpeg" alt=""></p>
 <h2 id="2-如何通过BM方程获取晶格参数？"><a href="#2-如何通过BM方程获取晶格参数？" class="headerlink" title="2 如何通过BM方程获取晶格参数？"></a>2 如何通过BM方程获取晶格参数？</h2><p>首先，我们将BM方程中的体积转化为晶格参数（a）的函数：</p>
-<p><img src="/2018/02/02/ex33/ex33-3.jpeg"></p>
+<p><img src="/2018/02/02/ex33/ex33-3.jpeg" alt=""></p>
 <p>其中E(a)和E$_0$是晶格参数为a和a$_0$时bulk的能量，B$_0$，B$_0$’和V$_0$这些见BM方程的维基百科介绍。令$(1/a)^2 = x$，上图中的BM方程可以写成：</p>
 <p> $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $ 的形式，</p>
 <p>E$_0$, B$_0$,B$_0$’和V$_0$等写进c$_0$,c$_1$,c$_2$,和c$_3$这些常数里面，它们的具体形式此时并不重要，我们需要做的就是拟合这样的曲线去寻找使y(x)为最小值时的x取值。对y(x)这个方程求导数，dy(x)/dx = 0 的时候，便可以获取能量最低时的x值了，再由$(1/a)^2 = x$ 获得晶格参数。</p>
 <p> dy(x)/dx = c$_1$+ 2c$_2$x + 3c$_3$x$^2$</p>
 <p>令：dy(x)/dx = 0，即 c$_1$+ 2c$_2$x + 3c$_3$x$^2$ = 0</p>
 <p>这是一个典型的二项式方程，求解很容易。</p>
-<p>$$<br>x = \frac{-2c_2\pm\sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}<br>$$<br>x有两个值，其中负值被舍弃掉，最终：</p>
-<p>$$<br>x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}<br>$$</p>
-<h2 id="3-获取拟合的数据："><a href="#3-获取拟合的数据：" class="headerlink" title="3 获取拟合的数据："></a>3 获取拟合的数据：</h2><p>经过前面的分析，我们需要的就是获得的c$_1$，c$_2$ 和c$_3$值。可以设置一系列不同的晶格常数进行计算，得到对应的能量，然后将这些数据带入下面的方程中：$y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $进行拟合。本节我们主要讨论一下如何进行该计算。看到这里，你第一反应是我们之前测试K点或者SIGMA值时的那些Linux批量操作。是的，我们也需要进行一个批量操作的计算。</p>
+<script type="math/tex; mode=display">
+x = \frac{-2c_2\pm\sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}</script><p>x有两个值，其中负值被舍弃掉，最终：</p>
+<script type="math/tex; mode=display">
+x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}</script><h2 id="3-获取拟合的数据："><a href="#3-获取拟合的数据：" class="headerlink" title="3 获取拟合的数据："></a>3 获取拟合的数据：</h2><p>经过前面的分析，我们需要的就是获得的c$_1$，c$_2$ 和c$_3$值。可以设置一系列不同的晶格常数进行计算，得到对应的能量，然后将这些数据带入下面的方程中：$y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $进行拟合。本节我们主要讨论一下如何进行该计算。看到这里，你第一反应是我们之前测试K点或者SIGMA值时的那些Linux批量操作。是的，我们也需要进行一个批量操作的计算。</p>
 <p>3.1 分数坐标</p>
 <p>如果我们改变了晶格常数，那么Fe原子的坐标也要发生相应的变化。此时，用分数坐标更加方便，VESTA中在cif转VASP格式的时候，会提醒你选择哪个形式的坐标，我们选择分数坐标：</p>
-<p><img src="/2018/02/02/ex33/ex33-6.jpeg"></p>
+<p><img src="/2018/02/02/ex33/ex33-6.jpeg" alt=""></p>
 <p>POSCAR如下图：</p>
-<p><img src="/2018/02/02/ex33/ex33-7.jpeg"></p>
+<p><img src="/2018/02/02/ex33/ex33-7.jpeg" alt=""></p>
 <p>注意：</p>
 <p> 如果前面练习中，导出的为笛卡尔坐标形式的，你有两个选择：</p>
 <p>A）重新按照前面的步骤，用VESTA导出为分数坐标形式；</p>
 <p>B）将单点计算的结果直接复制过来（<code>cp  CONTCAR  POSCAR</code>），因为VASP的输出坐标为分数坐标形式，单点计算中，晶胞原子都没有动，CONTCAR可以直接使用。复制过来的POSCAR如下：</p>
-<p><img src="/2018/02/02/ex33/ex33-8.jpeg"></p>
+<p><img src="/2018/02/02/ex33/ex33-8.jpeg" alt=""></p>
 <p>3.2 获得分数坐标的POSCAR后，我们可以批量对晶格常数a,b,c进行批量操作，也可以对缩放系数进行批量操作，而原子的坐标不用去管。</p>
 <p>3.3 本练习对缩放系数进行批量操作</p>
 <p>我们取10个点，将1.0 替换成0.95, 0.96, 0.97, 0.98, 0.99, 1.01, 1.02, 1.03, 1.04, 1.05。此时，晶格常数为：<code>缩放系数</code>*<code>2.8664</code>.（记住，下一节用得到）</p>
 <p>a) 准备缩放系数为1.0 的计算文件夹，命名为1.00，里面包含我们前面一节已经讲过的Bulk单点计算相关文件；</p>
 <p>b) </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> 0.95 0.96 0.97 0.98 0.99 1.01 1.02 1.03 1.04 1.05; <span class="keyword">do</span> cp 1.00 <span class="variable">$i</span> ; sed -i <span class="string">&quot;2s/1.0/<span class="variable">$i</span>/g&quot;</span> <span class="variable">$i</span>/POSCAR ; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-
-<p>注意：这里大师兄在自己电脑的<code>~/.bashrc</code>文件里面设置了：<code> alias cp=&#39;cp -r&#39;</code></p>
+<p>注意：这里大师兄在自己电脑的<code>~/.bashrc</code>文件里面设置了：<code>alias cp=&#39;cp -r&#39;</code></p>
 <p>思考： sed 命令后面用的是双引号（为什么？）如果这里看不懂的话，建议从Ex00开始学习。</p>
 <p>d.) 批量提交命令： </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *; <span class="keyword">do</span> <span class="built_in">cd</span> <span class="variable">$i</span>; qsub sub4; <span class="built_in">cd</span> <span class="variable">$OLDPWD</span>; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-
 <p>其中，qsub sub4 是大师兄提交单个任务的命令。</p>
 <p>3.4 数据提取：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *; <span class="keyword">do</span> <span class="built_in">echo</span> -e <span class="variable">$i</span> <span class="string">&quot;\t&quot;</span> $(grep <span class="string">&#x27;  without&#x27;</span> <span class="variable">$i</span>/OUTCAR | tail -n 1| awk <span class="string">&#x27;&#123;print $7&#125;&#x27;</span>);  <span class="keyword">done</span> &gt; data</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/02/02/ex33/ex33-9.jpeg"></p>
+<p><img src="/2018/02/02/ex33/ex33-9.jpeg" alt=""></p>
 <p>3.5 以上计算文件以及相关的命令已经上传到QQ群文件和百度网盘了，大家对比下计算结果。 <a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1dEJr9rb">http://pan.baidu.com/s/1dEJr9rb</a> </p>
 <h2 id="4-扩展练习"><a href="#4-扩展练习" class="headerlink" title="4 扩展练习"></a>4 扩展练习</h2><p>4.1 完成本练习中的相关操作，并学习VASP官网批量操作的例子：</p>
 <p><a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/Fcc_Si">https://cms.mpi.univie.ac.at/wiki/index.php/Fcc_Si</a></p>

@@ -300,25 +300,25 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="/2018/11/02/ex64/ex64-00.png"></p>
+        <p><img src="/2018/11/02/ex64/ex64-00.png" alt=""></p>
 <p>前面我们讲解了一堆单原子的吸附计算和一些日常的操作，现在是时候来点复杂的操练了。这次，我们拿CO开刷，计算它在Cu(111)表面上的吸附。由于CO比前面的O多了一个原子，复杂性稍微提高了些，但也不是太复杂。作为一个由简单向复杂体系的过渡，是一个很好地例子。</p>
 <p>在计算CO的吸附之前，我们首先要了解以下3点：（都是教科书里面的经典内容，下面只列出来，不再细说，如果不懂的话，找本结构化学书好好啃一啃。）</p>
-<h2 id="1-CO分子信息："><a href="#1-CO分子信息：" class="headerlink" title="1. CO分子信息："></a>1. CO分子信息：</h2><h3 id="1）CO的分子结构，如下图："><a href="#1）CO的分子结构，如下图：" class="headerlink" title="1）CO的分子结构，如下图："></a>1）CO的分子结构，如下图：</h3><p><img src="/2018/11/02/ex64/ex64-01.png"></p>
-<h3 id="2）-CO的几何结构：（用来搭建吸附和气相的模型）"><a href="#2）-CO的几何结构：（用来搭建吸附和气相的模型）" class="headerlink" title="2） CO的几何结构：（用来搭建吸附和气相的模型）"></a>2） CO的几何结构：（用来搭建吸附和气相的模型）</h3><p><img src="/2018/11/02/ex64/ex64-02.png"><br><img src="/2018/11/02/ex64/ex64-03.png"></p>
-<h3 id="3）-CO与金属的成键方式-（用来搭建吸附模型）"><a href="#3）-CO与金属的成键方式-（用来搭建吸附模型）" class="headerlink" title="3） CO与金属的成键方式 （用来搭建吸附模型）"></a>3） CO与金属的成键方式 （用来搭建吸附模型）</h3><p><img src="/2018/11/02/ex64/ex64-04.png"></p>
+<h2 id="1-CO分子信息："><a href="#1-CO分子信息：" class="headerlink" title="1. CO分子信息："></a>1. CO分子信息：</h2><h3 id="1）CO的分子结构，如下图："><a href="#1）CO的分子结构，如下图：" class="headerlink" title="1）CO的分子结构，如下图："></a>1）CO的分子结构，如下图：</h3><p><img src="/2018/11/02/ex64/ex64-01.png" alt=""></p>
+<h3 id="2）-CO的几何结构：（用来搭建吸附和气相的模型）"><a href="#2）-CO的几何结构：（用来搭建吸附和气相的模型）" class="headerlink" title="2） CO的几何结构：（用来搭建吸附和气相的模型）"></a>2） CO的几何结构：（用来搭建吸附和气相的模型）</h3><p><img src="/2018/11/02/ex64/ex64-02.png" alt=""><br><img src="/2018/11/02/ex64/ex64-03.png" alt=""></p>
+<h3 id="3）-CO与金属的成键方式-（用来搭建吸附模型）"><a href="#3）-CO与金属的成键方式-（用来搭建吸附模型）" class="headerlink" title="3） CO与金属的成键方式 （用来搭建吸附模型）"></a>3） CO与金属的成键方式 （用来搭建吸附模型）</h3><p><img src="/2018/11/02/ex64/ex64-04.png" alt=""></p>
 <h2 id="2-搭建CO吸附的模型："><a href="#2-搭建CO吸附的模型：" class="headerlink" title="2. 搭建CO吸附的模型："></a>2. 搭建CO吸附的模型：</h2><p>上一节我们学到了闭着眼操作的一些方式，这一节我们继续闭着眼搭结构。操作流程如下：</p>
 <h3 id="1）-将上一节中-C-原子吸附的那几个模型复制过来，进行修改："><a href="#1）-将上一节中-C-原子吸附的那几个模型复制过来，进行修改：" class="headerlink" title="1） 将上一节中 C 原子吸附的那几个模型复制过来，进行修改："></a>1） 将上一节中 C 原子吸附的那几个模型复制过来，进行修改：</h3><ul>
 <li>i) 修改POSCAR中的元素（第6行）和原子数目部分（第七行），添加O原子。</li>
 </ul>
-<p><img src="/2018/11/02/ex64/ex64-05.png"></p>
+<p><img src="/2018/11/02/ex64/ex64-05.png" alt=""></p>
 <ul>
 <li>iii）在POSCAR的尾部，添加O原子的坐标：</li>
 </ul>
-<p><img src="/2018/11/02/ex64/ex64-06.png"></p>
+<p><img src="/2018/11/02/ex64/ex64-06.png" alt=""></p>
 <p>可以看到上图中，最后两行的坐标一模一样，这是因为CO在表面上吸附的时候，我们假定的是直立吸附。所以C 和 O原子的坐标在x和y方向上一样。不同的区别在z方向上，即CO的键长。CO如果吸附在表面上，肯定会和表面原子有作用，也就是所谓的活化，如果原子被活化了，那么CO键就会被削弱，具体体现在键长上。与气相的键长相比，表面上CO的键长数值更大一些。前面我们查数据库得到CO键长为：1.138A.这里我们不妨设置成1.2A。根据这些，我们设置O原子的坐标，如下：</p>
-<p><img src="/2018/11/02/ex64/ex64-07.png"></p>
+<p><img src="/2018/11/02/ex64/ex64-07.png" alt=""></p>
 <p>同样，我们可以对其他吸附位点的坐标进行类似的修改，结果如下图：</p>
-<p><img src="/2018/11/02/ex64/ex64-08.png"></p>
+<p><img src="/2018/11/02/ex64/ex64-08.png" alt=""></p>
 <h2 id="3-背一遍VASP的输入文件，检查还有那些需要修改的："><a href="#3-背一遍VASP的输入文件，检查还有那些需要修改的：" class="headerlink" title="3. 背一遍VASP的输入文件，检查还有那些需要修改的："></a>3. 背一遍VASP的输入文件，检查还有那些需要修改的：</h2><ul>
 <li>i） INCAR： 跟之前保持一致；</li>
 <li>ii）KPOINTS：跟之前保持一致；</li>
@@ -326,16 +326,15 @@
 <li>iV） POTCAR：提交任务的脚本里面自动生成</li>
 <li>V）提交任务命令： qsuball （前面已经讲解过了）</li>
 </ul>
-<h2 id="4-提交任务："><a href="#4-提交任务：" class="headerlink" title="4. 提交任务："></a>4. 提交任务：</h2><p><img src="/2018/11/02/ex64/ex64-09.png"></p>
+<h2 id="4-提交任务："><a href="#4-提交任务：" class="headerlink" title="4. 提交任务："></a>4. 提交任务：</h2><p><img src="/2018/11/02/ex64/ex64-09.png" alt=""></p>
 <p>上图，我们删除了slab的计算，因为前面我们已经计算过了，没有必要浪费机时再算一遍。</p>
-<h2 id="5-思考下吸附能的计算公式："><a href="#5-思考下吸附能的计算公式：" class="headerlink" title="5. 思考下吸附能的计算公式："></a>5. 思考下吸附能的计算公式：</h2><p>$$<br>E_{ads}(CO) = E_{slab+CO} - E_{slab} - E_{CO^{gas}}<br>$$</p>
-<p>前面我们还忘记了CO的气相结构优化。现在我们回忆一下前面所讲的气相分子的优化：</p>
+<h2 id="5-思考下吸附能的计算公式："><a href="#5-思考下吸附能的计算公式：" class="headerlink" title="5. 思考下吸附能的计算公式："></a>5. 思考下吸附能的计算公式：</h2><script type="math/tex; mode=display">
+E_{ads}(CO) = E_{slab+CO} - E_{slab} - E_{CO^{gas}}</script><p>前面我们还忘记了CO的气相结构优化。现在我们回忆一下前面所讲的气相分子的优化：</p>
 <h3 id="1）-气相分子的结构模型搭建。"><a href="#1）-气相分子的结构模型搭建。" class="headerlink" title="1） 气相分子的结构模型搭建。"></a>1） 气相分子的结构模型搭建。</h3><p>直接将一个Cu(111)表面上吸附的POSCAR拿过来修改一下即可：</p>
-<p><img src="/2018/11/02/ex64/ex64-10.png"></p>
+<p><img src="/2018/11/02/ex64/ex64-10.png" alt=""></p>
 <h3 id="2）-INCAR：直接拿Cu-111-吸附的修改下。"><a href="#2）-INCAR：直接拿Cu-111-吸附的修改下。" class="headerlink" title="2） INCAR：直接拿Cu(111)吸附的修改下。"></a>2） INCAR：直接拿Cu(111)吸附的修改下。</h3><p>对于气相分子的优化来说：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ISMEAR = 0 </span><br><span class="line">SIGMA = 0.01</span><br></pre></td></tr></table></figure>
-
-<h3 id="3）-KPOINTS：-gamma-点即可。"><a href="#3）-KPOINTS：-gamma-点即可。" class="headerlink" title="3） KPOINTS： gamma 点即可。"></a>3） KPOINTS： gamma 点即可。</h3><h3 id="4）-这里我们没有批量提交，手动运行一下：pospot-sh脚本，生成对应的POTCAR。"><a href="#4）-这里我们没有批量提交，手动运行一下：pospot-sh脚本，生成对应的POTCAR。" class="headerlink" title="4） 这里我们没有批量提交，手动运行一下：pospot.sh脚本，生成对应的POTCAR。"></a>4） 这里我们没有批量提交，手动运行一下：<code>pospot.sh</code>脚本，生成对应的POTCAR。</h3><h3 id="5）-使用提交单个任务的脚本：-qsub-提交任务。具体操作如下图："><a href="#5）-使用提交单个任务的脚本：-qsub-提交任务。具体操作如下图：" class="headerlink" title="5） 使用提交单个任务的脚本： qsub  提交任务。具体操作如下图："></a>5） 使用提交单个任务的脚本： qsub  提交任务。具体操作如下图：</h3><p><img src="/2018/11/02/ex64/ex64-11.png"></p>
+<h3 id="3）-KPOINTS：-gamma-点即可。"><a href="#3）-KPOINTS：-gamma-点即可。" class="headerlink" title="3） KPOINTS： gamma 点即可。"></a>3） KPOINTS： gamma 点即可。</h3><h3 id="4）-这里我们没有批量提交，手动运行一下：pospot-sh脚本，生成对应的POTCAR。"><a href="#4）-这里我们没有批量提交，手动运行一下：pospot-sh脚本，生成对应的POTCAR。" class="headerlink" title="4） 这里我们没有批量提交，手动运行一下：pospot.sh脚本，生成对应的POTCAR。"></a>4） 这里我们没有批量提交，手动运行一下：<code>pospot.sh</code>脚本，生成对应的POTCAR。</h3><h3 id="5）-使用提交单个任务的脚本：-qsub-提交任务。具体操作如下图："><a href="#5）-使用提交单个任务的脚本：-qsub-提交任务。具体操作如下图：" class="headerlink" title="5） 使用提交单个任务的脚本： qsub  提交任务。具体操作如下图："></a>5） 使用提交单个任务的脚本： qsub  提交任务。具体操作如下图：</h3><p><img src="/2018/11/02/ex64/ex64-11.png" alt=""></p>
 <h2 id="6-扩展练习："><a href="#6-扩展练习：" class="headerlink" title="6. 扩展练习："></a>6. 扩展练习：</h2><ul>
 <li>1）完成CO吸附的计算；</li>
 <li>2）进一步熟练简单模型的闭着眼操作方式；</li>

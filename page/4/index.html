@@ -279,12 +279,12 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>吸附这个词，对于做表面化学的人来说，是一个普通的不能再普通的名词了。从今天这一节开始，我们将逐步进入表面化学相关计算领域。</p>
-<p><img src="/2018/09/30/ex53/ex53-1.jpeg"> </p>
+<p><img src="/2018/09/30/ex53/ex53-1.jpeg" alt=""> </p>
 <h2 id="1-我们先看一下维基百科的解释"><a href="#1-我们先看一下维基百科的解释" class="headerlink" title="1) 我们先看一下维基百科的解释:"></a>1) 我们先看一下维基百科的解释:</h2><p>a）吸附是指某种气体，液体或者被溶解的固体的原子，离子或者分子附着在某表面上。这一过程使得表面上产生由吸附物构成的膜。吸附不同于吸收，吸收是指作为吸附物的液体浸入或者溶解于另一液体或固体中的过程。吸附仅限于固体表面，而吸收同时作用于表面和内部。</p>
 <p>b) 吸附也属于一种传质过程，物质内部的分子和周围分子有互相吸引的引力，但物质表面的分子，其中相对物质外部的作用力没有充分发挥，所以液体或固体物质的表面可以吸附其他的液体或气体，尤其是表面面积很大的情况下，这种吸附力能产生很大的作用，所以工业上经常利用大面积的物质进行吸附，如活性炭、水膜等。吸附过程有两种情况:</p>
 <p>一种是物理吸附，在吸附过程中物质不改变原来的性质，因此吸附能小，被吸附的物质很容易再脱离，如用活性炭吸附气体，只要升高温度，就可以使被吸附的气体逐出活性炭表面。</p>
 <p>另一种是化学吸附，在吸附过程中不仅有引力，还运用化学键的力，因此吸附能较大，要逐出被吸附的物质需要较高的温度，而且被吸附的物质即使被逐出，也已经产生了化学变化，不再是原来的物质了，一般催化剂都是以这种吸附方式起作用。</p>
-<p><img src="/2018/09/30/ex53/ex53-2.jpeg"></p>
+<p><img src="/2018/09/30/ex53/ex53-2.jpeg" alt=""></p>
 <h2 id="2-IPUAC-GoldBook中的定义"><a href="#2-IPUAC-GoldBook中的定义" class="headerlink" title="2) IPUAC GoldBook中的定义:"></a>2) IPUAC GoldBook中的定义:</h2><p>Adsorption: An increase in the concentration of a dissolved substance at the interface of a condensed and a liquid phase due to the operation of surface forces. Adsorption can also occur at the interface of a condensed and a gaseous phase.</p>
 <p><a target="_blank" rel="noopener" href="https://goldbook.iupac.org/html/A/A00155.html">https://goldbook.iupac.org/html/A/A00155.html</a></p>
 <h2 id="3-参考书"><a href="#3-参考书" class="headerlink" title="3) 参考书"></a>3) 参考书</h2><p>吸附在物理化学中也是一个非常重要的概念，只要学过物理化学，肯定不会错过这一部分的内容。主要列举有关吸附的几本参考书，具体内容本节则不再详细介绍，这也超出了本书所包含的范围。</p>
@@ -295,19 +295,15 @@
 <p>c) 南大物理化学(傅献彩主编)</p>
 <h1 id="吸附在催化研究中的地位"><a href="#吸附在催化研究中的地位" class="headerlink" title="吸附在催化研究中的地位"></a>吸附在催化研究中的地位</h1><p>催化剂发挥催化作用的前提是:反应物需要和催化剂有接触（也就是反应物吸附到催化剂表面上并且得到活化）。写这句话的意思就是:研究一个催化反应，第一步我们需要搞懂的就是反应物在表面的吸附情况。个人计算的心得就是：反应的初始态，过渡态以及末态，它们都是表面的吸附物种。这句话的意思是：在我们的计算中，吸附贯穿着我们对催化现象的整个研究过程中。吸附不仅仅是把反应物放到表面上就完事了，更与后面的反应息息相关。切记不要在思考的时候把后面我们要学习的过渡态和吸附隔离开。</p>
 <h1 id="吸附模型的搭建"><a href="#吸附模型的搭建" class="headerlink" title="吸附模型的搭建"></a>吸附模型的搭建</h1><p>前面我们已经讲过slab模型了，搭建吸附模型的本质就是在slab模型基础上，再添加吸附分子的xyz坐标。搭建的模型无非就是一个xyz的坐标文件。需要注意的有3个方面:</p>
-<ol>
-<li>熟悉VASP的POSCAR格式: 每一行的内容所代表的意思以及它们之间的相互联系:</li>
-</ol>
+<p>1) 熟悉VASP的POSCAR格式: 每一行的内容所代表的意思以及它们之间的相互联系:</p>
 <ul>
 <li>元素行，原子数目以及原子的坐标之间的关系；</li>
 <li>Selective Dynamic 行与 T T T， F F F 等原子固定的关系；</li>
-<li> Cartesian 坐标和 Direct 坐标的区别等等；</li>
-<li> POSCAR与KPOINTS的关系。</li>
+<li>Cartesian 坐标和 Direct 坐标的区别等等；</li>
+<li>POSCAR与KPOINTS的关系。</li>
 </ul>
 <p>熟悉POSCAR或者CONTCAR的格式可以使你在搭建模型过程中游刃有余。</p>
-<ol start="2">
-<li>Slab模型在Z方向上: </li>
-</ol>
+<p>2) Slab模型在Z方向上: </p>
 <ul>
 <li><p>slab的厚度</p>
 </li>
@@ -315,9 +311,7 @@
 </li>
 </ul>
 <p>这两点一方面决定了我们计算量的大小。另一方面，对于不同的体系，我们需要不同厚度的slab模型来保证计算的准确性。例如：对于金属体系来说，越开放的表面往往需要更多的层数。所以，在准确性和计算量上，我们要合理地权衡和取舍。可以通过一些基本的测试工作，以及参考他人发表的计算参数来确定。</p>
-<ol start="3">
-<li>Slab模型在XY方向上:</li>
-</ol>
+<p>3) Slab模型在XY方向上:</p>
 <ul>
 <li><p>表面的大小：这个主要影响覆盖度，计算的工作量；</p>
 </li>
@@ -429,21 +423,22 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>前面功函数的计算流程( VASP 计算细节以及结果分析)，我们已经掌握了。这一节介绍一下影响功函数的主要因素：真空层的厚度。首先个人经验：计算功函数的时候，真空层厚度一定要足够。</p>
-<p><img src="/2018/09/06/ex52/ex52-0.png"></p>
+<p><img src="/2018/09/06/ex52/ex52-0.png" alt=""></p>
 <p>这里有两点：</p>
 <ol>
 <li>多厚才算足够?具体要根据自己的体系测试下，一般来说 20 Å 左右足以。</li>
 <li>是不是越厚越好? 越厚的话，计算出来的结果差别不大，但会增加计算量。前面我们讲过影响计算量的因素。</li>
 </ol>
 <p>我们以 Cu(111) 表面的例子，简单介绍下真空层厚度对功函数的影响。</p>
-<h3 id="1-不同真空层厚度的测试-上一节内容"><a href="#1-不同真空层厚度的测试-上一节内容" class="headerlink" title="1 不同真空层厚度的测试(上一节内容)"></a>1 不同真空层厚度的测试(上一节内容)</h3><p><img src="/2018/09/06/ex52/ex52-1.png"></p>
+<h3 id="1-不同真空层厚度的测试-上一节内容"><a href="#1-不同真空层厚度的测试-上一节内容" class="headerlink" title="1 不同真空层厚度的测试(上一节内容)"></a>1 不同真空层厚度的测试(上一节内容)</h3><p><img src="/2018/09/06/ex52/ex52-1.png" alt=""></p>
 <ol>
 <li><p>先准备一个真空层为 10 Å 的计算文件夹： POSCAR 如上图；</p>
 </li>
 <li><p>将前面两节的 INCAR,KPOINTS, POTCAR, 以及提交任务的脚本复制过来；</p>
 </li>
 <li><p>批量生成测试文件，每个文件夹以真空层的厚度命名。命令如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in $(seq 12 2 36); do cp 10 $i; sed -i &quot;5s/16/$((6+$i))/g&quot;$i/POSCAR ; done</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in $(seq 12 2 36); do cp 10 $i; sed -i &quot;5s/16/$((6+$i))/g&quot;$i/POSCAR ; done</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>批量提交任务。</p>
 </li>
 </ol>
@@ -452,14 +447,13 @@
 <li>这样的批量操作本书刚刚开始的时候就已经讲到了，这里不要再问我。</li>
 <li>如果不会用这个办法批量制作输入文件，想其他的办法批量操作，条条大路通罗马，不要死磕在我的这个命令上。</li>
 </ol>
-<h3 id="2-结果处理"><a href="#2-结果处理" class="headerlink" title="2 结果处理"></a>2 结果处理</h3><p>前面的测试计算中，共有 14 个任务。在 Ex50 这一节中<code> vtotav-v5.2f</code>, <code>vtotav.py</code> 或者 p4vasp 这三种可视化的方法，我们查找真空能级的数值，都必须读取数据文件，比如 VLINE, LOCPOT_Z 或者 p4vasp 导出来的 *dat 文件。所以，我们要分别在这 14 个任务的文件夹中重复 Ex50 的操作14次。手动挨个弄可以完全实现，但本人不想这么做，因为这样弄除了让你的操作更熟练些外，并不会有其他的收获。那就写个脚本批量处理吧。</p>
-<p><img src="/2018/09/06/ex52/ex52-2.png"></p>
+<h3 id="2-结果处理"><a href="#2-结果处理" class="headerlink" title="2 结果处理"></a>2 结果处理</h3><p>前面的测试计算中，共有 14 个任务。在 Ex50 这一节中<code>vtotav-v5.2f</code>, <code>vtotav.py</code> 或者 p4vasp 这三种可视化的方法，我们查找真空能级的数值，都必须读取数据文件，比如 VLINE, LOCPOT_Z 或者 p4vasp 导出来的 *dat 文件。所以，我们要分别在这 14 个任务的文件夹中重复 Ex50 的操作14次。手动挨个弄可以完全实现，但本人不想这么做，因为这样弄除了让你的操作更熟练些外，并不会有其他的收获。那就写个脚本批量处理吧。</p>
+<p><img src="/2018/09/06/ex52/ex52-2.png" alt=""></p>
 <p>首先我们分析下上图： 我们获取的真空能级在图中直线部分中间的一个点或者一个小区间的平均值。大约是真空层一半的高度。比如，我们的表层原子 z 方向坐标为 6，真空层厚度为 16，那么我们可以取 6 + (16/2)= 14 时对于的点来得到真空能级。也可以通过 [14-1, 14+1] 这个区间中所有的真空能级求平均数来获得。下面我们看一下脚本的主要内容：</p>
 <ol>
 <li><p>注意部分：</p>
 <p>使用这个脚本的时候，需要注意的内容。本人写了一堆废话在脚本里面，主要是提醒大家使用脚本的时候，需要注意的一些事项。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Welcome to visit our website: www.bigbrosci.com to get more useful information.</span></span><br><span class="line"> </span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">Written By Qiang </span></span><br><span class="line"><span class="string">This script has two functions:</span></span><br><span class="line"><span class="string"> 1) workfunction Visualization from LOCPOT_Z file</span></span><br><span class="line"><span class="string"> 2) Roughly estimate the Vaccum Energy</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Please Contact lqcata@gmail.com if you have questions.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Note1: Read POSCAR with Cartesian coordinations! </span></span><br><span class="line"><span class="string">  This means </span></span><br><span class="line"><span class="string">  1) you have to convet the direct to cartesian firstly </span></span><br><span class="line"><span class="string">  2) otherwise you will get an error.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Note2: Read LOCPOT_Z to plot the figure and calculate the vaccum energy</span></span><br><span class="line"><span class="string">  This means </span></span><br><span class="line"><span class="string">  1)1you have to run command:  work.py LOCPOT z firstly to get the LOCPOT_Z file before use this script</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Note3: the idea to calculate the vaccum energy is following:</span></span><br><span class="line"><span class="string">  1) get the middle z value in the plateau: </span></span><br><span class="line"><span class="string">     middle z value = ( coordination of the highest atom + length of the slab in z direction) / 2 </span></span><br><span class="line"><span class="string">  2) selecte the area to calculate the vaccum energy: </span></span><br><span class="line"><span class="string">     from  (middle z  value - 1) to (middle z value + 1)  unit is in angstrom </span></span><br><span class="line"><span class="string">  3) do the average of all points y direction.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Note 4: this is only a rough estimation but useful.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Note 5: Check the figure firstly and then use the numbers calculated from this script. </span></span><br><span class="line"><span class="string">  1) If the midlle z value is far from the plateau in the figure, you have to calculate the energy by hand.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
-
 <ol>
 <li>脚本是谁写的，主要功能是什么；</li>
 <li>脚本读取 POSCAR, POSCAR 要为 Cartesian 坐标；</li>
@@ -475,97 +469,96 @@
 </li>
 <li><p>脚本正文：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np </span><br><span class="line">x = []</span><br><span class="line">y = []</span><br><span class="line">dic = &#123;&#125;</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;LOCPOT_Z&quot;</span>, mode=<span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    first_line = f.readline()</span><br><span class="line">    name_x = first_line.split()[<span class="number">1</span>]</span><br><span class="line">    name_y = first_line.split()[<span class="number">2</span>]</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        xy=line.rstrip().split()</span><br><span class="line">        x.append(<span class="built_in">float</span>(xy[<span class="number">0</span>]))</span><br><span class="line">        y.append(<span class="built_in">float</span>(xy[<span class="number">1</span>]))</span><br><span class="line">        dic.update(&#123;xy[<span class="number">0</span>]:xy[<span class="number">1</span>]&#125;)</span><br><span class="line">plt.plot(x,y) </span><br><span class="line">plt.xlabel(name_x) </span><br><span class="line">plt.ylabel(name_y) </span><br><span class="line">plt.savefig(<span class="string">&#x27;workfunction&#x27;</span> + <span class="string">&#x27;.pdf&#x27;</span>, dpi=<span class="number">400</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line"><span class="comment">#%%%%%%%%%%%%%%%%%%%%%%#</span></span><br><span class="line"><span class="comment"># Get the Vaccum Energy</span></span><br><span class="line"><span class="comment">#%%%%%%%%%%%%%%%%%%%%%%#</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Get the total line numbers of POSCAR </span></span><br><span class="line">num_lines = <span class="built_in">sum</span>(<span class="number">1</span> <span class="keyword">for</span> line <span class="keyword">in</span> <span class="built_in">open</span>(<span class="string">&#x27;POSCAR&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read POSCAR </span></span><br><span class="line">pos = <span class="built_in">open</span>(<span class="string">&#x27;POSCAR&#x27;</span>, mode = <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">line = pos.readlines()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Get  the  slab length in z direction </span></span><br><span class="line">vaccum = <span class="built_in">float</span>(line[<span class="number">4</span>].split()[<span class="number">2</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Get all atoms&#x27; coordination in z direction and store them in the list</span></span><br><span class="line">z_list = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">9</span>, num_lines): </span><br><span class="line">    z_list.append(<span class="built_in">float</span>(line[i].split()[<span class="number">2</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment">#  max(z_list) is highest atoms&#x27; coordination in z direction</span></span><br><span class="line"><span class="comment"># Get the vaccum lenth: </span></span><br><span class="line">l_vaccum = vaccum - <span class="built_in">max</span>(z_list)</span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;The Vaccum in this calculation is:\t\t %s&#x27;</span>  %(l_vaccum)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Choose the middle z value in the workfuntion.pdf </span></span><br><span class="line">num_middle = (<span class="built_in">max</span>(z_list) + vaccum) / <span class="number">2</span> </span><br><span class="line"><span class="comment">#print num_middle</span></span><br><span class="line"></span><br><span class="line">middle_y = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dic.keys():</span><br><span class="line">    i = <span class="built_in">float</span>(i)</span><br><span class="line"><span class="comment"># Select the date area within 1 angstrom from the middle point:</span></span><br><span class="line">    <span class="keyword">if</span> i &gt; num_middle -<span class="number">1</span> <span class="keyword">and</span> i &lt;  num_middle + <span class="number">1</span>:</span><br><span class="line">        middle_y.append(<span class="built_in">float</span>(dic.get(<span class="built_in">str</span>(i))))</span><br><span class="line"><span class="comment"># Get the average value in the selected area</span></span><br><span class="line"><span class="built_in">print</span> <span class="string">&#x27;The Vaccum Energy in this calculation is:\t %s&#x27;</span>  %(np.mean(middle_y))</span><br><span class="line"></span><br><span class="line">pos.close()</span><br></pre></td></tr></table></figure>
-
 <ol>
 <li><p><code>plt.show()</code> 之前为我们 Ex50 这一节可视化的脚本： 44 和 53 行中，额外将 LOCPOT_Z 中两列的数据保存到一个字典里面，便于后面根据 z 方向的坐标查找真空能级。</p>
 </li>
 <li><p>获取 POSCAR 文件总的行数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">num_lines = sum(1 for line in open(&#x27;POSCAR&#x27;))</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">num_lines = sum(1 for line in open(&#x27;POSCAR&#x27;))</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>读取 POSCAR 文件</li>
-</ol>
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pos = open(&#x27;POSCAR&#x27;, mode = &#x27;r&#x27;)</span><br><span class="line">line = pos.readlines()</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>获取 slab 在 z 方向的数值</li>
-</ol>
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vaccum = float(line[4].split()[2])</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>将所有原子的 z 坐标保存到 z_list 数列中</li>
-</ol>
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">z_list = []</span><br><span class="line">for i in range(9, num_lines): </span><br><span class="line">  z_list.append(float(line[i].split()[2]))</span><br></pre></td></tr></table></figure>
-
-<ol start="6">
+<li><p>读取 POSCAR 文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pos = open(&#x27;POSCAR&#x27;, mode = &#x27;r&#x27;)</span><br><span class="line">line = pos.readlines()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取 slab 在 z 方向的数值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vaccum = float(line[4].split()[2])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将所有原子的 z 坐标保存到 z_list 数列中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">z_list = []</span><br><span class="line">for i in range(9, num_lines): </span><br><span class="line">  z_list.append(float(line[i].split()[2]))</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>获得真空层的厚度</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">l_vaccum = vaccum - max(z_list)</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">l_vaccum = vaccum - max(z_list)</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>计算距离表层原子一半真空层厚度的z方向的数值： num_middle</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">num_middle = (max(z_list) + vaccum) / 2 </span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">num_middle = (max(z_list) + vaccum) / 2 </span><br></pre></td></tr></table></figure>
+</li>
 <li><p>将 [num_middle-1, num_middle+1] 区间范围内所有的真空能级提取出来，并保存到middle_y 这个数列中</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">middle_y = []</span><br><span class="line"></span><br><span class="line">for i in dic.keys():</span><br><span class="line">    i = float(i)</span><br><span class="line"># Select the date area within 1 angstrom from the middle point:</span><br><span class="line">    if i &gt; num_middle -1 and i &lt;  num_middle + 1:</span><br><span class="line">        middle_y.append(float(dic.get(str(i)))</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">middle_y = []</span><br><span class="line"></span><br><span class="line">for i in dic.keys():</span><br><span class="line">    i = float(i)</span><br><span class="line"># Select the date area within 1 angstrom from the middle point:</span><br><span class="line">    if i &gt; num_middle -1 and i &lt;  num_middle + 1:</span><br><span class="line">        middle_y.append(float(dic.get(str(i)))</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>求平均值，并打印出来</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print &#x27;The Vaccum Energy in this calculation is:\t %s&#x27;  %(np.mean(middle_y))</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print &#x27;The Vaccum Energy in this calculation is:\t %s&#x27;  %(np.mean(middle_y))</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 </li>
 <li><p>运行脚本：</p>
-<p><img src="/2018/09/06/ex52/ex52-3.png"></p>
+<p><img src="/2018/09/06/ex52/ex52-3.png" alt=""></p>
 <p>图中第一个命令中，输出比较复杂，并且会和前面示例一样，展示功函数可视化的结果。</p>
 <p>但这不便于批量提取数据，可注销脚本中一下三行，直接获取真空能级</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#plt.show() </span><br><span class="line">#print &#x27;The Vaccum in this calculation is:\t\t %s&#x27;  %(l_vaccum)</span><br><span class="line">#print &#x27;The Vaccum Energy in this calculation is:\t %s&#x27;  %(np.mean(middle_y))</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#plt.show() </span><br><span class="line">#print &#x27;The Vaccum in this calculation is:\t\t %s&#x27;  %(l_vaccum)</span><br><span class="line">#print &#x27;The Vaccum Energy in this calculation is:\t %s&#x27;  %(np.mean(middle_y))</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>使用脚本批量获取真空能级</p>
 <p>先将脚本复制到bin文件夹中，赋予可执行权限。</p>
-<p><img src="/2018/09/06/ex52/ex52-4.png"></p>
+<p><img src="/2018/09/06/ex52/ex52-4.png" alt=""></p>
 <ol>
 <li><p>批量生成 LOCPOT_Z 文件：</p>
-<p><img src="/2018/09/06/ex52/ex52-5.png"></p>
+<p><img src="/2018/09/06/ex52/ex52-5.png" alt=""></p>
 </li>
 <li><p>使用脚本批量读取</p>
-<p><img src="/2018/09/06/ex52/ex52-6.png"></p>
+<p><img src="/2018/09/06/ex52/ex52-6.png" alt=""></p>
 </li>
 </ol>
 </li>
 <li><p>批量获得费米能级：</p>
-<p><img src="/2018/09/06/ex52/ex52-7.png"></p>
+<p><img src="/2018/09/06/ex52/ex52-7.png" alt=""></p>
 <p>我们需要的为第 4 列的数据。(图中的冒号也算作一列)</p>
 </li>
 </ol>
-<h3 id="3-数据分析："><a href="#3-数据分析：" class="headerlink" title="3 数据分析："></a>3 数据分析：</h3><p><img src="/2018/09/06/ex52/ex52-8.png"></p>
+<h3 id="3-数据分析："><a href="#3-数据分析：" class="headerlink" title="3 数据分析："></a>3 数据分析：</h3><p><img src="/2018/09/06/ex52/ex52-8.png" alt=""></p>
 <p>真空能级，费米能级以及功函数随真空层厚度的变化</p>
-<p><img src="/2018/09/06/ex52/ex52-9.png"></p>
+<p><img src="/2018/09/06/ex52/ex52-9.png" alt=""></p>
 <p>图中的测试曲线看起来很漂亮，但纵坐标范围太大，我们将功函数随真空层的变化作图如下：</p>
-<p><img src="/2018/09/06/ex52/ex52-10.png"></p>
+<p><img src="/2018/09/06/ex52/ex52-10.png" alt=""></p>
 <p>从图中，可以看出： 20-30 Å 范围内，功函数的波动变化较小，为 4.81 eV。其他的波动值在 4.85-4.87 eV 之间。Cu(111) 表面的功函数为：4.94 eV。参考的是 CRC handbook 中的数值。</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
-<th align="center">Gu</th>
-<th align="center">100</th>
-<th align="center">5.10</th>
-<th align="center">FE</th>
+<th style="text-align:center">Gu</th>
+<th style="text-align:center">100</th>
+<th style="text-align:center">5.10</th>
+<th style="text-align:center">FE</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center"></td>
-<td align="center">110</td>
-<td align="center">4.48</td>
-<td align="center">PE</td>
+<tbody>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">110</td>
+<td style="text-align:center">4.48</td>
+<td style="text-align:center">PE</td>
 </tr>
 <tr>
-<td align="center"></td>
-<td align="center">111</td>
-<td align="center">4.94</td>
-<td align="center">PE</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">111</td>
+<td style="text-align:center">4.94</td>
+<td style="text-align:center">PE</td>
 </tr>
 <tr>
-<td align="center"></td>
-<td align="center">112</td>
-<td align="center">4.53</td>
-<td align="center">PE</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">112</td>
+<td style="text-align:center">4.53</td>
+<td style="text-align:center">PE</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>实验与理论偏差为： -0.13 / 4.94  = 2.63 %</p>
 <p>师兄，实验值结果是 4.94 eV， 如果我们采用 30 Å 时的结果 (4.87 eV)，跟实验的差别更小，是不是更好?</p>
 <p>可以这么说。但是</p>
@@ -577,14 +570,14 @@
 <p>师兄，不是说真空层对功函数的影响很大吗，为什么在 10 Å 的时候，得到的功函数 (4.80 eV) 和 20 Å (4.81 eV) 的时候一样?</p>
 <p>这是因为，在当前的体系下，4 层的 p(1x1)-Cu(111) 表面，10 Å 已经可以了。但 10-20 Å 时，误差波动较大。12 Å 的数据也可以用，如同前面所提到的，他们都在一个合理的误差范围之内，但必须注明你的模型尺寸。对于其他的体系，还需要大家自己动手去测试一下。</p>
 <p>此外，给大家推荐一篇文章：<a target="_blank" rel="noopener" href="https://pubs.rsc.org/is/content/articlehtml/2016/mh/c5mh00160a">Fermi level, work function and vacuum level</a></p>
-<p><img src="/2018/09/06/ex52/ex52-11.png"></p>
+<p><img src="/2018/09/06/ex52/ex52-11.png" alt=""></p>
 <p>本文刚刚开始的图片就是从这篇文章中偷过来的。</p>
 <h3 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h3><ol>
 <li>复习功函数的相关内容；</li>
 <li>计算，测试自己研究体系的功函数；</li>
 <li>弄清获取真空能级的脚本原理(切记，搞不明白之前，不可乱用！！！)</li>
 </ol>
-<h3 id="5-总结："><a href="#5-总结：" class="headerlink" title="5 总结："></a>5 总结：</h3><p>到本节为止，功函数的计算就先简单介绍到这里了，计算步骤，可视化以及测试都大体讲解了一下。但我们用的模型例子比较简单，如果你的体系复杂，计算仍有疑问，请在 QQ 群中交流或者发邮件给我 (<a href="mailto:&#108;&#x71;&#99;&#x61;&#x74;&#x61;&#64;&#x67;&#109;&#x61;&#x69;&#108;&#46;&#x63;&#111;&#109;">&#108;&#x71;&#99;&#x61;&#x74;&#x61;&#64;&#x67;&#109;&#x61;&#x69;&#108;&#46;&#x63;&#111;&#109;</a>) 。</p>
+<h3 id="5-总结："><a href="#5-总结：" class="headerlink" title="5 总结："></a>5 总结：</h3><p>到本节为止，功函数的计算就先简单介绍到这里了，计算步骤，可视化以及测试都大体讲解了一下。但我们用的模型例子比较简单，如果你的体系复杂，计算仍有疑问，请在 QQ 群中交流或者发邮件给我 (lqcata@gmail.com) 。</p>
 
       
     </div>
@@ -689,52 +682,52 @@
 <h3 id="1-INCAR中的参数"><a href="#1-INCAR中的参数" class="headerlink" title="1  INCAR中的参数"></a>1  INCAR中的参数</h3><p>计算功函数的参数：<code>LVHAR =.TRUE.</code></p>
 <p>加入这一参数时，VASP 只将静电势能写入 LOCPOT 文件中。</p>
 <p>在早期的 VASP 版本中，静电势的写入是通过设置 LVTOT 这个参数的。</p>
-<p>在 5.2.12 版本之后，如果你设置 <code>LVTOT= .TRUE. </code>，那么静电势，交换相关势都会写入到 LVTOT 中。由于我们计算功函数的时候，只需要静电势这一部分。所以，如果你用的是 5.2.12 版本之后的 VASP，设置 <code>LVHAR= .TRUE.</code> 即可。</p>
+<p>在 5.2.12 版本之后，如果你设置 <code>LVTOT= .TRUE.</code>，那么静电势，交换相关势都会写入到 LVTOT 中。由于我们计算功函数的时候，只需要静电势这一部分。所以，如果你用的是 5.2.12 版本之后的 VASP，设置 <code>LVHAR= .TRUE.</code> 即可。</p>
 <p>如果有疑惑的话，不妨做个测试，分别设置 LVTOT 和 LVHAR = .TRUE. 然后做个单点计算对比下结果。</p>
 <p>设置 <code>LVTOT = .TRUE.</code> 的结果如下：</p>
-<p><img src="/2018/09/05/ex51/ex51-2.jpeg"></p>
+<p><img src="/2018/09/05/ex51/ex51-2.jpeg" alt=""></p>
 <p>设置 <code>LVHAR = .TRUE.</code> 的结果如下：</p>
-<p><img src="/2018/09/05/ex51/ex51-3.jpeg"></p>
+<p><img src="/2018/09/05/ex51/ex51-3.jpeg" alt=""></p>
 <p>我们对比下 13-15 $\AA$范围内纵坐标的大小和平均值</p>
-<p><img src="/2018/09/05/ex51/ex51-4.png"></p>
+<p><img src="/2018/09/05/ex51/ex51-4.png" alt=""></p>
 <p>很显然，两个参数对功函数的影响是不可忽略的。使用 LVTOT 这个参数，由于加入了交换相关势，曲线变得不再那么光滑，并且与 LVHAR 的结果有一定的偏差。所以，在计算功函数的时候，LVHAR 这个参数一定要注意。</p>
 <p> 这一点也体现在VASP官网最新的ppt中，如下如：(自己主动根据下图中的关键词找这个 ppt，别问我要，也不要在大师兄群里求助浪费别人的时间。)</p>
-<p><img src="/2018/09/05/ex51/ex51-5.jpeg"></p>
-<p><img src="/2018/09/05/ex51/ex51-6.png"></p>
+<p><img src="/2018/09/05/ex51/ex51-5.jpeg" alt=""></p>
+<p><img src="/2018/09/05/ex51/ex51-6.png" alt=""></p>
 <p><strong>注意：</strong></p>
 <p>在 Hand-on-session (<strong>老版本</strong>的官方教程)中，使用的是 LVTOT 这个参数。老版本就是过时的意思。希望大家的以新版本的计算为准。</p>
-<p><img src="/2018/09/05/ex51/ex51-7.png"></p>
+<p><img src="/2018/09/05/ex51/ex51-7.png" alt=""></p>
 <p>老版本中功函数的计算例子。</p>
 <h3 id="2-真空层的厚度及修改"><a href="#2-真空层的厚度及修改" class="headerlink" title="2 真空层的厚度及修改"></a>2 真空层的厚度及修改</h3><p>真空层的厚度：指的是 slab 在 z (或者 c )方向上的长度减去表面原子在 z 方向的坐标。</p>
-<p><img src="/2018/09/05/ex51/ex51-8.png"></p>
+<p><img src="/2018/09/05/ex51/ex51-8.png" alt=""></p>
 <p>Slab 方向的长度，指的是 POSCAR 或者 CONTCAR 中第 5 行中的数值，上图箭头所指的地方。</p>
 <p>那么我们怎么修改真空层的厚度呢？</p>
 <p>由于 slab 模型中的原子部分就在那边乖乖地待着，我们只需改变 slab 中晶格常数在 z 或者 c 方向的长度即可。</p>
 <p>例子1：上图中真空层的厚度为 15 $\AA$，我们需要一个 20 $\AA$  的 slab 模型，也就是在 21.2994 的基础上再加 5 个 $\AA$，等于 26.2994。但这样做，对不对呢？修改之后的 POSCAR：</p>
-<p><img src="/2018/09/05/ex51/ex51-9.png"></p>
+<p><img src="/2018/09/05/ex51/ex51-9.png" alt=""></p>
 <p>结构如下图：</p>
-<p><img src="/2018/09/05/ex51/ex51-10.png"></p>
+<p><img src="/2018/09/05/ex51/ex51-10.png" alt=""></p>
 <p>我们发现 slab 的 Cu 原子部分之间好像也被拉长了。测量了一下两个 Cu 原子之间的距离为： 2.956 Å。</p>
-<p><img src="/2018/09/05/ex51/ex51-11.png"></p>
+<p><img src="/2018/09/05/ex51/ex51-11.png" alt=""></p>
 <p>修改之前为： 2.547 Å。</p>
-<p><img src="/2018/09/05/ex51/ex51-12.png"></p>
+<p><img src="/2018/09/05/ex51/ex51-12.png" alt=""></p>
 <p>所以：我们在前面的操作中，直接修改的 z 方向的数值，<strong>方法是错误的。</strong></p>
 <p>原因在于：前面的结构中坐标为分数坐标： Direct</p>
 <p>我们修改完成之后，Cu 原子在 c 方向的距离也会发生相应的改变。</p>
 <p>所以，如果直接修改 POSCAR 或者 CONTCAR 改变真空层厚度的话，我们一定一定要先将它们转化为 Cartesian 坐标。怎么转化呢？</p>
 <p>方法1：用软件操作，比如 p4vasp。</p>
-<p><img src="/2018/09/05/ex51/ex51-13.png"></p>
+<p><img src="/2018/09/05/ex51/ex51-13.png" alt=""></p>
 <p>我们可以切换坐标通过鼠标点一下即可，然后保存成 Cartesian 的 POSCAR。</p>
 <p>当然啦，也可以使用其他软件，比如 VESTA 等等，更好的选择，也欢迎留言补充。</p>
 <p>方法2：使用脚本转换：</p>
 <ol>
 <li><p>VASP 官网在 POSCAR 的解释部分，提到了怎么进行坐标切换的公式。</p>
 <p>链接如下：<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/vasp/vasp/POSCAR_file.html">https://cms.mpi.univie.ac.at/vasp/vasp/POSCAR_file.html</a> </p>
-<p><img src="/2018/09/05/ex51/ex51-14.png"></p>
+<p><img src="/2018/09/05/ex51/ex51-14.png" alt=""></p>
 </li>
 <li><p>在此基础上，本人写了一个 python 的小脚本，可以实现 Direct 到 Cartesian 的转换。 </p>
 <p>运行如下：</p>
-<p><img src="/2018/09/05/ex51/ex51-15.png"></p>
+<p><img src="/2018/09/05/ex51/ex51-15.png" alt=""></p>
 <p>图中流程的解释：</p>
 <ol>
 <li>将一个计算中的 CONTCAR 复制过来；</li>
@@ -744,24 +737,27 @@
 <li>cat CONTCAR_C 这个命令查看转化后的内容。(当然也可以继续使用前面的 head 命令) </li>
 </ol>
 <p>本脚本下载链接： <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1eRMJ7m6">https://pan.baidu.com/s/1eRMJ7m6</a>   密码：btsl</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">#Convert direc coordiation to cartesian Writen By Qiang </span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"> </span><br><span class="line">script, file_to_be_converted = sys.argv </span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">###################################</span></span><br><span class="line"><span class="string">#                                 #</span></span><br><span class="line"><span class="string">#for VASP 5.2 or higher versions  #</span></span><br><span class="line"><span class="string">#                                 #</span></span><br><span class="line"><span class="string">###################################</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"> </span><br><span class="line">file_read = <span class="built_in">open</span>(file_to_be_converted, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"> </span><br><span class="line">line = file_read.readlines()</span><br><span class="line">a1 = <span class="built_in">float</span>(line[<span class="number">2</span>].split()[<span class="number">0</span>])</span><br><span class="line">a2 = <span class="built_in">float</span>(line[<span class="number">3</span>].split()[<span class="number">0</span>])</span><br><span class="line">a3 = <span class="built_in">float</span>(line[<span class="number">4</span>].split()[<span class="number">0</span>])</span><br><span class="line">b1 = <span class="built_in">float</span>(line[<span class="number">2</span>].split()[<span class="number">1</span>])</span><br><span class="line">b2 = <span class="built_in">float</span>(line[<span class="number">3</span>].split()[<span class="number">1</span>])</span><br><span class="line">b3 = <span class="built_in">float</span>(line[<span class="number">4</span>].split()[<span class="number">1</span>])</span><br><span class="line">z1 = <span class="built_in">float</span>(line[<span class="number">2</span>].split()[<span class="number">2</span>])</span><br><span class="line">z2 = <span class="built_in">float</span>(line[<span class="number">3</span>].split()[<span class="number">2</span>])</span><br><span class="line">z3 = <span class="built_in">float</span>(line[<span class="number">4</span>].split()[<span class="number">2</span>])</span><br><span class="line"> </span><br><span class="line">num_atoms = <span class="built_in">sum</span>([<span class="built_in">int</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> line[<span class="number">6</span>].split()])</span><br><span class="line"> </span><br><span class="line">x_cartesian = []</span><br><span class="line">y_cartesian = []</span><br><span class="line">z_cartesian = []</span><br><span class="line">tf = []</span><br><span class="line"> </span><br><span class="line">start_num = <span class="number">9</span> <span class="comment"># Default: With Selected T T T, coordination starts from line 9</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convert</span>():</span></span><br><span class="line">     </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(start_num, num_atoms + start_num):</span><br><span class="line">        x_cartesian.append(<span class="built_in">float</span>(line[i].split()[<span class="number">0</span>]) * a1 + <span class="built_in">float</span>(line[i].split()[<span class="number">1</span>]) * a2 + <span class="built_in">float</span>(line[i].split()[<span class="number">2</span>]) * a3)</span><br><span class="line">        y_cartesian.append(<span class="built_in">float</span>(line[i].split()[<span class="number">0</span>]) * b1 + <span class="built_in">float</span>(line[i].split()[<span class="number">1</span>]) * b2 + <span class="built_in">float</span>(line[i].split()[<span class="number">2</span>]) * b3)</span><br><span class="line">        z_cartesian.append(<span class="built_in">float</span>(line[i].split()[<span class="number">0</span>]) * z1 + <span class="built_in">float</span>(line[i].split()[<span class="number">1</span>]) * z2 + <span class="built_in">float</span>(line[i].split()[<span class="number">2</span>]) * z3)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(line[i].split()) &gt; <span class="number">3</span>:   <span class="comment"># if  T T T exist, there are more than 3 elements in the list line[i].split()</span></span><br><span class="line">            tf.append((line[i].split()[<span class="number">3</span>]))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tf.append(<span class="string">&#x27; &#x27;</span>)   <span class="comment"># if there is no T T T, use space instead. </span></span><br><span class="line">     </span><br><span class="line">    file_out = <span class="built_in">open</span>(file_to_be_converted+<span class="string">&#x27;_C&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">     </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">7</span>):</span><br><span class="line">        file_out.write(line[i].rstrip() + <span class="string">&#x27;\n&#x27;</span>)  <span class="comment"># first 7 lines are kept the same </span></span><br><span class="line">     </span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;S&#x27;</span> <span class="keyword">in</span> line[<span class="number">7</span>]:</span><br><span class="line">        file_out.write(line[<span class="number">7</span>].rstrip()+ <span class="string">&#x27;\n&#x27;</span>)  <span class="comment"># if  T T T exists, write the Selective line </span></span><br><span class="line">    file_out.write(<span class="string">&#x27;Cartesian&#x27;</span> + <span class="string">&#x27;\n&#x27;</span>)          <span class="comment"># Coordination system is Cartesian now. </span></span><br><span class="line">     </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(x_cartesian)):</span><br><span class="line">        file_out.write(<span class="string">&quot;%+-3.10f   %+-3.10f   %+-3.10f   %s %s %s\n&quot;</span> </span><br><span class="line">        %(x_cartesian[i], y_cartesian[i], z_cartesian[i], tf[i], tf[i], tf[i]))</span><br><span class="line">     </span><br><span class="line">    file_out.close()</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&#x27;-----------------------------------------------------\n&#x27;</span></span><br><span class="line">    <span class="built_in">print</span> <span class="string">&#x27;POSCAR with Cartesian Coordiations is named as %s_C\n&#x27;</span> %(file_to_be_converted)</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&#x27;-----------------------------------------------------\n&#x27;</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> line[<span class="number">7</span>][<span class="number">0</span>]  == <span class="string">&#x27;S&#x27;</span> <span class="keyword">or</span> line[<span class="number">7</span>][<span class="number">0</span>]  == <span class="string">&#x27;s&#x27;</span>:  <span class="comment"># # With Selected T T T, coordination starts from line 9</span></span><br><span class="line">    start_num = <span class="number">9</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span>  line[<span class="number">8</span>][<span class="number">0</span>]  == <span class="string">&#x27;D&#x27;</span> <span class="keyword">or</span> line[<span class="number">8</span>][<span class="number">0</span>]  == <span class="string">&#x27;d&#x27;</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">This POSCAR has Direct Coordinations, Conversion is starting....</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">              &quot;&quot;&quot;</span></span><br><span class="line">        convert()</span><br><span class="line">     </span><br><span class="line">    <span class="keyword">elif</span>  line[<span class="number">8</span>][<span class="number">0</span>]  == <span class="string">&#x27;C&#x27;</span> <span class="keyword">or</span> line[<span class="number">8</span>][<span class="number">0</span>]  == <span class="string">&#x27;c&#x27;</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">This POSCAR has Cartesian Coordinations! Process is aborted!</span></span><br><span class="line"><span class="string">               </span></span><br><span class="line"><span class="string">              &quot;&quot;&quot;</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">else</span> : </span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">----------------------------------------------------</span></span><br><span class="line"><span class="string">Pay Attetion! There is no TTT in coordinations part!</span></span><br><span class="line"><span class="string">----------------------------------------------------</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">     </span><br><span class="line">    start_num = <span class="number">8</span> <span class="comment"># without Selected, No  T T T , coordination starts from line 8 </span></span><br><span class="line">     </span><br><span class="line">    <span class="keyword">if</span>  line[<span class="number">7</span>][<span class="number">0</span>]  == <span class="string">&#x27;D&#x27;</span> <span class="keyword">or</span> line[<span class="number">7</span>][<span class="number">0</span>]  == <span class="string">&#x27;d&#x27;</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">This POSCAR has Direct Coordinations, Contersion starts....</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">        convert()</span><br><span class="line">     </span><br><span class="line">    <span class="keyword">elif</span>  line[<span class="number">7</span>][<span class="number">0</span>]  == <span class="string">&#x27;C&#x27;</span> <span class="keyword">or</span> line[<span class="number">7</span>][<span class="number">0</span>]  == <span class="string">&#x27;c&#x27;</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="string">This POSCAR has Cartesian Coordinations already! </span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">Process is aborted!</span></span><br><span class="line"><span class="string">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"> </span><br><span class="line">file_read.close()</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment">#Convert direc coordiation to cartesian Writen By Qiang </span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"> </span><br><span class="line">script, file_to_be_converted = sys.argv </span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">###################################</span></span><br><span class="line"><span class="string">#                                 #</span></span><br><span class="line"><span class="string">#for VASP 5.2 or higher versions  #</span></span><br><span class="line"><span class="string">#                                 #</span></span><br><span class="line"><span class="string">###################################</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"> </span><br><span class="line">file_read = <span class="built_in">open</span>(file_to_be_converted, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"> </span><br><span class="line">line = file_read.readlines()</span><br><span class="line">a1 = <span class="built_in">float</span>(line[<span class="number">2</span>].split()[<span class="number">0</span>])</span><br><span class="line">a2 = <span class="built_in">float</span>(line[<span class="number">3</span>].split()[<span class="number">0</span>])</span><br><span class="line">a3 = <span class="built_in">float</span>(line[<span class="number">4</span>].split()[<span class="number">0</span>])</span><br><span class="line">b1 = <span class="built_in">float</span>(line[<span class="number">2</span>].split()[<span class="number">1</span>])</span><br><span class="line">b2 = <span class="built_in">float</span>(line[<span class="number">3</span>].split()[<span class="number">1</span>])</span><br><span class="line">b3 = <span class="built_in">float</span>(line[<span class="number">4</span>].split()[<span class="number">1</span>])</span><br><span class="line">z1 = <span class="built_in">float</span>(line[<span class="number">2</span>].split()[<span class="number">2</span>])</span><br><span class="line">z2 = <span class="built_in">float</span>(line[<span class="number">3</span>].split()[<span class="number">2</span>])</span><br><span class="line">z3 = <span class="built_in">float</span>(line[<span class="number">4</span>].split()[<span class="number">2</span>])</span><br><span class="line"> </span><br><span class="line">num_atoms = <span class="built_in">sum</span>([<span class="built_in">int</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> line[<span class="number">6</span>].split()])</span><br><span class="line"> </span><br><span class="line">x_cartesian = []</span><br><span class="line">y_cartesian = []</span><br><span class="line">z_cartesian = []</span><br><span class="line">tf = []</span><br><span class="line"> </span><br><span class="line">start_num = <span class="number">9</span> <span class="comment"># Default: With Selected T T T, coordination starts from line 9</span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convert</span>():</span></span><br><span class="line">     </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(start_num, num_atoms + start_num):</span><br><span class="line">        x_cartesian.append(<span class="built_in">float</span>(line[i].split()[<span class="number">0</span>]) * a1 + <span class="built_in">float</span>(line[i].split()[<span class="number">1</span>]) * a2 + <span class="built_in">float</span>(line[i].split()[<span class="number">2</span>]) * a3)</span><br><span class="line">        y_cartesian.append(<span class="built_in">float</span>(line[i].split()[<span class="number">0</span>]) * b1 + <span class="built_in">float</span>(line[i].split()[<span class="number">1</span>]) * b2 + <span class="built_in">float</span>(line[i].split()[<span class="number">2</span>]) * b3)</span><br><span class="line">        z_cartesian.append(<span class="built_in">float</span>(line[i].split()[<span class="number">0</span>]) * z1 + <span class="built_in">float</span>(line[i].split()[<span class="number">1</span>]) * z2 + <span class="built_in">float</span>(line[i].split()[<span class="number">2</span>]) * z3)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(line[i].split()) &gt; <span class="number">3</span>:   <span class="comment"># if  T T T exist, there are more than 3 elements in the list line[i].split()</span></span><br><span class="line">            tf.append((line[i].split()[<span class="number">3</span>]))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            tf.append(<span class="string">&#x27; &#x27;</span>)   <span class="comment"># if there is no T T T, use space instead. </span></span><br><span class="line">     </span><br><span class="line">    file_out = <span class="built_in">open</span>(file_to_be_converted+<span class="string">&#x27;_C&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">     </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="number">7</span>):</span><br><span class="line">        file_out.write(line[i].rstrip() + <span class="string">&#x27;\n&#x27;</span>)  <span class="comment"># first 7 lines are kept the same </span></span><br><span class="line">     </span><br><span class="line">    <span class="keyword">if</span> <span class="string">&#x27;S&#x27;</span> <span class="keyword">in</span> line[<span class="number">7</span>]:</span><br><span class="line">        file_out.write(line[<span class="number">7</span>].rstrip()+ <span class="string">&#x27;\n&#x27;</span>)  <span class="comment"># if  T T T exists, write the Selective line </span></span><br><span class="line">    file_out.write(<span class="string">&#x27;Cartesian&#x27;</span> + <span class="string">&#x27;\n&#x27;</span>)          <span class="comment"># Coordination system is Cartesian now. </span></span><br><span class="line">     </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,<span class="built_in">len</span>(x_cartesian)):</span><br><span class="line">        file_out.write(<span class="string">&quot;%+-3.10f   %+-3.10f   %+-3.10f   %s %s %s\n&quot;</span> </span><br><span class="line">        %(x_cartesian[i], y_cartesian[i], z_cartesian[i], tf[i], tf[i], tf[i]))</span><br><span class="line">     </span><br><span class="line">    file_out.close()</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&#x27;-----------------------------------------------------\n&#x27;</span></span><br><span class="line">    <span class="built_in">print</span> <span class="string">&#x27;POSCAR with Cartesian Coordiations is named as %s_C\n&#x27;</span> %(file_to_be_converted)</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&#x27;-----------------------------------------------------\n&#x27;</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> line[<span class="number">7</span>][<span class="number">0</span>]  == <span class="string">&#x27;S&#x27;</span> <span class="keyword">or</span> line[<span class="number">7</span>][<span class="number">0</span>]  == <span class="string">&#x27;s&#x27;</span>:  <span class="comment"># # With Selected T T T, coordination starts from line 9</span></span><br><span class="line">    start_num = <span class="number">9</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span>  line[<span class="number">8</span>][<span class="number">0</span>]  == <span class="string">&#x27;D&#x27;</span> <span class="keyword">or</span> line[<span class="number">8</span>][<span class="number">0</span>]  == <span class="string">&#x27;d&#x27;</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">This POSCAR has Direct Coordinations, Conversion is starting....</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">              &quot;&quot;&quot;</span></span><br><span class="line">        convert()</span><br><span class="line">     </span><br><span class="line">    <span class="keyword">elif</span>  line[<span class="number">8</span>][<span class="number">0</span>]  == <span class="string">&#x27;C&#x27;</span> <span class="keyword">or</span> line[<span class="number">8</span>][<span class="number">0</span>]  == <span class="string">&#x27;c&#x27;</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">This POSCAR has Cartesian Coordinations! Process is aborted!</span></span><br><span class="line"><span class="string">               </span></span><br><span class="line"><span class="string">              &quot;&quot;&quot;</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="keyword">else</span> : </span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">----------------------------------------------------</span></span><br><span class="line"><span class="string">Pay Attetion! There is no TTT in coordinations part!</span></span><br><span class="line"><span class="string">----------------------------------------------------</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">     </span><br><span class="line">    start_num = <span class="number">8</span> <span class="comment"># without Selected, No  T T T , coordination starts from line 8 </span></span><br><span class="line">     </span><br><span class="line">    <span class="keyword">if</span>  line[<span class="number">7</span>][<span class="number">0</span>]  == <span class="string">&#x27;D&#x27;</span> <span class="keyword">or</span> line[<span class="number">7</span>][<span class="number">0</span>]  == <span class="string">&#x27;d&#x27;</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">This POSCAR has Direct Coordinations, Contersion starts....</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">        convert()</span><br><span class="line">     </span><br><span class="line">    <span class="keyword">elif</span>  line[<span class="number">7</span>][<span class="number">0</span>]  == <span class="string">&#x27;C&#x27;</span> <span class="keyword">or</span> line[<span class="number">7</span>][<span class="number">0</span>]  == <span class="string">&#x27;c&#x27;</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="string">This POSCAR has Cartesian Coordinations already! </span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">Process is aborted!</span></span><br><span class="line"><span class="string">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"> </span><br><span class="line">file_read.close()</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 <p>那么怎么把 Cartesian 转化为 Direct 呢？</p>
 <ol>
 <li>使用 VASP，因为 VASP 的默认输出就是 Direct 坐标，算个单点就可以啦（笑话，别当真！）；</li>
 <li>使用 p4vasp 等其他软件；</li>
-<li> 写个脚本倒着再做一遍，不过本人经常使用的是 Cartesian 坐标，懒得再写了，有兴趣的可以自己试试。</li>
+<li>写个脚本倒着再做一遍，不过本人经常使用的是 Cartesian 坐标，懒得再写了，有兴趣的可以自己试试。</li>
 </ol>
 <h3 id="3-批量处理POSCAR"><a href="#3-批量处理POSCAR" class="headerlink" title="3 批量处理POSCAR"></a>3 批量处理POSCAR</h3><p>当我们完成转化后，就可以批量处理 Cartesian 坐标的 POSCAR 了。</p>
 <ol>
 <li><p>先准备一个文件夹，名字为 10，这个文件夹中有一个真空层为：10 Å 的 POSCAR 以及 INCAR, KPOINTS, POTCAR， 任务脚本；</p>
 </li>
 <li><p>运行命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in $(seq 12 2 36); do cp 10 $i ; sed -i &quot;5s/16/$((6+$i))/g&quot; $i/POSCAR; done</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in $(seq 12 2 36); do cp 10 $i ; sed -i &quot;5s/16/$((6+$i))/g&quot; $i/POSCAR; done</span><br></pre></td></tr></table></figure>
+</li>
 <li><p>示例演示：</p>
-<p><img src="/2018/09/05/ex51/ex51-16.png"></p>
+<p><img src="/2018/09/05/ex51/ex51-16.png" alt=""></p>
 <p>运行完这个命令后,会生成从 12 到 36 的 N 个文件夹，每个文件夹之间间隔为 2。我们通过下面这个命令查看所有文件夹中 POSCAR 中 z 方向的大小：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in *; do head -n 5 $i/POSCAR | tail -n 1 ; done</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in *; do head -n 5 $i/POSCAR | tail -n 1 ; done</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 <p><strong>解释：</strong></p>
 <ul>
@@ -879,11 +875,11 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><img src="/2018/09/04/ex50/ex50-1.png"></p>
+          <p><img src="/2018/09/04/ex50/ex50-1.png" alt=""></p>
 <p>前面一节我们介绍了计算功函数的具体流程，以及用p4vasp获取真空能级的方法。</p>
 <p>本节我们介绍另外两个方法，从本质上来说，这些方法是一样的，都是基于对 LOCPOT 中数据的处理。</p>
 <h3 id="1-使用-vtotav-v5-2f-脚本"><a href="#1-使用-vtotav-v5-2f-脚本" class="headerlink" title="1 使用 vtotav-v5.2f 脚本"></a>1 使用 vtotav-v5.2f 脚本</h3><p>操作流程如下：</p>
-<p><img src="/2018/09/04/ex50/ex50-2.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-2.jpeg" alt=""></p>
 <p><strong>注意：</strong></p>
 <ol>
 <li><p><code>gfortran -o vtotav.x vtotav-5.2f</code></p>
@@ -904,14 +900,13 @@
 <li>从上一级目录下拷贝了一个 python 脚本，名为：<code>wplot-f.py</code>；</li>
 <li>运行这个 python 脚本，效果如下：</li>
 </ol>
-<p><img src="/2018/09/04/ex50/ex50-3.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-3.jpeg" alt=""></p>
 <p>我们又得到了前面一节的功函数的图像。真空能级，大家从 150 前后取个值即可，也可以在一段直线的区间范围内求个平均数。</p>
 <p>对比下前面一节和本节中的数据：</p>
-<p><img src="/2018/09/04/ex50/ex50-4.png"></p>
+<p><img src="/2018/09/04/ex50/ex50-4.png" alt=""></p>
 <p>左图为本节的，右图为上节的。</p>
 <p>Python 脚本这么神奇，是怎么写出来的呢？脚本内容如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># Written By Qiang for workfunction Visualization from VLINE file</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">x = []</span><br><span class="line">y = []</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;VLINE&quot;</span>, mode=<span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="built_in">next</span>(f)</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        xy=line.rstrip().split()</span><br><span class="line">        x.append(<span class="built_in">float</span>(xy[<span class="number">0</span>]))</span><br><span class="line">        y.append(<span class="built_in">float</span>(xy[<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">plt.plot(x,y) </span><br><span class="line">plt.savefig(<span class="string">&#x27;workfunction&#x27;</span> + <span class="string">&#x27;.pdf&#x27;</span>, dpi=<span class="number">400</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
 <p>思路如下：</p>
 <ol>
 <li>读取 VLINE 文件；</li>
@@ -923,12 +918,12 @@
 <p><strong>注意：</strong></p>
 <ol>
 <li>如果你想保存成 eps, png, jpg,只需将 .pdf 改成 .eps, .png, .jpg 即可；</li>
-<li> 如果想要分辨率更高，可以修改400这个数值；</li>
+<li>如果想要分辨率更高，可以修改400这个数值；</li>
 <li>如果只想保存成 pdf 文件，不想弹出图片的查看窗口，把 plt.show() 这一行注释掉就可以了， # plt.show()；</li>
 <li>如果只想看一下图，不想保存 pdf 文件，将第 16 行注释掉就可以了。</li>
 </ol>
 <h3 id="2-使用-vtotav-py-脚本"><a href="#2-使用-vtotav-py-脚本" class="headerlink" title="2 使用 vtotav.py 脚本"></a>2 使用 vtotav.py 脚本</h3><p>第一个脚本就讲到这里了，这个脚本不错，唯一的缺点就是横坐标不是 z 方向的数值，那么我们看一下第二个脚本的操作。</p>
-<p><img src="/2018/09/04/ex50/ex50-5.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-5.jpeg" alt=""></p>
 <p><strong>注意：</strong></p>
 <ol>
 <li><p>这里用到的脚本名字为：<code>vtotav.py</code>；</p>
@@ -936,7 +931,7 @@
 <li><p>vtotav.py LOCPOT z  这个命令意思是，用 vtotav.py 读取 LOCPOT 文件，并处理生成 z 方向的数据；</p>
 </li>
 <li><p>脚本运行完毕后，目录中多了一个 LOCPOT_Z 文件，这个文件内容如下：</p>
-<p><img src="/2018/09/04/ex50/ex50-6.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-6.jpeg" alt=""></p>
 </li>
 <li><p>图中最后两行，</p>
 <ol>
@@ -945,14 +940,13 @@
 </ol>
 </li>
 </ol>
-<p><img src="/2018/09/04/ex50/ex50-7.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-7.jpeg" alt=""></p>
 <p>这个脚本中，横坐标为 z 方向的大小，比前面的脚本有所改进，和 p4vasp 的数据是一样的。首先我们先看一下可视化的脚本，然后再讲解 vtotav.py 这个脚本的获取和使用。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># Written By Qiang for workfunction Visualization from LOCPOT_Z file</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">x = []</span><br><span class="line">y = []</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;LOCPOT_Z&quot;</span>, mode=<span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    first_line = f.readline()</span><br><span class="line">    name_x = first_line.split()[<span class="number">1</span>]</span><br><span class="line">    name_y = first_line.split()[<span class="number">2</span>]</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        xy=line.rstrip().split()</span><br><span class="line">        x.append(<span class="built_in">float</span>(xy[<span class="number">0</span>]))</span><br><span class="line">        y.append(<span class="built_in">float</span>(xy[<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line">plt.plot(x,y) </span><br><span class="line">plt.xlabel(name_x) </span><br><span class="line">plt.ylabel(name_y) </span><br><span class="line">plt.savefig(<span class="string">&#x27;workfunction&#x27;</span> + <span class="string">&#x27;.pdf&#x27;</span>, dpi=<span class="number">400</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-
 <p>这个跟前面的那个脚本很像，不同的地方在于这个脚本中读取了第一行的内容，并将它们作为横坐标和纵坐标的名字。(Distance 和 Potential)</p>
 <h3 id="3-vtotav-py-脚本的获取和使用"><a href="#3-vtotav-py-脚本的获取和使用" class="headerlink" title="3 vtotav.py 脚本的获取和使用"></a>3 vtotav.py 脚本的获取和使用</h3><p>这个脚本可以在github网站免费下载，网址为：</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/compphys/ase_tools/blob/master/scripts/vtotav.py">https://github.com/compphys/ase_tools/blob/master/scripts/vtotav.py</a> </p>
-<p><img src="/2018/09/04/ex50/ex50-8.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-8.jpeg" alt=""></p>
 <p>本人的做法是：</p>
 <ol>
 <li>把图中的代码复制下来，然后保存到一个文本里面，将文本命名为：vtotav.py；</li>
@@ -962,30 +956,29 @@
 </ol>
 <p>不过本人刚刚发现这个脚本可以按照下面的方法下载，下载完成后，重复前面的 2-4 步即可：</p>
 <ol>
-<li> 点击 scripts</li>
-</ol>
-<p>   <img src="/2018/09/04/ex50/ex50-9.png"></p>
-<ol start="2">
+<li><p>点击 scripts</p>
+<p><img src="/2018/09/04/ex50/ex50-9.png" alt=""></p>
+</li>
 <li><p>鼠标右击这个脚本</p>
-<p><img src="/2018/09/04/ex50/ex50-10.png"></p>
+<p><img src="/2018/09/04/ex50/ex50-10.png" alt=""></p>
 </li>
 <li><p>另存为，然后选择保存的目录</p>
-<p><img src="/2018/09/04/ex50/ex50-11.png"></p>
+<p><img src="/2018/09/04/ex50/ex50-11.png" alt=""></p>
 </li>
 <li><p>这里本人保存到电脑桌面上了</p>
-<p><img src="/2018/09/04/ex50/ex50-12.png"></p>
+<p><img src="/2018/09/04/ex50/ex50-12.png" alt=""></p>
 </li>
 </ol>
 <p><strong>注意：</strong></p>
 <p>如果你运行脚本的时候，没有得到下面图中的这个结果：</p>
-<p><img src="/2018/09/04/ex50/ex50-13.jpeg"></p>
+<p><img src="/2018/09/04/ex50/ex50-13.jpeg" alt=""></p>
 <p>原因可能在与：</p>
-<p><img src="/2018/09/04/ex50/ex50-14.png"></p>
+<p><img src="/2018/09/04/ex50/ex50-14.png" alt=""></p>
 <p>这个脚本需要调用 ase 这个程序中的模块，那么什么是 ase 呢？ase 怎么安装呢？</p>
 <p>对于 ase，本书的 ex0 中就已经提到了，可能大家也忘记了。ASE 是 Atomic Simulation Environment 的缩写，这是一个非常强大的工具。官方网址：</p>
 <p><a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/">https://wiki.fysik.dtu.dk/ase/</a></p>
 <p>是大大师兄(本人的师兄)做博后的课题组开发出来。Linux 系统下面，安装 ASE 很简单：</p>
-<p><img src="/2018/09/04/ex50/ex50-15.png"></p>
+<p><img src="/2018/09/04/ex50/ex50-15.png" alt=""></p>
 <p>一个命令就可以搞定了，Soooo eeeeeasy! 至于 Windows 下面嘛，本人不会。不想用 Linux，还想用 ASE 的就只能自己捣鼓捣鼓了。捣鼓好了也不要给我发教程，因为本人不推荐用 Windows 做计算。</p>
 <h3 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h3><ol>
 <li>下载本节的例子，以及所有的脚本，按照讲解的操作一遍流程，链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1dEHvHr7">https://pan.baidu.com/s/1dEHvHr7</a> 密码：ponm；</li>
@@ -1094,16 +1087,15 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>前面我们讲完了表面的计算，后面两节我们主要讨论一下功函数的计算。</p>
-<h3 id="1-功函数的定义"><a href="#1-功函数的定义" class="headerlink" title="1 功函数的定义"></a>1 功函数的定义</h3><p>首先，我们先看一下**<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Work_function">维基百科</a>**的解释：</p>
+<h3 id="1-功函数的定义"><a href="#1-功函数的定义" class="headerlink" title="1 功函数的定义"></a>1 功函数的定义</h3><p>首先，我们先看一下<strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Work_function">维基百科</a></strong>的解释：</p>
 <p><strong>功函数</strong>(又称功函、逸出功)是指要使一粒电子立即从固体表面中逸出，所必须提供的最小能量(通常以电子伏特为单位)。这里“立即”一词表示最终电子位置从原子尺度上远离表面但从宏观尺度上依然靠近固体。功函数不是材料体相的本征性质，更准确的说法应为材料表面的性质(比如表面暴露晶面情况和受污染程度)功函数是金属的重要属性。功函数的大小通常大概是金属自由原子电离能的二分之一。</p>
 <p>The work function W for a given surface is defined by the difference</p>
 <p>W = - eϕ - E<sub>F</sub></p>
 <p>where −e is the charge of an electron, ϕ is the electrostatic potential in the vacuum nearby the surface, and E<sub>F</sub> is the Fermi level (electrochemical potential of electrons) inside the material. The term −eϕ is the energy of an electron at rest in the vacuum nearby the surface. In words, the work function is thus defined as the thermodynamic work required to remove an electron from the material to a state at rest in the vacuum nearby the surface.</p>
-<p><img src="/2018/09/03/ex49/ex49-1.jpeg"></p>
+<p><img src="/2018/09/03/ex49/ex49-1.jpeg" alt=""></p>
 <p>我们再看下 <a target="_blank" rel="noopener" href="https://goldbook.iupac.org/html/E/E02015.html">IUPAC</a> 官网的解释：</p>
 <p>The minimum work needed to extract electrons from the Fermi level of a metal M across a surface carrying no net charge. It is equal to the sum of the potential energy and the kinetic Fermi energy taken with the reverse sign:</p>
-<p>$$\phi^{M} = -(V_{e}+\varepsilon_e^ F)$$</p>
-<p>where $V_{e}$ is the potential energy for electrons in metals and  $\varepsilon_e^ F$ is the kinetic energy of electrons at the Fermi level.</p>
+<script type="math/tex; mode=display">\phi^{M} = -(V_{e}+\varepsilon_e^ F)</script><p>where $V_{e}$ is the potential energy for electrons in metals and  $\varepsilon_e^ F$ is the kinetic energy of electrons at the Fermi level.</p>
 <h3 id="2-VASP-计算功函数的过程"><a href="#2-VASP-计算功函数的过程" class="headerlink" title="2 VASP 计算功函数的过程"></a>2 VASP 计算功函数的过程</h3><p>从前面的定义中可以看出，计算功函数我们只需要得到体系的费米能级和电子所处的静电势能，然后求差即可。</p>
 <h4 id="2-1-费米能级的计算："><a href="#2-1-费米能级的计算：" class="headerlink" title="2.1 费米能级的计算："></a>2.1 费米能级的计算：</h4><p>VASP 计算结束之后，通过命令：</p>
 <p>grep E-fermi OUTCAR 即可提取出来。</p>
@@ -1130,7 +1122,6 @@
 </ol>
 <h3 id="3-Cu-111-表面的功函数计算"><a href="#3-Cu-111-表面的功函数计算" class="headerlink" title="3 Cu(111) 表面的功函数计算"></a>3 Cu(111) 表面的功函数计算</h3><h4 id="3-1-准备计算文件："><a href="#3-1-准备计算文件：" class="headerlink" title="3.1 准备计算文件："></a>3.1 准备计算文件：</h4><p>新建一个 workfunction 的文件夹，将前面优化计算的： INCAR KPOINTS POTCAR CONTCAR 和提交任务的脚本复制到这个文件夹中。</p>
 <h4 id="3-2-修改-INCAR-改为静态（单点）计算"><a href="#3-2-修改-INCAR-改为静态（单点）计算" class="headerlink" title="3.2 修改 INCAR 改为静态（单点）计算"></a>3.2 修改 INCAR 改为静态（单点）计算</h4><h4 id="3-3-修改-INCAR，添加-LVHAR-TRUE-这一行"><a href="#3-3-修改-INCAR，添加-LVHAR-TRUE-这一行" class="headerlink" title="3.3 修改 INCAR，添加 LVHAR = .TRUE. 这一行"></a>3.3 修改 INCAR，添加 LVHAR = .TRUE. 这一行</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">System = Cull</span><br><span class="line">ISMEAR = 1 </span><br><span class="line">SIMGA = 0.1</span><br><span class="line">ALGO = FAST</span><br><span class="line">ENCUT = 450</span><br><span class="line">EDIFF = 1E-5</span><br><span class="line"></span><br><span class="line">IDIPOL =.TRUE.</span><br><span class="line">IDIPOL = 3</span><br><span class="line"></span><br><span class="line">NWRITE = 0</span><br><span class="line">LWAVE = .FALSE.</span><br><span class="line">LCHARG = .FALSE.</span><br><span class="line">IBRION = 2</span><br><span class="line">POTIM = 0</span><br><span class="line">EDIFFG = -0.01</span><br><span class="line">NSW = 1 </span><br><span class="line"></span><br><span class="line">LVHAR = .TRUE.</span><br></pre></td></tr></table></figure>
-
 <h4 id="3-4-将-CONTCAR-重命名为-POSCAR"><a href="#3-4-将-CONTCAR-重命名为-POSCAR" class="headerlink" title="3.4 将 CONTCAR 重命名为 POSCAR"></a>3.4 将 CONTCAR 重命名为 POSCAR</h4><h4 id="3-5-提交任务，等待结束。"><a href="#3-5-提交任务，等待结束。" class="headerlink" title="3.5 提交任务，等待结束。"></a>3.5 提交任务，等待结束。</h4><h3 id="4-后处理方法-1：p4vasp"><a href="#4-后处理方法-1：p4vasp" class="headerlink" title="4 后处理方法-1：p4vasp"></a>4 后处理方法-1：p4vasp</h3><p>p4vasp 一直是本人强烈推荐的VASP计算相关的建模，可视化，查看结构，结果的软件。本节我们讲解一下如何通过 p4vasp 对功函数的计算结果可视化。</p>
 <h4 id="4-1-导入数据"><a href="#4-1-导入数据" class="headerlink" title="4.1 导入数据"></a>4.1 导入数据</h4><ol>
 <li><p>Linux 系统下面，进入计算的目录直接敲命令： p4v &amp; 即可 (我们稍微等下 Windows 用户的操作，后面可视化过程是一样的)</p>
@@ -1138,26 +1129,26 @@
 <li><p>Windows 下面，首先要将计算生成的 LOCPOT 文件保存到本地电脑上。</p>
 <p>注意：有时候这个文件可能会很大，下载的时候比较蛋疼，不想下载的话等待下节的讲解。</p>
 </li>
-<li><p>打开 p4vasp 并导入 LOCPOT 文件：file –&gt; loadsystem，然后找到 LOCPOT 所在的目录，点解导入，效果如下</p>
-<p><img src="/2018/09/03/ex49/ex49-2.png"></p>
+<li><p>打开 p4vasp 并导入 LOCPOT 文件：file —&gt; loadsystem，然后找到 LOCPOT 所在的目录，点解导入，效果如下</p>
+<p><img src="/2018/09/03/ex49/ex49-2.png" alt=""></p>
 </li>
 </ol>
 <h4 id="4-2-开始可视化-Linux-Windows-都一样了"><a href="#4-2-开始可视化-Linux-Windows-都一样了" class="headerlink" title="4.2 开始可视化 (Linux, Windows 都一样了)"></a>4.2 开始可视化 (Linux, Windows 都一样了)</h4><p>Electronic –&gt; Local potential</p>
-<p><img src="/2018/09/03/ex49/ex49-3.png"></p>
+<p><img src="/2018/09/03/ex49/ex49-3.png" alt=""></p>
 <p>效果如下：</p>
-<p><img src="/2018/09/03/ex49/ex49-4.jpeg"></p>
+<p><img src="/2018/09/03/ex49/ex49-4.jpeg" alt=""></p>
 <p>WOC，这是什么东东？ 是不是算错啦？</p>
 <p>别急，看下面：</p>
 <p>点击下图中的 <code>Show</code>，会出现三个方向让你选择，一般都是沿着 z 方向的，按照红色箭头点下即可。</p>
-<p><img src="/2018/09/03/ex49/ex49-5.png"></p>
+<p><img src="/2018/09/03/ex49/ex49-5.png" alt=""></p>
 <p>效果如下：</p>
-<p><img src="/2018/09/03/ex49/ex49-6.png"></p>
+<p><img src="/2018/09/03/ex49/ex49-6.png" alt=""></p>
 <p>Wow, Wonderful!!! 是不是很有成就感？</p>
 <p>But， 怎么才能获取静电势能的数值呢？ 图中的纵坐标范围太大了，目测取值的话，误差应该在 0.5 eV 左右，太大了，不行。 那么我们只能导出数据，慢慢分析了。</p>
-<h4 id="4-3-导出数据"><a href="#4-3-导出数据" class="headerlink" title="4.3 导出数据"></a>4.3 导出数据</h4><p>还记得前面我们讲的 DOS 的计算吗？我们求 <code>d band center</code>，电子数目积分的时候将数据导出来了。同样，图中组成曲线的点的坐标我们也可以导出来。<br>点击： <code>Graph</code>–&gt;<code>Export</code></p>
-<p><img src="/2018/09/03/ex49/ex49-7.png"></p>
+<h4 id="4-3-导出数据"><a href="#4-3-导出数据" class="headerlink" title="4.3 导出数据"></a>4.3 导出数据</h4><p>还记得前面我们讲的 DOS 的计算吗？我们求 <code>d band center</code>，电子数目积分的时候将数据导出来了。同样，图中组成曲线的点的坐标我们也可以导出来。<br>点击： <code>Graph</code>—&gt;<code>Export</code></p>
+<p><img src="/2018/09/03/ex49/ex49-7.png" alt=""></p>
 <p>选择保存的目录，并给保存的文件一个名字。然后点击，<code>Export</code>， 图中的 cu.dat 就会保存你指定的目录下了。</p>
-<p><img src="/2018/09/03/ex49/ex49-8.png"></p>
+<p><img src="/2018/09/03/ex49/ex49-8.png" alt=""></p>
 <p><strong>注意：</strong></p>
 <ol>
 <li>名字后面一定要有尾缀<code>.dat</code>或者 <code>.data</code>， 否则会导出失败；</li>
@@ -1166,16 +1157,16 @@
 <h4 id="4-4-分析数据"><a href="#4-4-分析数据" class="headerlink" title="4.4 分析数据"></a>4.4 分析数据</h4><p>有了数据，我们就底气十足，什么都不怕了。用 Notepad ++  打开 cu.dat 文件。</p>
 <p><strong>注意</strong>： 这里大师兄说的是用 Notepad++，别问我从哪里下载这个神奇的软件。百度会告诉你的。</p>
 <p>打开之后，我们会发现，和 DOS 计算导出来的结果有几分神似。数据共有三部分，每两部分之间由空行分开。</p>
-<p><img src="/2018/09/03/ex49/ex49-9.png"></p>
-<p><img src="/2018/09/03/ex49/ex49-10.png"></p>
+<p><img src="/2018/09/03/ex49/ex49-9.png" alt=""></p>
+<p><img src="/2018/09/03/ex49/ex49-10.png" alt=""></p>
 <p>这三部分的顺序，如下图，</p>
-<p><img src="/2018/09/03/ex49/ex49-11.png"></p>
+<p><img src="/2018/09/03/ex49/ex49-11.png" alt=""></p>
 <p>我们从图中可以看出，基本上在 10-18 的这个区间范围，三条线的数据差不多是一样的。静电势能的话，可以通过红线( Average 那条线)，也就是第二部分来获取。可以查看下 14-15 $\AA$ 时红色曲线的数值，如下图：</p>
-<p><img src="/2018/09/03/ex49/ex49-12.png"></p>
-<h4 id="4-5-获取费米能级"><a href="#4-5-获取费米能级" class="headerlink" title="4.5 获取费米能级"></a>4.5 获取费米能级</h4><p><img src="/2018/09/03/ex49/ex49-13.png"></p>
+<p><img src="/2018/09/03/ex49/ex49-12.png" alt=""></p>
+<h4 id="4-5-获取费米能级"><a href="#4-5-获取费米能级" class="headerlink" title="4.5 获取费米能级"></a>4.5 获取费米能级</h4><p><img src="/2018/09/03/ex49/ex49-13.png" alt=""></p>
 <p>套公式，功函数为： 4.84-0.03 = 4.81 eV</p>
 <p>对比下维基百科中的数值：</p>
-<p><img src="/2018/09/03/ex49/ex49-14.png"></p>
+<p><img src="/2018/09/03/ex49/ex49-14.png" alt=""></p>
 <p>注意：虽然维基百科给了功函数的一些数值，在发表文章的时候，你不能直接放 wiki 的链接到论文里面，这显得有些不专业。建议大家去参考 CRC handbook 里面的数值，然后引用。别问我 CRC handbook 是啥玩意，前面我也讲过了。 </p>
 <h3 id="5-扩展练习："><a href="#5-扩展练习：" class="headerlink" title="5 扩展练习："></a>5 扩展练习：</h3><ol>
 <li>重复本节的计算；</li>
@@ -1296,30 +1287,32 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>前面一节，我们讲解了一下 VASP 官网 Hand-On-Session-III 中表面能的计算。 </p>
-<h3 id="1-首先我们要指出一点-VASP-官网的错误"><a href="#1-首先我们要指出一点-VASP-官网的错误" class="headerlink" title="1 首先我们要指出一点 VASP 官网的错误"></a>1 首先我们要指出一点 VASP 官网的错误</h3><p><img src="/2018/09/02/ex48/ex48-1.jpeg"></p>
+<h3 id="1-首先我们要指出一点-VASP-官网的错误"><a href="#1-首先我们要指出一点-VASP-官网的错误" class="headerlink" title="1 首先我们要指出一点 VASP 官网的错误"></a>1 首先我们要指出一点 VASP 官网的错误</h3><p><img src="/2018/09/02/ex48/ex48-1.jpeg" alt=""></p>
 <p>最后的表面能应该是： 0.86 - 0.015 = 0.845 eV 而不是 0.71 eV。</p>
 <h3 id="2-为什么要除以-2？"><a href="#2-为什么要除以-2？" class="headerlink" title="2  为什么要除以 2？"></a>2  为什么要除以 2？</h3><p>很多人困惑为什么我们在计算的时候，上图中要除以 2。这是因为我们的单点计算中包含有 2 个面。前一节解释说是因为把 Bulk 切成了两半，以至于把大家给弄糊涂了。为什么我们的计算中会有两个面呢？首先我们看下 Slab 模型：</p>
-<p><img src="/2018/09/02/ex48/ex48-2.jpeg"></p>
+<p><img src="/2018/09/02/ex48/ex48-2.jpeg" alt=""></p>
 <p>问题： 上图的结构中有几个表面呢？</p>
 <p>答案是 2 个，因为我们的 slab 模型在 z 方向上也具有周期性，虽然我们把底部的两层原子固定来模拟体相，但实际上它们还是表面。如下图：</p>
-<p><img src="/2018/09/02/ex48/ex48-3.jpeg"></p>
+<p><img src="/2018/09/02/ex48/ex48-3.jpeg" alt=""></p>
 <p>那么，为什么 E<sup>rel</sup> 没有除以 2 呢？</p>
 <p>这是因为我们只优化了一个表面啊。</p>
 <p>如果我们两个表面都要优化的时候，是不是 E<sup>rel</sup> 也除以 2 了呢？</p>
 <p>答：是的。</p>
 <p>如果你喜欢上下两个面都优化的话，那么这将引申出 slab 模型的两种情况，对称性和非对称性模型。前面我们讲的都是非对称的 slab 模型。那么什么是对称的 slab 模型呢？ 如下图：</p>
-<p><img src="/2018/09/02/ex48/ex48-4.png"></p>
+<p><img src="/2018/09/02/ex48/ex48-4.png" alt=""></p>
 <p>在这个模型中，中间的三层原子被固定用来模拟体相，上下三层的原子放开用来模拟表面。此时，如果你计算表面能的时候，E<sup>rel</sup> 的数值就要除以 2 了。计算公式可以简化为：</p>
-<p>$$ \begin{align*}<br>\sigma &amp;=\frac{1}{2A}(E_{surf}-N_{atoms}\times E_{bulk}+E^{rel})\<br>&amp;=\frac{1}{2A}(E_{surf}^{rel} -N_{atoms}\times E_{bulk})\<br>\end{align*} $$</p>
-<p>其中： $E_{surf}^{rel}$ 直接就是我们优化完毕之后的对称slab模型的能量。</p>
-<p>单个表面的面积 A， slab 模型中的原子数 $N_{atoms}$ 和 $E_{bulk}$ 这些能量的获取和前面一节讲的内容一致。</p>
+<script type="math/tex; mode=display">\begin{align*}
+\sigma &=\frac{1}{2A}(E_{surf}-N_{atoms}\times E_{bulk}+E^{rel})\\
+&=\frac{1}{2A}(E_{surf}^{rel} -N_{atoms}\times E_{bulk})\\
+\end{align*}</script><p>其中： $E_{surf}^{rel}$ 直接就是我们优化完毕之后的对称slab模型的能量。</p>
+<p>单个表面的面积 A， slab 模型中的原子数 $N<em>{atoms}$ 和 $E</em>{bulk}$ 这些能量的获取和前面一节讲的内容一致。</p>
 <p>注意： 将这个公式和参考书 96 页底部的公式对比一下。然后仔细阅读参考书 97 页的公式各项的说明。</p>
 <h3 id="3-对称和非对称slab模型的区别："><a href="#3-对称和非对称slab模型的区别：" class="headerlink" title="3 对称和非对称slab模型的区别："></a>3 对称和非对称slab模型的区别：</h3><ol>
 <li>对称 slab 明显具有更多的原子数，在 z 方向更长，需要更多的真空层(上下两层)，这就不可避免地出现了计算量大的缺点，尤其是对于机时捉襟见肘的筒子们来说，这个模型就不用考虑啦；</li>
 <li>非对称模型由于其非对称性，在计算过程中会产生偶极矩，注意这个偶极矩是由于模型引入的，并非我们常说的分子中的偶极矩。尤其是当我们要计算一些表面吸附或者反应的时候，两个 slab 之间偶极矩的相互作用会对我们的结果产生影响。但这不是什么大问题，很多计算软件都可以通过控制计算参数来消除或者将这一影响减至最小。</li>
 <li>VASP 中可以通过设置：<ol>
-<li><code>LDIPOL=.TRUE. </code>(打开偶极校正)</li>
-<li><code>IDIPOL = 1-4 </code>来解决。 1，2，3分表代表在x，y和z 方向上进行校正。4代表在所有方向上。</li>
+<li><code>LDIPOL=.TRUE.</code>(打开偶极校正)</li>
+<li><code>IDIPOL = 1-4</code>来解决。 1，2，3分表代表在x，y和z 方向上进行校正。4代表在所有方向上。</li>
 </ol>
 </li>
 </ol>
@@ -1330,7 +1323,7 @@
 <ul>
 <li>Slab的层数：如参考书中的结果。</li>
 </ul>
-<p><img src="/2018/09/02/ex48/ex48-5.jpeg"></p>
+<p><img src="/2018/09/02/ex48/ex48-5.jpeg" alt=""></p>
 <ul>
 <li>slab 表面的大小，一般来说 p(1x1) 的即可。当然啦，你可也比较下 p(1x1) 和 p(2x2) 的区别： 这里要注意的是： 改变表面的大小，KPOINTS 也要发生相应的变化，只有这样，两个计算的结果才具有可比性。 </li>
 <li>真空层的厚度 这些大家都可以测试一下。</li>
@@ -1341,9 +1334,9 @@
 <li><p>此外，大师兄还要推荐一本进阶版的参考书：Theoretical Surface Science: A Microscopic Perspective，作者是 Axel Groβ。课题组主页：<a target="_blank" rel="noopener" href="https://www.uni-ulm.de/en/nawi/institute-of-theoretical-chemistry/">https://www.uni-ulm.de/en/nawi/institute-of-theoretical-chemistry/</a></p>
 </li>
 </ol>
-<p><img src="/2018/09/02/ex48/ex48-6.jpeg"></p>
-<p>​    <img src="/2018/09/02/ex48/ex48-7.jpeg"></p>
-<p><img src="/2018/09/02/ex48/ex48-8.jpeg"></p>
+<p><img src="/2018/09/02/ex48/ex48-6.jpeg" alt=""></p>
+<p>​    <img src="/2018/09/02/ex48/ex48-7.jpeg" alt=""></p>
+<p><img src="/2018/09/02/ex48/ex48-8.jpeg" alt=""></p>
 <p>本书关于表面能的介绍在第68页，具体内容大家认真阅读，必定受益匪浅。</p>
 <h3 id="5-扩展练习："><a href="#5-扩展练习：" class="headerlink" title="5 扩展练习："></a>5 扩展练习：</h3><ol>
 <li>请务必认真阅读参考书中表面能， slab 模型的相关介绍；</li>
@@ -1456,7 +1449,7 @@
 <h3 id="1-表面能定义"><a href="#1-表面能定义" class="headerlink" title="1 表面能定义"></a>1 表面能定义</h3><p>首先，我们先介绍一下表面能的定义。为了偷懒，本人直接摘抄的<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Surface_energy">维基百科</a>的解释，如下：</p>
 <p>表面能是创造物质表面时，破坏分子间化学键所需消耗的能量。在固体物理理论中，表面原子比物质内部的原子具有更多的能量，因此，根据能量最低原理，原子会自发的趋于物质内部而不是表面。表面能的另一种定义是，材料表面相对于材料内部所多出的能量。把一个固体材料分解成小块需要破坏它内部的化学键，所以需要消耗能量。如果这个分解的过程是可逆的，那么把材料分解成小块所需要的能量就和小块材料表面所增加的能量相等。但事实上，只有在真空中刚刚形成的表面才符合上述能量守恒。因为新形成的表面是非常不稳定的，它们通过表面原子重组和相互间的反应，或者对周围其他分子或原子的吸附，从而使表面能量降低。</p>
 <h3 id="2-VASP计算"><a href="#2-VASP计算" class="headerlink" title="2 VASP计算"></a>2 VASP计算</h3><p>具体到VASP的计算中，表面能是怎么算出来的呢？ 下面我们看一下VASP官网的表面能的计算过程。</p>
-<p><img src="/2018/09/01/ex47/ex47-2.jpeg"></p>
+<p><img src="/2018/09/01/ex47/ex47-2.jpeg" alt=""></p>
 <p>公式先大体浏览一遍，我们分析下里面的各项所表示的内容：</p>
 <ul>
 <li>E<sup>rel</sup>： Relaxation energy， 即弛豫能量。这个前面一节我们已经讲过了，从刚刚切好的表面优化到稳定的表面所释放的热量。图中的第一个点就是刚刚切好表面的能量（E<sup>surf</sup>），最后一个点就是优化完成之后的能量。这个相信大家现在都能理解了。</li>
@@ -1468,25 +1461,24 @@
 <p><strong>注意1：</strong></p>
 <p>前面说的最后一点。E<sub>bulk</sub>， 这个不是指的体相的能量，而是体相中单个原子能量。即体相的能量除以原子数目。我们顺便回顾一下前面单胞的优化：</p>
 <ol>
-<li>获取稳定的晶格常数，两个方法：</li>
-</ol>
-<pre><code>* ISIF + Large ENCUT
-* 通过计算不同的晶格常数的晶胞能量，用BM方程拟合
-</code></pre>
-<ol start="2">
+<li><p>获取稳定的晶格常数，两个方法：</p>
+<ul>
+<li>ISIF + Large ENCUT</li>
+<li>通过计算不同的晶格常数的晶胞能量，用BM方程拟合</li>
+</ul>
+</li>
 <li>得到稳定的晶格常数之后，如果用的 ISIF= 3 这个方法，则将 CONTCAR 复制成 POSCAR ，然后在 INCAR 中设置： ISIF = 2 + 正常的 ENCUT ，做个单算，算下计算晶胞的能量。</li>
 <li>用晶胞的能量除以晶胞中的原子数目，就得到了这里的 E<sub>bulk</sub>。比如前面 Cu 的单胞中有4个原子，我们则用计算后体系的能量除以4。</li>
 </ol>
 <p><strong>注意2：</strong></p>
 <p>Handonsession-III 里面的表面能，严格来说，这个定义其实是不对的。因为表面能，从字面上理解，它的单位应该是： 能量/面积。而图中只有能量，没有面积。所以，图中的表面能指的是纯能量。</p>
 <ol>
-<li>σ<sup>unrel</sup>： 将块体直接切开所用的功，因为是切成了2份，公式中除以2。  </li>
-</ol>
-<pre><code>注意，在这个计算里面，暂且不考虑表面的弛豫，单纯从体相切成2个表面的过程。
-能量是刚刚切出来的slab的能量： -25.560
-</code></pre>
-<ol start="2">
-<li>从体相到切开表面直至达到稳定状态，总的能量变化为：<br>$$<br>\sigma = \sigma^{unrel + E^{rel}}<br>$$</li>
+<li><p>σ<sup>unrel</sup>： 将块体直接切开所用的功，因为是切成了2份，公式中除以2。  </p>
+<p>注意，在这个计算里面，暂且不考虑表面的弛豫，单纯从体相切成2个表面的过程。<br>能量是刚刚切出来的slab的能量： -25.560</p>
+</li>
+<li><p>从体相到切开表面直至达到稳定状态，总的能量变化为：</p>
+<script type="math/tex; mode=display">
+\sigma = \sigma^{unrel + E^{rel}}</script></li>
 </ol>
 <p><strong>注意3：</strong></p>
 <p>E<sup>rel</sup> 这里没有除以2。为什么呢？ 这是因为我们只放开了上面的两层原子。也就是只优化了一个表面。<br>至此，从体相切成表面，然后直至表面稳定，这一个过程的能量就算完了。<br>既然前面说了，表面能里面有面积，那么面积指的是什么面积？怎么求面积呢？</p>
@@ -1494,29 +1486,29 @@
 <li>面积就是你计算的slab的那一层表面积，很多人问我这个问题，我也是无语了！</li>
 <li>怎么求呢? 我们先看一下Slab模型(Notepad++这个软件打开的！没有的话赶紧去安装一个)</li>
 </ol>
-<p><img src="/2018/09/01/ex47/ex47-3.png"></p>
+<p><img src="/2018/09/01/ex47/ex47-3.png" alt=""></p>
 <p>前面几行放大一下，看看晶格尺寸。</p>
-<p><img src="/2018/09/01/ex47/ex47-4.png"></p>
+<p><img src="/2018/09/01/ex47/ex47-4.png" alt=""></p>
 <p>如果面积用A来表示， 则： </p>
-<p>A = 2.57170 * 2.22716 – 0.000 * (-1.28585) </p>
+<p>A = 2.57170 <em> 2.22716 – 0.000 </em> (-1.28585) </p>
 <p><strong>注意4：</strong></p>
 <p>这里的单位是 Å<sup>2</sup><br>原理如下图：(自画自拍，不喜勿喷!)</p>
-<p><img src="/2018/09/01/ex47/ex47-5.jpeg"></p>
+<p><img src="/2018/09/01/ex47/ex47-5.jpeg" alt=""></p>
 <p>菱形的面积等于： x1 * y2<br>如果坐标系不是那么正儿八经对在一起的时候，如下图：</p>
-<p><img src="/2018/09/01/ex47/ex47-6.jpeg"></p>
-<p>则面积等于：x1 * y2 – y1 * x2<br>Handonsession-III 中 Ni(100) 表面的面积为：</p>
-<p><img src="/2018/09/01/ex47/ex47-7.png"></p>
-<p>A = (0.5*0.5– 0.5 * (-0.5)) = 0.5 Å<sup>2</sup><br>这里我们还忘了乘以前面的缩放系数：所以，<br>A = 0.5 * 3.53 * 3.53 = 6.23045 Å<sup>2</sup><br>最终表面能为： 0.71 eV / 6.23045 Å<sup>2</sup> = 0.114 eV/Å<sup>2</sup><br>一般来说表面能的单位为： J/m<sup>2</sup><br>换算系数为： 1 eV/Å<sup>2</sup> = 16.02 J/m<sup>2</sup><br>换算完毕后，表面能为： σ = 0.114 * 16.02 J/m<sup>2</sup> = 1.826 J/m<sup>2</sup> 。</p>
+<p><img src="/2018/09/01/ex47/ex47-6.jpeg" alt=""></p>
+<p>则面积等于：x1 <em> y2 – y1 </em> x2<br>Handonsession-III 中 Ni(100) 表面的面积为：</p>
+<p><img src="/2018/09/01/ex47/ex47-7.png" alt=""></p>
+<p>A = (0.5<em>0.5– 0.5 </em> (-0.5)) = 0.5 Å<sup>2</sup><br>这里我们还忘了乘以前面的缩放系数：所以，<br>A = 0.5 <em> 3.53 </em> 3.53 = 6.23045 Å<sup>2</sup><br>最终表面能为： 0.71 eV / 6.23045 Å<sup>2</sup> = 0.114 eV/Å<sup>2</sup><br>一般来说表面能的单位为： J/m<sup>2</sup><br>换算系数为： 1 eV/Å<sup>2</sup> = 16.02 J/m<sup>2</sup><br>换算完毕后，表面能为： σ = 0.114 * 16.02 J/m<sup>2</sup> = 1.826 J/m<sup>2</sup> 。</p>
 <p><strong>注意5</strong>： 我们的参考书中(第97页中)给弄反了。</p>
-<p><img src="/2018/09/01/ex47/ex47-8.jpeg"></p>
-<p>这是因为：<br>1 eV = 1.602176487<em>10<sup>-19</sup> J<br>1 Å<sup>2</sup> = (1</em>10<sup>-10</sup>)* (1*10<sup>-10</sup>) m<sup>2</sup><br>大家自己算算就知道了。讲到这里，相信金属表面能，大家都可以照着去算一遍了。</p>
+<p><img src="/2018/09/01/ex47/ex47-8.jpeg" alt=""></p>
+<p>这是因为：<br>1 eV = 1.602176487<em>10<sup>-19</sup> J<br>1 Å<sup>2</sup> = (1</em>10<sup>-10</sup>)<em> (1</em>10<sup>-10</sup>) m<sup>2</sup><br>大家自己算算就知道了。讲到这里，相信金属表面能，大家都可以照着去算一遍了。</p>
 <p><strong>注意6：</strong></p>
 <p>获取E<sup>surf</sup> 的时候，一定要检查：1） 单点计算是不是收敛了？或者2） 第一个离子步是不是收敛了？</p>
 <p>如果没有收敛的话，表面能的计算就是错的。σ<sup>unrel</sup>和E<sup>rel</sup>都跟这个量密切相关。</p>
 <h3 id="3-下面我们看一下这篇参考文献中的计算介绍："><a href="#3-下面我们看一下这篇参考文献中的计算介绍：" class="headerlink" title="3 下面我们看一下这篇参考文献中的计算介绍："></a>3 下面我们看一下这篇参考文献中的计算介绍：</h3><p>Shapecontrol in concave metal nanoparticles by etching<br>Nanoscale, 2017,9, 13089-13094 </p>
-<p><img src="/2018/09/01/ex47/ex47-9.jpeg"></p>
+<p><img src="/2018/09/01/ex47/ex47-9.jpeg" alt=""></p>
 <p>这是本人博士期间的一个工作，主要讨论了不同盐酸浓度下Pt纳米颗粒的成长，腐蚀过程以及形貌的预测。有兴趣的可以看看，当然啦，本人也希望大家多多引用。对于表面能的计算，大家可以参考支持信息中的公式1，如下图： </p>
-<p><img src="/2018/09/01/ex47/ex47-10.jpeg"></p>
+<p><img src="/2018/09/01/ex47/ex47-10.jpeg" alt=""></p>
 <p>相信到这里，大家可以完全明白这段话的意思，以及计算的整个流程了。</p>
 <h3 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h3><ol>
 <li>重复一下 Hand on Session -III 中 Ni(100)  表面能的计算;</li>
@@ -1637,10 +1629,8 @@
           <p>前面一节我们回顾了一下表面弛豫的基本概念，对于大多数的金属体系来说， 表面弛豫一般发生在垂直方向上。将金属沿表面方向切成两份后，由于表面原子的配位数发生了变化， 我们可以想象:该表层原子与下面一层的结合能力会更强，从而降低体系的能量。具体体现在层间距和能量两个方面。我们先回顾一下Ex44中Cu(111)表面的练习。</p>
 <h2 id="1-结构优化前后变化"><a href="#1-结构优化前后变化" class="headerlink" title="1 结构优化前后变化"></a>1 结构优化前后变化</h2><p>首先观察一下结构的变化， POSCAR的结构如下：(刚刚切好的，热乎的表面)</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Cu\(1\1\1)</span><br><span class="line">   1.00000000000000</span><br><span class="line">     2.5717000960999998    0.0000000000000000    0.0000000000000000</span><br><span class="line">    -1.2858500480999999    2.2271576141999998    0.0000000000000000</span><br><span class="line">     0.0000000000000000    0.0000000000000000   21.2994003296000010</span><br><span class="line">   Cu</span><br><span class="line">   4</span><br><span class="line">Selective</span><br><span class="line">Cartesian</span><br><span class="line">+0.0000000000   +0.0000000000   +0.0000000000   F F F</span><br><span class="line">-0.0000128765   +1.4847792201   +2.0999078998   F F F</span><br><span class="line">+1.2858629618   +0.7423784587   +4.1996028482   T T T</span><br><span class="line">+0.0000000000   +0.0000000000   +6.2995107693   T T T</span><br></pre></td></tr></table></figure>
-
 <p>优化后的结构：冷却后的，转化为Cartesian坐标的CONTCAR) </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Cu\(1\1\1)</span><br><span class="line">   1.00000000000000</span><br><span class="line">     2.5717000960999998    0.0000000000000000    0.0000000000000000</span><br><span class="line">    -1.2858500480999999    2.2271576141999998    0.0000000000000000</span><br><span class="line">     0.0000000000000000    0.0000000000000000   21.2994003296000010</span><br><span class="line">   Cu</span><br><span class="line">     4</span><br><span class="line">Selective dynamics</span><br><span class="line">Cartesian</span><br><span class="line">+0.0000000000   +0.0000000000   +0.0000000000   F F F</span><br><span class="line">-0.0000128765   +1.4847792201   +2.0999078998   F F F</span><br><span class="line">+1.2858542192   +0.7423835062   +4.1890255872   T T T</span><br><span class="line">+0.0000182442   -0.0000105333   +6.2592676588   T T T</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>表层原子的坐标从6.2995 $\AA$减小到6.2593 $\AA$。说明该层原子向体相收缩了。<br>第一、二层的原子间距（单位： $\AA$）为:<br>6.2995-4.1996 = 2.0999 (POSCAR)<br>6.2593-4.1890 = 2.0703 (CONTCAR)，<br>前后变化了(2.0999-2.0703) / 2.0999  * 100% = 1.4 %<br>注意：这里没有区分正负号，一般来说，用负值表示向体相收缩！！！(详见参考书)</p>
 <h2 id="2-弛豫能量"><a href="#2-弛豫能量" class="headerlink" title="2 弛豫能量"></a>2 弛豫能量</h2><p>那么怎么知道弛豫前后的能量变化呢? 这个问题很容易回答: </p>
 <ul>
@@ -1649,18 +1639,16 @@
 </ul>
 <p>实际计算过程中，第一步可以免去，因为在优化的时候，VASP会对初始结构计算一下，对应的为第一个离子步的能量。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/test/cu/cu111/opt1$ grep &#x27;  without&#x27; OUTCAR  | awk &#x27;&#123;print $7&#125;&#x27;</span><br><span class="line">-13.96892338</span><br><span class="line">-13.96932426</span><br><span class="line">-13.96974724</span><br><span class="line">-13.97030280</span><br><span class="line">-13.97016827</span><br><span class="line">-13.97041579</span><br><span class="line">-13.97047584</span><br><span class="line">-13.97063103</span><br><span class="line">-13.97082922</span><br><span class="line">-13.97086603</span><br></pre></td></tr></table></figure>
-
 <p>所以，弛豫前后的能量（eV）变化为:<br>-13.97086603 - (-13.96892338)  = -0.00194265  </p>
-<p>能量为负值，说明弛豫这个过程是放热的，也就是说刚刚切开的表面不稳定，表层原子向体相收缩后，体系能量降低，变得更稳定。<br><strong>注意：</strong>这么做的时候，一定要先检查第一个离子步中的电子步是否收敛。比如：VASP默认的单个离子步中的电子步数为60步（<code>NELM  =  60 </code>），<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/NELM">https://cms.mpi.univie.ac.at/wiki/index.php/NELM</a><br>如果你设置的的NELM为默认值，且第一个离子步中，到了60步还没有收敛，则该这一步的能量是不可以用的。<br>此时，你需要做的就是：</p>
+<p>能量为负值，说明弛豫这个过程是放热的，也就是说刚刚切开的表面不稳定，表层原子向体相收缩后，体系能量降低，变得更稳定。<br><strong>注意：</strong>这么做的时候，一定要先检查第一个离子步中的电子步是否收敛。比如：VASP默认的单个离子步中的电子步数为60步（<code>NELM  =  60</code>），<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/NELM">https://cms.mpi.univie.ac.at/wiki/index.php/NELM</a><br>如果你设置的的NELM为默认值，且第一个离子步中，到了60步还没有收敛，则该这一步的能量是不可以用的。<br>此时，你需要做的就是：</p>
 <ul>
 <li>尝试增大 <code>NELM = 100</code> 或者其他更大的数值， 对未优化的结构重新做个单点计算。</li>
-<li>收敛很困难的话，可以调节下<code>ALGO </code>这个参数。</li>
+<li>收敛很困难的话，可以调节下<code>ALGO</code>这个参数。</li>
 </ul>
 <h2 id="3-dire2cart-py"><a href="#3-dire2cart-py" class="headerlink" title="3 dire2cart.py"></a>3 dire2cart.py</h2><p>本节讲的太少，留个转化Direct为Cartesian的脚本(<code>dire2cart.py</code>）作为补充。下载链接： </p>
-<p><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1ScsLWhLAPpSul0SzYNPvpg%E3%80%82">https://pan.baidu.com/s/1ScsLWhLAPpSul0SzYNPvpg。</a></p>
+<p><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1ScsLWhLAPpSul0SzYNPvpg。">https://pan.baidu.com/s/1ScsLWhLAPpSul0SzYNPvpg。</a></p>
 <p>上面CONTCAR的转化就是用的这个脚本。使用如下图: </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/test/cu/cu111/opt1$ ls</span><br><span class="line">CONTCAR  INCAR  KPOINTS  OSZICAR  OUTCAR  POSCAR  POTCAR  sub4  vasprun.xml</span><br><span class="line">qli@bigbro:~/test/cu/cu111/opt1$ dire2cart.py POSCAR</span><br><span class="line">###################################</span><br><span class="line"></span><br><span class="line"># #</span><br><span class="line"></span><br><span class="line">#for VASP 5.2 or higher versions  #</span><br><span class="line"></span><br><span class="line"># #</span><br><span class="line"></span><br><span class="line">###################################</span><br><span class="line"></span><br><span class="line">## This POSCAR has Direct Coordinations， Conversion is starting....</span><br><span class="line"></span><br><span class="line">## POSCAR with Cartesian Coordiations is named as POSCAR_C</span><br></pre></td></tr></table></figure>
-
 <p><strong>注意：</strong></p>
 <ul>
 <li>如果你的<code>POSCAR</code>或者<code>CONTCAR</code>已经是<code>Cartesian</code>坐标了，这个脚本可以自动识别并终止转换。</li>
@@ -1774,29 +1762,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="答辩心得"><a href="#答辩心得" class="headerlink" title="答辩心得"></a>答辩心得</h2><p>顺利完成博士答辩，现在我们开始继续前面的章节。<br>首先，想跟大家分享下自己答辩的体会：基础知识太不扎实，前瞻性又太不够。导致回答问题的环节，被大牛们问的就想找个缝钻进去了。这对于我的启示就是，以后写这本书的时候，每个练习尽量分成4个部分:</p>
-<ol>
-<li> 第一部分讲基础知识，</li>
-<li> 第二部分讲计算过程的细节部分，</li>
-<li>第三部分讨论计算结果和基础知识;</li>
-<li>相关发表的文章中的计算。<br>这对大家的要求就是:</li>
-<li> 有什么任何有疑问的地方，自己要记下来，主动查阅资料，然后反馈给我;</li>
-<li> 有什么欠妥的地方，恳请批评指正;</li>
-<li> 如果你有相关发表的文章，可以放在前面提到的第四部分供大家研究，欢迎分享;</li>
-<li> 这本书的作者不是我自己一个人，更是我们大家的心血，希望我们一起努力;</li>
-<li> 本人只接受邮件咨询或者批评: <a href="mailto:&#x6c;&#x71;&#x63;&#x61;&#x74;&#97;&#x40;&#x67;&#109;&#x61;&#105;&#108;&#46;&#x63;&#111;&#x6d;">&#x6c;&#x71;&#x63;&#x61;&#x74;&#97;&#x40;&#x67;&#109;&#x61;&#105;&#108;&#46;&#x63;&#111;&#x6d;</a> 因为群里讨论的很多宝贵的经验总是没法及时完整的保留下来，以至于造成了很多损失。</li>
-</ol>
+          <h2 id="答辩心得"><a href="#答辩心得" class="headerlink" title="答辩心得"></a>答辩心得</h2><p>顺利完成博士答辩，现在我们开始继续前面的章节。<br>首先，想跟大家分享下自己答辩的体会：基础知识太不扎实，前瞻性又太不够。导致回答问题的环节，被大牛们问的就想找个缝钻进去了。这对于我的启示就是，以后写这本书的时候，每个练习尽量分成4个部分:<br>1)  第一部分讲基础知识，<br>2)  第二部分讲计算过程的细节部分，<br>3) 第三部分讨论计算结果和基础知识;<br>4) 相关发表的文章中的计算。<br>这对大家的要求就是:<br>1)  有什么任何有疑问的地方，自己要记下来，主动查阅资料，然后反馈给我;<br>2)  有什么欠妥的地方，恳请批评指正;<br>3)  如果你有相关发表的文章，可以放在前面提到的第四部分供大家研究，欢迎分享;<br>4)  这本书的作者不是我自己一个人，更是我们大家的心血，希望我们一起努力;<br>5)  本人只接受邮件咨询或者批评: lqcata@gmail.com 因为群里讨论的很多宝贵的经验总是没法及时完整的保留下来，以至于造成了很多损失。</p>
 <h2 id="表面弛豫"><a href="#表面弛豫" class="headerlink" title="表面弛豫"></a>表面弛豫</h2><p>我们先想想一下，有一块金属，我们从中间切开后，新生成的两个表面上的原子和体相中的有什么区别?<br>首先，表面上的原子配位数比体相中的少了，即表层原子具有悬键。因为切开的过程就等同于把两个表面的原子键切开了。其次，配位数的减少使得表面层与内部的相互作用会更强，与体相中有所不同。这就体现在层间距(键长)上面。</p>
 <p><strong>1 维基百科的解释</strong></p>
 <p>理想情况下的晶体向各方向无限延伸，其中任一原子的平衡位置由晶体中其他所有原子对其作用力的总和决定。因此，每个原子所在的位置在理想晶体中是等价的，生成的晶体结构是周期性的。现实情况下的晶体大小有限，这就导致了靠近晶体表层的原子受到的作用力不同于晶体内部的原子，从而造成晶体表面原子排列方式不同于晶体内部的结果。晶体表层原子的这种行为可被分为弛豫(relaxation)和重构(reconstruction)两种情况。<br>弛豫指表面的原子层整体相对于内部的本体(bulk)的位置变化。较为常见的情况是垂直方向上的上下位移，即法向弛豫(normalrelaxation)。大部分金属表面上的弛豫都是这种类型。某些材料的表面也可能在发生法向弛豫的同时有切向的弛豫。</p>
-<p><strong>2 Surface Science: An Introduction 这本书的解释</strong><br><img src="/2018/08/28/ex45/ex45-1.jpeg"><br><img src="/2018/08/28/ex45/ex45-2.jpeg"><br><img src="/2018/08/28/ex45/ex45-3.jpeg"><br><img src="/2018/08/28/ex45/ex45-4.jpeg"></p>
-<p><strong>3  参考书的解释:</strong><br>Density Functional Theory: A Practical Introduction， 第94页，第四章，第4.5节 SURFACE RELAXATION 这一部分(请务必认真看完这一部分)<br><img src="/2018/08/28/ex45/ex45-5.jpeg"><br><img src="/2018/08/28/ex45/ex45-6.jpeg"><br><img src="/2018/08/28/ex45/ex45-7.jpeg"></p>
-<h2 id="4-扩展练习"><a href="#4-扩展练习" class="headerlink" title="4 扩展练习:"></a>4 扩展练习:</h2><ol>
-<li> 了解表面弛豫的相关内容;</li>
-<li> 查找相关书籍;</li>
-<li> 认真阅读参考书4.5节的内容，并重复4.5 节的练习</li>
-<li>下载本节的两本参考书：QQ群共享或者百度网盘链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1eSB2Nx4">http://pan.baidu.com/s/1eSB2Nx4</a></li>
-</ol>
+<p><strong>2 Surface Science: An Introduction 这本书的解释</strong><br><img src="/2018/08/28/ex45/ex45-1.jpeg" alt=""><br><img src="/2018/08/28/ex45/ex45-2.jpeg" alt=""><br><img src="/2018/08/28/ex45/ex45-3.jpeg" alt=""><br><img src="/2018/08/28/ex45/ex45-4.jpeg" alt=""></p>
+<p><strong>3  参考书的解释:</strong><br>Density Functional Theory: A Practical Introduction， 第94页，第四章，第4.5节 SURFACE RELAXATION 这一部分(请务必认真看完这一部分)<br><img src="/2018/08/28/ex45/ex45-5.jpeg" alt=""><br><img src="/2018/08/28/ex45/ex45-6.jpeg" alt=""><br><img src="/2018/08/28/ex45/ex45-7.jpeg" alt=""></p>
+<h2 id="4-扩展练习"><a href="#4-扩展练习" class="headerlink" title="4 扩展练习:"></a>4 扩展练习:</h2><p>1)  了解表面弛豫的相关内容;<br>2)  查找相关书籍;<br>3)  认真阅读参考书4.5节的内容，并重复4.5 节的练习<br>4)下载本节的两本参考书：QQ群共享或者百度网盘链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1eSB2Nx4">http://pan.baidu.com/s/1eSB2Nx4</a></p>
 <h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结"></a>5 总结</h2><p>表面弛豫相信大家都很了解了，借此机会供大家复习一下。关于表面化学的经典书籍，如果你有特别喜欢的，也请推荐给大家。 </p>
 
       
@@ -1905,7 +1877,7 @@
 <p>VASP中固定原子需要在POSCAR中进行操作。有两个关键点：</p>
 <p>1）在POSCAR的第7行后添加一行，改行内容为<code>Selective Dynamics</code>，VASP只认第一个字母，你可以直接在这一行只加 S或者s。也可以换成其他的S开头的单词，比如<code>SB</code>，<code>Sexy BigBro</code> ， <code>Super BigBro</code>等等；<br>2）在原子坐标后面加上 F 或者 T 表示固定或者放开，因为坐标有xyz三个数值，因此我们需要三个F或者T。我们可以通过设置允许原子在某一方向上移动，而其他方向上固定。</p>
 <ul>
-<li> <code>F F F </code>表示xyz全部固定； </li>
+<li><code>F F F</code>表示xyz全部固定； </li>
 <li><code>T T T</code> 表示xyz全部放开，</li>
 <li><code>F F T</code> 表示 xy方向固定，只允许原子在z方向上移动。</li>
 </ul>
@@ -1915,28 +1887,24 @@
 <li>如果前面的<code>POSCAR</code>直接拿过来直接用，那么在优化过程中所有的原子都会被放开。回想一下我们计算Fe, Cu单胞的例子，计算中我们没有设置F或者T，晶胞尺寸和原子的坐标在优化过程前后都发生了变化。因此你不设置<code>Selective</code> 以及 F或者T，VASP默认是所有的原子都放开的。</li>
 <li><code>Selective</code> 和 F 或者 T同时出现，不要只设置<code>Selective</code>忘了FT，也不要只设置FT忘了Selective.</li>
 </ul>
-<h2 id="2-如何修改？"><a href="#2-如何修改？" class="headerlink" title="2 如何修改？"></a>2 如何修改？</h2><p>根据前面说，我们需要做的无非有两步，<br>1）  在第7行后加入<code>Selective Dynamics</code><br>2）  在坐标后面加入<code>T T T </code>或者 <code>F F F</code><br>我们在本节中，将底部的两层原子固定，上面两层放开。</p>
+<h2 id="2-如何修改？"><a href="#2-如何修改？" class="headerlink" title="2 如何修改？"></a>2 如何修改？</h2><p>根据前面说，我们需要做的无非有两步，<br>1）  在第7行后加入<code>Selective Dynamics</code><br>2）  在坐标后面加入<code>T T T</code>或者 <code>F F F</code><br>我们在本节中，将底部的两层原子固定，上面两层放开。</p>
 <p>实现本目的，有以下几种方式： </p>
 <p>2.1）这个用文本编辑器就可以做到，很多编辑器都有列块模式，允许你同时添加N列到每行的最后。你可以使用下<code>Notepad++</code>，<code>Atom</code>这些免费开源的软件来操作</p>
 <p>2.2）使用<code>p4vasp</code>，详见前面的练习Ex24</p>
 <p>2.3） 本节我们重温一下<code>sed</code>的用法，直接使用命令进行操作。</p>
 <p>A) 在第 7行 后添加一行：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed  -i  &#x27;7aSelective Dynamics&#x27;  POSCAR</span><br></pre></td></tr></table></figure>
-
 <p>7a 代表在第7行后面添加一行，a 是append的缩写。注意，a 和 Selective之间可以没有空格，也可以有空格，这里我们没有加空格。</p>
 <p>B） 添加了Selective这一行之后，原子坐标的行数也发生了变化，为10-13行。</p>
 <p>C） 第10，11行为底部的两层原子坐标，我们在最后面加上<code>F F F</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed  -i  &#x27;10,11s/$/ F F F/g&#x27; POSCAR</span><br></pre></td></tr></table></figure>
-
 <p><strong>注意：</strong> 第一个F前面有个空格。</p>
 <p>d） 在12-13行最后面加上 <code>T T T</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed  -i  &#x27;12,13s/$/ T T T/g&#x27; POSCAR</span><br></pre></td></tr></table></figure>
-
 <p>这样，我们就顺利完成POSCAR的改造了，可以用来进行slab的优化计算了。</p>
 <h2 id="3-KPOINTS-和-POTCAR"><a href="#3-KPOINTS-和-POTCAR" class="headerlink" title="3 KPOINTS 和 POTCAR"></a>3 KPOINTS 和 POTCAR</h2><p>保持原来的样子不变</p>
-<h2 id="4-INCAR"><a href="#4-INCAR" class="headerlink" title="4 INCAR"></a>4 INCAR</h2><p>优化的时候，我门回想一下要设置的东西：<br>4.1<code> IBRION</code> 和 <code>POTIM</code><br>IBRION可以使用 1 和2，我们这里用2。（1的话适合初始结构比较好的情况，这里我们也可以用。）<br><code>POTIM =0.1</code>  官网默认值是0.5，个人感觉比较大， 0.1是一个很不错的选择。<br>4.2 <code>EDIFFG = -0.01</code>优化时以力作为收敛标准。注意 -0.01 已经很严格了，除非特殊需要，不要设置-0.001，这样你就会在QQ群里求助大家，为什么我优化的时候一直不收敛啊。如果设置-0.01，很多步过后仍然不收敛，可以尝试一下-0.02，也是一个很安全的选择。<br>4.3 <code>NSW = 500</code>  设置最大的优化步数。<br>4.4 <code>ISIF = 2</code>   slab 模型优化的时候，我们用<code>ISIF =2</code> ，也就是VASP的默认值，不用设置， 最终<code>INCAR</code>如下：</p>
+<h2 id="4-INCAR"><a href="#4-INCAR" class="headerlink" title="4 INCAR"></a>4 INCAR</h2><p>优化的时候，我门回想一下要设置的东西：<br>4.1<code>IBRION</code> 和 <code>POTIM</code><br>IBRION可以使用 1 和2，我们这里用2。（1的话适合初始结构比较好的情况，这里我们也可以用。）<br><code>POTIM =0.1</code>  官网默认值是0.5，个人感觉比较大， 0.1是一个很不错的选择。<br>4.2 <code>EDIFFG = -0.01</code>优化时以力作为收敛标准。注意 -0.01 已经很严格了，除非特殊需要，不要设置-0.001，这样你就会在QQ群里求助大家，为什么我优化的时候一直不收敛啊。如果设置-0.01，很多步过后仍然不收敛，可以尝试一下-0.02，也是一个很安全的选择。<br>4.3 <code>NSW = 500</code>  设置最大的优化步数。<br>4.4 <code>ISIF = 2</code>   slab 模型优化的时候，我们用<code>ISIF =2</code> ，也就是VASP的默认值，不用设置， 最终<code>INCAR</code>如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">System = Cu111</span><br><span class="line"></span><br><span class="line">ISMEAR = 1</span><br><span class="line">SIGMA = 0.1</span><br><span class="line">ALGO = FAST</span><br><span class="line">ENCUT = 450</span><br><span class="line">EDIFF = 1E-5</span><br><span class="line"></span><br><span class="line">LDIPOL = .TRUE.</span><br><span class="line">IDIPOL = 3</span><br><span class="line"></span><br><span class="line">NWRITE = 0</span><br><span class="line">LWAVE = .FALSE.</span><br><span class="line">LCHARG = .FALSE.</span><br><span class="line"></span><br><span class="line">IBRION = 2</span><br><span class="line">POTIM = 0.1</span><br><span class="line">EDIFFG = -0.01</span><br><span class="line">NSW = 500</span><br></pre></td></tr></table></figure>
-
 <p>注意：<br>上一节我们提到Cu没有磁性，表述是不准确的，应该是纯净的Cu(111) slab模型中，Cu不需要考虑自旋。如果你算的是CuO(111)表面，则需要考虑自旋了。</p>
 <h2 id="5-提交任务"><a href="#5-提交任务" class="headerlink" title="5 提交任务"></a>5 提交任务</h2><p>计算结束后，查看OUTCAR，OSZICAR的最后几行检查下是不是正常结束。</p>
 <h2 id="6-扩展练习"><a href="#6-扩展练习" class="headerlink" title="6 扩展练习"></a>6 扩展练习</h2><p>6.1 掌握本节提到的固定原子的三种做法：文本编辑器，p4vasp,  sed， 当然啦，更可以直接使用Vim 这个强大的工具来执行<br>6.2 查看结构优化相关的这几个参数，复习下它们的VASP官网说明。<br>6.3 运行本文的例子，然后将EDIFFG设置成 -0.02或者-0.001进行测试，查看与-0.01的区别。<br>6.4 VASP官网查找表面能计算的案例，结合本节以及前面的学习，尝试算一下Cu(111)面的表面能。</p>
@@ -2049,20 +2017,15 @@
 </ul>
 <p>因此，VASP的四个输入文件，我们已经有了POSCAR和POTCAR，下面我们复习下POSCAR，INCAR和KPOINTS的准备工作， 然后进行单点计算。</p>
 <h2 id="1-搭建slab模型"><a href="#1-搭建slab模型" class="headerlink" title="1  搭建slab模型"></a>1  搭建slab模型</h2><p>Cu(111) slab 模型（POSCAR）的制作流程（复习一下）。<strong>注意：</strong>前面我们用的是Conventional cell，下面用的是Primitive Cell。 一般来说用<code>Conventional cell</code>， FCC的金属可以用<code>Primitive Cell</code> 但对于其他体系，通过<code>Primitive Cell</code>切出来表面模型有问题。</p>
-<p>A）Bulk计算结束后，将CONTCAR用VESTA转换为cif文件，然后MS导入。<br>B）Build→Symmetry→primitive cell<br>C）Build→surfaces→cleave surface<br><img src="/2018/08/26/ex43/ex43-1.jpeg"><br>D）Build→Crystals→Build Vaccum Slab 真空层选择15Å<br><img src="/2018/08/26/ex43/ex43-2.jpeg"><br>E）导出为cif，通过VESTA转化为POSCAR格式，如下：<br><img src="/2018/08/26/ex43/ex43-3.jpeg"></p>
+<p>A）Bulk计算结束后，将CONTCAR用VESTA转换为cif文件，然后MS导入。<br>B）Build→Symmetry→primitive cell<br>C）Build→surfaces→cleave surface<br><img src="/2018/08/26/ex43/ex43-1.jpeg" alt=""><br>D）Build→Crystals→Build Vaccum Slab 真空层选择15Å<br><img src="/2018/08/26/ex43/ex43-2.jpeg" alt=""><br>E）导出为cif，通过VESTA转化为POSCAR格式，如下：<br><img src="/2018/08/26/ex43/ex43-3.jpeg" alt=""></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Cu\(1\1\1)</span><br><span class="line">1.0</span><br><span class="line">        2.5717000961         0.0000000000         0.0000000000</span><br><span class="line">       -1.2858500481         2.2271576142         0.0000000000</span><br><span class="line">        0.0000000000         0.0000000000        21.2994003296</span><br><span class="line">   Cu</span><br><span class="line">    4</span><br><span class="line">Direct</span><br><span class="line">     0.000000000         0.000000000         0.000000000</span><br><span class="line">     0.333330005         0.666670024         0.098590001</span><br><span class="line">     0.000000000         0.000000000         0.295760006</span><br><span class="line">     0.666670024         0.333330005         0.197170004</span><br></pre></td></tr></table></figure>
-
-<p>前面的操作，我们生成 <code>p(1x1)</code> 的Cu(111)面，p是<code>Primitive</code>的简称，如果你不了解p(1x1)， 去学习一下<code>Wood  Notation</code>。当然，在此基础上，你也可以将p(1x1) 在晶胞a 和b方向上扩展，生成<code>p(2x2)</code>，<code> p(3x3)</code>， <code>p(2x1)</code>等不同大小的Cu(111)表面。本节，我们就用p(1x1)做为例子。</p>
-<h2 id="2-KPOINTS"><a href="#2-KPOINTS" class="headerlink" title="2  KPOINTS"></a>2  KPOINTS</h2><p><code>POSCAR</code>中，slab在平面方向上a 和 b 的大小为2.5717 Å，根据前面的经验规则，我们可以在两个方向上K点取值为：$13\times13$，z 方向上取值为1，最终KPOINTS如下图，脚本使用命令为：<code> kpoints.sh 13 13 1</code> （不知道脚本的请往前翻）</p>
+<p>前面的操作，我们生成 <code>p(1x1)</code> 的Cu(111)面，p是<code>Primitive</code>的简称，如果你不了解p(1x1)， 去学习一下<code>Wood  Notation</code>。当然，在此基础上，你也可以将p(1x1) 在晶胞a 和b方向上扩展，生成<code>p(2x2)</code>，<code>p(3x3)</code>， <code>p(2x1)</code>等不同大小的Cu(111)表面。本节，我们就用p(1x1)做为例子。</p>
+<h2 id="2-KPOINTS"><a href="#2-KPOINTS" class="headerlink" title="2  KPOINTS"></a>2  KPOINTS</h2><p><code>POSCAR</code>中，slab在平面方向上a 和 b 的大小为2.5717 Å，根据前面的经验规则，我们可以在两个方向上K点取值为：$13\times13$，z 方向上取值为1，最终KPOINTS如下图，脚本使用命令为：<code>kpoints.sh 13 13 1</code> （不知道脚本的请往前翻）</p>
 <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/test/cu$  kpoints.sh <span class="number">13</span> <span class="number">13</span> <span class="number">1</span> </span><br><span class="line">qli@bigbro:~/test/cu$  cat KPOINTS</span><br><span class="line">K-POINTS</span><br><span class="line"> <span class="number">0</span></span><br><span class="line"><span class="built_in">Gamma</span></span><br><span class="line">  <span class="number">13</span> <span class="number">13</span> <span class="number">1</span></span><br><span class="line">  <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
-
 <p>为什么在z方向上只用1个K点？查找参考书（DFT：A Practical Introduction， Page 88）的说明：<br>If the vacuum region is large enough， the electron density tails off to zero a short distance from the edge of the slab. It turns out that this means that accurate results are possible using just one k point in the b3 direction.</p>
-<h2 id="3-INCAR"><a href="#3-INCAR" class="headerlink" title="3  INCAR"></a>3  INCAR</h2><p>在贴出来INCAR之前，大家首先回顾一下单点计算需要注意的几个方面：<br>1）<code>System = Cu(111)</code> 可有可无<br>2）Cu 是金属，可以使用<code>ISMEAR = 1;SIGMA = 0.1</code><br>3）<code>ALGO = FAST</code> 或者使用默认值<br>4）纯净的Cu(111)体系中，Cu没有磁性，ISPIN 不用设置<br>注意：CuO中Cu具有磁性，如果你算的是Cu的氧化物，就需要考虑ISPIN了<br>5）单点计算：<code>NSW = 0</code> 也可以不设置，因为默认值就是0<br>6）截断能： <code>ENCUT = 450</code> 很多人喜欢测试这个参数，450直接用是一个很好的选择<br>7）<code>EDIFF = 1E-5</code> 电子步的收敛标准<br>8）偶极矫正：<code>LDIPOL = .TRUE. ; IDIPOL = 3</code> Slab模型一般都需要加上这个参数<br>9）控制OUTCAR和其他文件的输出：<code> NWRITE = 0 ; LWAVE  = .FALSE.;LCHARG = .FALSE.</code><br>10）也可以加上<code>NCORE </code>这个参数来加快计算步骤。一般来说，不同的机子大家需要自己测试下NCORE参数对计算的影响，个人经验：如果你的机器一个节点有12个核，设置<code>NCORE = 6</code>； 一个节点有24核，设置<code>NCORE = 12</code>。也就是节点中核数的一半。由于这个计算很快，本操作就不考虑了。最终INCAR 如下:</p>
+<h2 id="3-INCAR"><a href="#3-INCAR" class="headerlink" title="3  INCAR"></a>3  INCAR</h2><p>在贴出来INCAR之前，大家首先回顾一下单点计算需要注意的几个方面：<br>1）<code>System = Cu(111)</code> 可有可无<br>2）Cu 是金属，可以使用<code>ISMEAR = 1;SIGMA = 0.1</code><br>3）<code>ALGO = FAST</code> 或者使用默认值<br>4）纯净的Cu(111)体系中，Cu没有磁性，ISPIN 不用设置<br>注意：CuO中Cu具有磁性，如果你算的是Cu的氧化物，就需要考虑ISPIN了<br>5）单点计算：<code>NSW = 0</code> 也可以不设置，因为默认值就是0<br>6）截断能： <code>ENCUT = 450</code> 很多人喜欢测试这个参数，450直接用是一个很好的选择<br>7）<code>EDIFF = 1E-5</code> 电子步的收敛标准<br>8）偶极矫正：<code>LDIPOL = .TRUE. ; IDIPOL = 3</code> Slab模型一般都需要加上这个参数<br>9）控制OUTCAR和其他文件的输出：<code>NWRITE = 0 ; LWAVE  = .FALSE.;LCHARG = .FALSE.</code><br>10）也可以加上<code>NCORE</code>这个参数来加快计算步骤。一般来说，不同的机子大家需要自己测试下NCORE参数对计算的影响，个人经验：如果你的机器一个节点有12个核，设置<code>NCORE = 6</code>； 一个节点有24核，设置<code>NCORE = 12</code>。也就是节点中核数的一半。由于这个计算很快，本操作就不考虑了。最终INCAR 如下:</p>
 <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">System = Cu111</span><br><span class="line"></span><br><span class="line">ISMEAR = <span class="number">1</span></span><br><span class="line">SIGMA = <span class="number">0.1</span></span><br><span class="line">ALGO = FAST</span><br><span class="line">ENCUT = <span class="number">450</span></span><br><span class="line">EDIFF = <span class="number">1E-5</span></span><br><span class="line"></span><br><span class="line">LDIPOL = .TRUE.</span><br><span class="line">IDIPOL = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">NWRITE = <span class="number">0</span></span><br><span class="line">LWAVE = .FALSE.</span><br><span class="line">LCHARG = .FALSE.</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="4-准备任务脚本，提交任务"><a href="#4-准备任务脚本，提交任务" class="headerlink" title="4 准备任务脚本，提交任务"></a>4 准备任务脚本，提交任务</h2><p>计算完成后， <code>grep &#39;  without&#39; OUTCAR</code>  （without前面有2个空格）或者<code>grep E0 OSZICAR | tail-n 1</code>，得到单点能为：<code> -13.96918440 eV</code></p>
+<h2 id="4-准备任务脚本，提交任务"><a href="#4-准备任务脚本，提交任务" class="headerlink" title="4 准备任务脚本，提交任务"></a>4 准备任务脚本，提交任务</h2><p>计算完成后， <code>grep &#39;  without&#39; OUTCAR</code>  （without前面有2个空格）或者<code>grep E0 OSZICAR | tail-n 1</code>，得到单点能为：<code>-13.96918440 eV</code></p>
 <h2 id="5-扩展练习"><a href="#5-扩展练习" class="headerlink" title="5   扩展练习"></a>5   扩展练习</h2><p>5.1 计算的例子下载链接：链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1cHY-9g2Iswl5zV9bijBG7Q">https://pan.baidu.com/s/1cHY-9g2Iswl5zV9bijBG7Q</a> 提取码: ctxc<br>5.2 重复本节所有的练习<br>5.3 VASP官网查找本节中不了解的参数，然后学习<br>5.4 思考一下：我们得到的单点能量可以干吗用？</p>
 <h2 id="6-总结："><a href="#6-总结：" class="headerlink" title="6 总结："></a>6 总结：</h2><p>刚刚步入slab的计算，我们速度稍微慢一些，本节只讲单点计算，希望大家能够跟上步骤，亲自进行操作练习，如果出错了，请认真改正，直至得到和上传的结果一样为止。再次强调，大家平时一定要多浏览VASP官网，请把VASP手册下载放到桌面上，没事的时候就翻一翻。不要去网上找一些乱七八糟的教程，拿过来就直接照着练，官网才是最正宗的。</p>
 
@@ -2167,36 +2130,23 @@
     <div class="post-body" itemprop="articleBody">
           <p>前面我们学习了Bulk计算的一些基本的计算，拟合以及优化晶格常数，DOS计算。在材料计算方面，还有能带，声子谱的计算等等，但由于本人方向不在这一块（主要是做表面反应机理研究的），就不能详细给大家解释了。如果有同学在这方面很擅长，可以把自己的计算心得写进本书，将不胜感激。说到表面反应的机理研究，我们首先要做的就是搭建模型。先理一下思路：</p>
 <p>1）计算Bulk的结构，获取稳定的晶格常数<br>2）在此基础上，搭建Slab模型。</p>
-<h2 id="1-什么是Slab-模型？"><a href="#1-什么是Slab-模型？" class="headerlink" title="1 什么是Slab 模型？"></a>1 什么是Slab 模型？</h2><p>这个问题，我们看一下参考书的第四章：Density Functional Theory: A Practical Introduction （注意：本书有中文版的，本人强烈不建议！请静下心来看原版的，也恳请不要在群里求中文的pdf版本！）<br><img src="/2018/08/25/ex42/ex42-2.jpeg"><br>多相催化中，反应发生在催化剂表面上，也就是气（液）固两相的交界处。为了模拟固体的表面，我们需要一个在二维方向上具有周期性的结构来模拟固体的表面，第三维方向则不具有周期性，用来模拟气相或者液相。但是，更常用的则是在第三维方向上加上周期性，周期性的结构之间用一个什么都没有的空间（free space）来分割，也就是真空层。在这里我们需要注意的是要避免第三维方向上两个周期性结构的相互影响，也就是一个周期的电子密度沿着真空层方向要趋于零，这样才不会对相邻的结构产生影响。此时，我们需要做的就是：</p>
+<h2 id="1-什么是Slab-模型？"><a href="#1-什么是Slab-模型？" class="headerlink" title="1 什么是Slab 模型？"></a>1 什么是Slab 模型？</h2><p>这个问题，我们看一下参考书的第四章：Density Functional Theory: A Practical Introduction （注意：本书有中文版的，本人强烈不建议！请静下心来看原版的，也恳请不要在群里求中文的pdf版本！）<br><img src="/2018/08/25/ex42/ex42-2.jpeg" alt=""><br>多相催化中，反应发生在催化剂表面上，也就是气（液）固两相的交界处。为了模拟固体的表面，我们需要一个在二维方向上具有周期性的结构来模拟固体的表面，第三维方向则不具有周期性，用来模拟气相或者液相。但是，更常用的则是在第三维方向上加上周期性，周期性的结构之间用一个什么都没有的空间（free space）来分割，也就是真空层。在这里我们需要注意的是要避免第三维方向上两个周期性结构的相互影响，也就是一个周期的电子密度沿着真空层方向要趋于零，这样才不会对相邻的结构产生影响。此时，我们需要做的就是：</p>
 <p>1）增大真空层的厚度，厚度要适中，太小肯定不行，太大也不合适。想一想我们前面讲到的影响计算速度的一个因素，真空层太厚，也就意味着我们的模型尺寸变大，从而导致计算变慢。一般来说，对于表面反应的计算，15$\AA$的真空层厚度足够了。但是，对于功函数这一类对真空层敏感的计算来说，我们需要注意。</p>
-<p>2）VASP中还需要加入：<code>LDIPOL = .TRUE.</code>和<code>IDIPOL = 3 </code>(3指的是在z方向上)这两个参数来消除上下不对称的slab表面导致的偶极矩影响。<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/LDIPOL">https://cms.mpi.univie.ac.at/wiki/index.php/LDIPOL</a><br><img src="/2018/08/25/ex42/ex42-3.jpeg"><br>对于表面结构，有以下几个需要注意的:<br>1）xy 方向上表面的大小;<br>A）这个影响表面吸附物种的覆盖度;<br>B）影响体系的尺寸大小和计算时间;<br>C）不同的大小需要选取对应的K点；回想一下我们前面提到的经验规则。</p>
+<p>2）VASP中还需要加入：<code>LDIPOL = .TRUE.</code>和<code>IDIPOL = 3</code>(3指的是在z方向上)这两个参数来消除上下不对称的slab表面导致的偶极矩影响。<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/LDIPOL">https://cms.mpi.univie.ac.at/wiki/index.php/LDIPOL</a><br><img src="/2018/08/25/ex42/ex42-3.jpeg" alt=""><br>对于表面结构，有以下几个需要注意的:<br>1）xy 方向上表面的大小;<br>A）这个影响表面吸附物种的覆盖度;<br>B）影响体系的尺寸大小和计算时间;<br>C）不同的大小需要选取对应的K点；回想一下我们前面提到的经验规则。</p>
 <p>2）不同的晶面，(111)， (100)，(110);<br>A) 这取决于你研究的方向;<br>B) 不同晶面的表面能;<br>C) 不同晶面的表面结构，反应活性等。</p>
 <p>3）表面结构的层数<br>A）层数多了，原子变多，体系在 z 方向的尺寸增加，也会影响计算速度；<br>B）计算中需要弛豫的层数；<br>C）不同层数对你要计算的性质会产生影响，比如表面能；<br>D）不同晶面需要的层数也不尽相同，一般开放的表面需要更多的层数；<br>E）根据自己感兴趣的性质，选择合适的层数，也就是需要你去测试一番。</p>
 <p>4）Slab模型有两种，一种是上下表面对称的，一种是非对称的。对称性结构往往需要很多层，体系较大。 非对称的结构体系较小，但存在偶极矩的影响，要注意加LDIPOL 和IDIPOL这两个参数来消除，后面我们会介绍到。</p>
 <p>注意，为了更加顺利的进行下面的学习，参考书第4章的内容务必认真阅读。这会为你今后的表面研究打下坚实的基础</p>
-<h2 id="2-表面模型的搭建："><a href="#2-表面模型的搭建：" class="headerlink" title="2 表面模型的搭建："></a>2 表面模型的搭建：</h2><p><img src="/2018/08/25/ex42/ex42-1.jpeg">主要使用Material Studio进行切面操作，这一部分，本人不想做过多的解释，因为各大培训班，网上各种博客都有操作说明。本节大师兄通过Cu(111)面的例子给大家简单演示一下。</p>
-<p><strong>2.1 块体计算</strong></p>
-<ol>
-<li><p>搭建Cu单胞模型，用VESTA导出VASP计算使用的POSCAR文件，这部分不清楚的筒子们可以复习前面bulk计算的相关内容。</p>
-</li>
-<li><p> INCAR文件的准备<br>A) Cu是金属，ISMEAR=1， SIGMA=0.1<br>B) ENCUT=700， Cu单胞含有的原子数很少，可以把ENCUT设置大一点<br>C) EDIFF和EDIFFG控制电子步收敛和离子弛豫的精度<br>D) PREC=High  </p>
-</li>
-</ol>
+<h2 id="2-表面模型的搭建："><a href="#2-表面模型的搭建：" class="headerlink" title="2 表面模型的搭建："></a>2 表面模型的搭建：</h2><p><img src="/2018/08/25/ex42/ex42-1.jpeg" alt="">主要使用Material Studio进行切面操作，这一部分，本人不想做过多的解释，因为各大培训班，网上各种博客都有操作说明。本节大师兄通过Cu(111)面的例子给大家简单演示一下。</p>
+<p><strong>2.1 块体计算</strong><br>1) 搭建Cu单胞模型，用VESTA导出VASP计算使用的POSCAR文件，这部分不清楚的筒子们可以复习前面bulk计算的相关内容。</p>
+<p>2)  INCAR文件的准备<br>A) Cu是金属，ISMEAR=1， SIGMA=0.1<br>B) ENCUT=700， Cu单胞含有的原子数很少，可以把ENCUT设置大一点<br>C) EDIFF和EDIFFG控制电子步收敛和离子弛豫的精度<br>D) PREC=High  </p>
 <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">SYSTEM = Cu-Bulk calculation RELAX</span><br><span class="line">ISTART = <span class="number">0</span></span><br><span class="line">ICHARG = <span class="number">2</span></span><br><span class="line">ENCUT = <span class="number">700</span></span><br><span class="line">EDIFF = <span class="number">1e-6</span></span><br><span class="line">IBRION = <span class="number">1</span></span><br><span class="line">NSW = <span class="number">200</span></span><br><span class="line">EDIFFG = -<span class="number">0.01</span></span><br><span class="line">ISIF = <span class="number">3</span></span><br><span class="line">POTIM = <span class="number">0.1</span></span><br><span class="line">ISMEAR = <span class="number">1</span></span><br><span class="line">SIGMA = <span class="number">0.1</span></span><br><span class="line">PREC = H</span><br><span class="line">LREAL = Auto</span><br><span class="line">ALGO = Fast</span><br><span class="line">NCORE = <span class="number">4</span></span><br></pre></td></tr></table></figure>
-
-
-
-<p>E）这里LREAL设置为Auto，是为了和后面表面能计算统一。计算时要根据原子数的多少，以及后续的计算选择LREAL的值。不能拿LREAL=.FALSE.和LREAL=ON/.TRUE.计算的结果进行能量比较。看下面<br><img src="/2018/08/25/ex42/ex42-4.jpeg"><br>F) 注意：块体材料计算时，为了后续计算其他性质，常常要求整个计算中使用相同的ENCUT，ENAUG， PREC， LREAL， ROPT，这部分大家可以看看手册 8.3 What kind of “technical” errors do exist， overview<br><img src="/2018/08/25/ex42/ex42-5.jpeg"></p>
-<ol start="3">
-<li><p>KPOINTS<br>a=b=c=3.6147 $\AA$， 根据前面的经验，这里设置为$13\times13\times13$的KPOINTS(Gamma  Centered).</p>
-</li>
-<li><p>准备POTCAR文件进行计算：见前面讲的相关脚本—Ex30 进阶前的准备（三）</p>
-</li>
-<li><p>最后计算完的Cu的晶格常数为 3.6370 $\AA$，实验值为3.615 $\AA$。大家可以去计算下。（计算例子可以QQ群中下载，也可通过该链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1dE84fhn">http://pan.baidu.com/s/1dE84fhn</a> 密码：nvwa）</p>
-</li>
-</ol>
+<p>E）这里LREAL设置为Auto，是为了和后面表面能计算统一。计算时要根据原子数的多少，以及后续的计算选择LREAL的值。不能拿LREAL=.FALSE.和LREAL=ON/.TRUE.计算的结果进行能量比较。看下面<br><img src="/2018/08/25/ex42/ex42-4.jpeg" alt=""><br>F) 注意：块体材料计算时，为了后续计算其他性质，常常要求整个计算中使用相同的ENCUT，ENAUG， PREC， LREAL， ROPT，这部分大家可以看看手册 8.3 What kind of “technical” errors do exist， overview<br><img src="/2018/08/25/ex42/ex42-5.jpeg" alt=""></p>
+<p>3) KPOINTS<br>a=b=c=3.6147 $\AA$， 根据前面的经验，这里设置为$13\times13\times13$的KPOINTS(Gamma  Centered).</p>
+<p>4) 准备POTCAR文件进行计算：见前面讲的相关脚本—Ex30 进阶前的准备（三）</p>
+<p>5) 最后计算完的Cu的晶格常数为 3.6370 $\AA$，实验值为3.615 $\AA$。大家可以去计算下。（计算例子可以QQ群中下载，也可通过该链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1dE84fhn">http://pan.baidu.com/s/1dE84fhn</a> 密码：nvwa）</p>
 <p><strong>2.2 结构优化的注意事项：</strong></p>
-<p>关于结构优化，大家在计算时要注意下面的部分，7.6.2 Accurate bulk relaxations with internal parameters (one)一定要详细的读。<br><img src="/2018/08/25/ex42/ex42-6.jpeg"></p>
+<p>关于结构优化，大家在计算时要注意下面的部分，7.6.2 Accurate bulk relaxations with internal parameters (one)一定要详细的读。<br><img src="/2018/08/25/ex42/ex42-6.jpeg" alt=""></p>
 <p><strong>2.3 小结</strong><br>主要以金属Cu为例讲了块体材料的计算，以及块体材料计算时的一些注意事项：</p>
 <ul>
 <li>体材料计算时首先要对要了解材料的性质，根据材料是金属、非金属，还是半导体，选择不同的ISMEAR和SIGMA；</li>
@@ -2210,13 +2160,13 @@
 </li>
 <li><p>MS导入cif文件，</p>
 </li>
-<li><p><code>build</code>→<code>surface</code>→<code>cleave surface</code>， 如下图所示，在<code>cleave plane(hkl) </code>可以输入要切的晶面，如（111）面，<img src="/2018/08/25/ex42/ex42-7.jpeg"></p>
+<li><p><code>build</code>→<code>surface</code>→<code>cleave surface</code>， 如下图所示，在<code>cleave plane(hkl)</code>可以输入要切的晶面，如（111）面，<img src="/2018/08/25/ex42/ex42-7.jpeg" alt=""></p>
 </li>
-<li><p>在<code>Surface Mesh</code>→<code>surface vectors</code>可以改变slab模型的vectors，之后选择Cleave进行切面，本例为（111）。这个时候也可以通过调节<code>Surface Box</code>→<code>top</code>和<code>thickness</code>，选择slab模型的表面终端和厚度。<img src="/2018/08/25/ex42/ex42-8.jpeg">     <img src="/2018/08/25/ex42/ex42-9.jpeg"></p>
+<li><p>在<code>Surface Mesh</code>→<code>surface vectors</code>可以改变slab模型的vectors，之后选择Cleave进行切面，本例为（111）。这个时候也可以通过调节<code>Surface Box</code>→<code>top</code>和<code>thickness</code>，选择slab模型的表面终端和厚度。<img src="/2018/08/25/ex42/ex42-8.jpeg" alt="">     <img src="/2018/08/25/ex42/ex42-9.jpeg" alt=""></p>
 </li>
-<li><p>确定好表面终端和slab厚度之后，加真空层。<br><code>Build</code>→<code>Crystals</code>→<code>Build vacuum slab</code>，<code>Vacuum orientation</code>选择C指定真空层加在z方向上。可以通过改变<code>Vacuum thickness</code>设置真空层的厚度10 $\AA$，15 $\AA$或者更大。这可以参照之前的计算。最后选择Build完成slab模型的建立。<br><img src="/2018/08/25/ex42/ex42-10.jpeg"></p>
+<li><p>确定好表面终端和slab厚度之后，加真空层。<br><code>Build</code>→<code>Crystals</code>→<code>Build vacuum slab</code>，<code>Vacuum orientation</code>选择C指定真空层加在z方向上。可以通过改变<code>Vacuum thickness</code>设置真空层的厚度10 $\AA$，15 $\AA$或者更大。这可以参照之前的计算。最后选择Build完成slab模型的建立。<br><img src="/2018/08/25/ex42/ex42-10.jpeg" alt=""></p>
 </li>
-<li><p>可以通过<code>Lattice parameters</code>→<code>Advanced</code>→<code>Re-orient to standard</code>把真空层设置沿Z轴。<img src="/2018/08/25/ex42/ex42-11.jpeg">   <img src="/2018/08/25/ex42/ex42-12.jpeg"></p>
+<li><p>可以通过<code>Lattice parameters</code>→<code>Advanced</code>→<code>Re-orient to standard</code>把真空层设置沿Z轴。<img src="/2018/08/25/ex42/ex42-11.jpeg" alt="">   <img src="/2018/08/25/ex42/ex42-12.jpeg" alt=""></p>
 </li>
 </ul>
 <h2 id="4-总结："><a href="#4-总结：" class="headerlink" title="4  总结："></a>4  总结：</h2><p>  从本节开始，大家开始步入表面相关的计算学习。请务必认真阅读参考书，重复计算示例。本节主要简单介绍了一下Slab模型以及基本的注意事项。通过Cu的计算复习了一下<code>Bulk</code>的计算以及展示了一下通过<code>Material Studio</code>进行Cu(111)表面的搭建过程。</p>
@@ -2323,22 +2273,22 @@
           <p>前面我们讲解了手动求积分的原理，本节由QQ群中的小书童给大家演示一遍Origin求积分的操作，加深一下对积分原理的印象，也借此机会掌握另一项Origin的技能。Origin的 .opj文件和Excel数据已经打包上传到QQ群中，也可以百度网盘下载：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1bpvmXY3">http://pan.baidu.com/s/1bpvmXY3</a></p>
 <h2 id="1-求d带中心"><a href="#1-求d带中心" class="headerlink" title="1 求d带中心"></a><strong>1 求d带中心</strong></h2><p>1.1 复制粘贴能量、态密度、能量*态密度这三列数据到Origin中，数据见前一节练习：</p>
 <p>下面我们取了<code>d band</code> 的一小部分区间作为示例进行讲解，大家学习完之后自己主动练习，获取最终的<code>d band center</code>.</p>
-<p><img src="/2018/02/10/ex41/ex41-1.png"></p>
+<p><img src="/2018/02/10/ex41/ex41-1.png" alt=""></p>
 <p>1.2 选中数据并作图：</p>
-<p><img src="/2018/02/10/ex41/ex41-2.png"></p>
-<p><strong>plot –&gt; Line –&gt; Line</strong></p>
-<p><img src="/2018/02/10/ex41/ex41-3.png"></p>
-<p><img src="/2018/02/10/ex41/ex41-4.png"></p>
+<p><img src="/2018/02/10/ex41/ex41-2.png" alt=""></p>
+<p><strong>plot —&gt; Line —&gt; Line</strong></p>
+<p><img src="/2018/02/10/ex41/ex41-3.png" alt=""></p>
+<p><img src="/2018/02/10/ex41/ex41-4.png" alt=""></p>
 <p>1.3 求积分，先选中一条曲线，右键，<code>Ungroup</code>（将曲线从组中分离，便于选择）。</p>
-<p><img src="/2018/02/10/ex41/ex41-5.png"></p>
+<p><img src="/2018/02/10/ex41/ex41-5.png" alt=""></p>
 <p>1.4 打开积分对话框：</p>
-<p><img src="/2018/02/10/ex41/ex41-6.png"></p>
+<p><img src="/2018/02/10/ex41/ex41-6.png" alt=""></p>
 <p>1.5 再选择一条曲线进行积分，下图选择的是黑线。</p>
-<p><img src="/2018/02/10/ex41/ex41-7.png"></p>
-<p><img src="/2018/02/10/ex41/ex41-8.png"></p>
+<p><img src="/2018/02/10/ex41/ex41-7.png" alt=""></p>
+<p><img src="/2018/02/10/ex41/ex41-8.png" alt=""></p>
 <p>点击OK，截图中的area就是我们要的积分，这一面积对应下图公式中的分母部分。</p>
-<p><img src="/2018/02/10/ex41/ex41-9.png"></p>
-<p> <img src="/2018/02/10/ex41/ex41-10.png"></p>
+<p><img src="/2018/02/10/ex41/ex41-9.png" alt=""></p>
+<p> <img src="/2018/02/10/ex41/ex41-10.png" alt=""></p>
 <p><code>d band center</code> 的积分区间为整个d带：即从负无穷到正无穷。本例我们用区间 [-6, 2]作为例子！有时候大家会对积分的区间产生疑问。一般来说积分区间是从负无穷到正无穷，但是：</p>
 <ul>
 <li><p>1）如上图，[-9,-8]这个区间Density为0，积分从[-9,4.0] 和[-8,4.0]结果没什么区别。</p>
@@ -2349,15 +2299,15 @@
 </li>
 </ul>
 <p>1.6 同理，选中另一条红线（能量和密度乘积），进行积分计算（上图中的分子部分） </p>
-<p><img src="/2018/02/10/ex41/ex41-11.png"></p>
+<p><img src="/2018/02/10/ex41/ex41-11.png" alt=""></p>
 <p> 结果如下:</p>
-<p> <img src="/2018/02/10/ex41/ex41-12.png"></p>
+<p> <img src="/2018/02/10/ex41/ex41-12.png" alt=""></p>
 <p>最终，我们计算的d带区间[-6,2]的中心果为：-34.035/ 17.428 = -1.953</p>
 <hr>
 <h2 id="2-求电子数目"><a href="#2-求电子数目" class="headerlink" title="2 求电子数目"></a><strong>2</strong> <strong>求电子数目</strong></h2><p>电子数目的积分是从负无穷到费米能级。本例中是从-10到0（费米能级）进行积分， 选择黑线，重复前面的操作：</p>
-<p>  <img src="/2018/02/10/ex41/ex41-15.png"></p>
+<p>  <img src="/2018/02/10/ex41/ex41-15.png" alt=""></p>
 <p>计算结果如下，电子数为13.00</p>
-<p>  <img src="/2018/02/10/ex41/ex41-16.png"></p>
+<p>  <img src="/2018/02/10/ex41/ex41-16.png" alt=""></p>
 <hr>
 <p><strong>3</strong> <strong>扩展练习：</strong></p>
 <p>3.1 熟练Get本节Origin求积分的技巧；</p>
@@ -2469,15 +2419,13 @@
           <p>DOS积分的原理，积分公式相信大学的时候，大家已经掌握了，现在还有可能忘记了。不过没关系，虽然本节将积分，高等数学里面的暂时还用不到。对于DOS图来说，通过求积分可以得到相应的电子数。积分也就是求DOS曲线下的面积。但DOS图并不能通过一个函数的积分来获得，因为所对应的区域毫无规则可言。那么我们该怎么样积分呢？</p>
 <p><strong>1</strong> <strong>积分的原理</strong></p>
 <p>积分的原理就是把区域分成N个小块，计算每一块的面积，然后求和。如下图：</p>
-<p><img src="/2018/02/09/ex40/ex40-1.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-1.png" alt=""></p>
 <p>大师兄…..</p>
-<p><img src="/2018/02/09/ex40/ex40-2.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-2.png" alt=""></p>
 <p>好吧，言归正传，大师兄亲自画了一幅图，讲解积分的原理，如下：</p>
-<p><img src="/2018/02/09/ex40/ex40-3.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-3.png" alt=""></p>
 <p>1)将每一个小区间近似看成一个小的梯形，</p>
-<ol start="2">
-<li>梯形的上底和下底为：$y_2$ 和$y_1$，高为：$x_2-x_1$。</li>
-</ol>
+<p>2) 梯形的上底和下底为：$y_2$ 和$y_1$，高为：$x_2-x_1$。</p>
 <p>3, 4)  也可以看成一个高为：$（y_1+y_2）/2$， 底为$x_2-x_1$ 的长方形。</p>
 <p>5）面积为两者的乘积：$ΔA =（x_2-x_1）* （y_1+y_2）/2$。</p>
 <p>6）将所有的小区间面积求和便得到了曲线所覆盖的面积，也就得到了我们所想要的电子数：$A =\sum\Delta A$</p>
@@ -2485,20 +2433,20 @@
 <p>注意：</p>
 <p>1）电子数的积分区间是从负无穷到费米能级；</p>
 <p>2）p4vasp的图中的0点就是费米能级，已经扣除过了。</p>
-<p>3）科学网的一个参考链接：&lt;&lt;<a target="_blank" rel="noopener" href="http://blog.sciencenet.cn/blog-567091-736149.html">http://blog.sciencenet.cn/blog-567091-736149.html</a>/&gt;&gt;</p>
-<p><img src="/2018/02/09/ex40/ex40-4.png"></p>
+<p>3）科学网的一个参考链接：<a href="&lt;&lt;http://blog.sciencenet.cn/blog-567091-736149.html">&lt;&lt;http://blog.sciencenet.cn/blog-567091-736149.html</a>/&gt;&gt;</p>
+<p><img src="/2018/02/09/ex40/ex40-4.png" alt=""></p>
 <p>注意： 图中的DOS，如果你计算了，发现和大师兄的不一样，不用担心，大师兄本人把这个例子再运行了一遍，跟上面的图也不一样。（原因正在调查中）</p>
 <hr>
-<h2 id="2-d-band-center-的公式"><a href="#2-d-band-center-的公式" class="headerlink" title="2 d-band center 的公式"></a>2 d-band center 的公式</h2><p><img src="/2018/02/09/ex40/ex40-5.png"></p>
+<h2 id="2-d-band-center-的公式"><a href="#2-d-band-center-的公式" class="headerlink" title="2 d-band center 的公式"></a>2 d-band center 的公式</h2><p><img src="/2018/02/09/ex40/ex40-5.png" alt=""></p>
 <p>在这里：</p>
 <p>ε为前面的我们提到的x， $n_d$(ε)为y。在DOS图中，ε为能量， $n_d$(ε)为电子的密度。</p>
 <p>注意： 积分区间是从 <strong>负无穷</strong> 到 <strong>正无穷</strong></p>
 <p>参考书籍： Fundamental Concepts in Heterogeneous Catalysis，Jens K. Nørskov, Felix Studt, Frank Abild-Pedersen, Thomas Bligaard， John Wiley &amp; Sons, Inc.</p>
-<p>!<img src="/2018/02/09/ex40/ex40-6.png"></p>
+<p>!<img src="/2018/02/09/ex40/ex40-6.png" alt=""></p>
 <p>QQ群文件的Books文件夹中下载 </p>
-<p><img src="/2018/02/09/ex40/ex40-7.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-7.png" alt=""></p>
 <p>百度网盘下载链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1bWS2Gu">http://pan.baidu.com/s/1bWS2Gu</a></p>
-<p><img src="/2018/02/09/ex40/ex40-8.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-8.png" alt=""></p>
 <hr>
 <p>d 带穿过了费米能级，说明Ru是金属。（废话，等于白说！）</p>
 <p>d带的积分从最左面到最右面。</p>
@@ -2508,17 +2456,17 @@
 <p><strong>3 Excel手动求积分：</strong></p>
 <p>对应的公式都写在第二行里面了，excel中计算完第一个数值，直接选中然后往下拽就可以得到后面的数据了。计算文件以及Excel表格已经上传到QQ群和百度网盘，大家可以下载仔细观看练习，掌握该技能。</p>
 <p>计算下载链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1kVqWFQn">http://pan.baidu.com/s/1kVqWFQn</a> </p>
-<p><img src="/2018/02/09/ex40/ex40-9.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-9.png" alt=""></p>
 <p>Step1: p4vasp 的 d band 数据！</p>
 <p>Step2：A,B两列的乘积，也就是能量和密度的乘积：对应d band center公式中的<strong>分子</strong>：</p>
-<p><img src="/2018/02/09/ex40/ex40-10.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-10.png" alt=""></p>
 <p>Step3：</p>
 <p>1）A4-A3:  小区间的能量间隔，也就是 dε，或者 xdx，$\Delta$x， $x_2-x_1$;</p>
 <p>2）B4+B3: 小区间的两个起点和终点的高度：也就是对应的小区间两端的能量密度：$y_2+y_1$</p>
 <p>3）C4+C3：小区间两端能量和密度乘积的加和： $x_1<em>y_1 + x_2</em>y_2 $ </p>
 <p>4）Step4：求小区间的面积：</p>
 <p>​      $D4<em>E4</em>0.5$：$(x_2-x_1) * (y_2+y_1)/2$</p>
-<p>​      $D4<em>F4</em>0.5$: $ (x_2-x_1) * (x_1<em>y_1 + x_2</em>y_2)/2$</p>
+<p>​      $D4<em>F4</em>0.5$: $ (x_2-x_1) <em> (x_1</em>y_1 + x_2*y_2)/2$</p>
 <p>5）Step5: 将所有小区间的面积求和：</p>
 <p>电子数：$\sum( (x_2-x_1) * (y_2+y_1)/2 ) $，从G4到G137(G137对应的是费米能级的那个点！！！)求和。</p>
 <p><strong>再次强调：电子数目是从负无穷积分到费米能级！</strong></p>
@@ -2639,10 +2587,9 @@
           <p>本节主要介绍如何使用p4vasp获取DOS数据。</p>
 <hr>
 <h2 id="1-计算实例："><a href="#1-计算实例：" class="headerlink" title="1 计算实例："></a><strong>1</strong> <strong>计算实例：</strong></h2><p>计算的体系是一个Ru的单胞，含有2个Ru原子。结构优化完毕后进行以下操作。</p>
-<p>1.1 <code>cp  CONTCAR  POSCAR </code></p>
+<p>1.1 <code>cp  CONTCAR  POSCAR</code></p>
 <p>1.2 INCAR的设置（一步计算）：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IBRION = -1</span><br><span class="line">NSW = 0</span><br><span class="line">ISMEAR = -5</span><br><span class="line">LORBIT = 11 </span><br></pre></td></tr></table></figure>
-
 <p>1.3 KPOINTS 采用: <code>21 21 21</code> （gamma centered：Ru为六方堆积结构！！！）</p>
 <p>1.4 提交任务等待结束。</p>
 <p>1.5 该计算的所有文件可以通过百度网盘下载： <a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1kVebDWz">http://pan.baidu.com/s/1kVebDWz</a> </p>
@@ -2652,16 +2599,16 @@
 <p><strong>注意：</strong>前面的2步，Linux系统下面直接输入命令 ：</p>
 <p><code>p4v &amp;</code>或者 <code>p4v vasprun.xm</code>即可。</p>
 <p>2.3 查看DOS：<strong>Electronic –&gt; DOS+bands</strong></p>
-<p><img src="/2018/02/08/ex39/ex39-1.png"></p>
+<p><img src="/2018/02/08/ex39/ex39-1.png" alt=""></p>
 <p>效果如下如：</p>
-<p> <img src="/2018/02/08/ex39/ex39-2.png"></p>
+<p> <img src="/2018/02/08/ex39/ex39-2.png" alt=""></p>
 <hr>
 <p>2.4 获取d轨道的DOS: </p>
 <p>这里我们取d band作为例子，大家根据自己的需要选择：</p>
-<p><code>Electronic</code> –&gt; <code>Local DOS+bands control </code></p>
-<p> <img src="/2018/02/08/ex39/ex39-3.png"></p>
+<p><code>Electronic</code> –&gt; <code>Local DOS+bands control</code></p>
+<p> <img src="/2018/02/08/ex39/ex39-3.png" alt=""></p>
 <p> 点击后如下图： </p>
-<p>  <img src="/2018/02/08/ex39/ex39-4.png"></p>
+<p>  <img src="/2018/02/08/ex39/ex39-4.png" alt=""></p>
 <p>注意：</p>
 <p>1） 这里我们填的是Ru，表示选择所有的Ru原子，具体到大家自己的计算中，</p>
 <p>换成自己感兴趣的原子即可，怎么选择，我们前面已经讲到过了。（通过左侧的show按钮，以及鼠标和空格选择）</p>
@@ -2669,19 +2616,19 @@
 <p>3）选择感兴趣的轨道：</p>
 <p>如果计算中你设置的<code>LORBIT=10</code>，点击 <code>dxy</code>的时候，则其他的d轨道也会同时被选中，</p>
 <p>如果你设置的<code>LORBIT=11</code>，点击<code>dxy</code>时，则仅仅选择<code>dxy</code>，其他的d轨道不会选中。如下图： </p>
-<p>  <img src="/2018/02/08/ex39/ex39-5.png"></p>
+<p>  <img src="/2018/02/08/ex39/ex39-5.png" alt=""></p>
 <p>如果看不明白：</p>
 <p>a）VASP官网查看 <code>LORBIT = 10</code> 和11 的含义；</p>
 <p>b）亲自动手操作一下就明白了。</p>
 <p>选择完毕后，点击 <code>Add New line</code>，效果如下：</p>
-<p>  <img src="/2018/02/08/ex39/ex39-6.png"></p>
+<p>  <img src="/2018/02/08/ex39/ex39-6.png" alt=""></p>
 <p>图中增加了一条红色的曲线，为Ru的d轨道的DOS图， 如果你选择了s，点击Add New line，就会增加另外一条曲线。不想要某个曲线了，可以点击remove line，大家自己随意操作，直至熟练为止！！</p>
 <hr>
 <h2 id="3-后处理："><a href="#3-后处理：" class="headerlink" title="3 后处理："></a><strong>3</strong> <strong>后处理：</strong></h2><p>3.1  导出数据：</p>
 <p>p4vasp导出数据通过中间的一个按钮： （注意，这里不通过左上角的File按钮！），如下图：点击 <code>Graph</code> –&gt; <code>Export</code> </p>
-<p> <img src="/2018/02/08/ex39/ex39-7.png"></p>
+<p> <img src="/2018/02/08/ex39/ex39-7.png" alt=""></p>
 <p>弹出的窗口中，选择保存的目录和数据的文件名称 </p>
-<p> <img src="/2018/02/08/ex39/ex39-8.png"></p>
+<p> <img src="/2018/02/08/ex39/ex39-8.png" alt=""></p>
 <p>注意：</p>
 <p>1）choose 选择保存的目录；</p>
 <p>2）我们选择的D盘下的VASP目录；</p>
@@ -2689,24 +2636,20 @@
 <p>a）文件名处 <strong>.dat</strong> 记得写上，要不然后面可能会导不出数据！</p>
 <p>b）为了保证导出数据，Export 多点几遍！！！</p>
 <p>c）去导出的目录里面查看一下，如有了数据的文件名，说明保存成功，没有的话，继续点Export.</p>
-<p> <img src="/2018/02/08/ex39/ex39-9.png"></p>
+<p> <img src="/2018/02/08/ex39/ex39-9.png" alt=""></p>
 <p>图中说明：导出数据成功。</p>
 <p> d）为了避免浪费时间，一定要保存成功后再关闭窗口，否则你还要重复一遍前面的步骤。 </p>
 <p>4） 保存成功后，点击OK，关闭窗口。</p>
-<p>3.2 查看数据：（Notepad++直接打开，无视**.dat**尾缀！）</p>
-<p> <img src="/2018/02/08/ex39/ex39-10.png"></p>
+<p>3.2 查看数据：（Notepad++直接打开，无视<strong>.dat</strong>尾缀！）</p>
+<p> <img src="/2018/02/08/ex39/ex39-10.png" alt=""></p>
 <hr>
 <p><strong>问题1： 为什么在301行后面有一个空行？ （重点是301）</strong></p>
 <hr>
-<ol>
-<li><p>这是因为DOS计算的点VASP默认是301个，该数目由NEDOS这个参数来确定。NEDOS决定了DOS曲线中间隔的点数，如果你想要自己的DOS曲线更加平滑，可以设置一个较大的NEDOS数值，比如：<code>NEDOS = 3000</code></p>
-</li>
-<li><p>如果你设置了<code>NEDOS = 500</code>， 那么会在500行以后出现一个空行。</p>
-</li>
-</ol>
+<p>1) 这是因为DOS计算的点VASP默认是301个，该数目由NEDOS这个参数来确定。NEDOS决定了DOS曲线中间隔的点数，如果你想要自己的DOS曲线更加平滑，可以设置一个较大的NEDOS数值，比如：<code>NEDOS = 3000</code></p>
+<p>2) 如果你设置了<code>NEDOS = 500</code>， 那么会在500行以后出现一个空行。</p>
 <p>问题2：为什么会有一个空行？？？(<strong>一定要搞明白</strong>！！！)</p>
 <p>我们看一下前面DOS的图：</p>
-<p> <img src="/2018/02/08/ex39/ex39-11.png"> </p>
+<p> <img src="/2018/02/08/ex39/ex39-11.png" alt=""> </p>
 <p>图中有2个DOS曲线，黑色的为空行前面的部分，红色为后面的部分。</p>
 <p>同样，如果DOS图中有N个曲线，则导出的数据中会有N-1个空行将它们分开。</p>
 <p>N个曲线的横坐标坐标（也就是能量）是完全一样的。知道了这一点，你就知道了自己想要的数据在哪里了！！！</p>
@@ -2714,11 +2657,11 @@
 <hr>
 <p>3.3 作图：</p>
 <p>有了数据之后，就可以随心所欲地作图了。将数据导入excel或者origin作图，也可以使用其他小脚本，程序。这里我们使用Excel简单说下：</p>
-<p>  <img src="/2018/02/08/ex39/ex39-12.png"></p>
+<p>  <img src="/2018/02/08/ex39/ex39-12.png" alt=""></p>
 <p>左侧为空行前面的数据，Ru总的DOS， DOS曲线1 （黑色的那个）</p>
 <p>右侧为空行后面的数据，Ru d轨道的DOS， DOS曲线2（红色的那个）</p>
 <p>作出来的图跟p4vasp的结果一样。图像就不美化了。关键是有了数据，并且知道数据里面空行前后代表的内容。</p>
-<p> <img src="/2018/02/08/ex39/ex39-13.png"></p>
+<p> <img src="/2018/02/08/ex39/ex39-13.png" alt=""></p>
 <hr>
 <h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a><strong>4</strong> <strong>扩展练习：</strong></h2><p>4.1 下载本节的练习，可以在自己的服务器上提交，也可以直接使用结果；</p>
 <p>4.2 通过p4vasp读取vasprun.xml文件，熟练进行本节的所有操作；</p>
@@ -2835,13 +2778,13 @@
           <p>前面一节，我们留了一个问题：DOS为什么要算两步？</p>
 <p>答：可以一步直接算！也就是前面一节的问题是瞎问的。那为什么大家总是有2步计算的疑问呢？本节，我们就解释这个。</p>
 <h2 id="为什么算两步？"><a href="#为什么算两步？" class="headerlink" title="为什么算两步？"></a>为什么算两步？</h2><p>官网说了，算DOS有2个方法，一个是直接进行self-consistent计算（大家常说的自洽或者静态计算。）然后处理DOSCAR和vasprun.xml文件即可，如图：</p>
-<p><img src="/2018/02/07/ex38/ex38-5.png"></p>
+<p><img src="/2018/02/07/ex38/ex38-5.png" alt=""></p>
 <p>我们看一下这么做的前提：</p>
-<p><img src="/2018/02/07/ex38/ex38-6.png"></p>
+<p><img src="/2018/02/07/ex38/ex38-6.png" alt=""></p>
 <ul>
 <li><p>1） 由于高质量的DOS需要精细的K点，如果我们设置的K点很多，就会造成计算上的负担，前面我们讲过K点与计算时间的关系；而很久很久以前，计算能力并不如现在这样快，因此可以通过分步计算来解决这一问题。</p>
 </li>
-<li><p>2） 另外一个原因就设计到能带的计算了，这里我们摘抄一下网上的解释：<strong>由于在能带计算时k点是一些在倒空间高对称线上的点</strong>，不能进行自洽计算。参考网址：<a target="_blank" rel="noopener" href="https://http//blog.sciencenet.cn/blog-567091-675253.html/">https://http://blog.sciencenet.cn/blog-567091-675253.html/</a> 也就是计算能带的时候，自洽计算是必须的一步；</p>
+<li><p>2） 另外一个原因就设计到能带的计算了，这里我们摘抄一下网上的解释：<strong>由于在能带计算时k点是一些在倒空间高对称线上的点</strong>，不能进行自洽计算。参考网址：<a target="_blank" rel="noopener" href="https://http://blog.sciencenet.cn/blog-567091-675253.html/">https://http://blog.sciencenet.cn/blog-567091-675253.html/</a> 也就是计算能带的时候，自洽计算是必须的一步；</p>
 </li>
 <li><p>3） 即使增加K点的数目，电荷密度和有效势能的收敛依然很快，也就是K点的变化对电荷密度的收敛影响不大。</p>
 </li>
@@ -2861,7 +2804,7 @@
 <p>LORBIT =11 在10的基础上，还进一步分解到px，py，pz等轨道上，称为投影态密度（Projected DOS）或者分波态密度(Partial DOS)，即PDOS。 </p>
 <p>所以LORBIT = 11可以提供我们更多的信息。</p>
 <h2 id="WAVECAR"><a href="#WAVECAR" class="headerlink" title="WAVECAR"></a>WAVECAR</h2><p> 那么，WAVECAR读不读呢？大师兄的观点是：有则读，无则不读。对于WAVECAR的读取，我们需要了解ISTART这个参数：</p>
-<p><img src="/2018/02/07/ex38/ex38-7.png"></p>
+<p><img src="/2018/02/07/ex38/ex38-7.png" alt=""></p>
 <ul>
 <li><p>如果前面计算中保存了<strong>WAVECAR</strong>，且ISTART没有设置，VASP默认是读取的。</p>
 </li>
@@ -2872,7 +2815,7 @@
 <ul>
 <li>1)通过设置LWAVE这个参数</li>
 </ul>
-<p><img src="/2018/02/07/ex38/ex38-8.png"></p>
+<p><img src="/2018/02/07/ex38/ex38-8.png" alt=""></p>
 <ul>
 <li>2)读取WAVECAR可以极大地减少自洽的时间，但是VASP的WAVECAR非常大，上百M或者几G都是很常见的。一不留神存储空间就被占满了。所以，在读取WAVECAR的时候，一定要确定自己的存储空间。</li>
 <li>3)如果前面计算步骤中（优化的过程）保存了WAVCAR，那么后面DOS计算的时候（1步计算或者2步计算均可），都可以读取，这会加快计算速度。</li>
@@ -2893,8 +2836,7 @@
 </li>
 <li><p>LCHARG = .TRUE.</p>
 </li>
-<li><p>稍微低密度的K点</p>
-</li>
+<li>稍微低密度的K点</li>
 </ul>
 <p>第二步：</p>
 <ul>
@@ -2902,10 +2844,8 @@
 </li>
 <li><p>ICHARGE = 11</p>
 </li>
-<li><p>LORBIT = 11</p>
-</li>
-<li><p>高密度的K点</p>
-</li>
+<li>LORBIT = 11</li>
+<li>高密度的K点</li>
 </ul>
 <p>如果结构优化的时候，存了WAVECAR，计算DOS的时候可以读取WAVECAR，直接一步计算搞定。</p>
 
@@ -3013,15 +2953,12 @@
 <p>与结构优化相比，算DOS的时候，需要用到更多的K点数目，这是因为K点越多，画出来的DOS图质量越高。</p>
 <p>引用官网的话：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A high quality DOS requires usually very fine k-meshes.</span><br></pre></td></tr></table></figure>
-
-
-
 <hr>
 <p><strong>1.2 K点数目的选取</strong></p>
 <p> K点数目越多越好，我们该如何设置K点数目呢？</p>
 <p>还记的前面我们讲到的K点选择的经验规则吗？那一个规则可以认为是我们平时计算时K点选择的标配。对于DOS计算，我们就需要把配置提高一个档次了。</p>
-<p><img src="/2018/02/06/ex37/ex37-1.png"> </p>
-<p>一般来说，<code>K * a = 45 </code>左右之间完全可以满足你的要求，大伙可以根据这个经验来选择K点。 </p>
+<p><img src="/2018/02/06/ex37/ex37-1.png" alt=""> </p>
+<p>一般来说，<code>K * a = 45</code>左右之间完全可以满足你的要求，大伙可以根据这个经验来选择K点。 </p>
 <h2 id="2-NEDOS"><a href="#2-NEDOS" class="headerlink" title="2 NEDOS"></a>2 NEDOS</h2><p>NEDOS这个参数在DOS图的质量上面也有着很重要的作用。比如我们的DOS能量区间范围（DOS图的横坐标）为：[-10 eV，10eV]，VASP默认的将这个能量范围分成301点，然后作图。301也就是默认的NEDOS的取值。如果我们设置的NEDOS值够大，那么DOS区间就会被区分地越精确。NEDOS的取值一般来说：</p>
 <ul>
 <li><p><code>NEDOS = 3000</code>左右就足够好了。太大也没什么意义；</p>
@@ -3035,7 +2972,6 @@
 </ul>
 <h2 id="3-ISMEAR（一）"><a href="#3-ISMEAR（一）" class="headerlink" title="3  ISMEAR（一）"></a>3  ISMEAR（一）</h2><p>首先我们看官网的话： <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/ISMEAR">https://cms.mpi.univie.ac.at/wiki/index.php/ISMEAR</a></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">For the calculation of the total energy in bulk materials we recommend thetetrahedron method with Blöchl corrections (ISMEAR=-5). This method also givesa smooth nice electronic density of states (DOS).</span><br></pre></td></tr></table></figure>
-
 <p>也就是说 ISMEAR = -5 的时候（Blöchl修正的四面体方法），我们可以得到一个非常平滑的DOS图。</p>
 <p><strong>注意：</strong></p>
 <p>3.1 K点数目</p>
@@ -3047,20 +2983,19 @@
 <ul>
 <li><p>既然Ｋ点不够，那么我就增加Ｋ点，然后再使用<code>ISMEAR= -5</code>　（<strong>简单粗暴，强烈推荐使用</strong>）</p>
 </li>
-<li><p>如果增加了K点，可能还是会出错。有时也会出现下面的错误（微信群的群友（<strong>Cu–Ni</strong>）提供）。我们先把解决方法列出来，错误部分大家慢慢看：</p>
+<li><p>如果增加了K点，可能还是会出错。有时也会出现下面的错误（微信群的群友（<strong>Cu—Ni</strong>）提供）。我们先把解决方法列出来，错误部分大家慢慢看：</p>
 <ul>
 <li>直接换一下ISMEAR的取值。</li>
 <li>群友还发现：在保证K点数目大于4的时候，有时候减少K点数目或者增加K点数目都可以解决这个问题。如果你的服务器还算可以，建议增加K点数目，毕竟和K点数目越多，DOS的质量越高。这个办法大家可以参考一下。</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WARNING: DENTET:can&#x27;t reach specified precision</span><br><span class="line">Number of Electronsis NELECT =</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/02/06/ex37/ex38-3.png"></p>
+<p><img src="/2018/02/06/ex37/ex38-3.png" alt=""></p>
 </li>
 </ul>
 <p>  <strong>官方的解释：</strong></p>
 <p>  <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp-forum/viewtopic.php?t=416">http://cms.mpi.univie.ac.at/vasp-forum/viewtopic.php?t=416</a></p>
 <p>  <a target="_blank" rel="noopener" href="http://www.error.wiki/The_old_and_the_new_charge_density_differ">http://www.error.wiki/The_old_and_the_new_charge_density_differ</a></p>
-<p>  <img src="/2018/02/06/ex37/C:/Users/lqlhz/OneDrive/%E6%A1%8C%E9%9D%A2/ex37-41/ex38/ex38-4.png"></p>
+<p>  <img src="/2018/02/06/ex37/C:/Users/lqlhz/OneDrive/%E6%A1%8C%E9%9D%A2/ex37-41/ex38/ex38-4.png" alt=""></p>
 <p>出现此警告(DENTET)的原因是因为无法通过tetrahedron方法得到足够精确的费米能级。也就是将态密度积分到费米面的电子数和体系的价电子数目不一致。</p>
 <p>3.2 适用体系：</p>
 <ul>
@@ -3072,8 +3007,7 @@
 </li>
 <li><p>四面体方法（<code>ISMEAR = -5</code>）不适合计算能带（对所有的体系来说的）。多谢wuli8老师帮忙完善！</p>
 </li>
-<li><p>使用ISMEAR= -5 的时候，SIGMA的取值没有影响，如果不放心，取<code>SIGMA = 0.01</code>。</p>
-</li>
+<li>使用ISMEAR= -5 的时候，SIGMA的取值没有影响，如果不放心，取<code>SIGMA = 0.01</code>。</li>
 </ul>
 <p>3.3 小结：</p>
 <ul>
@@ -3082,17 +3016,17 @@
 <h2 id="4-ISMEAR（二）"><a href="#4-ISMEAR（二）" class="headerlink" title="4 ISMEAR（二）"></a>4 ISMEAR（二）</h2><p>如果体系很大，只能适用gamma点来算，<code>ISMEAR = -5</code>的时候，肯定会出错，但服务器不给力，不能增加Ｋ点的时候，怎么办？</p>
 <ul>
 <li><p>对于所有的体系（K点数目小于4也可以）：可以使用<code>ISMEAR = 0</code>；<code>SIGMA = 0.01</code>。对于大部分的体系都能得到理想的结果。原则上来说，使用GS方法的时候(ISMEAR=0)，SIGMA的数值要测试下，保证<code>entropy T*S</code>这一项平均到每个原子上小于0.001 eV也就是1meV。不想测试的话，直接用个很小的值，比如这里我们说的：<code>SIGMA = 0.01</code>。</p>
-<p><img src="/2018/02/06/ex37/C:/Users/lqlhz/OneDrive/%E6%A1%8C%E9%9D%A2/ex37-41/ex37/ex37-4.png"></p>
+<p><img src="/2018/02/06/ex37/C:/Users/lqlhz/OneDrive/%E6%A1%8C%E9%9D%A2/ex37-41/ex37/ex37-4.png" alt=""></p>
 </li>
 <li><p>对于金属体系来说，也可以使用<code>ISMEAR = 1</code>；<code>SIGMA = 0.01</code>。SIGMA取值太大，计算出来的能量可能不正确；SIGMA取值越小，计算越精确，需要的时间也就越多。值得注意的是：这里我们使用的0.01已经很小，没有必要设置的再小。因为对于金属体系，使用MP方法(ISMEAR=1..N)时，SIGMA= 0.10 差不多就足够了。官网给的参考值是0.20。</p>
 </li>
 </ul>
 <p><a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node124.html">http://cms.mpi.univie.ac.at/vasp/guide/node124.html</a></p>
-<p><img src="/2018/02/06/ex37/ex37-2.png"></p>
+<p><img src="/2018/02/06/ex37/ex37-2.png" alt=""></p>
 <ul>
 <li>在KPOINTS确定之后，使用多大的SIGMA值，大家最好测试一下。<strong>原则如下</strong>：SIGMA取值在<strong>保证</strong>OUTCAR中<code>entropy T*S</code>这项的能量平均到每个原子上小于 1 meV的<strong>前提下</strong>：<strong>尽可能地大</strong>。这样可以在保证准确度的同时，也加快收敛速度。 </li>
 </ul>
-<p><img src="/2018/02/06/ex37/ex37-3.png"></p>
+<p><img src="/2018/02/06/ex37/ex37-3.png" alt=""></p>
 <ul>
 <li><strong>记住：</strong> VASP学习最快的途径就是不停地看官网，然后亲自上手去测试，测试，测试！并观察分析结果。</li>
 </ul>
@@ -3107,22 +3041,19 @@
 <hr>
 <h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结:"></a><strong>5</strong> <strong>总结:</strong></h2><p>看完本节：你应该知道计算DOS的时候：</p>
 <ul>
-<li><p>KPOINTS和NEDOS设置的一些内容。</p>
-</li>
-<li><p>ISMEAR要用-5。</p>
-</li>
-<li><p> KPOINTS因计算硬件限制不能设置的很大，数目小于4的时候：</p>
-</li>
-<li><p>对于所有体系均可以使用ISMEAR=0。</p>
-</li>
-<li><p>金属体系还可以用ISMEAR=1..N，官网建议SIGMA为0.20，太小的SIGMA值对收敛会产生影响。使用0.01-0.10的数值都是很安全的选择。</p>
-</li>
-<li><p>SIGMA的数值需要测试一下，一般来说在0.01-0.05之间足够了。</p>
+<li>KPOINTS和NEDOS设置的一些内容。</li>
+<li>ISMEAR要用-5。</li>
+<li><p>KPOINTS因计算硬件限制不能设置的很大，数目小于4的时候：</p>
+<ul>
+<li>对于所有体系均可以使用ISMEAR=0。</li>
+<li>金属体系还可以用ISMEAR=1..N，官网建议SIGMA为0.20，太小的SIGMA值对收敛会产生影响。使用0.01-0.10的数值都是很安全的选择。</li>
+<li>SIGMA的数值需要测试一下，一般来说在0.01-0.05之间足够了。</li>
+</ul>
 </li>
 <li><p>非DOS计算的时候，对于金属来说ISMEAR不能等于 -5，优先使用ISMEAR= 1。非金属来说（半导体和绝缘体），不能 &gt; 0 。对于所有的体系， ISMEAR= 0 则是一个很安全的选择，但SIGMA的数值要测试一下。说了这么多废话，还是官网简单明了：</p>
 </li>
 </ul>
-<p><img src="/2018/02/06/ex37/ex37-14.png"></p>
+<p><img src="/2018/02/06/ex37/ex37-14.png" alt=""></p>
 <p>For further considerations on the choice for the smearing method see sections 9.4， 10.6. To summarize， use the following guidelines:</p>
 <ul>
 <li>​        For <strong>semiconductors or insulators</strong> use <strong>always</strong> tetrahedron method (ISMEAR=-5)， if the cell is too large (or if you use only 1 or two k-points) use ISMEAR=0.</li>
@@ -3238,17 +3169,14 @@
 <p>师兄，算个晶格常数这也太麻烦了吧？有没有简单点的，一步到位的方法？</p>
 <p>有！！！前面我们提到说可以通过两个方法： BM方程拟合是一个，现在大家已经掌握了。今天我们学习第二个方法。</p>
 <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ISIF = <span class="number">3</span></span><br><span class="line">ENCUT = XXX</span><br></pre></td></tr></table></figure>
-
-
-
 <h2 id="1-ISIF-参数"><a href="#1-ISIF-参数" class="headerlink" title="1  ISIF 参数"></a>1  ISIF 参数</h2><p>在学习ISIF = 3 前，我们先总结一下，之前不论是单点计算，结构优化，还是频率分析，我们都没有讲过这个参数。因此使用的是默认值。</p>
-<p><img src="/2018/02/05/ex36/ex36-1.png"></p>
+<p><img src="/2018/02/05/ex36/ex36-1.png" alt=""></p>
 <p>查找VASP官网说明书，默认值是ISIF= 2 。是的，前面我们都是用的 ISIF = 2 。（废话，等于白说！）你还会发现有一堆其他的ISIF参数，从1 - 7，看的眼花缭乱。</p>
-<p><img src="/2018/02/05/ex36/ex36-2.png"></p>
+<p><img src="/2018/02/05/ex36/ex36-2.png" alt=""></p>
 <p>坚持一下，你会发现它们有各自的特点，原子坐标是否变化，晶胞形状是否改变，以及晶胞体系是够变化。不同的参数大家根据自己研究体系的性质进行选取。</p>
 <p>本文主要介绍ISIF = 3 时对晶胞的优化。其他的取值比如加压计算等，为避免对大家造成误解，在这里不做进一步地说明。因为本人计算的时候，只用到过2 和 3 的情况。</p>
 <p>ISIF = 3 的时候，晶胞中原子的坐标，晶胞形状，以及体系都随着优化的过程发生变化。 回到Fe单胞的计算，我们先看一下INCAR的输入，然后再详细解释其中的内容。</p>
-<p><img src="/2018/02/05/ex36/ex36-3.png"></p>
+<p><img src="/2018/02/05/ex36/ex36-3.png" alt=""></p>
 <p>对比下，前面单点计算的INCAR，你会发现有几个不同：</p>
 <p>1） ENCUT = 600 设置的比之前的450大。</p>
 <p>2） EDIFFG = -0.015 结构优化的收敛标准</p>
@@ -3259,55 +3187,55 @@
 <p>POSCAR，KPOINTS，POTCAR直接将前面单点计算目录（1.00）下的复制过来。</p>
 <h2 id="2-ENCUT-取值"><a href="#2-ENCUT-取值" class="headerlink" title="2 ENCUT 取值"></a>2 ENCUT 取值</h2><p>师兄，Fe的ENCUT 默认值是：ENMAX  =  267.882 eV， 前面单点计算设置的 450 eV。这里为什么设置成600 eV ？ </p>
 <p>如果你仔细看VASP官网的说明书，在底部有这么一段话：</p>
-<p><img src="/2018/02/05/ex36/ex36-4.png"></p>
+<p><img src="/2018/02/05/ex36/ex36-4.png" alt=""></p>
 <p>红色的链接如下：</p>
 <p><a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/vasp/Volume_vs_energy_volume_relaxations_Pulay_Stress.html">http://cms.mpi.univie.ac.at/vasp/vasp/Volume_vs_energy_volume_relaxations_Pulay_Stress.html</a>   </p>
 <p>最后一句，如果计算时体积发生了变化，我们需要增加ENCUT的值，比如说：ENCUT = 1.3 * max(ENMAX) ， max(ENMAX) 的意思是，如果有N个元素，取最大元素的ENMAX值。</p>
 <p>这么做的原因是为了尽可能地消除 Pulay stress 对计算的影响。那么什么是Pulay Stress 呢？</p>
-<h3 id="3-Pulay-Stress"><a href="#3-Pulay-Stress" class="headerlink" title="3 Pulay Stress"></a>3 Pulay Stress</h3><p><img src="/2018/02/05/ex36/ex36-5.png"></p>
+<h3 id="3-Pulay-Stress"><a href="#3-Pulay-Stress" class="headerlink" title="3 Pulay Stress"></a>3 Pulay Stress</h3><p><img src="/2018/02/05/ex36/ex36-5.png" alt=""></p>
 <p>通过查看红色的链接内容，字面上的理解就是，当晶胞体积发生变化时，由于计算时的平面波基组不全（设置的ENCUT不够大）使得计算时的收敛不是绝对的，进而导致应力张量不对，最终导致体系的形状，体积以及能量不正确。（这个我不是很懂，字面上直译过来的。）维基百科的描述如下，链接：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Pulay_Stress">https://en.wikipedia.org/wiki/Pulay_Stress</a></p>
-<p><img src="/2018/02/05/ex36/ex36-6.png"></p>
+<p><img src="/2018/02/05/ex36/ex36-6.png" alt=""></p>
 <p>A plane wave basis set is created for thehexagonal lattice (left), using the reciprocal lattice vectors inside the redcircle. Then the lattice relaxes into a cubic symmetry (right). Keeping the redcircle basis constant results in lattice vectors taken from an ellipsoidinstead of a spherical area (compare to the blue circle).</p>
 <p>深层次的俺也不懂，但是PulayStess 有2个办法可以减小： </p>
 <p>A)  体积不变，采用一系列的晶格常数计算，然后拟合得到准确的晶格常数；（你已经知道怎么去做了，这么做是为了避免计算时晶格体积发生变化！）；</p>
 <p>注意： </p>
 <p>1） 在LVASPTHW的拟合流程中，拟合出来的是BM方程， BM方程的最高次数是3，也就是x的三次方。此时：x = (1/a$^2$)  ，具体见Ex32-35的详细说明。</p>
-<ol start="2">
-<li>如果直接用晶格常数去拟合，则是6次方的关系。</li>
-</ol>
-<p><img src="/2018/02/05/ex36/ex36-8.png"></p>
-<ol start="3">
-<li>如果你用体积去拟合BM方程的话，最高次数是2：</li>
-</ol>
-<p><img src="/2018/02/05/ex36/ex36-9.png"></p>
+<p>2) 如果直接用晶格常数去拟合，则是6次方的关系。</p>
+<p><img src="/2018/02/05/ex36/ex36-8.png" alt=""></p>
+<p>3) 如果你用体积去拟合BM方程的话，最高次数是2：</p>
+<p><img src="/2018/02/05/ex36/ex36-9.png" alt=""></p>
 <p>B)  既然是因为ENCUT不够导致的，那么我就使劲增加ENCUT来消除（上图中unless后面的那句）。借用维基百科的一句话：Pulay stress can be reduced by increasing the energy cutoff. 所以，当有人用ISIF= 3计算，而不去设置ENCUT的时候，尽情地去嘲笑他傻X吧！！！感觉不过瘾，还可以继续吓唬他说后面的计算也有问题。</p>
 <h2 id="4-ENCUT-取值"><a href="#4-ENCUT-取值" class="headerlink" title="4 ENCUT 取值"></a>4 ENCUT 取值</h2><p>官网说设置到130% * max(ENMAX)，一般来说就可以了。但很多人还是不放心，那我们就继续疯狂一些，设置到600 或者700。本人一般习惯用600。</p>
 <p>师兄，前面你不是讲到增加ENCUT会增加计算量么？而且要保持计算中使用同一个计算的参数？</p>
 <p>是的，这些你说的都是正确的。但是，我们使用ISIF = 3 的目的是获取稳定的晶格常数，但为了避免Pulay stress导致的误差，就必须要增加ENCUT（No Choice！！！）。一旦我们计算完成晶格常数的计算后，可以在此结果基础上，统一使用其他的ENCUT值进行计算。也就是只有确定晶格常数的这一步是个例外，其他情况还是用原来的值。</p>
-<p><img src="/2018/02/05/ex36/ex36-10.jpeg"></p>
+<p><img src="/2018/02/05/ex36/ex36-10.jpeg" alt=""></p>
 <p>举个不恰当的例子，这就好比当初你追女朋友的时候，为讨人家欢心，疯狂地买买买，什么要求都答应。等追到手了，结婚了，新鲜劲过去了，就原形毕露，不再这么大手大脚地去疯狂了。 </p>
-<p><img src="/2018/02/05/ex36/ex36-11.jpeg"></p>
+<p><img src="/2018/02/05/ex36/ex36-11.jpeg" alt=""></p>
 <p>讲到这里，使用ISIF = 3 时，你脑子第一反应就是疯狂地增加ENCUT，600不够，上700， 700感觉不够，上800，在计算承受的范围之内，越大越好！ 因此ISIF = 3 和 ENCUT两个参数必须同时出现。</p>
 <h2 id="5-计算结果"><a href="#5-计算结果" class="headerlink" title="5  计算结果"></a>5  计算结果</h2><p>设置完后，提交任务：计算出来的Fe晶格参数为： 2.8318 Å，对比下前面拟合出来的结果： 2.8332 Å，两者相差：0.0014 / 2.8332 = 0.019 %， 这么点误差，完全可以忽略掉了。如果不放心，将ISIF =3 的结果，使用前面的设置，算个单点，然后跟BM拟合结果对比下，两者能量相差甚微，完全可以忽略。 </p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
 <th>Methods</th>
 <th>Lattice Constant</th>
-<th align="left">Energy</th>
+<th style="text-align:left">Energy</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>BM拟合</td>
 <td>2.8332 $\AA$</td>
-<td align="left">-16.47179683 eV</td>
+<td style="text-align:left">-16.47179683 eV</td>
 </tr>
 <tr>
 <td>直接优化（ISIF=3，ENCUT=600）</td>
 <td>2.8318 $\AA $</td>
-<td align="left">-16.47181669 eV</td>
+<td style="text-align:left">-16.47181669 eV</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <h2 id="6-总结："><a href="#6-总结：" class="headerlink" title="6 总结："></a>6 总结：</h2><p>学习完本节，怎么计算晶格常数的两个方法你应该都掌握了，希望大家能学到的东西有以下几个：</p>
 <p>1 什么是BM方程？</p>
 <p>2 BM方程拟合的方法（最小二乘法，脚本以及运行）；</p>
@@ -3423,15 +3351,15 @@
     <div class="post-body" itemprop="articleBody">
           <p>通过上一节（Ex34）的脚本，我们可以拟合出稳定晶体结构的晶格参数，但是，这个脚本是怎么运行的呢？大家在浏览之后，有没有什么疑问？本节我们重点介绍一下：这个脚本的运行原理。</p>
 <h2 id="1-数据"><a href="#1-数据" class="headerlink" title="1  数据"></a>1  数据</h2><p>首先我们看下读取的data文件：</p>
-<p><img src="/2018/02/04/ex35/ex35-1.png"></p>
+<p><img src="/2018/02/04/ex35/ex35-1.png" alt=""></p>
 <p>A) 共两列，两列之间用<code>tab</code>分开；</p>
 <p>B) 第一列为缩放系数，第二列为对应结构的能量。</p>
 <p>C) 在本文例子中，晶格参数等于= <code>缩放系数</code> * <code>2.8664</code> $\AA$ （记住这个公式）</p>
 <p>2  脚本内容： 浏览一遍即可，详解在下面： </p>
-<p><img src="/2018/02/04/ex35/ex35-2.png"></p>
+<p><img src="/2018/02/04/ex35/ex35-2.png" alt=""></p>
 <p>详解：</p>
 <p><strong>2.1  1-15行：准备部分</strong></p>
-<p><img src="/2018/02/04/ex35/ex35-3.png"></p>
+<p><img src="/2018/02/04/ex35/ex35-3.png" alt=""></p>
 <p>A) 1-4 行为脚本的一些基本说明，为养成一个良好的写脚本习惯，以及避免后期不必要的麻烦，第一行必须要放进去。如果你用bash写的话，把python替换为bash即可，其他部分不用动，例如： #!/usr/bin/env bash。</p>
 <p>B）2-3行注释，解释了一下脚本干什么用的，谁写的，怎么用。</p>
 <p>C)  6-7 行调用python库中的math 和 numpy 模块，见下面两个链接：</p>
@@ -3439,45 +3367,34 @@
 <p><a target="_blank" rel="noopener" href="http://www.numpy.org/">http://www.numpy.org/</a></p>
 <p>D）9-15行：通过使用 print 命令输出一个警告，因为本文用的是缩放系数，很多人测试的时候保持缩放系数不变，直接采用不同的晶格参数。</p>
 <p><strong>2.2  读取data信息，准备拟合</strong></p>
-<p><img src="/2018/02/04/ex35/ex35-4.png"></p>
+<p><img src="/2018/02/04/ex35/ex35-4.png" alt=""></p>
 <p>A)  16-18行为脚本的注释说明，</p>
 <p>B)  第20行中，我们使用 <code>np.loadtxt</code>读取data文件的内容，</p>
 <p>注意：</p>
-<ol>
-<li><p> <code>data</code> 用单引号括起来，表明我们要读以<code>data</code>命名的文件。 </p>
-</li>
-<li><p>  <code>usecols=(0,1)</code> 代表我们要读取第一列和第二列的内容。Python中的第一个用0表示，所以这里我们用的（0,1）来表示读取第1和第2列的内容；</p>
-</li>
-<li><p>  <code>delimiter=&#39;\t&#39;</code>，意思是第一列和第二列之间用tab（’\t’）分开；</p>
-</li>
-<li><p> <code>unpack=True</code> 意思是把读取的数据生成一个数列，并分配给a 和 E，具体见链接：</p>
-</li>
-</ol>
+<p>1)  <code>data</code> 用单引号括起来，表明我们要读以<code>data</code>命名的文件。 </p>
+<p>2)   <code>usecols=(0,1)</code> 代表我们要读取第一列和第二列的内容。Python中的第一个用0表示，所以这里我们用的（0,1）来表示读取第1和第2列的内容；</p>
+<p>3)   <code>delimiter=&#39;\t&#39;</code>，意思是第一列和第二列之间用tab（’\t’）分开；</p>
+<p>4)  <code>unpack=True</code> 意思是把读取的数据生成一个数列，并分配给a 和 E，具体见链接：</p>
 <p><a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html</a></p>
 <p>通过第20行，我们可以获得两个数列，第一个是 a 包含了data文件中的缩放系数， 第二个是E，包含了data文件中的能量信息</p>
-<p>C) 第22-28行，把缩放系数转换为晶格常数(a<em>2.8664)，然后平方取倒数（</em>*(-2)），用来得到我们前面讲解的x。这是因为：当我们把BM方程写成： $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $ 的形式时，前提是令 (1/a)$^2$ = x。不懂的具体见Ex33中的内容。截止到现在，我们有了三个数列： a, E 和 x</p>
+<p>C) 第22-28行，把缩放系数转换为晶格常数(a<em>2.8664)，然后平方取倒数（*</em>(-2)），用来得到我们前面讲解的x。这是因为：当我们把BM方程写成： $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $ 的形式时，前提是令 (1/a)$^2$ = x。不懂的具体见Ex33中的内容。截止到现在，我们有了三个数列： a, E 和 x</p>
 <p><strong>2.3 第29-40行：拟合多项式方程</strong>： </p>
-<p><img src="/2018/02/04/ex35/ex35-5.png"></p>
+<p><img src="/2018/02/04/ex35/ex35-5.png" alt=""></p>
 <p>A) 最小二乘法拟合 $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $这个方程，得到常数系列c，这里我们调用了<code>numpy</code> 的<code>polyfit</code>这个模块来进行拟合。具体见：</p>
 <p><a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html</a></p>
-<p>B) 第31行：本脚本的核心：<code> p = np.polyfit(x, E, 3)</code></p>
-<ol>
-<li>np.polyfit 读取x和 E的数值，拟合一个$y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $，</li>
-</ol>
+<p>B) 第31行：本脚本的核心：<code>p = np.polyfit(x, E, 3)</code></p>
+<p>1) np.polyfit 读取x和 E的数值，拟合一个$y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $，</p>
 <p>注意：这里拟合的时候，用的数值是x和E，(1/a)$^2$ = x， 所以，在进行拟合之前，务必确保你已经得到了正确的x数列。具体根据data文件的内容进行修改设置第24行的公式。</p>
-<ol start="2">
-<li>括号中的3代表的是多项式方程中最大的那个次数。</li>
-</ol>
+<p>2) 括号中的3代表的是多项式方程中最大的那个次数。</p>
 <p>扩展：如果你想拟合一个$ y = c_4x^4 +c_3x^4  …$的方程，把3改成4 即可。</p>
 <p>3)拟合的结果输出到数列 p 中，数列p中共有4个常数（p[0],  p[1]，p[2]，p[3]），按照次数从高到底的顺序排列，对应着我们Ex33中的（c3，c2, c1, 和 c0 ）</p>
-<ol start="4">
-<li>33-36行, 我们将p 中的数值分别分配给c3，c2, c1, 和 c0。</li>
-</ol>
+<p>4) 33-36行, 我们将p 中的数值分别分配给c3，c2, c1, 和 c0。</p>
 <p><strong>2.4   38-40行，获取晶格参数</strong>：</p>
 <p>到目前位置，多项式方程的常数我们已经获得了，下面就是求解问题了。</p>
-<p><img src="/2018/02/04/ex35/ex35-6.png"></p>
-<p>A)  第42行为下图中公式的代码描述，获取方程的解x，因为前面我们已经有了一个x变量了，这里方程的解用x1表示，<br>$$<br>x x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}<br>$$</p>
-<p>B) 第43行获取晶格常数，公式为： (1/a)$^2$= x</p>
+<p><img src="/2018/02/04/ex35/ex35-6.png" alt=""></p>
+<p>A)  第42行为下图中公式的代码描述，获取方程的解x，因为前面我们已经有了一个x变量了，这里方程的解用x1表示，</p>
+<script type="math/tex; mode=display">
+x x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}</script><p>B) 第43行获取晶格常数，公式为： (1/a)$^2$= x</p>
 <p>C) 第45行，输出晶格常数的数值。</p>
 <h2 id="3-扩展练习："><a href="#3-扩展练习：" class="headerlink" title="3 扩展练习："></a>3 扩展练习：</h2><p>3.1 根据解释，重新浏览脚本，知道每一行代表的含义。</p>
 <p>3.2 本脚本使用的时候，需要自己根据data数列中的内容，设置更改一下获取 x 数列的公式（第24行）；</p>
@@ -3591,16 +3508,16 @@
 <p>其次：进入该目录，运行脚本的命令为（见下图）： </p>
 <p>python   bm0.py </p>
 <p>注意： bm0.py 为脚本名，你也可以随意写成 birch,  birch.py等。</p>
-<p><img src="/2018/02/03/ex34/ex34-1.jpeg"></p>
+<p><img src="/2018/02/03/ex34/ex34-1.jpeg" alt=""></p>
 <p>通过脚本，我们可以得到Fe单胞的晶格参数为： 2.8332 Å</p>
 <h2 id="2-脚本的内容-1："><a href="#2-脚本的内容-1：" class="headerlink" title="2 脚本的内容-1："></a>2 脚本的内容-1：</h2><p>我们看一下bm0.py 这个脚本的内容：只有几行而已。大家先自己根据前面介绍的通过BM方程获得晶格参数的原理，阅读以下该脚本，看不懂不要紧，多看几遍。大体上了解是怎么回事。</p>
-<p><img src="/2018/02/03/ex34/ex34-2.jpeg"></p>
+<p><img src="/2018/02/03/ex34/ex34-2.jpeg" alt=""></p>
 <h2 id="3-脚本的内容-2："><a href="#3-脚本的内容-2：" class="headerlink" title="3 脚本的内容-2："></a>3 脚本的内容-2：</h2><p>前面的脚本没有任何的说明，阅读起来很是费力，大师兄把注释加上去了，并命名为: bm.py。大家再阅读一遍，看看有没有新的收获。</p>
-<p><img src="/2018/02/03/ex34/ex34-3.jpeg"></p>
+<p><img src="/2018/02/03/ex34/ex34-3.jpeg" alt=""></p>
 <p>图中的链接为：(左下角查看原文)</p>
 <p><a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html</a></p>
 <p>该脚本运行效果如下图：</p>
-<p><img src="/2018/02/03/ex34/ex34-4.jpeg"></p>
+<p><img src="/2018/02/03/ex34/ex34-4.jpeg" alt=""></p>
 <p>脚本的工作原理下一节介绍，本节中大家只看脚本，分析里面的内容，自己结合前面一节琢磨是怎么回事。脚本和读取的data文件可以在QQ群中下载，也可以通过百度网盘，链接： <a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1o8cCdBG">http://pan.baidu.com/s/1o8cCdBG</a> </p>
 <h2 id="4-扩展练习"><a href="#4-扩展练习" class="headerlink" title="4 扩展练习"></a>4 扩展练习</h2><p>4.1 查找文献，获取Fe的晶格常数的实验数据，与脚本获取的结果进行对比；</p>
 <p>4.2 Windows用户使用notepad++或者其他文本编辑软件，自己将bm0.py脚本重新写一遍，然后运行，如果出错了，请与图中对比并修改，直至完美匹配为止！！！</p>

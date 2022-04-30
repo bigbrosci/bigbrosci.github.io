@@ -311,38 +311,36 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>本节推荐一款可视化程序：<strong>Jmol</strong>，可以用来看分子结构以及振动频率。<strong>Jmol</strong> 是一款<code>Java</code>语言编写的，开源，<code>Linux</code>，<code>Windows</code>均可的使用的可视化软件。还记的我们从<code>ChemSpider</code>获取乙醇分子的情景吗？</p>
-<p><img src="/2017/12/16/ex25/ex25-1.jpeg"></p>
-<p><img src="/2017/12/16/ex25/ex25-2.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-1.jpeg" alt=""></p>
+<p><img src="/2017/12/16/ex25/ex25-2.jpeg" alt=""></p>
 <p>对了！RSC的网页版中，乙醇分子的3D结构就是通过 <strong>Jmol</strong> 展示给大家的（3D图上方），并且我们下载的结构也是jmol格式的文件！可以通过 <strong>Jmol</strong> 直接打开。现在我们通过在电脑上运行Jmol，并查看分子的结构和振动频率。</p>
 <hr>
 <h2 id="1-Jmol在windows和linux下的安装："><a href="#1-Jmol在windows和linux下的安装：" class="headerlink" title="1. Jmol在windows和linux下的安装："></a>1. Jmol在windows和linux下的安装：</h2><h3 id="1-1-安装前准备（Java运行环境的安装）"><a href="#1-1-安装前准备（Java运行环境的安装）" class="headerlink" title="1.1 安装前准备（Java运行环境的安装）"></a>1.1 安装前准备（Java运行环境的安装）</h3><p><code>Windows</code>下：直接百度<code>Java Runtime Environment（JRE）</code>，安装软件。</p>
-<p><img src="/2017/12/16/ex25/ex25-3.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-3.jpeg" alt=""></p>
 <p>也可以官网下载：<a target="_blank" rel="noopener" href="http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html">http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html</a></p>
-<p><img src="/2017/12/16/ex25/ex25-4.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-4.jpeg" alt=""></p>
 <p>注意两点：</p>
 <p>1： 接受许可，</p>
 <p>2：64位系统下载箭头所指的文件，然后安装即可。</p>
 <p><code>Linux</code>下<code>Java</code>运行环境安装移步下方链接：</p>
 <p><a target="_blank" rel="noopener" href="https://linux.cn/article-3792-1.html">怎样在Ubuntu 14.04中安装Java</a>： <a target="_blank" rel="noopener" href="https://linux.cn/article-3792-1.html">https://linux.cn/article-3792-1.html</a> </p>
-<p>或者直接使用命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install default-jre</span><br></pre></td></tr></table></figure>
-
+<p>或者直接使用命令：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install default-jre</span><br></pre></td></tr></table></figure></p>
 <hr>
 <h3 id="1-2-Jmol软件的下载和安装"><a href="#1-2-Jmol软件的下载和安装" class="headerlink" title="1.2 Jmol软件的下载和安装"></a>1.2 Jmol软件的下载和安装</h3><ul>
 <li>Windows：</li>
 </ul>
 <p><a target="_blank" rel="noopener" href="https://sourceforge.net/projects/jmol/files/Jmol/">https://sourceforge.net/projects/jmol/files/Jmol/</a></p>
 <p>打开链接后，图中箭头指的地方下载最新版的（<code>Linux</code>其实和<code>Windows</code>下载的文件一模一样，见后面说明），也可以任选版本进行下载。</p>
-<p><img src="/2017/12/16/ex25/ex25-5.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-5.jpeg" alt=""></p>
 <p>等待几秒后会弹出下载的窗口，其他浏览器也应该一样。</p>
-<p><img src="/2017/12/16/ex25/ex25-6.jpeg"></p>
-<p><img src="/2017/12/16/ex25/ex25-7.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-6.jpeg" alt=""></p>
+<p><img src="/2017/12/16/ex25/ex25-7.jpeg" alt=""></p>
 <p>解压缩后就算安装好了，可以直接运行。</p>
 <hr>
 <p>运行 <strong>Jmol</strong> 程序：</p>
-<p><img src="/2017/12/16/ex25/ex25-8.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-8.jpeg" alt=""></p>
 <p>上图中 <code>箭头1</code>所指为 <code>jmol.bat</code> 文件，<code>箭头2</code>所指为 <code>Java</code>的可执行文件：<code>jmol.jar</code>。在<code>Windows</code>下任选一个双击即可打开 <strong>Jmol</strong> 程序。建议将解压缩之后文件夹中的<code>jmol.bat</code>或者<code>jmol.jar</code> 文件右键发送到桌面快捷方式。打开后如下图：</p>
-<p><img src="/2017/12/16/ex25/ex25-9.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-9.jpeg" alt=""></p>
 <hr>
 <ul>
 <li><code>Linux</code>下安装 <strong>Jmol</strong> 的方法:</li>
@@ -351,61 +349,54 @@
 <p>大师兄在<code>Linux</code>系统下的操作如下：</p>
 <p>a）下载和<code>Windows</code>版的过程一样，下载完毕后，解压，</p>
 <p>b）终端里面进入解压后的文件夹：</p>
-<p><img src="/2017/12/16/ex25/ex25-10.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-10.jpeg" alt=""></p>
 <p>注意一下几点：</p>
 <p>b.1) <code>jmol.sh</code>就是我们在<code>Linux</code>系统下面的命令（<code>Windows</code>里面我们用<code>jmol.bat</code> 和 <code>jmol.jar</code>）；</p>
-<p>b.2) 首先赋予它可执行的权限：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u+x  jmol.sh</span><br></pre></td></tr></table></figure>
-<p>相反地，取消权限：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u-x jmol.sh</span><br></pre></td></tr></table></figure>
-
+<p>b.2) 首先赋予它可执行的权限：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u+x  jmol.sh</span><br></pre></td></tr></table></figure><br>相反地，取消权限：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u-x jmol.sh</span><br></pre></td></tr></table></figure></p>
 <p>b.3) 这里大师兄电脑下，<code>jmol.sh</code>变成绿色的了（不同电脑显示会不同，不要纠结）</p>
 <p>b.4) 尝试运行一下： <code>./jmol.sh  OK</code></p>
 <p>b.5) 下面设置环境变量：打开 <code>~/.bashrc</code> 文件，并加入这一行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:~/Downloads/jmol-14.20.2:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
-
 <p><strong>注意：</strong></p>
 <ul>
 <li>等号=前后没有空格, 后面紧跟着<code>$PATH</code>；</li>
 <li>再往后是一个冒号，冒号前后也不能有空格，填上Jmol的解压目录！！！</li>
 </ul>
-<p>b.6) 保存<code>.bashrc</code> 文件并<code>source</code>一下:   <code>.  ~/.bashrc</code>  （注意前面的 <code>.</code> ）或者使用命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span>  ~/.bashrc</span><br></pre></td></tr></table></figure>
-
+<p>b.6) 保存<code>.bashrc</code> 文件并<code>source</code>一下:   <code>.  ~/.bashrc</code>  （注意前面的 <code>.</code> ）或者使用命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span>  ~/.bashrc</span><br></pre></td></tr></table></figure></p>
 <p>c） 进入其他目录，运行 <strong>Jmol</strong> 命令：下图中<code>~/Destkop/freq</code> 目录下有我们关于乙醇频率的计算结果。</p>
-<p><img src="/2017/12/16/ex25/ex25-12.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-12.jpeg" alt=""></p>
 <p>大功告成！！！</p>
-<p>此外，<code>sudo apt-get install jmol </code>这样安装的是<strong>旧版本</strong>，强烈不建议，原因如下：</p>
+<p>此外，<code>sudo apt-get install jmol</code>这样安装的是<strong>旧版本</strong>，强烈不建议，原因如下：</p>
 <p><strong>可能图片有些模糊，但不重要！旧版本的不支持 OUTCAR…安了也是白搞！！！</strong></p>
-<p><img src="/2017/12/16/ex25/ex25-13.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-13.jpeg" alt=""></p>
 <hr>
 <h2 id="2-使用Jmol可视化分子振动"><a href="#2-使用Jmol可视化分子振动" class="headerlink" title="2 使用Jmol可视化分子振动"></a>2 使用Jmol可视化分子振动</h2><h3 id="2-1-载入振动文件到-Jmol"><a href="#2-1-载入振动文件到-Jmol" class="headerlink" title="2.1 载入振动文件到 Jmol"></a>2.1 载入振动文件到 Jmol</h3><p><code>Windows</code>：直接将频率计算得到的<code>OUTCAR</code>拖到<code>jmol.bat</code>就可以了</p>
 <p><code>Linux</code>：直接 <code>jmol 文件名</code></p>
 <p>两个系统下面均可使用左上角的 文件à打开à选择<code>OUTCAR</code>导入。</p>
 <p>得到如下界面。但是分子并没有开始振动，只是显示了其结构。</p>
-<p><img src="/2017/12/16/ex25/ex25-14.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-14.jpeg" alt=""></p>
 <p>（该结构和<code>ChemSpider</code>上的一样！）</p>
 <p>要查看振动模型，需要以下两步，<strong>选中振动模型</strong>和<strong>开启振动</strong>。这两步有多种方法可以实现，总结如下。</p>
 <hr>
-<h3 id="2-2-选择振动模型"><a href="#2-2-选择振动模型" class="headerlink" title="2.2 选择振动模型"></a>2.2 选择振动模型</h3><p>A）可以在工具–&gt;原子库选择器中选中要查看的振动模型</p>
-<p><img src="/2017/12/16/ex25/ex25-15.jpeg"></p>
+<h3 id="2-2-选择振动模型"><a href="#2-2-选择振动模型" class="headerlink" title="2.2 选择振动模型"></a>2.2 选择振动模型</h3><p>A）可以在工具—&gt;原子库选择器中选中要查看的振动模型</p>
+<p><img src="/2017/12/16/ex25/ex25-15.jpeg" alt=""></p>
 <p><strong>注意，先把右边的按钮拉倒底，然后双击Frequencies展开频率信息，</strong> 如下:</p>
-<p><img src="/2017/12/16/ex25/ex25-16.jpeg"></p>
-<p>B) 也可以直接右键–&gt;模型中选中</p>
-<p><img src="/2017/12/16/ex25/ex25-17.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-16.jpeg" alt=""></p>
+<p>B) 也可以直接右键—&gt;模型中选中</p>
+<p><img src="/2017/12/16/ex25/ex25-17.jpeg" alt=""></p>
 <hr>
-<h3 id="2-3-开启振动"><a href="#2-3-开启振动" class="headerlink" title="2.3 开启振动"></a>2.3 开启振动</h3><p>A) 原子库选择器中<strong>最下方</strong>: <strong>振动–&gt;振动开</strong> 可实现， 点击后，原子就开始振动了。</p>
-<p><img src="/2017/12/16/ex25/ex25-18.jpeg"></p>
-<p><img src="/2017/12/16/ex25/ex25-19.jpeg"></p>
-<p>B) 在<strong>菜单栏–&gt;工具–&gt;震动</strong> 中开启（原子库选择器选中时采用这种方式，需要先开启再选中）</p>
-<p><img src="/2017/12/16/ex25/ex25-20.jpeg"></p>
-<p>C) 也可以<strong>右键 –&gt; 振动 –&gt; 开启</strong></p>
-<p><img src="/2017/12/16/ex25/ex25-21.jpeg"></p>
+<h3 id="2-3-开启振动"><a href="#2-3-开启振动" class="headerlink" title="2.3 开启振动"></a>2.3 开启振动</h3><p>A) 原子库选择器中<strong>最下方</strong>: <strong>振动—&gt;振动开</strong> 可实现， 点击后，原子就开始振动了。</p>
+<p><img src="/2017/12/16/ex25/ex25-18.jpeg" alt=""></p>
+<p><img src="/2017/12/16/ex25/ex25-19.jpeg" alt=""></p>
+<p>B) 在<strong>菜单栏—&gt;工具—&gt;震动</strong> 中开启（原子库选择器选中时采用这种方式，需要先开启再选中）</p>
+<p><img src="/2017/12/16/ex25/ex25-20.jpeg" alt=""></p>
+<p>C) 也可以<strong>右键 —&gt; 振动 —&gt; 开启</strong></p>
+<p><img src="/2017/12/16/ex25/ex25-21.jpeg" alt=""></p>
 <hr>
 <h3 id="2-4-查看不同振动"><a href="#2-4-查看不同振动" class="headerlink" title="2.4 查看不同振动"></a>2.4 查看不同振动</h3><p>A) 原子集选择器中的频率列表，双击其中的一个就显示其振动方式了。</p>
-<p><img src="/2017/12/16/ex25/ex25-22.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-22.jpeg" alt=""></p>
 <p>B) 要查看下一个振动还可以通过点击向右的这个箭头就可以了。</p>
-<p><img src="/2017/12/16/ex25/ex25-23.jpeg"></p>
+<p><img src="/2017/12/16/ex25/ex25-23.jpeg" alt=""></p>
 <p>以上就是本节关于 <strong>Jmol</strong> 可视化的介绍了，更多信息，请查看 <strong>Jmol</strong> 的<code>wiki</code>：<br><a target="_blank" rel="noopener" href="http://wiki.jmol.org/index.php/Main_Page">http://wiki.jmol.org/index.php/Main_Page</a></p>
 <h2 id="3-扩展练习："><a href="#3-扩展练习：" class="headerlink" title="3 扩展练习："></a>3 扩展练习：</h2><p>3.1 熟练掌握 <strong>Jmol</strong> 的软件安装，查看频率的基本操作。</p>
 <p>3.2 通过在<code>Linux</code>系统下面安装 <strong>Jmol</strong>，尝试着安装其他软件；</p>
@@ -429,8 +420,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2017/12/15/ex23/" rel="prev" title="Ex23 乙醇分子的振动频率计算(一)">
-                  <i class="fa fa-chevron-left"></i> Ex23 乙醇分子的振动频率计算(一)
+                <a href="/2017/12/15/ex24/" rel="prev" title="Ex24 乙醇分子的振动频率计算(二)">
+                  <i class="fa fa-chevron-left"></i> Ex24 乙醇分子的振动频率计算(二)
                 </a>
             </div>
             <div class="post-nav-item">

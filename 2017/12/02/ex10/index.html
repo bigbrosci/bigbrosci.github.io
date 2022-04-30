@@ -304,21 +304,19 @@
 <li>POTCAR和POSCAR的对应关系，注意事项。</li>
 </ul>
 <h3 id="搭建模型"><a href="#搭建模型" class="headerlink" title="搭建模型"></a>搭建模型</h3><p>O${_2}$分子模型的搭建其实很简单，将两个原子在一个直线上连起来就行了。 键长大小可以书本上查， 数据库里找，也可以去网上找些参考资料。大师兄推荐常见常用的数据库:</p>
-<p>1）<a target="_blank" rel="noopener" href="http://hbcponline.com/">CRC hand book</a>:  </p>
+<p>1）<a target="_blank" rel="noopener" href="http://hbcponline.com">CRC hand book</a>:  </p>
 <ul>
 <li>网页版:  <a target="_blank" rel="noopener" href="http://hbcponline.com/faces/contents/ContentsSearch.xhtml">http://hbcponline.com/faces/contents/ContentsSearch.xhtml</a>  </li>
 </ul>
-<p><img src="/2017/12/02/ex10/ex10-1.jpeg"></p>
+<p><img src="/2017/12/02/ex10/ex10-1.jpeg" alt=""></p>
 <ul>
 <li>PDF 电子书，这个网上到处都有，大家自己搜搜就能找见。具体在1403 页(本书有2661页，建议大家查询的时候先把左侧的目录展开，要不然实在是太痛苦!)</li>
 </ul>
-<p><img src="/2017/12/02/ex10/ex10-2.jpeg"></p>
-<p><img src="/2017/12/02/ex10/ex10-3.jpeg"></p>
+<p><img src="/2017/12/02/ex10/ex10-2.jpeg" alt=""></p>
+<p><img src="/2017/12/02/ex10/ex10-3.jpeg" alt=""></p>
 <p>2） NIST 数据库: <a target="_blank" rel="noopener" href="http://cccbdb.nist.gov/exp2x.asp">http://cccbdb.nist.gov/exp2x.asp</a></p>
-<p><img src="/2017/12/02/ex10/ex10-4.jpeg"></p>
-<ol start="3">
-<li>Wikipedia，谷歌和百度:</li>
-</ol>
+<p><img src="/2017/12/02/ex10/ex10-4.jpeg" alt=""></p>
+<p>3) Wikipedia，谷歌和百度:</p>
 <p>在谷歌或者百度里面直接搜索O$_2$、键长这两个关键词，就可以得出很多的链接，比如下面两个。</p>
 <p><a target="_blank" rel="noopener" href="https://zhidao.baidu.com/question/101615129.html">https://zhidao.baidu.com/question/101615129.html</a></p>
 <p><a target="_blank" rel="noopener" href="http://www.science.uwaterloo.ca/~cchieh/cact/c120/bondel.html">http://www.science.uwaterloo.ca/~cchieh/cact/c120/bondel.html</a> </p>
@@ -334,15 +332,11 @@
 <p>所以，科学上网的技巧，你要get到。</p>
 <p><strong>划重点：</strong></p>
 <p>前面介绍了一堆，主要目的有3个：</p>
-<ol>
-<li><p>给大家提供一个数据查询手册(CRC handbook)和数据库(NIST)。当然根据自己的研究方向，还有其他更加专业的数据库，随着学习的深入，后面会讲解。 此外，写论文的时候，如果实在不想找相关的参考文献，可以直接引用CRC hand book这本书（前提是你在这本书里面找到了相关的数据）</p>
-</li>
-<li><p>查找数据库另一个重要的原因是：如果你的初始结构，比较理想，这会大大加速你的计算过程，还会避免一些意想不到的计算错误（后面的章节会具体介绍到）。</p>
-</li>
-</ol>
+<p>1) 给大家提供一个数据查询手册(CRC handbook)和数据库(NIST)。当然根据自己的研究方向，还有其他更加专业的数据库，随着学习的深入，后面会讲解。 此外，写论文的时候，如果实在不想找相关的参考文献，可以直接引用CRC hand book这本书（前提是你在这本书里面找到了相关的数据）</p>
+<p>2) 查找数据库另一个重要的原因是：如果你的初始结构，比较理想，这会大大加速你的计算过程，还会避免一些意想不到的计算错误（后面的章节会具体介绍到）。</p>
 <p>3）除了查找数据库，别人发的文章也是初始结构的重要或者主要来源。</p>
 <h3 id="模型搭建"><a href="#模型搭建" class="headerlink" title="模型搭建"></a>模型搭建</h3><p>知道了键长信息后，开始结构搭建O$_2$的模型，我们知道它是直线型分子（算大师兄没说），其中一个原子在原点的位置上了，那么我们在三个方向上随便找个坐标就可以了。修改POSCAR如下:</p>
-<p><img src="/2017/12/02/ex10/ex10-5.jpeg"></p>
+<p><img src="/2017/12/02/ex10/ex10-5.jpeg" alt=""></p>
 <p>两点要注意：</p>
 <ul>
 <li><p>第7行原子个数：把1改成2 ，表示氧元素有2个原子。</p>
@@ -350,6 +344,7 @@
 <li><p>第10行添加第二个氧原子的坐标：</p>
 </li>
 </ul>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -357,7 +352,8 @@
 <th>坐标</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>沿x轴</td>
 <td>1.2074   0.0   0.0</td>
 </tr>
@@ -369,7 +365,9 @@
 <td>沿z轴</td>
 <td>0.0  0.0  1.2074</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>上图中为沿着z轴方向。<strong>注意</strong>： </p>
 <ul>
 <li>xyz三个方向的数值之间可以有1个或者若干个空格，不要用tab分割数字；</li>
@@ -380,29 +378,24 @@
 <p>第6行是体系中的元素，只有O元素，所以我们的POTCAR还是用之前O原子练习的那个;</p>
 <p>第7行是与上一行相对应的体系中元素的原子数。</p>
 <p>但是！在你的POSCAR中，如果把O写了两遍，如下图：</p>
-<p><img src="/2017/12/02/ex10/ex10-6.jpeg"></p>
+<p><img src="/2017/12/02/ex10/ex10-6.jpeg" alt=""></p>
 <p>此时，第6行中有2个O，且第7行中有两个O的原子数目分别为1。 POTCAR中就要对应的两个O原子的Potentials!</p>
 <h5 id="主动出错："><a href="#主动出错：" class="headerlink" title="主动出错："></a>主动出错：</h5><p>如果我们使用上图的POSCAR（O元素写了2次），且POTCAR中只有1个O原子的Potential。</p>
 <p>提交任务后，瞬间完成。这么快就算完肯定不是因为你的服务器多么的牛逼! 而是因为出错了!!</p>
 <p>那么我们需要找到错误的原因，怎么去找错误信息呢? </p>
-<ol>
-<li>查看OUTCAR</li>
-</ol>
-<p><img src="/2017/12/02/ex10/ex10-7.jpeg"></p>
+<p>1) 查看OUTCAR</p>
+<p><img src="/2017/12/02/ex10/ex10-7.jpeg" alt=""></p>
 <p>VASP就这么几行，从这里看不出来是哪里错了。</p>
-<ol start="2">
-<li>一般来说，VASP计算的时候，会生成两个额外的文件，一个是关于服务器集群计算error的，另一个是VASP运行的out文件。这个out和OUTCAR不太一样，记录着VASP的运行过程和出错信息。看大师兄的文件目录:</li>
-</ol>
+<p>2) 一般来说，VASP计算的时候，会生成两个额外的文件，一个是关于服务器集群计算error的，另一个是VASP运行的out文件。这个out和OUTCAR不太一样，记录着VASP的运行过程和出错信息。看大师兄的文件目录:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/test$ ls</span><br><span class="line">CHGCAR   DOSCAR   e_Single.142845   INCAR   o_Single.142845  OUTCAR  POSCAR  PROCAR  sub12    WAVECAR  CHG      CONTCAR  EIGENVAL  IBZKPT   KPOINTS  OSZICAR   PCDAT   POTCAR  REPORT  vasprun.xml  XDATCAR</span><br><span class="line">qli@bigbro:~/test$ cat e_Single.142845</span><br><span class="line">qli@bigbro:~/test$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>不同的组可能命名不一样，但一般都会有这两个文件。这里的e对应的是服务器的出错信息，o对应的是VASP的out文件。 首先打开查看下服务器出错文件：(图中cat 命令) 发现什么都没有输出，说明服务器没有出错。那我们打开一下 o_Single.142845 文件，如下图</p>
-<p><img src="/2017/12/02/ex10/ex10-8.jpeg"></p>
+<p><img src="/2017/12/02/ex10/ex10-8.jpeg" alt=""></p>
 <p>在这个文件里面最后一行，给出了错误的信息：</p>
 <p>一般出现这个错误的时候，你就要去检查POSCAR和POTCAR中的元素是否对应了。</p>
 <h5 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h5><p>本例中的错误该怎么解决呢？ 既然POSCAR和POTCAR不一致，解决的话，有2个办法：要么变POSCAR，要么变POTCAR。</p>
 <p>1）变POSCAR：</p>
 <ul>
-<li> 第六行中：把<code>O O</code>换成<code>O</code>; </li>
+<li>第六行中：把<code>O O</code>换成<code>O</code>; </li>
 <li>第七行：氧原子数目改成2，就如刚开始的POSCAR。</li>
 <li>POTCAR保持不变即可（POTCAR中只有1个O的Potential）:</li>
 </ul>
@@ -411,16 +404,12 @@
 <li>使其中的元素与POSCAR中的一致，也就是有两个氧元素的Potentials！</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/test2$ grep TIT POTCAR</span><br><span class="line">   TITEL  = PAW_PBE O 08Apr2002</span><br><span class="line">qli@bigbro:~/test2$ mv POTCAR POTCAR1</span><br><span class="line">qli@bigbro:~/test2$ cat POTCAR1 POTCAR1  &gt; POTCAR</span><br><span class="line">qli@bigbro:~/test2$ grep TIT POTCAR</span><br><span class="line">   TITEL  = PAW_PBE O 08Apr2002</span><br><span class="line">   TITEL  = PAW_PBE O 08Apr2002</span><br></pre></td></tr></table></figure>
-
 <p> 这样，再运行就不会出错了。</p>
 <h3 id="POTCAR-的制备"><a href="#POTCAR-的制备" class="headerlink" title="POTCAR 的制备"></a>POTCAR 的制备</h3><p>前面的演示中，大师兄教给你了POTCAR的制备方法: 使用cat 命令将2个POTCAR1 连在一起然后输出新的POTCAR。如果看不明白，继续看下面的操作：</p>
 <p>如果你的体系中含有其他的元素，比如: Fe C H O</p>
 <p>那么你就要先准备这四个元素的POTCAR：POTCAR-Fe、POTCAR-C、POTCAR-H、POTCAR-O，</p>
 <p>然后运行命令:cat POTCAR-Fe POTCAR-C POTCAR-H POTCAR-O &gt; POTCAR  就可以了。</p>
 <h6 id="具体操作："><a href="#具体操作：" class="headerlink" title="具体操作："></a>具体操作：</h6><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/test2$ ls</span><br><span class="line">POTCAR-C  POTCAR-Fe  POTCAR-H  POTCAR-O </span><br><span class="line">qli@bigbro:~/test2$ grep TIT POTCAR*</span><br><span class="line">POTCAR-C:   TITEL  = PAW_PBE C 08Apr2002</span><br><span class="line">POTCAR-Fe:   TITEL  = PAW_PBE Fe 06Sep2000</span><br><span class="line">POTCAR-H:   TITEL  = PAW_PBE H 15Jun2001</span><br><span class="line">POTCAR-O:   TITEL  = PAW_PBE O 08Apr2002</span><br><span class="line">qli@bigbro:~/test2$ cat POTCAR-Fe POTCAR-C POTCAR-H POTCAR-O &gt; POTCAR</span><br><span class="line">qli@bigbro:~/test2$ grep TIT POTCAR</span><br><span class="line">POTCAR:   TITEL  = PAW_PBE Fe 06Sep2000</span><br><span class="line">POTCAR:   TITEL  = PAW_PBE C 08Apr2002</span><br><span class="line">POTCAR:   TITEL  = PAW_PBE H 15Jun2001</span><br><span class="line">POTCAR:   TITEL  = PAW_PBE O 08Apr2002</span><br></pre></td></tr></table></figure>
-
-
-
 <p>这四个元素POTCAR数据从哪里找，在哪个目录下面？</p>
 <p>这就得问问你们组里的师兄师姐们，或者老师了，网上也有很多。</p>
 <h3 id="扩展练习"><a href="#扩展练习" class="headerlink" title="扩展练习:"></a>扩展练习:</h3><p>1 正确运行O$_2$分子的静态计算;</p>

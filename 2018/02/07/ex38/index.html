@@ -295,13 +295,13 @@
         <p>前面一节，我们留了一个问题：DOS为什么要算两步？</p>
 <p>答：可以一步直接算！也就是前面一节的问题是瞎问的。那为什么大家总是有2步计算的疑问呢？本节，我们就解释这个。</p>
 <h2 id="为什么算两步？"><a href="#为什么算两步？" class="headerlink" title="为什么算两步？"></a>为什么算两步？</h2><p>官网说了，算DOS有2个方法，一个是直接进行self-consistent计算（大家常说的自洽或者静态计算。）然后处理DOSCAR和vasprun.xml文件即可，如图：</p>
-<p><img src="/2018/02/07/ex38/ex38-5.png"></p>
+<p><img src="/2018/02/07/ex38/ex38-5.png" alt=""></p>
 <p>我们看一下这么做的前提：</p>
-<p><img src="/2018/02/07/ex38/ex38-6.png"></p>
+<p><img src="/2018/02/07/ex38/ex38-6.png" alt=""></p>
 <ul>
 <li><p>1） 由于高质量的DOS需要精细的K点，如果我们设置的K点很多，就会造成计算上的负担，前面我们讲过K点与计算时间的关系；而很久很久以前，计算能力并不如现在这样快，因此可以通过分步计算来解决这一问题。</p>
 </li>
-<li><p>2） 另外一个原因就设计到能带的计算了，这里我们摘抄一下网上的解释：<strong>由于在能带计算时k点是一些在倒空间高对称线上的点</strong>，不能进行自洽计算。参考网址：<a target="_blank" rel="noopener" href="https://http//blog.sciencenet.cn/blog-567091-675253.html/">https://http://blog.sciencenet.cn/blog-567091-675253.html/</a> 也就是计算能带的时候，自洽计算是必须的一步；</p>
+<li><p>2） 另外一个原因就设计到能带的计算了，这里我们摘抄一下网上的解释：<strong>由于在能带计算时k点是一些在倒空间高对称线上的点</strong>，不能进行自洽计算。参考网址：<a target="_blank" rel="noopener" href="https://http://blog.sciencenet.cn/blog-567091-675253.html/">https://http://blog.sciencenet.cn/blog-567091-675253.html/</a> 也就是计算能带的时候，自洽计算是必须的一步；</p>
 </li>
 <li><p>3） 即使增加K点的数目，电荷密度和有效势能的收敛依然很快，也就是K点的变化对电荷密度的收敛影响不大。</p>
 </li>
@@ -321,7 +321,7 @@
 <p>LORBIT =11 在10的基础上，还进一步分解到px，py，pz等轨道上，称为投影态密度（Projected DOS）或者分波态密度(Partial DOS)，即PDOS。 </p>
 <p>所以LORBIT = 11可以提供我们更多的信息。</p>
 <h2 id="WAVECAR"><a href="#WAVECAR" class="headerlink" title="WAVECAR"></a>WAVECAR</h2><p> 那么，WAVECAR读不读呢？大师兄的观点是：有则读，无则不读。对于WAVECAR的读取，我们需要了解ISTART这个参数：</p>
-<p><img src="/2018/02/07/ex38/ex38-7.png"></p>
+<p><img src="/2018/02/07/ex38/ex38-7.png" alt=""></p>
 <ul>
 <li><p>如果前面计算中保存了<strong>WAVECAR</strong>，且ISTART没有设置，VASP默认是读取的。</p>
 </li>
@@ -332,7 +332,7 @@
 <ul>
 <li>1)通过设置LWAVE这个参数</li>
 </ul>
-<p><img src="/2018/02/07/ex38/ex38-8.png"></p>
+<p><img src="/2018/02/07/ex38/ex38-8.png" alt=""></p>
 <ul>
 <li>2)读取WAVECAR可以极大地减少自洽的时间，但是VASP的WAVECAR非常大，上百M或者几G都是很常见的。一不留神存储空间就被占满了。所以，在读取WAVECAR的时候，一定要确定自己的存储空间。</li>
 <li>3)如果前面计算步骤中（优化的过程）保存了WAVCAR，那么后面DOS计算的时候（1步计算或者2步计算均可），都可以读取，这会加快计算速度。</li>
@@ -353,8 +353,7 @@
 </li>
 <li><p>LCHARG = .TRUE.</p>
 </li>
-<li><p>稍微低密度的K点</p>
-</li>
+<li>稍微低密度的K点</li>
 </ul>
 <p>第二步：</p>
 <ul>
@@ -362,10 +361,8 @@
 </li>
 <li><p>ICHARGE = 11</p>
 </li>
-<li><p>LORBIT = 11</p>
-</li>
-<li><p>高密度的K点</p>
-</li>
+<li>LORBIT = 11</li>
+<li>高密度的K点</li>
 </ul>
 <p>如果结构优化的时候，存了WAVECAR，计算DOS的时候可以读取WAVECAR，直接一步计算搞定。</p>
 
