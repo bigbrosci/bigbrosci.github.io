@@ -297,9 +297,9 @@
         <p>大师兄在9月8日的文章中讲了如何用 Pymatgen 计算离子的电导率（该方法可以用来研究固态电解质等问题），<strong>本次，大师兄介绍一下如何使用 Pymatgen 可视化离子的迁移概率密度。</strong></p>
 <p>先举个例子，</p>
 <blockquote>
-<p>在“Design principles for solid-state lithium superionic conductors”一文中（Wang et al., Nature Materials <strong>2015</strong>, <em>14</em> , 1026–1031. ），作者用Ab Initio Molecular Dynamic （AIMD）计算了Li 离子在Li$\mathrm{_1}<script type="math/tex">\mathrm{_0}$GeP$\mathrm{_2}$S$\mathrm{_1}</script>\mathrm{_2}$， Li$\mathrm{_7}$P$\mathrm{_3}$S$\mathrm{_1}$$\mathrm{_1}$，Li$\mathrm{_2}$S，和 Li$\mathrm{_4}$GeS$\mathrm{_4}$ 四种材料中的迁移概率密度（Probability Density），结果如下图所示：</p>
+<p>在“Design principles for solid-state lithium superionic conductors”一文中（Wang et al., Nature Materials <strong>2015</strong>, <em>14</em> , 1026–1031. ），作者用Ab Initio Molecular Dynamic （AIMD）计算了Li 离子在Li$\mathrm{_1}$$\mathrm{_0}$GeP$\mathrm{_2}$S$\mathrm{_1}$$\mathrm{_2}$， Li$\mathrm{_7}$P$\mathrm{_3}$S$\mathrm{_1}$$\mathrm{_1}$，Li$\mathrm{_2}$S，和 Li$\mathrm{_4}$GeS$\mathrm{_4}$ 四种材料中的迁移概率密度（Probability Density），结果如下图所示：</p>
 </blockquote>
-<p><img src="/2020/10/02/A24/A24_1.png" alt=""></p>
+<p><img src="/2020/10/02/A24/A24_1.png"></p>
 <blockquote>
 <ul>
 <li>从图中可以看出Li离子在图a所示材料中主要沿c轴方向的通道迁移，而且由于这个通道连通得比较好，Li离子的迁移势垒会比较低（0.22~0.25 eV）。</li>
@@ -310,26 +310,33 @@
 </ul>
 </blockquote>
 <p><strong>那么我们如何在自己的计算中画出这样的图呢？</strong>Pymatgen 举手说，它可以帮忙！</p>
-<p>但是在开始之前，我们要安装Pymatgen的插件：<strong>Pymatgen-diffusion</strong>（<a target="_blank" rel="noopener" href="https://github.com/materialsvirtuallab/pymatgen-diffusion）。">https://github.com/materialsvirtuallab/pymatgen-diffusion）。</a></p>
+<p>但是在开始之前，我们要安装Pymatgen的插件：<strong>Pymatgen-diffusion</strong>（<a target="_blank" rel="noopener" href="https://github.com/materialsvirtuallab/pymatgen-diffusion%EF%BC%89%E3%80%82">https://github.com/materialsvirtuallab/pymatgen-diffusion）。</a></p>
 <h2 id="安装-Pymatgen-diffusion"><a href="#安装-Pymatgen-diffusion" class="headerlink" title="安装 Pymatgen-diffusion"></a>安装 Pymatgen-diffusion</h2><p><strong>推荐大家使用最新版的Anaconda安装Pymatgen及其插件。</strong>点击上面的链接，进入官网后，点击最新版本链接，</p>
-<p><img src="/2020/10/02/A24/A24_2.png" alt=""></p>
+<p><img src="/2020/10/02/A24/A24_2.png"></p>
 <p>我们可以下载.zip文件，</p>
-<p><img src="/2020/10/02/A24/A24_3.png" alt=""></p>
+<p><img src="/2020/10/02/A24/A24_3.png"></p>
 <p>下载完成后，大家可以解压这个文件，得到 pymatgen-diffusion-2019.8.18文件夹。</p>
-<p>我们把其中的 pymatgen_diffusion 文件夹放到 Anaconda的site-packages文件夹下，路径是 Windows 系统：……\Anaconda\Lib\site-packages；Linux系统：……/anaconda3/lib/pythonx.x/site-packages，就算安装好了。</p>
+<p>我们把其中的 pymatgen_diffusion 文件夹放到 Anaconda的site-packages文件夹下，路径是 Windows 系统：……\Anaconda\Lib\site-packages；Linux系统：……&#x2F;anaconda3&#x2F;lib&#x2F;pythonx.x&#x2F;site-packages，就算安装好了。</p>
 <p>接下来我们可以启动python，导入这个模块，如果不报错就没有问题了。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[test@ln0%tianhe2 li_sn_s]$ python</span><br><span class="line">Python 3.8.3 (default, Jul  2 2020, 16:21:59) </span><br><span class="line">[GCC 7.3.0] :: Anaconda, Inc. on linux</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt; import pymatgen_diffusion</span><br><span class="line">&gt;&gt;&gt; </span><br></pre></td></tr></table></figure>
+
+
+
 <h2 id="学习用法"><a href="#学习用法" class="headerlink" title="学习用法"></a>学习用法</h2><p>我们可以在其github网站上通过例子学习这个模块的用法。</p>
-<p><img src="/2020/10/02/A24/A24_4.png" alt=""></p>
+<p><img src="/2020/10/02/A24/A24_4.png"></p>
 <p>点击打开 probbility_analysis.ipynb 文件。</p>
-<p><img src="/2020/10/02/A24/A24_5.png" alt=""></p>
+<p><img src="/2020/10/02/A24/A24_5.png"></p>
 <p>其内容如下（有所删减）：如果不想看的话可直接查看 <strong>开始作图</strong> 部分</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pymatgen.analysis.diffusion_analyzer <span class="keyword">import</span> DiffusionAnalyzer</span><br><span class="line"><span class="keyword">from</span> pymatgen_diffusion.aimd.pathway <span class="keyword">import</span> ProbabilityDensityAnalysis</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="comment">#ProbabilityDensityAnalysis object</span></span><br><span class="line">filename=<span class="string">&quot;/Users/iekhengchu/repos/pymatgen-diffusion/pymatgen_diffusion/aimd/tests/cNa3PS4_pda.json&quot;</span></span><br><span class="line"></span><br><span class="line">data = json.load(<span class="built_in">open</span>(<span class="string">&quot;../pymatgen_diffusion/aimd/tests/cNa3PS4_pda.json&quot;</span>, <span class="string">&quot;r&quot;</span>))</span><br><span class="line">diff_analyzer = DiffusionAnalyzer.from_dict(data) <span class="comment"># 初始化DiffusionAnalyzer类</span></span><br><span class="line"></span><br><span class="line">pda = ProbabilityDensityAnalysis.from_diffusion_analyzer(diff_analyzer, interval=<span class="number">0.5</span>, </span><br><span class="line">                                                         species=(<span class="string">&quot;Na&quot;</span>, <span class="string">&quot;Li&quot;</span>)) <span class="comment">#可以指定离子</span></span><br><span class="line"><span class="comment">#Save probability distribution to a CHGCAR-like file</span></span><br><span class="line">pda.to_chgcar(filename=<span class="string">&quot;CHGCAR_new2.vasp&quot;</span>) <span class="comment">#保存概率密度文件</span></span><br></pre></td></tr></table></figure>
+
+
+
 <h2 id="开始作图"><a href="#开始作图" class="headerlink" title="开始作图"></a>开始作图</h2><p>代码（test.py）如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pymatgen_diffusion.aimd.pathway <span class="keyword">import</span> ProbabilityDensityAnalysis</span><br><span class="line"><span class="keyword">from</span> pymatgen.core.trajectory <span class="keyword">import</span> Trajectory</span><br><span class="line"><span class="keyword">from</span> pymatgen.io.vasp.outputs <span class="keyword">import</span> Xdatcar</span><br><span class="line"><span class="keyword">from</span> pymatgen.analysis.diffusion_analyzer <span class="keyword">import</span> DiffusionAnalyzer</span><br><span class="line"></span><br><span class="line">traj = Trajectory.from_file(<span class="string">&#x27;XDATCAR&#x27;</span>)</span><br><span class="line">diff = DiffusionAnalyzer.from_structures(traj,<span class="string">&#x27;Li&#x27;</span>,<span class="number">900</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">pda = ProbabilityDensityAnalysis.from_diffusion_analyzer(diff,interval=<span class="number">0.5</span>,species=(<span class="string">&quot;Li&quot;</span>))</span><br><span class="line">pda.to_chgcar(filename=<span class="string">&quot;pda.vasp&quot;</span>) <span class="comment">#保存概率密度文件</span></span><br></pre></td></tr></table></figure>
+
 <p>此处理过程大概耗时8分钟，因机器而异。</p>
 <p>在VESTA中可视化如下：</p>
-<p><img src="/2020/10/02/A24/A24_6.png" alt=""></p>
+<p><img src="/2020/10/02/A24/A24_6.png"></p>
 
     </div>
 

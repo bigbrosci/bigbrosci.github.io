@@ -20,12 +20,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="通过上一节（Ex34）的脚本，我们可以拟合出稳定晶体结构的晶格参数，但是，这个脚本是怎么运行的呢？大家在浏览之后，有没有什么疑问？本节我们重点介绍一下：这个脚本的运行原理。 1  数据首先我们看下读取的data文件：  A) 共两列，两列之间用tab分开； B) 第一列为缩放系数，第二列为对应结构的能量。 C) 在本文例子中，晶格参数等于&#x3D; 缩放系数 * 2.8664 $\AA$ （记住这个公式）">
+<meta name="description" content="通过上一节（Ex34）的脚本，我们可以拟合出稳定晶体结构的晶格参数，但是，这个脚本是怎么运行的呢？大家在浏览之后，有没有什么疑问？本节我们重点介绍一下：这个脚本的运行原理。 1  数据首先我们看下读取的data文件：  A) 共两列，两列之间用tab分开； B) 第一列为缩放系数，第二列为对应结构的能量。 C) 在本文例子中，晶格参数等于&#x3D; 缩放系数 * 2.8664 $\AA$ （记住">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ex35 晶格参数的确定（Birch-Murnaghan状态方程-3）">
 <meta property="og:url" content="http://www.bigbrosci.com/2018/02/04/ex35/index.html">
 <meta property="og:site_name" content="Learn VASP The Hard Way">
-<meta property="og:description" content="通过上一节（Ex34）的脚本，我们可以拟合出稳定晶体结构的晶格参数，但是，这个脚本是怎么运行的呢？大家在浏览之后，有没有什么疑问？本节我们重点介绍一下：这个脚本的运行原理。 1  数据首先我们看下读取的data文件：  A) 共两列，两列之间用tab分开； B) 第一列为缩放系数，第二列为对应结构的能量。 C) 在本文例子中，晶格参数等于&#x3D; 缩放系数 * 2.8664 $\AA$ （记住这个公式）">
+<meta property="og:description" content="通过上一节（Ex34）的脚本，我们可以拟合出稳定晶体结构的晶格参数，但是，这个脚本是怎么运行的呢？大家在浏览之后，有没有什么疑问？本节我们重点介绍一下：这个脚本的运行原理。 1  数据首先我们看下读取的data文件：  A) 共两列，两列之间用tab分开； B) 第一列为缩放系数，第二列为对应结构的能量。 C) 在本文例子中，晶格参数等于&#x3D; 缩放系数 * 2.8664 $\AA$ （记住">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://www.bigbrosci.com/2018/02/04/ex35/ex35-1.png">
 <meta property="og:image" content="http://www.bigbrosci.com/2018/02/04/ex35/ex35-2.png">
@@ -297,50 +297,61 @@
     <div class="post-body" itemprop="articleBody">
         <p>通过上一节（Ex34）的脚本，我们可以拟合出稳定晶体结构的晶格参数，但是，这个脚本是怎么运行的呢？大家在浏览之后，有没有什么疑问？本节我们重点介绍一下：这个脚本的运行原理。</p>
 <h2 id="1-数据"><a href="#1-数据" class="headerlink" title="1  数据"></a>1  数据</h2><p>首先我们看下读取的data文件：</p>
-<p><img src="/2018/02/04/ex35/ex35-1.png" alt=""></p>
+<p><img src="/2018/02/04/ex35/ex35-1.png"></p>
 <p>A) 共两列，两列之间用<code>tab</code>分开；</p>
 <p>B) 第一列为缩放系数，第二列为对应结构的能量。</p>
-<p>C) 在本文例子中，晶格参数等于= <code>缩放系数</code> * <code>2.8664</code> $\AA$ （记住这个公式）</p>
+<p>C) 在本文例子中，晶格参数等于&#x3D; <code>缩放系数</code> * <code>2.8664</code> $\AA$ （记住这个公式）</p>
 <p>2  脚本内容： 浏览一遍即可，详解在下面： </p>
-<p><img src="/2018/02/04/ex35/ex35-2.png" alt=""></p>
+<p><img src="/2018/02/04/ex35/ex35-2.png"></p>
 <p>详解：</p>
 <p><strong>2.1  1-15行：准备部分</strong></p>
-<p><img src="/2018/02/04/ex35/ex35-3.png" alt=""></p>
-<p>A) 1-4 行为脚本的一些基本说明，为养成一个良好的写脚本习惯，以及避免后期不必要的麻烦，第一行必须要放进去。如果你用bash写的话，把python替换为bash即可，其他部分不用动，例如： #!/usr/bin/env bash。</p>
+<p><img src="/2018/02/04/ex35/ex35-3.png"></p>
+<p>A) 1-4 行为脚本的一些基本说明，为养成一个良好的写脚本习惯，以及避免后期不必要的麻烦，第一行必须要放进去。如果你用bash写的话，把python替换为bash即可，其他部分不用动，例如： #!&#x2F;usr&#x2F;bin&#x2F;env bash。</p>
 <p>B）2-3行注释，解释了一下脚本干什么用的，谁写的，怎么用。</p>
 <p>C)  6-7 行调用python库中的math 和 numpy 模块，见下面两个链接：</p>
 <p><a target="_blank" rel="noopener" href="https://docs.python.org/2/library/math.html">https://docs.python.org/2/library/math.html</a></p>
 <p><a target="_blank" rel="noopener" href="http://www.numpy.org/">http://www.numpy.org/</a></p>
 <p>D）9-15行：通过使用 print 命令输出一个警告，因为本文用的是缩放系数，很多人测试的时候保持缩放系数不变，直接采用不同的晶格参数。</p>
 <p><strong>2.2  读取data信息，准备拟合</strong></p>
-<p><img src="/2018/02/04/ex35/ex35-4.png" alt=""></p>
+<p><img src="/2018/02/04/ex35/ex35-4.png"></p>
 <p>A)  16-18行为脚本的注释说明，</p>
 <p>B)  第20行中，我们使用 <code>np.loadtxt</code>读取data文件的内容，</p>
 <p>注意：</p>
-<p>1)  <code>data</code> 用单引号括起来，表明我们要读以<code>data</code>命名的文件。 </p>
-<p>2)   <code>usecols=(0,1)</code> 代表我们要读取第一列和第二列的内容。Python中的第一个用0表示，所以这里我们用的（0,1）来表示读取第1和第2列的内容；</p>
-<p>3)   <code>delimiter=&#39;\t&#39;</code>，意思是第一列和第二列之间用tab（’\t’）分开；</p>
-<p>4)  <code>unpack=True</code> 意思是把读取的数据生成一个数列，并分配给a 和 E，具体见链接：</p>
+<ol>
+<li><p><code>data</code> 用单引号括起来，表明我们要读以<code>data</code>命名的文件。 </p>
+</li>
+<li><p><code>usecols=(0,1)</code> 代表我们要读取第一列和第二列的内容。Python中的第一个用0表示，所以这里我们用的（0,1）来表示读取第1和第2列的内容；</p>
+</li>
+<li><p><code>delimiter=&#39;\t&#39;</code>，意思是第一列和第二列之间用tab（’\t’）分开；</p>
+</li>
+<li><p><code>unpack=True</code> 意思是把读取的数据生成一个数列，并分配给a 和 E，具体见链接：</p>
+</li>
+</ol>
 <p><a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html</a></p>
 <p>通过第20行，我们可以获得两个数列，第一个是 a 包含了data文件中的缩放系数， 第二个是E，包含了data文件中的能量信息</p>
-<p>C) 第22-28行，把缩放系数转换为晶格常数(a<em>2.8664)，然后平方取倒数（*</em>(-2)），用来得到我们前面讲解的x。这是因为：当我们把BM方程写成： $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $ 的形式时，前提是令 (1/a)$^2$ = x。不懂的具体见Ex33中的内容。截止到现在，我们有了三个数列： a, E 和 x</p>
+<p>C) 第22-28行，把缩放系数转换为晶格常数(a<em>2.8664)，然后平方取倒数（</em>*(-2)），用来得到我们前面讲解的x。这是因为：当我们把BM方程写成： $y(x) &#x3D; c_0 + c_1x + c_2x^2+c_3x^3 $ 的形式时，前提是令 (1&#x2F;a)$^2$ &#x3D; x。不懂的具体见Ex33中的内容。截止到现在，我们有了三个数列： a, E 和 x</p>
 <p><strong>2.3 第29-40行：拟合多项式方程</strong>： </p>
-<p><img src="/2018/02/04/ex35/ex35-5.png" alt=""></p>
-<p>A) 最小二乘法拟合 $y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $这个方程，得到常数系列c，这里我们调用了<code>numpy</code> 的<code>polyfit</code>这个模块来进行拟合。具体见：</p>
+<p><img src="/2018/02/04/ex35/ex35-5.png"></p>
+<p>A) 最小二乘法拟合 $y(x) &#x3D; c_0 + c_1x + c_2x^2+c_3x^3 $这个方程，得到常数系列c，这里我们调用了<code>numpy</code> 的<code>polyfit</code>这个模块来进行拟合。具体见：</p>
 <p><a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html</a></p>
-<p>B) 第31行：本脚本的核心：<code>p = np.polyfit(x, E, 3)</code></p>
-<p>1) np.polyfit 读取x和 E的数值，拟合一个$y(x) = c_0 + c_1x + c_2x^2+c_3x^3 $，</p>
-<p>注意：这里拟合的时候，用的数值是x和E，(1/a)$^2$ = x， 所以，在进行拟合之前，务必确保你已经得到了正确的x数列。具体根据data文件的内容进行修改设置第24行的公式。</p>
-<p>2) 括号中的3代表的是多项式方程中最大的那个次数。</p>
-<p>扩展：如果你想拟合一个$ y = c_4x^4 +c_3x^4  …$的方程，把3改成4 即可。</p>
+<p>B) 第31行：本脚本的核心：<code> p = np.polyfit(x, E, 3)</code></p>
+<ol>
+<li>np.polyfit 读取x和 E的数值，拟合一个$y(x) &#x3D; c_0 + c_1x + c_2x^2+c_3x^3 $，</li>
+</ol>
+<p>注意：这里拟合的时候，用的数值是x和E，(1&#x2F;a)$^2$ &#x3D; x， 所以，在进行拟合之前，务必确保你已经得到了正确的x数列。具体根据data文件的内容进行修改设置第24行的公式。</p>
+<ol start="2">
+<li>括号中的3代表的是多项式方程中最大的那个次数。</li>
+</ol>
+<p>扩展：如果你想拟合一个$ y &#x3D; c_4x^4 +c_3x^4  …$的方程，把3改成4 即可。</p>
 <p>3)拟合的结果输出到数列 p 中，数列p中共有4个常数（p[0],  p[1]，p[2]，p[3]），按照次数从高到底的顺序排列，对应着我们Ex33中的（c3，c2, c1, 和 c0 ）</p>
-<p>4) 33-36行, 我们将p 中的数值分别分配给c3，c2, c1, 和 c0。</p>
+<ol start="4">
+<li>33-36行, 我们将p 中的数值分别分配给c3，c2, c1, 和 c0。</li>
+</ol>
 <p><strong>2.4   38-40行，获取晶格参数</strong>：</p>
 <p>到目前位置，多项式方程的常数我们已经获得了，下面就是求解问题了。</p>
-<p><img src="/2018/02/04/ex35/ex35-6.png" alt=""></p>
-<p>A)  第42行为下图中公式的代码描述，获取方程的解x，因为前面我们已经有了一个x变量了，这里方程的解用x1表示，</p>
-<script type="math/tex; mode=display">
-x x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}</script><p>B) 第43行获取晶格常数，公式为： (1/a)$^2$= x</p>
+<p><img src="/2018/02/04/ex35/ex35-6.png"></p>
+<p>A)  第42行为下图中公式的代码描述，获取方程的解x，因为前面我们已经有了一个x变量了，这里方程的解用x1表示，<br>$$<br>x x &#x3D; \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}<br>$$</p>
+<p>B) 第43行获取晶格常数，公式为： (1&#x2F;a)$^2$&#x3D; x</p>
 <p>C) 第45行，输出晶格常数的数值。</p>
 <h2 id="3-扩展练习："><a href="#3-扩展练习：" class="headerlink" title="3 扩展练习："></a>3 扩展练习：</h2><p>3.1 根据解释，重新浏览脚本，知道每一行代表的含义。</p>
 <p>3.2 本脚本使用的时候，需要自己根据data数列中的内容，设置更改一下获取 x 数列的公式（第24行）；</p>

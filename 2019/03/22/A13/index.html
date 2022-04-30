@@ -290,7 +290,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h4 id="什么是ASE？"><a href="#什么是ASE？" class="headerlink" title="什么是ASE？"></a>什么是ASE？</h4><p>ASE 是Atomic Simulation Environment的简称。详细的介绍大家可以浏览官网：<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/about.html。ASE是一个基于python的程序库，可以做的事情很多，不同程序任务的设置，结构的搭建，结构分析都可以做。">https://wiki.fysik.dtu.dk/ase/about.html。ASE是一个基于python的程序库，可以做的事情很多，不同程序任务的设置，结构的搭建，结构分析都可以做。</a></p>
+        <h4 id="什么是ASE？"><a href="#什么是ASE？" class="headerlink" title="什么是ASE？"></a>什么是ASE？</h4><p>ASE 是Atomic Simulation Environment的简称。详细的介绍大家可以浏览官网：<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/about.html%E3%80%82ASE%E6%98%AF%E4%B8%80%E4%B8%AA%E5%9F%BA%E4%BA%8Epython%E7%9A%84%E7%A8%8B%E5%BA%8F%E5%BA%93%EF%BC%8C%E5%8F%AF%E4%BB%A5%E5%81%9A%E7%9A%84%E4%BA%8B%E6%83%85%E5%BE%88%E5%A4%9A%EF%BC%8C%E4%B8%8D%E5%90%8C%E7%A8%8B%E5%BA%8F%E4%BB%BB%E5%8A%A1%E7%9A%84%E8%AE%BE%E7%BD%AE%EF%BC%8C%E7%BB%93%E6%9E%84%E7%9A%84%E6%90%AD%E5%BB%BA%EF%BC%8C%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90%E9%83%BD%E5%8F%AF%E4%BB%A5%E5%81%9A%E3%80%82">https://wiki.fysik.dtu.dk/ase/about.html。ASE是一个基于python的程序库，可以做的事情很多，不同程序任务的设置，结构的搭建，结构分析都可以做。</a></p>
 <h4 id="为什么用ASE？"><a href="#为什么用ASE？" class="headerlink" title="为什么用ASE？"></a>为什么用ASE？</h4><ul>
 <li><p>ASE里面包含了很多的功能，其中个人认为最为方便地就是计算模型不同文件类型的转换。比如将cif文件转化为POSCAR，将POSCAR转化为xyz文件，等等；</p>
 </li>
@@ -298,30 +298,34 @@
 </li>
 <li><p>使用ASE分析计算结果；</p>
 </li>
-<li>使用ASE学习做计算；这里分享<code>江山</code>推荐的一本书：<a target="_blank" rel="noopener" href="https://github.com/jkitchin/dft-book">https://github.com/jkitchin/dft-book</a></li>
+<li><p>使用ASE学习做计算；这里分享<code>江山</code>推荐的一本书：<a target="_blank" rel="noopener" href="https://github.com/jkitchin/dft-book">https://github.com/jkitchin/dft-book</a></p>
+</li>
 </ul>
 <h4 id="怎么安装ASE？"><a href="#怎么安装ASE？" class="headerlink" title="怎么安装ASE？"></a>怎么安装ASE？</h4><p>如果你用的是国防科大吕梁超算中心，管理员已经安装好了ASE，那么需要你做的只有一步，添加ASE的路径到<code>.bashrc</code>文件中就可以直接用了。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/opt/python3.6/bin$ ls ase*</span><br><span class="line">ase  ase-build  ase-db  ase-gui  ase-info  ase-run</span><br><span class="line">iciq-lq@ln3:/THFS/opt/python3.6/bin$ <span class="built_in">pwd</span></span><br><span class="line">/THFS/opt/python3.6/bin</span><br><span class="line">iciq-lq@ln3:/THFS/opt/python3.6/bin$ tail -n 1 ~/.bashrc</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/THFS/opt/python3.6/bin</span><br></pre></td></tr></table></figure>
-<p>如果你想在自己电脑上安装ASE。安装过程很简单，详细的信息请参考：<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/install.html。Mac太贵，没尝试过，Windows系统本人不太熟悉，下面附上在Windows10中Ubuntu寄生系统的安装过程（跟正儿八经Ubuntu系统的安装流程一样）；">https://wiki.fysik.dtu.dk/ase/install.html。Mac太贵，没尝试过，Windows系统本人不太熟悉，下面附上在Windows10中Ubuntu寄生系统的安装过程（跟正儿八经Ubuntu系统的安装流程一样）；</a> 总共就三步。</p>
+
+<p>如果你想在自己电脑上安装ASE。安装过程很简单，详细的信息请参考：<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/install.html%E3%80%82Mac%E5%A4%AA%E8%B4%B5%EF%BC%8C%E6%B2%A1%E5%B0%9D%E8%AF%95%E8%BF%87%EF%BC%8CWindows%E7%B3%BB%E7%BB%9F%E6%9C%AC%E4%BA%BA%E4%B8%8D%E5%A4%AA%E7%86%9F%E6%82%89%EF%BC%8C%E4%B8%8B%E9%9D%A2%E9%99%84%E4%B8%8A%E5%9C%A8Windows10%E4%B8%ADUbuntu%E5%AF%84%E7%94%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%89%E8%A3%85%E8%BF%87%E7%A8%8B%EF%BC%88%E8%B7%9F%E6%AD%A3%E5%84%BF%E5%85%AB%E7%BB%8FUbuntu%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%AE%89%E8%A3%85%E6%B5%81%E7%A8%8B%E4%B8%80%E6%A0%B7%EF%BC%89%EF%BC%9B">https://wiki.fysik.dtu.dk/ase/install.html。Mac太贵，没尝试过，Windows系统本人不太熟悉，下面附上在Windows10中Ubuntu寄生系统的安装过程（跟正儿八经Ubuntu系统的安装流程一样）；</a> 总共就三步。</p>
 <ul>
 <li><p>安装pip：如果已经安装了pip，则就剩2步了。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python-pip</span><br><span class="line">sudo apt install python3-pip</span><br></pre></td></tr></table></figure>
+
 <p>一个是基于python2，一个是python3的。</p>
 </li>
-<li><p><img src="/2019/03/22/A13/a13-1.png" alt=""></p>
+<li><p><img src="/2019/03/22/A13/a13-1.png"></p>
 </li>
-</ul>
-<ul>
 <li><p>安装ASE：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install --upgrade --user ase</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/03/22/A13/a13-2.png" alt=""></p>
+
+<p><img src="/2019/03/22/A13/a13-2.png"></p>
 </li>
 <li><p>添加ASE的路径到<code>.bashrc</code>文件。</p>
 </li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/home/bigbro/.<span class="built_in">local</span>/bin</span><br></pre></td></tr></table></figure>
+
 <p>在Terminal里面输入<code>ase</code>，然后摁下<code>tab</code>键：如果跟下面的输出一样，说明八九不离十了。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bigbro@DESKTOP-S6R3TUP:~$ ase</span><br><span class="line">ase             ase-build       ase-db          ase-gui         ase-info        ase-run         ase_figures.sh  aselite.py      aselite.pyc</span><br><span class="line">bigbro@DESKTOP-S6R3TUP:~$ ase --version</span><br><span class="line">ase-3.17.0</span><br></pre></td></tr></table></figure>
+
 
     </div>
 

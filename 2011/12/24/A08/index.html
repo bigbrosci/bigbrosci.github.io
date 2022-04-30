@@ -295,14 +295,14 @@
 <p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/henkelman/code/bader/">http://theory.cm.utexas.edu/henkelman/code/bader/</a></p>
 <p>VTST脚本链接：</p>
 <p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/vtsttools/">http://theory.cm.utexas.edu/vtsttools/</a> </p>
-<p><img src="/2011/12/24/A08/A07/A07-1.jpeg" alt=""></p>
+<p><img src="/2011/12/24/A08/A07/A07-1.jpeg"></p>
 <h1 id="常见问题："><a href="#常见问题：" class="headerlink" title="常见问题："></a>常见问题：</h1><p><strong>电荷数字保留位数：</strong></p>
 <p>Bader电荷分析只是定性的辅助工具，得到的结果肯定也是定性的。大致分析原子上的带电情况即可，不要去较真小数点后多少位，一般来说小数点后两位就足够了。</p>
 <p><strong>ACF.dat 文件怎么看？</strong></p>
 <p><code>ACF.dat</code> 中的<code>CHARGE</code>那一列，对应的是每个原子上<strong>总的</strong>价电子数目。</p>
 <p>划重点： 1）总的 2）价电子数目</p>
 <p><strong>如何判断原子的带电情况？</strong></p>
-<p>你需要用<code>CHARGE</code>那列的数值去减去该原子对应的<code>POTCAR</code>中的价电子数目。</p>
+<p>你需要用<code>CHARGE</code>那列的数值去减去该原子对应的<code>POTCAR </code>中的价电子数目。</p>
 <p><strong>怎么才能得到POTCAR中原子的价电子数目呢？</strong></p>
 <p>打开<code>POTCAR</code>，查找关键词：<code>ZVAL</code>，后面对应的就是价电子数目，更方便点：</p>
 <p><code>grep ZVAL POTCAR</code></p>
@@ -312,17 +312,17 @@
 <p>You有9个价电子，但<code>POTCAR</code>中有17个。</p>
 <p><strong>减完之后怎么分析？</strong></p>
 <p>如果一个原子<code>POTCAR</code>中的电子数为5.</p>
-<p>1） <code>ACF.dat</code>中该原子对应的CHARGE为6.2，6.2 - 5 = 1.2， 这说明该原子得到了1.2个电子。虽然是+1.2，但它的化合价是-1.2价。</p>
-<p>2） <code>ACF.dat</code>中该原子对应的CHARGE 为 4.3， 4.3 – 5 = -0.7, 说明该原子失去了0.7个电子，虽然是负值，但它的化合价是 + 0.7 价。</p>
+<p>1） <code>ACF.dat</code>中该原子对应的CHARGE为6.2，6.2 - 5 &#x3D; 1.2， 这说明该原子得到了1.2个电子。虽然是+1.2，但它的化合价是-1.2价。</p>
+<p>2） <code>ACF.dat</code>中该原子对应的CHARGE 为 4.3， 4.3 – 5 &#x3D; -0.7, 说明该原子失去了0.7个电子，虽然是负值，但它的化合价是 + 0.7 价。</p>
 <p>注意：这里我们说的化合价，是基于Bader电荷分析得到的。由于Bader电荷分析是一个经验性的定性分析工具，这些化合价的值只能用来参考判断体系中电子的转移情况。</p>
 <p>大家千万不要把这里的化合价跟我们中学所学到的化合价的概念混淆了。因为大部分的情况下，Bader电荷分析出来的化合价与我们在教科书里面所学到的化合价还是有区别的。</p>
 <hr>
 <p>师兄，前面扯了那多么，直接用<code>POTCAR</code>中的价电子数减去<code>CHARGE</code>对应的不就更直接了？</p>
 <p>是的，你很聪明：对应前面的例子：</p>
 <ul>
-<li><p>1） 5 –6.2 = -1.2 说明该原子是-1.2价，得到了1.2个电子，</p>
+<li><p>1） 5 –6.2 &#x3D; -1.2 说明该原子是-1.2价，得到了1.2个电子，</p>
 </li>
-<li><p>2） 5 - 4.3 = 0.7 说明该原子是 +0.7 价，失去了0.7个电子。</p>
+<li><p>2） 5 - 4.3 &#x3D; 0.7 说明该原子是 +0.7 价，失去了0.7个电子。</p>
 </li>
 </ul>
 <p>所以得失电子和化学价是反着的。这点你能把握住，就会分析了。</p>

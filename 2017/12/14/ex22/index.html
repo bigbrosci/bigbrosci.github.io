@@ -314,13 +314,13 @@
         <p>前面我们终于讲完了 $\rm{O_2}$ 分子优化的例子。相信大家对 <strong>VASP</strong> 计算已经有了一个初步的理解。这一节我们继续学习气相分子的优化。为了让大家进一步了解计算的过程，我们选取一个稍微复杂的分子作为例子：乙醇（$\rm{CH_3CH_2OH}$）。</p>
 <hr>
 <p>问：把大象装进冰箱需要几步？</p>
-<p><img src="/2017/12/14/ex22/ex22-1.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-1.jpeg"></p>
 <p>大师兄，这个问题我早就知道答案了。为啥还问这样低智商的问题？</p>
 <p>大师兄要求的不是让你回答开冰箱门，装进去，关门的这三步。而是让你尝试回想一下：当你第一次接触这个问题的时候，你的反应是什么？</p>
 <p>大师兄比较笨，我的第一反应是，这怎么可能？  冰箱那么点，大象那么大。</p>
-<p><img src="/2017/12/14/ex22/ex22-2.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-2.jpeg"></p>
 <p>当朋友告诉我答案的时候，才恍然大悟，这跟大小没关系。</p>
-<p><img src="/2017/12/14/ex22/ex22-3.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-3.jpeg"></p>
 <hr>
 <p>同样的，怎么用 <strong>VASP</strong> 计算乙醇分子？很多童鞋就如同第一次被问到大象这个问题一样不知所措。答，也是三步！</p>
 <p>1） 打开冰箱：准备 <strong>VASP</strong> 文件</p>
@@ -329,46 +329,53 @@
 <h2 id="1-打开冰箱："><a href="#1-打开冰箱：" class="headerlink" title="1. 打开冰箱："></a>1. 打开冰箱：</h2><p>我们可以直接用O$_2$分子计算的输入文件，</p>
 <h3 id="1-1-复习一下前面学到的INCAR和KPOINTS的内容："><a href="#1-1-复习一下前面学到的INCAR和KPOINTS的内容：" class="headerlink" title="1.1 复习一下前面学到的INCAR和KPOINTS的内容："></a>1.1 复习一下前面学到的<code>INCAR</code>和<code>KPOINTS</code>的内容：</h3><p>1）乙醇分子是闭壳层的分子，没有磁性，不需要<code>ISPIN=2</code></p>
 <p>2）气相分子计算，我们要用<code>ISMEAR=0</code>，<code>SIGMA</code>取值要小，<code>SIGMA=0.02</code>；</p>
-<p><img src="/2017/12/14/ex22/ex22-4.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-4.jpeg"></p>
 <p> <strong>#</strong> 表示注释，这个符号后面的内容，VASP在运行的时候不考虑。</p>
 <hr>
-<p><strong>示例 1 ：</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ENCUT = 400</span><br><span class="line"><span class="comment"># ENCUT = 500</span></span><br></pre></td></tr></table></figure><br>和<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ENCUT = 400</span><br></pre></td></tr></table></figure><br>效果是一样的。</p>
+<p><strong>示例 1 ：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ENCUT = 400</span><br><span class="line"><span class="comment"># ENCUT = 500</span></span><br></pre></td></tr></table></figure>
+<p>和</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ENCUT = 400</span><br></pre></td></tr></table></figure>
+<p>效果是一样的。</p>
 <hr>
 <p><strong>示例 2：# 的用法：</strong></p>
-<p><img src="/2017/12/14/ex22/ex22-5.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-5.jpeg"></p>
 <p><strong>VASP</strong> 计算中一些常见的错误，以及注意事项，你可以通过 # 写在<code>INCAR</code>里面，方便计算的时候进行设置。可以 # 开头，单起一行，也可以在参数的最后面加上注释。新手们刚刚开始，可以结合 <strong>VASP</strong> 官网参考书，把用到的INCAR参数注释下来，时间长了慢慢就掌握了。</p>
 <p>3）气相分子计算，<code>K</code>点使用<code>Gamma</code>点就够了；</p>
 <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">K-POINTS</span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="built_in">Gamma</span></span><br><span class="line"><span class="number">1</span> <span class="number">1</span> <span class="number">1</span> </span><br><span class="line"><span class="number">0</span> <span class="number">0</span> <span class="number">0</span> </span><br></pre></td></tr></table></figure>
+
+
+
 <hr>
-<h2 id="2-把大象塞到冰箱里面-POSCAR的准备（本节重点）"><a href="#2-把大象塞到冰箱里面-POSCAR的准备（本节重点）" class="headerlink" title="2 把大象塞到冰箱里面 :POSCAR的准备（本节重点）"></a>2 把大象塞到冰箱里面 :POSCAR的准备（本节重点）</h2><p>前面我们学习到，一个好的初始结构会加快计算，获取准确的计算结果。因此我们需要去找一个合理的模型。对于气相分子的结构，一是手动搭建，大师兄推荐用 <code>GaussView</code>，另一个办法就是找数据库，大师兄推荐英国皇家学会的 <strong>ChemScpider</strong>。网址：<a target="_blank" rel="noopener" href="http://www.chemspider.com">http://www.chemspider.com</a> </p>
-<p><img src="/2017/12/14/ex22/ex22-7.jpeg" alt=""></p>
+<h2 id="2-把大象塞到冰箱里面-POSCAR的准备（本节重点）"><a href="#2-把大象塞到冰箱里面-POSCAR的准备（本节重点）" class="headerlink" title="2 把大象塞到冰箱里面 :POSCAR的准备（本节重点）"></a>2 把大象塞到冰箱里面 :POSCAR的准备（本节重点）</h2><p>前面我们学习到，一个好的初始结构会加快计算，获取准确的计算结果。因此我们需要去找一个合理的模型。对于气相分子的结构，一是手动搭建，大师兄推荐用 <code>GaussView</code>，另一个办法就是找数据库，大师兄推荐英国皇家学会的 <strong>ChemScpider</strong>。网址：<a target="_blank" rel="noopener" href="http://www.chemspider.com/">http://www.chemspider.com</a> </p>
+<p><img src="/2017/12/14/ex22/ex22-7.jpeg"></p>
 <p>下面我们把手动搭建乙醇分子的模型具体解释一下：</p>
-<h3 id="2-1-打开网站"><a href="#2-1-打开网站" class="headerlink" title="2.1 打开网站"></a>2.1 打开网站</h3><p><img src="/2017/12/14/ex22/ex22-8.jpeg" alt=""></p>
+<h3 id="2-1-打开网站"><a href="#2-1-打开网站" class="headerlink" title="2.1 打开网站"></a>2.1 打开网站</h3><p><img src="/2017/12/14/ex22/ex22-8.jpeg"></p>
 <p>搜索框中输入： 分子名称<code>Ethanol</code> 或者 分子式<code>C2H6O</code>…. 点击搜索，等待结果：</p>
-<p><img src="/2017/12/14/ex22/ex22-9.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-9.jpeg"></p>
 <p>上面箭头指的两个地方随便点，效果是一样的，如下：</p>
-<p><img src="/2017/12/14/ex22/ex22-10.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-10.jpeg"></p>
 <p>分子默认显示 <code>2D</code> 的结构，点击箭头指的 <code>3D</code>，切换。第二个箭头所指的有对应结构的维基百科链接，翻墙的筒子们可以查阅下相关结构的知识。选择<code>3D</code>后，如下：</p>
-<p><img src="/2017/12/14/ex22/ex22-11.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-11.jpeg"></p>
 <p>点击箭头指的地方保存，浏览器会下载对应的 .mol 文件，文件名为该结构在数据库中的编号。</p>
 <hr>
 <p><code>.mol</code>文件也是纯文本，使用<code>Notepad++</code> 打开如下：看到这么多内容，不要害怕！</p>
-<p><img src="/2017/12/14/ex22/ex22-12.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-12.jpeg"></p>
 <p><strong>注： 不仅仅是 <code>.mol</code> 文件，很多结构文件都是文本格式，直接打开就是。</strong></p>
 <p>从里面找到乙醇结构的 $x, y, z$ 坐标信息</p>
-<p><img src="/2017/12/14/ex22/ex22-13.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-13.jpeg"></p>
 <p>删除上图中除红色框之外的所有行，1-4行，以及 14 至最后一行，只保留 $x, y, z$ 坐标信息的那几行。</p>
-<p><img src="/2017/12/14/ex22/ex22-14.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-14.jpeg"></p>
 <p>手动写<code>POSCAR</code>，首先你要熟记的格式，知道<code>POSCAR</code>从头开始，往下每一行代表的内容。</p>
 <p>我们的模型是把乙醇分子放到一个 $ 20 \times 20 \times 20~A^3 $ 的格子里面。输入完之后，坐标后面的元素符号以及那些 $0$ $0$ $0$ 可以删掉，也可以不管。</p>
-<p><img src="/2017/12/14/ex22/ex22-15.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-15.jpeg"></p>
 <p><strong>关键点1： .mol文件中，坐标那几行中的第 4 列写到<code>POSCAR</code>中的第 6, 7行！</strong></p>
 <p><strong>关键点2： 注意坐标为 <code>Cartesian</code> 或者是 <code>Direct</code>. <code>Direct</code> 是分数坐标，其 $x, y, z$ 值都小于 1.</strong></p>
 <hr>
 <p>如果你想删掉图中坐标第3列后面的内容：大师兄推荐notepad++里面的列块模式：如下：</p>
-<p><img src="/2017/12/14/ex22/ex22-16.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-16.jpeg"></p>
 <p>点击之后，可能会弹出对话框，告诉你如何使用，列块模式</p>
-<p><img src="/2017/12/14/ex22/ex22-17.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-17.jpeg"></p>
 <hr>
 <p><strong>方法1：</strong></p>
 <p> 摁住 <code>Alt</code> 键，然后用鼠标选择文本，不同电脑可能不一样，大师兄这边同时摁住 <code>Ctrl</code> 和 <code>Alt</code> 两个键，然后用鼠标选择的。</p>
@@ -376,40 +383,47 @@
 <p><strong>方法2：</strong></p>
 <p>同时摁住 <code>Alt</code>和<code>Shift</code>键，通过键盘上前后左右的箭头选择文本</p>
 <p>大家可以尝试下，选中效果如图：</p>
-<p><img src="/2017/12/14/ex22/ex22-18.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-18.jpeg"></p>
 <p>然后点键盘上的<code>Delete</code>键删除.</p>
-<p><img src="/2017/12/14/ex22/ex22-19.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-19.jpeg"></p>
 <p>然后另存为<code>POSCAR</code>即可。</p>
 <hr>
 <p>我们可以使用 <strong>p4vasp</strong> 来查看一下模型的结构：如下图</p>
-<p><img src="/2017/12/14/ex22/ex22-20.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-20.jpeg"></p>
 <p>我靠，师兄，结构怎么跑到格子外面啦？前面 $\rm{O_2}$ 分子的学习中，你已经知道了这是因为周期性导致的显示问题。对计算不会产生影响。这个结构可以拿来直接用。</p>
 <p>如果感觉不爽，想把结构放到中间，可以这么做：</p>
 <p>数学上，把 $x, y, z$ 坐标<strong>统统加上 $10$ 即可</strong>；</p>
 <p>软件使用上，我们讲一下 <strong>p4vasp</strong> 的操作方法：</p>
-<p><img src="/2017/12/14/ex22/ex22-21.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-21.jpeg"></p>
 <p>选择 <code>edit</code> –&gt; <code>Move atoms</code></p>
-<p><img src="/2017/12/14/ex22/ex22-22.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-22.jpeg"></p>
 <p><code>Move group</code> 是你要移动的原子，这里大师兄直接输入了 C H O 三个元素符号（中间有空格）表示选择所有元素的原子。然后在 <code>Vector</code> 中选择 $x, y, z$ 三个方向上移动的大小。你也可以写 $1$ $1$ $1$，然后点击 <code>Move</code> 按钮 $10$ 次。</p>
 <p>如果你想通过选择原子来实现移动的话(不直接在 <code>Move group</code> 里面输入 C H O)，需要按照大师兄说的步骤走：</p>
-<p><img src="/2017/12/14/ex22/ex22-23.jpeg" alt=""></p>
-<p>1) 空格键结合鼠标选中所有的原子；鼠标指到原子上就点一下空格键</p>
-<p>2) 选中原子后，主界面会显示一些数字，这些数字和 <code>POSCAR</code> 中元素的顺序是一致的；</p>
-<p>3) 所有原子选中后，左下角的框中点击 <code>Get group</code>，会显示选择的那些原子；</p>
-<p>4) 在 <code>Vector</code> 中选择 $x, y, z$ 三个方向上移动的大小，然后点击 <code>Move</code> 按钮。</p>
+<p><img src="/2017/12/14/ex22/ex22-23.jpeg"></p>
+<ol>
+<li><p>空格键结合鼠标选中所有的原子；鼠标指到原子上就点一下空格键</p>
+</li>
+<li><p>选中原子后，主界面会显示一些数字，这些数字和 <code>POSCAR</code> 中元素的顺序是一致的；</p>
+</li>
+<li><p>所有原子选中后，左下角的框中点击 <code>Get group</code>，会显示选择的那些原子；</p>
+</li>
+<li><p>在 <code>Vector</code> 中选择 $x, y, z$ 三个方向上移动的大小，然后点击 <code>Move</code> 按钮。</p>
+</li>
+</ol>
 <p>上面一堆废话就此打住，结果就是这样子的：</p>
-<p><img src="/2017/12/14/ex22/ex22-24.jpeg" alt=""></p>
+<p><img src="/2017/12/14/ex22/ex22-24.jpeg"></p>
 <p>然后点击 file -&gt; Save system as -&gt; 选择目录 -&gt; 保存成<code>POSCAR</code></p>
 <hr>
 <h4 id="POTCAR"><a href="#POTCAR" class="headerlink" title="POTCAR"></a>POTCAR</h4><p><strong>POSCAR</strong> 讲完了，我们就要按照里面的元素顺序制备<code>POTCAR</code>了。</p>
 <p>首先: 我们要准备 O C H 三个元素的<code>POTCAR</code>，去<code>POTCAR</code>的数据库中去找：</p>
 <p>然后复制到当前目录下，三个元素的<code>POTCAR</code>分别命名为：<code>POTCAR-O</code>, <code>POTCAR-C</code>和 <code>POTCAR-H</code>， 把三个元素的<code>POTCAR</code>合并在一起，命令就是</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat POTCAR-O POTCAR-C POTCAR-H &gt;&gt; POTCAR</span><br></pre></td></tr></table></figure>
+
 <h2 id="3-提交任务"><a href="#3-提交任务" class="headerlink" title="3 提交任务"></a>3 提交任务</h2><p>提交任务之前，需要再次检查自己的输入文件一遍，没有问题，提交直至结束。</p>
 <h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h2><p>4.1 从头到尾，认真重复本节中大师兄的操作；</p>
 <p>4.2 记住本节讲解的内容，自己重复一遍操作，直至自己通过文本编辑器会搭建结构模型；</p>
 <p>4.3 运行乙醇计算的例子；</p>
-<p>4.4 尝试使用 <strong>GaussView</strong>，<strong>Materials Studio (MS)</strong>，以及其他可视化界面搭建模型；</p>
+<p>4.4 尝试使用 <strong>GaussView</strong>，**Materials Studio (MS)**，以及其他可视化界面搭建模型；</p>
 <p>4.5 学会使用 <strong>VESTA</strong> 导出<code>POTCAR</code>格式的结构数据。</p>
 <h2 id="5-总结："><a href="#5-总结：" class="headerlink" title="5 总结："></a>5 总结：</h2><p>本节，我们主要讨论了一下分子模型的数据库搜索和搭建工作。希望大家能够完全掌握本节的所有内容和细节。在计算中，你会遇到各种各样的结构文件，其实都是$xyz$坐标的衍生物而已。不要害怕，直接打开它们，学会提取里面有价值的信息。</p>
 
@@ -435,8 +449,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2017/12/15/ex23/" rel="next" title="Ex23 乙醇分子的振动频率计算(一)">
-                  Ex23 乙醇分子的振动频率计算(一) <i class="fa fa-chevron-right"></i>
+                <a href="/2017/12/15/ex24/" rel="next" title="Ex24 乙醇分子的振动频率计算(二)">
+                  Ex24 乙醇分子的振动频率计算(二) <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

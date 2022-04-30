@@ -301,17 +301,17 @@
 <p>2）不要看中文版的；去看原汁原味的，困了就歇会，慢慢坚持看；</p>
 <p>3）大师兄QQ群下载或者点击百度网盘链接；</p>
 <p>4）第5章专门讨论的频率相关的问题！！！</p>
-<p><img src="/2017/12/18/ex27/ex27-1.jpeg" alt=""></p>
+<p><img src="/2017/12/18/ex27/ex27-1.jpeg"></p>
 <h3 id="1-2-Atkins的物理化学第9版"><a href="#1-2-Atkins的物理化学第9版" class="headerlink" title="1.2  Atkins的物理化学第9版"></a>1.2  Atkins的物理化学第9版</h3><p>前面几节我们都是用的这一部分作为参考，忘了的童鞋们返回继续重修；这本书网上已经可以下载第十版的pdf文件了。</p>
-<p><img src="/2017/12/18/ex27/ex27-2.jpeg" alt=""></p>
-<h3 id="1-3-Jens-K-Norskov-的-Fundamental-Concepts-in-Heterogeneous-Catalysis"><a href="#1-3-Jens-K-Norskov-的-Fundamental-Concepts-in-Heterogeneous-Catalysis" class="headerlink" title="1.3 Jens. K. Norskov 的 Fundamental Concepts in Heterogeneous Catalysis"></a>1.3 Jens. K. Norskov 的 Fundamental Concepts in Heterogeneous Catalysis</h3><p><img src="/2017/12/18/ex27/ex27-3.jpeg" alt=""></p>
+<p><img src="/2017/12/18/ex27/ex27-2.jpeg"></p>
+<h3 id="1-3-Jens-K-Norskov-的-Fundamental-Concepts-in-Heterogeneous-Catalysis"><a href="#1-3-Jens-K-Norskov-的-Fundamental-Concepts-in-Heterogeneous-Catalysis" class="headerlink" title="1.3 Jens. K. Norskov 的 Fundamental Concepts in Heterogeneous Catalysis"></a>1.3 Jens. K. Norskov 的 Fundamental Concepts in Heterogeneous Catalysis</h3><p><img src="/2017/12/18/ex27/ex27-3.jpeg"></p>
 <h2 id="2-频率计算的细节问题"><a href="#2-频率计算的细节问题" class="headerlink" title="2 频率计算的细节问题"></a>2 频率计算的细节问题</h2><p>当你阅读完前面推荐书中的频率部分后，应该会明白很多。本节的第二部分我们主要讨论下频率计算的一些大家有顾虑的细节问题：</p>
 <h3 id="2-1-怎么进行零点能校正？"><a href="#2-1-怎么进行零点能校正？" class="headerlink" title="2.1 怎么进行零点能校正？"></a>2.1 怎么进行零点能校正？</h3><p>以乙醇的计算为例：</p>
 <p>A）首先结构优化完毕后我们会得到分子的能量：$E_{0}$  （OSZICAR中的E0）</p>
 <p>B）频率计算后我们会得到分子的零点能：$ZPE$</p>
-<p>C）零点能校正之后的乙醇分子能量为： $E_{ZPE} =  E_0 + ZPE$</p>
+<p>C）零点能校正之后的乙醇分子能量为： $E_{ZPE} &#x3D;  E_0 + ZPE$</p>
 <p>D）A 和 B 得出的结果直接相加即可，不要想太多。</p>
-<h3 id="2-2-怎么计算过渡态和反应热的零点能校正？（菜鸟暂且跳过）"><a href="#2-2-怎么计算过渡态和反应热的零点能校正？（菜鸟暂且跳过）" class="headerlink" title="2.2 怎么计算过渡态和反应热的零点能校正？（菜鸟暂且跳过）"></a>2.2 怎么计算过渡态和反应热的零点能校正？（菜鸟暂且跳过）</h3><p>对一个反应：IS —&gt; TS —&gt; FS</p>
+<h3 id="2-2-怎么计算过渡态和反应热的零点能校正？（菜鸟暂且跳过）"><a href="#2-2-怎么计算过渡态和反应热的零点能校正？（菜鸟暂且跳过）" class="headerlink" title="2.2 怎么计算过渡态和反应热的零点能校正？（菜鸟暂且跳过）"></a>2.2 怎么计算过渡态和反应热的零点能校正？（菜鸟暂且跳过）</h3><p>对一个反应：IS –&gt; TS –&gt; FS</p>
 <p>IS: Initial State 反应物</p>
 <p>TS: Transition State 过渡态</p>
 <p>FS: Final State 产物</p>
@@ -321,15 +321,11 @@
 <p>3）搜索过渡态，获得结构和能量 $E(\textrm{TS})$;</p>
 <p>4）过渡态频率分析，获得零点能 $\textrm{ZPE(TS)}$</p>
 <p><strong>不考虑零点能的反应能垒 ($E_a$) 和反应热 ($\Delta E$)：</strong></p>
-<script type="math/tex; mode=display">E_a = E(\textrm{TS}) – E(\textrm{IS}) \\
- \Delta E = E(\textrm{FS}) –  E(\textrm{IS})</script><p>考虑零点能校正：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-E{a(\textrm{ZPE})} &= E_{\textrm{ZPE}}(\textrm{TS}) – E_{\textrm{ZPE}}(\textrm{IS}) \\     
-     &= E(\textrm{TS}) + \textrm{ZPE(TS}) – E(\textrm{IS}) – \textrm{ZPE(IS}) \\
-     &= E_a + \textrm{ZPE(TS)} – \textrm{ZPE(IS)}
-\end{align}</script><p>同理:</p>
-<p>$ \Delta E(\textrm{ZPE}) = \Delta E + \textrm{ZPE(FS)} – \textrm{ZPE(IS)} $</p>
+<p>$$ E_a &#x3D; E(\textrm{TS}) – E(\textrm{IS}) \<br> \Delta E &#x3D; E(\textrm{FS}) –  E(\textrm{IS}) $$</p>
+<p>考虑零点能校正：</p>
+<p>$$<br>\begin{align}<br>E{a(\textrm{ZPE})} &amp;&#x3D; E_{\textrm{ZPE}}(\textrm{TS}) – E_{\textrm{ZPE}}(\textrm{IS}) \<br>     &amp;&#x3D; E(\textrm{TS}) + \textrm{ZPE(TS}) – E(\textrm{IS}) – \textrm{ZPE(IS}) \<br>     &amp;&#x3D; E_a + \textrm{ZPE(TS)} – \textrm{ZPE(IS)}<br>\end{align}<br>$$</p>
+<p>同理:</p>
+<p>$ \Delta E(\textrm{ZPE}) &#x3D; \Delta E + \textrm{ZPE(FS)} – \textrm{ZPE(IS)} $</p>
 <p>两个处理方式：</p>
 <p>a. 先获取未校正的结果，然后把零点能各自相减；</p>
 <p>b. 先将各个物种进行零点能校正，然后在计算反应能垒或者反应热</p>
@@ -339,8 +335,7 @@ E{a(\textrm{ZPE})} &= E_{\textrm{ZPE}}(\textrm{TS}) – E_{\textrm{ZPE}}(\textrm
 <hr>
 <p><strong>例子A:</strong></p>
 <p>乙醇在Cu(111)表面上的吸附，计算吸附热的零点能校正</p>
-<script type="math/tex; mode=display">
-\ce{CH_3CH_2OH + Cu(111) -> Cu(111)-CH_3CH_2OH}</script><p>此时，Cu(111)表面我们在计算频率的时候是要固定住的！只振动乙醇分子即可。</p>
+<p>$$<br>\ce{CH_3CH_2OH + Cu(111) -&gt; Cu(111)-CH_3CH_2OH}<br>$$<br>此时，Cu(111)表面我们在计算频率的时候是要固定住的！只振动乙醇分子即可。</p>
 <hr>
 <p><strong>例子B:</strong></p>
 <p>计算CO在Cu(111)表面上的吸附：</p>
@@ -354,405 +349,374 @@ E{a(\textrm{ZPE})} &= E_{\textrm{ZPE}}(\textrm{TS}) – E_{\textrm{ZPE}}(\textrm
 <p>还有一点要注意的是：<code>IS</code>，<code>TS</code>和<code>FS</code>中，所固定和放开的原子必须一致！！！</p>
 <p><strong>不要在<code>IS</code>中固定苯环，而在<code>TS</code>或者<code>FS</code>中放开，</strong> 这样计算出来的结果只能用脑残来形容了。(<em>ps. 本人犯的这种错误太多啦，已经不能用脑残来形容了！</em>)</p>
 <hr>
-<h2 id="3-影响频率计算的因素测试"><a href="#3-影响频率计算的因素测试" class="headerlink" title="3 影响频率计算的因素测试:"></a>3 影响频率计算的因素测试:</h2><p>前面提到过：<code>ENCUT</code>, <code>KPOINTS</code>, <code>POTIM</code>, <code>EDIFF</code>都会对频率计算产生影响。频率计算很多时候会有小的虚频出现，通俗点说就是数值噪音。我们可能会想到，凡是可以提高精度的办法是不是就可以降低噪音了呢？写到这里，大师兄突然想起初中的一个老师说过一句话：好记性不如烂笔头，意思是让我们多写，这样记得会比较快。还有一句名言：<strong>纸上学来终觉浅，绝知此事要躬行！学习 </strong>VASP<strong>，亲自上手实践及其重要，看遍官网，翻烂本书不去行动也是白搭，好听点说只能是纸上谈兵。</strong></p>
+<h2 id="3-影响频率计算的因素测试"><a href="#3-影响频率计算的因素测试" class="headerlink" title="3 影响频率计算的因素测试:"></a>3 影响频率计算的因素测试:</h2><p>前面提到过：<code>ENCUT</code>, <code>KPOINTS</code>, <code>POTIM</code>, <code>EDIFF</code>都会对频率计算产生影响。频率计算很多时候会有小的虚频出现，通俗点说就是数值噪音。我们可能会想到，凡是可以提高精度的办法是不是就可以降低噪音了呢？写到这里，大师兄突然想起初中的一个老师说过一句话：好记性不如烂笔头，意思是让我们多写，这样记得会比较快。还有一句名言：<strong>纸上学来终觉浅，绝知此事要躬行！学习 <strong>VASP</strong>，亲自上手实践及其重要，看遍官网，翻烂本书不去行动也是白搭，好听点说只能是纸上谈兵。</strong></p>
 <p>下面的测试主要从零点能和虚频，和时间三个方面来判断：测试的命令为：</p>
-<p>获取虚频命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">&#x27;f/i&#x27;</span>  */OUTCAR | awk <span class="string">&#x27;&#123;print $1 &quot;\t &quot; $2 &quot;\t&quot; $8 &quot;\t &quot; $9 &quot;\t&quot; $10 &quot;\t&quot; $11&#125;&#x27;</span></span><br></pre></td></tr></table></figure></p>
-<p>获取时间命令：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep Elapsed */OUTCAR | sort -n</span><br></pre></td></tr></table></figure></p>
-<p>获取零点能：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> * ; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span> $(<span class="built_in">cd</span> <span class="variable">$i</span> ; fsum ; <span class="built_in">cd</span> <span class="variable">$OLDPWD</span>);<span class="keyword">done</span>  | sort –n</span><br></pre></td></tr></table></figure></p>
+<p>获取虚频命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep <span class="string">&#x27;f/i&#x27;</span>  */OUTCAR | awk <span class="string">&#x27;&#123;print $1 &quot;\t &quot; $2 &quot;\t&quot; $8 &quot;\t &quot; $9 &quot;\t&quot; $10 &quot;\t&quot; $11&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>获取时间命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep Elapsed */OUTCAR | sort -n</span><br></pre></td></tr></table></figure>
+
+<p>获取零点能：  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> * ; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span> $(<span class="built_in">cd</span> <span class="variable">$i</span> ; fsum ; <span class="built_in">cd</span> <span class="variable">$OLDPWD</span>);<span class="keyword">done</span>  | sort –n</span><br></pre></td></tr></table></figure>
+
 <h3 id="3-1-EDIFFG测试"><a href="#3-1-EDIFFG测试" class="headerlink" title="3.1  EDIFFG测试"></a>3.1  EDIFFG测试</h3><h4 id="3-1-1测试"><a href="#3-1-1测试" class="headerlink" title="3.1.1测试"></a>3.1.1测试</h4><p>$4, 5, 6, 7, 8$ 分别代表 <code>EDIFF=1E-4</code> 到 <code>-8</code> 的测试任务；</p>
-<p><img src="/2017/12/18/ex27/ex27-4.jpeg" alt=""></p>
+<p><img src="/2017/12/18/ex27/ex27-4.jpeg"></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> * ; <span class="keyword">do</span> <span class="built_in">echo</span> <span class="variable">$i</span> $(<span class="built_in">cd</span> <span class="variable">$i</span> ; fsum ; <span class="built_in">cd</span> <span class="variable">$OLDPWD</span>); <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
 <p>零点能的计算结果：</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
-<th style="text-align:left">EDIFF</th>
-<th style="text-align:left">ZPE</th>
-<th style="text-align:left">Unit</th>
+<th align="left">EDIFF</th>
+<th align="left">ZPE</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">4</td>
-<td style="text-align:left">2.14344</td>
-<td style="text-align:left">eV</td>
+<tbody><tr>
+<td align="left">4</td>
+<td align="left">2.14344</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">5</td>
-<td style="text-align:left">2.12494</td>
-<td style="text-align:left">eV</td>
+<td align="left">5</td>
+<td align="left">2.12494</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">6</td>
-<td style="text-align:left">2.11698</td>
-<td style="text-align:left">eV</td>
+<td align="left">6</td>
+<td align="left">2.11698</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">7</td>
-<td style="text-align:left">2.11696</td>
-<td style="text-align:left">eV</td>
+<td align="left">7</td>
+<td align="left">2.11696</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">8</td>
-<td style="text-align:left">2.11696</td>
-<td style="text-align:left">eV</td>
+<td align="left">8</td>
+<td align="left">2.11696</td>
+<td align="left">eV</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p>a. 可以看出来在<code>1E=-6</code>以后，零点能变化基本为 <code>0</code>了；我们可以用这个设置；</p>
 <p>b. 虽然你测出来一个很好的参数值，很不幸，这是默认的。</p>
 <p>c. 从时间上考虑，本人会选择 <code>EDIFF= 1E-5</code>，这比 <code>1E=-6</code> 快了将近一倍；</p>
-<p>d. $5$ 和 $6$ 之间的误差为：$ 0.008/2.117 = 0.38\% $；</p>
+<p>d. $5$ 和 $6$ 之间的误差为：$ 0.008&#x2F;2.117 &#x3D; 0.38% $；</p>
 <p>e. 此外，单个的零点能貌似没有什么用处，一般都是两个结构的零点能相减。这个操作也会抵消一部分的计算误差。</p>
 <hr>
-<h4 id="3-1-2-虚频"><a href="#3-1-2-虚频" class="headerlink" title="3.1.2 虚频"></a>3.1.2 虚频</h4><p><img src="/2017/12/18/ex27/ex27-5.jpeg" alt=""></p>
+<h4 id="3-1-2-虚频"><a href="#3-1-2-虚频" class="headerlink" title="3.1.2 虚频"></a>3.1.2 虚频</h4><p><img src="/2017/12/18/ex27/ex27-5.jpeg"></p>
 <p><strong>（这个命令只展示一次，后面测试结果全部用下面的表格）</strong></p>
 <table><tr><th>EDIFF</th><th>Nth</th><th>WN</th><th>Unit</th><th>Energy</th><th>Unit</th></tr><tr><td rowspan="3">4</td><td>25</td><td>10.183435</td><td> cm<sup>-1</sup></td><td>1.262585</td><td>meV</td></tr><tr><td>26</td><td>43.891375</td><td> cm<sup>-1</sup></td><td>5.441839</td><td>meV</td></tr><tr><td>27</td><td>61.646745</td><td> cm<sup>-1</sup></td><td>7.643225</td><td>meV</td></tr><tr><td rowspan="3">5</td><td>25</td><td>6.773094</td><td> cm<sup>-1</sup></td><td>0.839757</td><td>meV</td></tr><tr><td>26</td><td>28.045092</td><td> cm<sup>-1</sup></td><td>3.477149</td><td>meV</td></tr><tr><td>27</td><td>52.28955</td><td> cm<sup>-1</sup></td><td>6.48308</td><td>meV</td></tr><tr><td rowspan="3">6</td><td>25</td><td>6.132037</td><td> cm<sup>-1</sup></td><td>0.760276</td><td>meV</td></tr><tr><td>26</td><td>18.62878</td><td> cm<sup>-1</sup></td><td>2.309675</td><td>meV</td></tr><tr><td>27</td><td>65.657693</td><td> cm<sup>-1</sup></td><td>8.140519</td><td>meV</td></tr><tr><td rowspan="3">7</td><td>25</td><td>6.03848</td><td> cm<sup>-1</sup></td><td>0.748676</td><td>meV</td></tr><tr><td>26</td><td>19.115009</td><td> cm<sup>-1</sup></td><td>2.36996</td><td>meV</td></tr><tr><td>27</td><td>65.726299</td><td> cm<sup>-1</sup></td><td>8.149025</td><td>meV</td></tr><tr><td rowspan="3">8</td><td>25</td><td>6.036457</td><td> cm<sup>-1</sup></td><td>0.748425</td><td>meV</td></tr><tr><td>26</td><td>19.156334</td><td> cm<sup>-1</sup></td><td>2.375084</td><td>meV</td></tr><tr><td>27</td><td>65.711053</td><td> cm<sup>-1</sup></td><td>8.147135</td><td>meV</td></tr></table>
 
 <p>a. 改变收敛标准，并没有消除虚频，测试 $5$ 中，稍微降低了些，其他情况下，最大的仍然都再 <code>1500 px-1</code> 左右</p>
 <p>b. $6$, $7$, $8$ 中的虚频基本一致，说明增加收敛标准，并没起到什么好的效果。</p>
-<h4 id="3-1-3-时间"><a href="#3-1-3-时间" class="headerlink" title="3.1.3 时间"></a>3.1.3 时间</h4><div class="table-container">
-<table>
+<h4 id="3-1-3-时间"><a href="#3-1-3-时间" class="headerlink" title="3.1.3 时间"></a>3.1.3 时间</h4><table>
 <thead>
 <tr>
-<th style="text-align:left">EDIFF</th>
-<th style="text-align:left">Time</th>
-<th style="text-align:left">Unit</th>
+<th align="left">EDIFF</th>
+<th align="left">Time</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">4</td>
-<td style="text-align:left">1702.463</td>
-<td style="text-align:left">s</td>
+<tbody><tr>
+<td align="left">4</td>
+<td align="left">1702.463</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">5</td>
-<td style="text-align:left">2295.233</td>
-<td style="text-align:left">s</td>
+<td align="left">5</td>
+<td align="left">2295.233</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">6</td>
-<td style="text-align:left">4298.571</td>
-<td style="text-align:left">s</td>
+<td align="left">6</td>
+<td align="left">4298.571</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">7</td>
-<td style="text-align:left">5481.423</td>
-<td style="text-align:left">s</td>
+<td align="left">7</td>
+<td align="left">5481.423</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">8</td>
-<td style="text-align:left">5998.518</td>
-<td style="text-align:left">s</td>
+<td align="left">8</td>
+<td align="left">5998.518</td>
+<td align="left">s</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p>复习下谁偷走了我的机时中<code>EDIFF</code>的因素；增加<code>EDIFF</code>，计算时间变长了。（离子步数一致，每个离子步的收敛步数增多了） 一般来说<code>EDIFF</code>采用默认值或者<code>1E-5</code>都可以满足情况，任务比较繁重的时候议用<code>1E-5</code>。本节在后面的测试中，都采用 <strong>VASP</strong> 的默认<code>EDIFF</code>值进行（<code>1E-6</code>）</p>
 <hr>
-<h3 id="3-2-ENCUT测试"><a href="#3-2-ENCUT测试" class="headerlink" title="3.2 ENCUT测试"></a>3.2 ENCUT测试</h3><h4 id="3-2-1-零点能"><a href="#3-2-1-零点能" class="headerlink" title="3.2.1 零点能"></a>3.2.1 零点能</h4><div class="table-container">
-<table>
+<h3 id="3-2-ENCUT测试"><a href="#3-2-ENCUT测试" class="headerlink" title="3.2 ENCUT测试"></a>3.2 ENCUT测试</h3><h4 id="3-2-1-零点能"><a href="#3-2-1-零点能" class="headerlink" title="3.2.1 零点能"></a>3.2.1 零点能</h4><table>
 <thead>
 <tr>
-<th style="text-align:left">ENCU</th>
-<th style="text-align:left">ZPE</th>
-<th style="text-align:left">Unit</th>
+<th align="left">ENCU</th>
+<th align="left">ZPE</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">400</td>
-<td style="text-align:left">2.11698</td>
-<td style="text-align:left">eV</td>
+<tbody><tr>
+<td align="left">400</td>
+<td align="left">2.11698</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">500</td>
-<td style="text-align:left">2.11448</td>
-<td style="text-align:left">eV</td>
+<td align="left">500</td>
+<td align="left">2.11448</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">600</td>
-<td style="text-align:left">2.11880</td>
-<td style="text-align:left">eV</td>
+<td align="left">600</td>
+<td align="left">2.11880</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">700</td>
-<td style="text-align:left">2.11971</td>
-<td style="text-align:left">eV</td>
+<td align="left">700</td>
+<td align="left">2.11971</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">800</td>
-<td style="text-align:left">2.11928</td>
-<td style="text-align:left">eV</td>
+<td align="left">800</td>
+<td align="left">2.11928</td>
+<td align="left">eV</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p>从表中可以得出结论：增加<code>ENCUT</code>,对零点能的影响很小；</p>
 <p>在计算的过程中，<code>ENCUT</code>要保持一致，一但选定后就不要再轻易改动，这个表的数据告诉我们，即使改动了<code>ENCUT</code>，对零点能的影响也很小，所以<code>ENCUT</code>的影响可以忽略。</p>
 <h4 id="3-2-2-虚频："><a href="#3-2-2-虚频：" class="headerlink" title="3.2.2 虚频："></a>3.2.2 虚频：</h4><table><tr><th>ENCUT</th><th>Nth</th><th>WN</th><th>Unit</th><th>energy</th><th>unit</th></tr><tr><td rowspan="3">400</td><td>25</td><td>6.132038</td><td> cm<sup>-1</sup></td><td>0.760276</td><td>meV</td></tr><tr><td>26</td><td>18.62878</td><td> cm<sup>-1</sup></td><td>2.309675</td><td>meV</td></tr><tr><td>27</td><td>65.65769</td><td> cm<sup>-1</sup></td><td>8.140519</td><td>meV</td></tr><tr><td rowspan="4">500</td><td>24</td><td>0.489004</td><td> cm<sup>-1</sup></td><td>0.060629</td><td>meV</td></tr><tr><td>25</td><td>16.7313</td><td> cm<sup>-1</sup></td><td>2.074418</td><td>meV</td></tr><tr><td>26</td><td>23.491849</td><td> cm<sup>-1</sup></td><td>2.912619</td><td>meV</td></tr><tr><td>27</td><td>66.062971</td><td> cm<sup>-1</sup></td><td>8.190767</td><td>meV</td></tr><tr><td rowspan="4">600</td><td>24</td><td>0.288462</td><td> cm<sup>-1</sup></td><td>0.035765</td><td>meV</td></tr><tr><td>25</td><td>4.853849</td><td> cm<sup>-1</sup></td><td>0.601801</td><td>meV</td></tr><tr><td>26</td><td>6.324527</td><td> cm<sup>-1</sup></td><td>0.784142</td><td>meV</td></tr><tr><td>27</td><td>52.075614</td><td> cm<sup>-1</sup></td><td>6.456556</td><td>meV</td></tr><tr><td rowspan="3">700</td><td>25</td><td>0.747158</td><td> cm<sup>-1</sup></td><td>0.092636</td><td>meV</td></tr><tr><td>26</td><td>6.175845</td><td> cm<sup>-1</sup></td><td>0.765708</td><td>meV</td></tr><tr><td>27</td><td>32.540704</td><td> cm<sup>-1</sup></td><td>4.034535</td><td>meV</td></tr><tr><td rowspan="3">800</td><td>25</td><td>0.289332</td><td> cm<sup>-1</sup></td><td>0.035873</td><td>meV</td></tr><tr><td>26</td><td>7.356367</td><td> cm<sup>-1</sup></td><td>0.912074</td><td>meV</td></tr><tr><td>27</td><td>26.44812</td><td> cm<sup>-1</sup></td><td>3.27915</td><td>meV</td></tr></table>
 
-<p>增加<code>ENCUT</code>可以减小虚频；从 $400$ 增加到 $800$ 后，最大的虚频波数从 $65~cm^{-1}$ 减小到 $26~cm^{-1}$， 但 A 中的结果是不是要求我们算频率的时候，必须要把 <code>ENCUT</code>增大呢？ 答：<strong>没必要！！</strong></p>
-<p>因为前面零点能变化甚微，且虚频从 $65~cm^{-1}$ 减小到 $26~cm^{-1}$, 只能说是在误差范围内变化，我们是可以承受的，此时<code>ENCUT</code>在减小虚频中的作用，大家记住这一点就可以了。此外，增加<code>ENCUT</code>也会使得计算时间变长（见下图）。但是如果虚频大于$100~cm^{-1}$，且不是反应路径的时候，你就得小心了。</p>
-<h4 id="3-2-3-时间"><a href="#3-2-3-时间" class="headerlink" title="3.2.3 时间"></a>3.2.3 时间</h4><p>命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep Elapsed */OUTCAR | sort –n</span><br></pre></td></tr></table></figure></p>
-<div class="table-container">
+<p>增加<code>ENCUT</code>可以减小虚频；从 $400$ 增加到 $800$ 后，最大的虚频波数从 $65<del>cm^{-1}$ 减小到 $26</del>cm^{-1}$， 但 A 中的结果是不是要求我们算频率的时候，必须要把 <code>ENCUT</code>增大呢？ 答：<strong>没必要！！</strong></p>
+<p>因为前面零点能变化甚微，且虚频从 $65<del>cm^{-1}$ 减小到 $26</del>cm^{-1}$, 只能说是在误差范围内变化，我们是可以承受的，此时<code>ENCUT</code>在减小虚频中的作用，大家记住这一点就可以了。此外，增加<code>ENCUT</code>也会使得计算时间变长（见下图）。但是如果虚频大于$100~cm^{-1}$，且不是反应路径的时候，你就得小心了。</p>
+<h4 id="3-2-3-时间"><a href="#3-2-3-时间" class="headerlink" title="3.2.3 时间"></a>3.2.3 时间</h4><p>命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep Elapsed */OUTCAR | sort –n</span><br></pre></td></tr></table></figure>
+
 <table>
 <thead>
 <tr>
-<th style="text-align:left">ENCUT</th>
-<th style="text-align:left">Time</th>
-<th style="text-align:left">Unit</th>
+<th align="left">ENCUT</th>
+<th align="left">Time</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">400</td>
-<td style="text-align:left">1832.405</td>
-<td style="text-align:left">s</td>
+<tbody><tr>
+<td align="left">400</td>
+<td align="left">1832.405</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">500</td>
-<td style="text-align:left">2389.045</td>
-<td style="text-align:left">s</td>
+<td align="left">500</td>
+<td align="left">2389.045</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">600</td>
-<td style="text-align:left">3019.433</td>
-<td style="text-align:left">s</td>
+<td align="left">600</td>
+<td align="left">3019.433</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">700</td>
-<td style="text-align:left">4285.491</td>
-<td style="text-align:left">s</td>
+<td align="left">700</td>
+<td align="left">4285.491</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">800</td>
-<td style="text-align:left">11943.02</td>
-<td style="text-align:left">s</td>
+<td align="left">800</td>
+<td align="left">11943.02</td>
+<td align="left">s</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <hr>
 <h3 id="3-3-PREC"><a href="#3-3-PREC" class="headerlink" title="3.3 PREC"></a>3.3 PREC</h3><p>这里我们设置了三个参数：<code>Normal</code>, <code>Accurate</code>和<code>High</code></p>
-<h4 id="3-3-1-零点能变化甚微"><a href="#3-3-1-零点能变化甚微" class="headerlink" title="3.3.1 零点能变化甚微"></a>3.3.1 零点能变化甚微</h4><div class="table-container">
-<table>
+<h4 id="3-3-1-零点能变化甚微"><a href="#3-3-1-零点能变化甚微" class="headerlink" title="3.3.1 零点能变化甚微"></a>3.3.1 零点能变化甚微</h4><table>
 <thead>
 <tr>
-<th style="text-align:left">PREC</th>
-<th style="text-align:left">ZPE</th>
-<th style="text-align:left">Unit</th>
+<th align="left">PREC</th>
+<th align="left">ZPE</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">N</td>
-<td style="text-align:left">2.11698</td>
-<td style="text-align:left">eV</td>
+<tbody><tr>
+<td align="left">N</td>
+<td align="left">2.11698</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">A</td>
-<td style="text-align:left">2.1147</td>
-<td style="text-align:left">eV</td>
+<td align="left">A</td>
+<td align="left">2.1147</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">H</td>
-<td style="text-align:left">2.11363</td>
-<td style="text-align:left">eV</td>
+<td align="left">H</td>
+<td align="left">2.11363</td>
+<td align="left">eV</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <h4 id="3-3-2-虚频"><a href="#3-3-2-虚频" class="headerlink" title="3.3.2 虚频"></a>3.3.2 虚频</h4><table><tr><th>PREC</th><th>Nth</th><th>Wavenumber</th><th>Unit</th><th>Energy</th><th>Unit</th></tr><tr><td rowspan="3">N</td><td>25</td><td>6.132037</td><td> cm<sup>-1</sup></td><td>0.760276</td><td>meV</td></tr><tr><td>26</td><td>18.62878</td><td> cm<sup>-1</sup></td><td>2.309675</td><td>meV</td></tr><tr><td>27</td><td>65.657693</td><td> cm<sup>-1</sup></td><td>8.140519</td><td>meV</td></tr><tr><td rowspan="3">A</td><td>25</td><td>5.493108</td><td> cm<sup>-1</sup></td><td>0.681059</td><td>meV</td></tr><tr><td>26</td><td>10.478293</td><td> cm<sup>-1</sup></td><td>1.299143</td><td>meV</td></tr><tr><td>27</td><td>65.861524</td><td> cm<sup>-1</sup></td><td>8.165791</td><td>meV</td></tr><tr><td rowspan="4">H</td><td>24</td><td>0.552665</td><td> cm<sup>-1</sup></td><td>0.068522</td><td>meV</td></tr><tr><td>25</td><td>16.954329</td><td> cm<sup>-1</sup></td><td>2.10207</td><td>meV</td></tr><tr><td>26</td><td>29.95621</td><td> cm<sup>-1</sup></td><td>3.714098</td><td>meV</td></tr><tr><td>27</td><td>68.287802</td><td> cm<sup>-1</sup></td><td>8.466611</td><td>meV</td></tr></table>
 
 <p><code>PREC</code>同样对消除虚频不管用！！！！</p>
-<h4 id="3-3-3-时间"><a href="#3-3-3-时间" class="headerlink" title="3.3.3 时间"></a>3.3.3 时间</h4><div class="table-container">
-<table>
+<h4 id="3-3-3-时间"><a href="#3-3-3-时间" class="headerlink" title="3.3.3 时间"></a>3.3.3 时间</h4><table>
 <thead>
 <tr>
-<th style="text-align:left">Prec</th>
-<th style="text-align:left">Time</th>
-<th style="text-align:left">Unit</th>
+<th align="left">Prec</th>
+<th align="left">Time</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">N</td>
-<td style="text-align:left">4298.571</td>
-<td style="text-align:left">s</td>
+<tbody><tr>
+<td align="left">N</td>
+<td align="left">4298.571</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">A</td>
-<td style="text-align:left">7596.994</td>
-<td style="text-align:left">s</td>
+<td align="left">A</td>
+<td align="left">7596.994</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">H</td>
-<td style="text-align:left">7962.539</td>
-<td style="text-align:left">s</td>
+<td align="left">H</td>
+<td align="left">7962.539</td>
+<td align="left">s</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p>通过前面的虚频和零点能，结合此时的时间，我们可以得出结论：</p>
 <p><code>PREC = Normal</code> 完全够用了。</p>
 <hr>
-<h3 id="3-4-POTIM-参数"><a href="#3-4-POTIM-参数" class="headerlink" title="3.4  POTIM 参数"></a>3.4  POTIM 参数</h3><p><img src="/2017/12/18/ex27/ex27-6.jpeg" alt=""></p>
-<h4 id="3-4-1-零点能："><a href="#3-4-1-零点能：" class="headerlink" title="3.4.1 零点能："></a>3.4.1 零点能：</h4><div class="table-container">
-<table>
+<h3 id="3-4-POTIM-参数"><a href="#3-4-POTIM-参数" class="headerlink" title="3.4  POTIM 参数"></a>3.4  POTIM 参数</h3><p><img src="/2017/12/18/ex27/ex27-6.jpeg"></p>
+<h4 id="3-4-1-零点能："><a href="#3-4-1-零点能：" class="headerlink" title="3.4.1 零点能："></a>3.4.1 零点能：</h4><table>
 <thead>
 <tr>
-<th style="text-align:left">POTIM</th>
-<th style="text-align:left">ZPE</th>
-<th style="text-align:left">eV</th>
+<th align="left">POTIM</th>
+<th align="left">ZPE</th>
+<th align="left">eV</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">0.001</td>
-<td style="text-align:left">2.17125</td>
-<td style="text-align:left">eV</td>
+<tbody><tr>
+<td align="left">0.001</td>
+<td align="left">2.17125</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">0.005</td>
-<td style="text-align:left">2.12616</td>
-<td style="text-align:left">eV</td>
+<td align="left">0.005</td>
+<td align="left">2.12616</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">0.015</td>
-<td style="text-align:left">2.11769</td>
-<td style="text-align:left">eV</td>
+<td align="left">0.015</td>
+<td align="left">2.11769</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">0.020</td>
-<td style="text-align:left">2.11698</td>
-<td style="text-align:left">eV</td>
+<td align="left">0.020</td>
+<td align="left">2.11698</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">0.050</td>
-<td style="text-align:left">2.11671</td>
-<td style="text-align:left">eV</td>
+<td align="left">0.050</td>
+<td align="left">2.11671</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">0.100</td>
-<td style="text-align:left">2.12481</td>
-<td style="text-align:left">eV</td>
+<td align="left">0.100</td>
+<td align="left">2.12481</td>
+<td align="left">eV</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p><code>POTIM</code>太小的时候，对零点能影响很大。（$0.001$ 和 $0.005$，$0.015$ 对比）</p>
 <h4 id="3-4-2虚频"><a href="#3-4-2虚频" class="headerlink" title="3.4.2虚频"></a>3.4.2虚频</h4><table><tr><th>POTIM</th><th>Nth</th><th>Wavenumber</th><th>Unit</th><th>Energy</th><th>Unit</th></tr><tr><td rowspan="3">0.001</td><td>25</td><td>21.746998</td><td> cm<sup>-1</sup></td><td>2.696285</td><td>meV</td></tr><tr><td>26</td><td>39.656607</td><td> cm<sup>-1</sup></td><td>4.916794</td><td>meV</td></tr><tr><td>27</td><td>56.54809</td><td> cm<sup>-1</sup></td><td>7.011072</td><td>meV</td></tr><tr><td rowspan="4">0.005</td><td>24</td><td>0.675194</td><td> cm<sup>-1</sup></td><td>0.083713</td><td>meV</td></tr><tr><td>25</td><td>12.785399</td><td> cm<sup>-1</sup></td><td>1.585188</td><td>meV</td></tr><tr><td>26</td><td>36.264179</td><td> cm<sup>-1</sup></td><td>4.496187</td><td>meV</td></tr><tr><td>27</td><td>61.287932</td><td> cm<sup>-1</sup></td><td>7.598738</td><td>meV</td></tr><tr><td rowspan="3">0.015</td><td>25</td><td>5.626635</td><td> cm<sup>-1</sup></td><td>0.697614</td><td>meV</td></tr><tr><td>26</td><td>23.117605</td><td> cm<sup>-1</sup></td><td>2.866219</td><td>meV</td></tr><tr><td>27</td><td>59.01173</td><td> cm<sup>-1</sup></td><td>7.316525</td><td>meV</td></tr><tr><td rowspan="3">0.020</td><td>25</td><td>6.132037</td><td> cm<sup>-1</sup></td><td>0.760276</td><td>meV</td></tr><tr><td>26</td><td>18.62878</td><td> cm<sup>-1</sup></td><td>2.309675</td><td>meV</td></tr><tr><td>27</td><td>65.657693</td><td> cm<sup>-1</sup></td><td>8.140519</td><td>meV</td></tr><tr><td rowspan="4">0.050</td><td>24</td><td>0.327964</td><td> cm<sup>-1</sup></td><td>0.040662</td><td>meV</td></tr><tr><td>25</td><td>23.575077</td><td> cm<sup>-1</sup></td><td>2.922938</td><td>meV</td></tr><tr><td>26</td><td>24.337978</td><td> cm<sup>-1</sup></td><td>3.017526</td><td>meV</td></tr><tr><td>27</td><td>95.239085</td><td> cm<sup>-1</sup></td><td>11.80815</td><td>meV</td></tr><tr><td rowspan="5">0.100</td><td>23</td><td>1.574379</td><td> cm<sup>-1</sup></td><td>0.195198</td><td>meV</td></tr><tr><td>24</td><td>5.865037</td><td> cm<sup>-1</sup></td><td>0.727172</td><td>meV</td></tr><tr><td>25</td><td>20.89784</td><td> cm<sup>-1</sup></td><td>2.591003</td><td>meV</td></tr><tr><td>26</td><td>45.241296</td><td> cm<sup>-1</sup></td><td>5.609208</td><td>meV</td></tr><tr><td>27</td><td>168.238904</td><td> cm<sup>-1</sup></td><td>20.85897</td><td>meV</td></tr></table>
 
 <p><code>POTIM</code>太大的时候，会搞出来超大号的虚频（$0.050$ 和 $0.100$）！</p>
-<h4 id="3-4-3-时间"><a href="#3-4-3-时间" class="headerlink" title="3.4.3 时间"></a>3.4.3 时间</h4><div class="table-container">
-<table>
+<h4 id="3-4-3-时间"><a href="#3-4-3-时间" class="headerlink" title="3.4.3 时间"></a>3.4.3 时间</h4><table>
 <thead>
 <tr>
-<th style="text-align:left">POTIM</th>
-<th style="text-align:left">Time</th>
-<th style="text-align:left">Unit</th>
+<th align="left">POTIM</th>
+<th align="left">Time</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">1</td>
-<td style="text-align:left">1530.591</td>
-<td style="text-align:left">s</td>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">1530.591</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">5</td>
-<td style="text-align:left">2065.911</td>
-<td style="text-align:left">s</td>
+<td align="left">5</td>
+<td align="left">2065.911</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">15</td>
-<td style="text-align:left">3845.977</td>
-<td style="text-align:left">s</td>
+<td align="left">15</td>
+<td align="left">3845.977</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">20</td>
-<td style="text-align:left">4298.571</td>
-<td style="text-align:left">s</td>
+<td align="left">20</td>
+<td align="left">4298.571</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">50</td>
-<td style="text-align:left">4829.897</td>
-<td style="text-align:left">s</td>
+<td align="left">50</td>
+<td align="left">4829.897</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">100</td>
-<td style="text-align:left">5191.23</td>
-<td style="text-align:left">s</td>
+<td align="left">100</td>
+<td align="left">5191.23</td>
+<td align="left">s</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p><code>POTIM</code> 越小，单个离子步收敛的越快，也就是需要更少的电子步！</p>
 <p>综合前面的三个因素：<code>POTIM</code>太小或者太大都不好， <code>POTIM = 0.015</code>或者<code>0.020</code> 是很好的选择。 <code>0.015</code>是默认值。</p>
 <hr>
 <h3 id="3-5-POINTS"><a href="#3-5-POINTS" class="headerlink" title="3.5 POINTS"></a>3.5 POINTS</h3><p>这里用 $1$, $2$, $3$ 来分别代表 $1 \times 1 \times 1$， $2 \times 2 \times 2$ 和 $3 \times 3  \times 3$ 的 K 点。</p>
-<h4 id="3-5-1-零点能："><a href="#3-5-1-零点能：" class="headerlink" title="3.5.1 零点能："></a>3.5.1 零点能：</h4><div class="table-container">
-<table>
+<h4 id="3-5-1-零点能："><a href="#3-5-1-零点能：" class="headerlink" title="3.5.1 零点能："></a>3.5.1 零点能：</h4><table>
 <thead>
 <tr>
-<th style="text-align:left">KPOINTS</th>
-<th style="text-align:left">ZPE</th>
-<th style="text-align:left">Unit</th>
+<th align="left">KPOINTS</th>
+<th align="left">ZPE</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">1</td>
-<td style="text-align:left">2.11698</td>
-<td style="text-align:left">eV</td>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">2.11698</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">2</td>
-<td style="text-align:left">2.11678</td>
-<td style="text-align:left">eV</td>
+<td align="left">2</td>
+<td align="left">2.11678</td>
+<td align="left">eV</td>
 </tr>
 <tr>
-<td style="text-align:left">3</td>
-<td style="text-align:left">2.11689</td>
-<td style="text-align:left">eV</td>
+<td align="left">3</td>
+<td align="left">2.11689</td>
+<td align="left">eV</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <h4 id="3-5-2-虚频："><a href="#3-5-2-虚频：" class="headerlink" title="3.5.2 虚频："></a>3.5.2 虚频：</h4><table><tr><th>KPOINTS</th><th>Nth</th><th>Wavenumber</th><th>Unit</th><th>Energy</th><th>Unit</th></tr><tr><td rowspan="3">1</td><td>25</td><td>6.132037</td><td> cm<sup>-1</sup></td><td>0.76028</td><td>meV</td></tr><tr><td>26</td><td>18.62878</td><td> cm<sup>-1</sup></td><td>2.30968</td><td>meV</td></tr><tr><td>27</td><td>65.657693</td><td> cm<sup>-1</sup></td><td>8.14052</td><td>meV</td></tr><tr><td rowspan="3">2</td><td>25</td><td>5.726298</td><td> cm<sup>-1</sup></td><td>0.70997</td><td>meV</td></tr><tr><td>26</td><td>19.193163</td><td> cm<sup>-1</sup></td><td>2.37965</td><td>meV</td></tr><tr><td>27</td><td>64.645347</td><td> cm<sup>-1</sup></td><td>8.015</td><td>meV</td></tr><tr><td rowspan="3">3</td><td>25</td><td>4.826986</td><td> cm<sup>-1</sup></td><td>0.59847</td><td>meV</td></tr><tr><td>26</td><td>19.138554</td><td> cm<sup>-1</sup></td><td>2.37288</td><td>meV</td></tr><tr><td>27</td><td>64.83042</td><td> cm<sup>-1</sup></td><td>8.03795</td><td>meV</td></tr></table>
 
-<h4 id="3-5-3-时间"><a href="#3-5-3-时间" class="headerlink" title="3.5.3 时间"></a>3.5.3 时间</h4><div class="table-container">
-<table>
+<h4 id="3-5-3-时间"><a href="#3-5-3-时间" class="headerlink" title="3.5.3 时间"></a>3.5.3 时间</h4><table>
 <thead>
 <tr>
-<th style="text-align:left">KPOINTS</th>
-<th style="text-align:left">Time</th>
-<th style="text-align:left">Unit</th>
+<th align="left">KPOINTS</th>
+<th align="left">Time</th>
+<th align="left">Unit</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">1</td>
-<td style="text-align:left">4298.571</td>
-<td style="text-align:left">s</td>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">4298.571</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">2</td>
-<td style="text-align:left">8997.709</td>
-<td style="text-align:left">s</td>
+<td align="left">2</td>
+<td align="left">8997.709</td>
+<td align="left">s</td>
 </tr>
 <tr>
-<td style="text-align:left">3</td>
-<td style="text-align:left">13480.847</td>
-<td style="text-align:left">s</td>
+<td align="left">3</td>
+<td align="left">13480.847</td>
+<td align="left">s</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <p>综合前面三点： <code>Gamma</code>点足矣！</p>
 <hr>
 <h2 id="4-扩展阅读："><a href="#4-扩展阅读：" class="headerlink" title="4      扩展阅读："></a>4      扩展阅读：</h2><p>4.1 下载本节的练习，按照本节的顺序操作分析；</p>

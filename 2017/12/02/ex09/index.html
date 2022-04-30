@@ -303,14 +303,14 @@
     <div class="post-body" itemprop="articleBody">
         <p>前面一节我们学会了正确计算氧原子的能量并分析电子在轨道中的占据情况，这一节稍作总结补充。</p>
 <h3 id="复习上节内容"><a href="#复习上节内容" class="headerlink" title="复习上节内容"></a>复习上节内容</h3><p>在VASP计算的O原子的电子结构讨论中，来自不莱梅大学的群友，画了一幅画，大家可以看下:</p>
-<p><img src="/2017/12/02/ex09/ex09-01.jpeg" alt=""></p>
+<p><img src="/2017/12/02/ex09/ex09-01.jpeg"></p>
 <p>VASP的结果分析完毕后如下:</p>
-<p><img src="/2017/12/02/ex09/ex09-02.jpeg" alt=""></p>
-<p>看画填数，照猫画虎：<img src="/2017/12/02/ex09/ex09-03.jpeg" alt=""></p>
-<p><img src="/2017/12/02/ex09/ex09-04.jpeg" alt=""></p>
+<p><img src="/2017/12/02/ex09/ex09-02.jpeg"></p>
+<p>看画填数，照猫画虎：<img src="/2017/12/02/ex09/ex09-03.jpeg"></p>
+<p><img src="/2017/12/02/ex09/ex09-04.jpeg"></p>
 <p>由此可见，VASP对于氧原子的描述不是很准确（不理解的请看上一节的详细描述)。而这一点，VASP官网你是找不到的。因此，在计算的时候，对于自己的体系有一个清晰的化学物理印象很重要。VASP的结果也要有针对的去判断。有的时候，即使计算收敛了，但没有体现出任何正确的物理或者化学意义，那就是单纯的数学收敛，结果是不可取的。VASP是一个计算的工具，如何正确分析和判断它的输出才是关键的。这一点我们在后面的学习中也会反复强调。</p>
 <h3 id="VASP是怎么判断收敛的"><a href="#VASP是怎么判断收敛的" class="headerlink" title="VASP是怎么判断收敛的?"></a>VASP是怎么判断收敛的?</h3><p>我们看一下VASP的迭代计算过程：</p>
-<p>​                                               <img src="/2017/12/02/ex09/ex09-05.jpeg" alt=""></p>
+<p>​                                               <img src="/2017/12/02/ex09/ex09-05.jpeg"></p>
 <ul>
 <li><p>首先，它会猜一个初始的电子密度，然后据此计算体系的势能，求解KS方程，并给出体系的总能量以及对应的电子密度，也就是我们之前说的电子步的优化。</p>
 </li>
@@ -321,35 +321,40 @@
 <li><p>EDIFF 控制电子步（自洽）的收敛标准。在O原子的计算中，由于我们不需要优化，直接进行静态计算，完全由EDIFF控制计算的收敛情况。EDIFFG后面我们再介绍。</p>
 </li>
 </ul>
-<p><img src="/2017/12/02/ex09/ex09-06.jpeg" alt=""></p>
+<p><img src="/2017/12/02/ex09/ex09-06.jpeg"></p>
 <p> 从图中可以看出：第19步和18步的能量差为：-0.3484 E-04，停止迭代，开始输出结果。这是因为VASP计算中EDIFF的默认值是 1 x 10-4。</p>
 <h3 id="鱼和熊掌的关系"><a href="#鱼和熊掌的关系" class="headerlink" title="鱼和熊掌的关系"></a>鱼和熊掌的关系</h3><p><strong>那么：</strong></p>
 <p><strong>是不是精度越高，计算越准确呢？ 这是肯定的！</strong></p>
 <p><strong>是不是计算都需要这么高的精度呢？ 这肯定不是的！</strong></p>
-<p>精度高（鱼：&lt;・)))&gt;&lt;&lt;）意味着需要更多的迭代次数，也就是需要更多的计算时间（熊掌）。下图是收敛标准从默认值的1E-4 降低到1E-7后的收敛情况：单迭代次数从19增加到了27，相当于增加了原来1/2的工作量。所以，精度太高，计算量会增加。应了那句流行语：请在wifi下观看，土豪随意。</p>
-<p> <img src="/2017/12/02/ex09/ex09-07.jpeg" alt=""></p>
+<p>精度高（鱼：&lt;・)))&gt;&lt;&lt;）意味着需要更多的迭代次数，也就是需要更多的计算时间（熊掌）。下图是收敛标准从默认值的1E-4 降低到1E-7后的收敛情况：单迭代次数从19增加到了27，相当于增加了原来1&#x2F;2的工作量。所以，精度太高，计算量会增加。应了那句流行语：请在wifi下观看，土豪随意。</p>
+<p> <img src="/2017/12/02/ex09/ex09-07.jpeg"></p>
 <p>我们看一下扩展阅读的内容:</p>
-<p><img src="/2017/12/02/ex09/ex09-08.jpeg" alt=""></p>
+<p><img src="/2017/12/02/ex09/ex09-08.jpeg"></p>
 <p>第一点：官网说（红色方框中内容）：如果我们把收敛标准设置成0，那么迭代会永远进行下去。大师兄很感兴趣，便设置：<code>EDIFF = 0</code>测试了一番，结果如下:</p>
-<p><img src="/2017/12/02/ex09/ex09-09.jpeg" alt=""></p>
+<p><img src="/2017/12/02/ex09/ex09-09.jpeg"></p>
 <p>可以看到，在45步迭代之后，精度收敛到1E-12，VASP便停止了，而不是所谓的always! VASP又把俺们给骗了!</p>
 <p>骗归骗，但计算量的增加确是铁打的事实，从1E-4的19步，增加到了45步。</p>
 <p>思考另外一个问题：既然精度从默认值1E-4提高到1E-12 (8个数量级)，那么我们算出来的氧原子能量有什么变化呢？看下图:</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex09$ ls</span><br><span class="line">0  4  7</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex09$ ta.sh</span><br><span class="line">0        -1.89224598</span><br><span class="line">4        -1.89218308</span><br><span class="line">7        -1.89224603</span><br></pre></td></tr></table></figure>
+
+
+
 <p>图中的0， 4， 7 分别代表EDIFF为 0，  1E-4和 1E-7 的情况，我们可以看出，这三个计算结果中，能量随着EDIFF的减小变化甚微。当然，这也与我们简单的测试体系有关系。倘若计算N多个原子的体系时，不同的精度间的差值会有所增大。上面图中使用了一个小脚本：<code>ta.sh</code>，内容如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *; <span class="keyword">do</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="variable">$i</span>/OUTCAR ]; <span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> -e  <span class="variable">$i</span> <span class="string">&quot;\t&quot;</span> $(grep <span class="string">&#x27;  without&#x27;</span> <span class="variable">$i</span>/OUTCAR |tail -n 1 | awk <span class="string">&#x27;&#123;print $7&#125;&#x27;</span>)</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+
+
 <h3 id="如何看VASP的说明书"><a href="#如何看VASP的说明书" class="headerlink" title="如何看VASP的说明书"></a>如何看VASP的说明书</h3><p>那么我们再看一遍VASP官网的说明，注意底部的Mind部分:</p>
-<p><img src="/2017/12/02/ex09/ex09-10.jpeg" alt=""></p>
+<p><img src="/2017/12/02/ex09/ex09-10.jpeg"></p>
 <p>大家在浏览VASP官网的时候，凡是带有<code>Mind</code>，<code>Important</code>字样的，它们后面的文字一定要认真阅读，把握其中的含义。因为这都是大家常见的疑难点以及易错的地方。收敛速度跟<code>EDIFF</code>的值成指数关系，在大多数的情况下，<code>1E-4</code>足以胜任，没有必要采用其他的数值，如果大伙感觉不放心，大师兄建议<code>1E-5</code>即可。</p>
 <h3 id="几何优化的收敛标准"><a href="#几何优化的收敛标准" class="headerlink" title="几何优化的收敛标准"></a>几何优化的收敛标准</h3><p>目前还没有介绍几何优化，先简单介绍下EDIFFG这个参数，大家知道即可，后面学习到了再回来看。</p>
 <p>我们优化几何结构的时候，当结构前后变化达到我们设定的要求时，便停止优化。而这个设定的要求，就是通过EDIFFG来控制。</p>
 <ul>
 <li>对于优化，我们可以使用力作为收敛标准，此时EDIFFG为负值。一般来说取值在-0.01到-0.05之间(-0.01对于力收敛来说已经是一个很严格的要求了)。</li>
-<li><p>当然，对于较大的体系，我们也可以使用能量作为标准：此时，EDIFFG 为正值，一般取值范围在0.0001-0.001即可。</p>
-<p><strong>注意:</strong></p>
-</li>
+<li>当然，对于较大的体系，我们也可以使用能量作为标准：此时，EDIFFG 为正值，一般取值范围在0.0001-0.001即可。</li>
 </ul>
-<p>不要把正负值弄错了。大师兄见过一个群友这么设置的: EDIFFG = -0.0001。然后在群里咨询为什么他的计算不收敛。这就好比在没有WiFi的时候，装成土豪看视频，卡里的钱扣完了，视频才看到一半…..前面说到，<code>EDIFFG = -0.01</code>的时候收敛就已经够费劲了， 你再加个0，莫不是要算到天荒地老？</p>
+<p> <strong>注意:</strong></p>
+<p>不要把正负值弄错了。大师兄见过一个群友这么设置的: EDIFFG &#x3D; -0.0001。然后在群里咨询为什么他的计算不收敛。这就好比在没有WiFi的时候，装成土豪看视频，卡里的钱扣完了，视频才看到一半…..前面说到，<code>EDIFFG = -0.01</code>的时候收敛就已经够费劲了， 你再加个0，莫不是要算到天荒地老？</p>
 <h5 id="小结一下"><a href="#小结一下" class="headerlink" title="小结一下"></a>小结一下</h5><p>EDIFF，EDIFFG 是控制收敛标准的两个参数。前者负责电子自洽过程(单个离子步内)，取值为1E-4或者1E-5即可，没有特殊要求，不建议设置的太低。后者负责结构优化的过程(可正可负)。对于EDIFFG，默认值采用能量收敛，标准为:EDIFFx10。</p>
 <h3 id="扩展训练"><a href="#扩展训练" class="headerlink" title="扩展训练:"></a>扩展训练:</h3><p>1 EDIFF: <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/EDIFF">https://cms.mpi.univie.ac.at/wiki/index.php/EDIFF</a></p>
 <p>2 在1的页面中，左侧框中搜索<code>EDIFFG</code>，查找相关参数;</p>
@@ -385,8 +390,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2017/11/27/M_02/" rel="prev" title="通过关键词判断优化任务收敛">
-                  <i class="fa fa-chevron-left"></i> 通过关键词判断优化任务收敛
+                <a href="/2017/11/27/M_01/" rel="prev" title="Ubuntu18.使用VESTA报错的解决办法">
+                  <i class="fa fa-chevron-left"></i> Ubuntu18.使用VESTA报错的解决办法
                 </a>
             </div>
             <div class="post-nav-item">

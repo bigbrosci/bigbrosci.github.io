@@ -323,14 +323,15 @@
 <p>d) 使用<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/">ASE</a>: Atomic Simulation Environment的缩写。</p>
 <h2 id="2-VASP计算文件的准备"><a href="#2-VASP计算文件的准备" class="headerlink" title="2 VASP计算文件的准备"></a>2 VASP计算文件的准备</h2><p> <strong>2.1 准备好INCAR文件：</strong></p>
 <p>A）Fe带有磁性，ISPIN和MAGMOM需要设置</p>
-<p>B）Fe是金属， ISMEAR=1， SIGMA=0.1</p>
-<p>C）ENCUT=450， 统一起来，后面可能还需要计算其他元素，450是一个很安全的选择。</p>
+<p>B）Fe是金属， ISMEAR&#x3D;1， SIGMA&#x3D;0.1</p>
+<p>C）ENCUT&#x3D;450， 统一起来，后面可能还需要计算其他元素，450是一个很安全的选择。</p>
 <p>D）EDIFF控制电子步收敛的精度</p>
-<p><img src="/2018/02/01/ex32/ex32-1.jpeg" alt=""></p>
+<p><img src="/2018/02/01/ex32/ex32-1.jpeg"></p>
 <p><strong>2.2 准备KPOINTS文件：</strong></p>
-<p>以单胞为例： a=b=c=2.8664 $\AA$，根据前面的经验，我们可以设置$11\times11\times11$的KPOINTS（Gamma）</p>
+<p>以单胞为例： a&#x3D;b&#x3D;c&#x3D;2.8664 $\AA$，根据前面的经验，我们可以设置$11\times11\times11$的KPOINTS（Gamma）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">K-POINTS</span><br><span class="line"> 0</span><br><span class="line">Gamma</span><br><span class="line">  11 11 11</span><br><span class="line">  0 0 0</span><br></pre></td></tr></table></figure>
-<p> <img src="/2018/02/01/ex32/ex32-2.jpeg" alt=""></p>
+
+<p> <img src="/2018/02/01/ex32/ex32-2.jpeg"></p>
 <p>2.3 准备好与POSCAR对应的POTCAR文件，提交任务的脚本</p>
 <h2 id="3-提交任务"><a href="#3-提交任务" class="headerlink" title="3 提交任务"></a>3 提交任务</h2><p>3.1 提交任务之前，再次检查一遍我们的所有输入文件，确保无误；</p>
 <p>3.2 提交任务进行计算；</p>

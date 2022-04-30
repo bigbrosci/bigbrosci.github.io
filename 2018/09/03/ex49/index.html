@@ -20,12 +20,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="前面我们讲完了表面的计算，后面两节我们主要讨论一下功函数的计算。 1 功函数的定义首先，我们先看一下维基百科的解释： 功函数(又称功函、逸出功)是指要使一粒电子立即从固体表面中逸出，所必须提供的最小能量(通常以电子伏特为单位)。这里“立即”一词表示最终电子位置从原子尺度上远离表面但从宏观尺度上依然靠近固体。功函数不是材料体相的本征性质，更准确的说法应为材料表面的性质(比如表面暴露晶面情况和受污染程">
+<meta name="description" content="前面我们讲完了表面的计算，后面两节我们主要讨论一下功函数的计算。 1 功函数的定义首先，我们先看一下**维基百科**的解释： 功函数(又称功函、逸出功)是指要使一粒电子立即从固体表面中逸出，所必须提供的最小能量(通常以电子伏特为单位)。这里“立即”一词表示最终电子位置从原子尺度上远离表面但从宏观尺度上依然靠近固体。功函数不是材料体相的本征性质，更准确的说法应为材料表面的性质(比如表面暴露晶面情况和">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ex49 功函数（work function）的计算（一）">
 <meta property="og:url" content="http://www.bigbrosci.com/2018/09/03/ex49/index.html">
 <meta property="og:site_name" content="Learn VASP The Hard Way">
-<meta property="og:description" content="前面我们讲完了表面的计算，后面两节我们主要讨论一下功函数的计算。 1 功函数的定义首先，我们先看一下维基百科的解释： 功函数(又称功函、逸出功)是指要使一粒电子立即从固体表面中逸出，所必须提供的最小能量(通常以电子伏特为单位)。这里“立即”一词表示最终电子位置从原子尺度上远离表面但从宏观尺度上依然靠近固体。功函数不是材料体相的本征性质，更准确的说法应为材料表面的性质(比如表面暴露晶面情况和受污染程">
+<meta property="og:description" content="前面我们讲完了表面的计算，后面两节我们主要讨论一下功函数的计算。 1 功函数的定义首先，我们先看一下**维基百科**的解释： 功函数(又称功函、逸出功)是指要使一粒电子立即从固体表面中逸出，所必须提供的最小能量(通常以电子伏特为单位)。这里“立即”一词表示最终电子位置从原子尺度上远离表面但从宏观尺度上依然靠近固体。功函数不是材料体相的本征性质，更准确的说法应为材料表面的性质(比如表面暴露晶面情况和">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://www.bigbrosci.com/2018/09/03/ex49/ex49-1.jpeg">
 <meta property="og:image" content="http://www.bigbrosci.com/2018/09/03/ex49/ex49-2.png">
@@ -164,7 +164,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8A%9F%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">1 功函数的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-VASP-%E8%AE%A1%E7%AE%97%E5%8A%9F%E5%87%BD%E6%95%B0%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">2 VASP 计算功函数的过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E8%B4%B9%E7%B1%B3%E8%83%BD%E7%BA%A7%E7%9A%84%E8%AE%A1%E7%AE%97%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 费米能级的计算：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E9%9D%99%E7%94%B5%E5%8A%BF%E8%83%BD%E7%9A%84%E8%AE%A1%E7%AE%97%EF%BC%9A"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 静电势能的计算：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-VASP%E7%9A%84%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 VASP的计算流程：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Cu-111-%E8%A1%A8%E9%9D%A2%E7%9A%84%E5%8A%9F%E5%87%BD%E6%95%B0%E8%AE%A1%E7%AE%97"><span class="nav-number">3.</span> <span class="nav-text">3 Cu(111) 表面的功函数计算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E5%87%86%E5%A4%87%E8%AE%A1%E7%AE%97%E6%96%87%E4%BB%B6%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 准备计算文件：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E4%BF%AE%E6%94%B9-INCAR-%E6%94%B9%E4%B8%BA%E9%9D%99%E6%80%81%EF%BC%88%E5%8D%95%E7%82%B9%EF%BC%89%E8%AE%A1%E7%AE%97"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 修改 INCAR 改为静态（单点）计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-%E4%BF%AE%E6%94%B9-INCAR%EF%BC%8C%E6%B7%BB%E5%8A%A0-LVHAR-TRUE-%E8%BF%99%E4%B8%80%E8%A1%8C"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 修改 INCAR，添加 LVHAR &#x3D; .TRUE. 这一行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-%E5%B0%86-CONTCAR-%E9%87%8D%E5%91%BD%E5%90%8D%E4%B8%BA-POSCAR"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 将 CONTCAR 重命名为 POSCAR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%EF%BC%8C%E7%AD%89%E5%BE%85%E7%BB%93%E6%9D%9F%E3%80%82"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 提交任务，等待结束。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%90%8E%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95-1%EF%BC%9Ap4vasp"><span class="nav-number">4.</span> <span class="nav-text">4 后处理方法-1：p4vasp</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 导入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-%E5%BC%80%E5%A7%8B%E5%8F%AF%E8%A7%86%E5%8C%96-Linux-Windows-%E9%83%BD%E4%B8%80%E6%A0%B7%E4%BA%86"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 开始可视化 (Linux, Windows 都一样了)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-%E5%AF%BC%E5%87%BA%E6%95%B0%E6%8D%AE"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 导出数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-%E5%88%86%E6%9E%90%E6%95%B0%E6%8D%AE"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 分析数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-%E8%8E%B7%E5%8F%96%E8%B4%B9%E7%B1%B3%E8%83%BD%E7%BA%A7"><span class="nav-number">4.5.</span> <span class="nav-text">4.5 获取费米能级</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">5 扩展练习：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">6 总结：</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%8A%9F%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">1 功函数的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-VASP-%E8%AE%A1%E7%AE%97%E5%8A%9F%E5%87%BD%E6%95%B0%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">2 VASP 计算功函数的过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E8%B4%B9%E7%B1%B3%E8%83%BD%E7%BA%A7%E7%9A%84%E8%AE%A1%E7%AE%97%EF%BC%9A"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 费米能级的计算：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E9%9D%99%E7%94%B5%E5%8A%BF%E8%83%BD%E7%9A%84%E8%AE%A1%E7%AE%97%EF%BC%9A"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 静电势能的计算：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-VASP%E7%9A%84%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%EF%BC%9A"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 VASP的计算流程：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Cu-111-%E8%A1%A8%E9%9D%A2%E7%9A%84%E5%8A%9F%E5%87%BD%E6%95%B0%E8%AE%A1%E7%AE%97"><span class="nav-number">3.</span> <span class="nav-text">3 Cu(111) 表面的功函数计算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-%E5%87%86%E5%A4%87%E8%AE%A1%E7%AE%97%E6%96%87%E4%BB%B6%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 准备计算文件：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-%E4%BF%AE%E6%94%B9-INCAR-%E6%94%B9%E4%B8%BA%E9%9D%99%E6%80%81%EF%BC%88%E5%8D%95%E7%82%B9%EF%BC%89%E8%AE%A1%E7%AE%97"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 修改 INCAR 改为静态（单点）计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-%E4%BF%AE%E6%94%B9-INCAR%EF%BC%8C%E6%B7%BB%E5%8A%A0-LVHAR-x3D-TRUE-%E8%BF%99%E4%B8%80%E8%A1%8C"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 修改 INCAR，添加 LVHAR &#x3D; .TRUE. 这一行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-%E5%B0%86-CONTCAR-%E9%87%8D%E5%91%BD%E5%90%8D%E4%B8%BA-POSCAR"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 将 CONTCAR 重命名为 POSCAR</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-%E6%8F%90%E4%BA%A4%E4%BB%BB%E5%8A%A1%EF%BC%8C%E7%AD%89%E5%BE%85%E7%BB%93%E6%9D%9F%E3%80%82"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 提交任务，等待结束。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%90%8E%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95-1%EF%BC%9Ap4vasp"><span class="nav-number">4.</span> <span class="nav-text">4 后处理方法-1：p4vasp</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 导入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-%E5%BC%80%E5%A7%8B%E5%8F%AF%E8%A7%86%E5%8C%96-Linux-Windows-%E9%83%BD%E4%B8%80%E6%A0%B7%E4%BA%86"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 开始可视化 (Linux, Windows 都一样了)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-%E5%AF%BC%E5%87%BA%E6%95%B0%E6%8D%AE"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 导出数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-%E5%88%86%E6%9E%90%E6%95%B0%E6%8D%AE"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 分析数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-%E8%8E%B7%E5%8F%96%E8%B4%B9%E7%B1%B3%E8%83%BD%E7%BA%A7"><span class="nav-number">4.5.</span> <span class="nav-text">4.5 获取费米能级</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">5 扩展练习：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">6.</span> <span class="nav-text">6 总结：</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -302,15 +302,16 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>前面我们讲完了表面的计算，后面两节我们主要讨论一下功函数的计算。</p>
-<h3 id="1-功函数的定义"><a href="#1-功函数的定义" class="headerlink" title="1 功函数的定义"></a>1 功函数的定义</h3><p>首先，我们先看一下<strong><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Work_function">维基百科</a></strong>的解释：</p>
+<h3 id="1-功函数的定义"><a href="#1-功函数的定义" class="headerlink" title="1 功函数的定义"></a>1 功函数的定义</h3><p>首先，我们先看一下**<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Work_function">维基百科</a>**的解释：</p>
 <p><strong>功函数</strong>(又称功函、逸出功)是指要使一粒电子立即从固体表面中逸出，所必须提供的最小能量(通常以电子伏特为单位)。这里“立即”一词表示最终电子位置从原子尺度上远离表面但从宏观尺度上依然靠近固体。功函数不是材料体相的本征性质，更准确的说法应为材料表面的性质(比如表面暴露晶面情况和受污染程度)功函数是金属的重要属性。功函数的大小通常大概是金属自由原子电离能的二分之一。</p>
 <p>The work function W for a given surface is defined by the difference</p>
-<p>W = - eϕ - E<sub>F</sub></p>
+<p>W &#x3D; - eϕ - E<sub>F</sub></p>
 <p>where −e is the charge of an electron, ϕ is the electrostatic potential in the vacuum nearby the surface, and E<sub>F</sub> is the Fermi level (electrochemical potential of electrons) inside the material. The term −eϕ is the energy of an electron at rest in the vacuum nearby the surface. In words, the work function is thus defined as the thermodynamic work required to remove an electron from the material to a state at rest in the vacuum nearby the surface.</p>
-<p><img src="/2018/09/03/ex49/ex49-1.jpeg" alt=""></p>
+<p><img src="/2018/09/03/ex49/ex49-1.jpeg"></p>
 <p>我们再看下 <a target="_blank" rel="noopener" href="https://goldbook.iupac.org/html/E/E02015.html">IUPAC</a> 官网的解释：</p>
 <p>The minimum work needed to extract electrons from the Fermi level of a metal M across a surface carrying no net charge. It is equal to the sum of the potential energy and the kinetic Fermi energy taken with the reverse sign:</p>
-<script type="math/tex; mode=display">\phi^{M} = -(V_{e}+\varepsilon_e^ F)</script><p>where $V_{e}$ is the potential energy for electrons in metals and  $\varepsilon_e^ F$ is the kinetic energy of electrons at the Fermi level.</p>
+<p>$$\phi^{M} &#x3D; -(V_{e}+\varepsilon_e^ F)$$</p>
+<p>where $V_{e}$ is the potential energy for electrons in metals and  $\varepsilon_e^ F$ is the kinetic energy of electrons at the Fermi level.</p>
 <h3 id="2-VASP-计算功函数的过程"><a href="#2-VASP-计算功函数的过程" class="headerlink" title="2 VASP 计算功函数的过程"></a>2 VASP 计算功函数的过程</h3><p>从前面的定义中可以看出，计算功函数我们只需要得到体系的费米能级和电子所处的静电势能，然后求差即可。</p>
 <h4 id="2-1-费米能级的计算："><a href="#2-1-费米能级的计算：" class="headerlink" title="2.1 费米能级的计算："></a>2.1 费米能级的计算：</h4><p>VASP 计算结束之后，通过命令：</p>
 <p>grep E-fermi OUTCAR 即可提取出来。</p>
@@ -329,14 +330,15 @@
 <li><p>提交任务</p>
 <p>注意：</p>
 <ol>
-<li>如果第一步计算中有保存 WAVECAR，则静态计算的时候可以设置：ISTART = 2 读取一下，以便节省计算时间;</li>
+<li>如果第一步计算中有保存 WAVECAR，则静态计算的时候可以设置：ISTART &#x3D; 2 读取一下，以便节省计算时间;</li>
 <li>如果没有保存，直接算即可。不要在读不读 WAVECAR 这个问题上瞎操心；</li>
-<li>电子步数的默认值是 40，如果你的体系不容易收敛，计算的时候请设置一个较大的 NELM 值，比如 NELM = 500。</li>
+<li>电子步数的默认值是 40，如果你的体系不容易收敛，计算的时候请设置一个较大的 NELM 值，比如 NELM &#x3D; 500。</li>
 </ol>
 </li>
 </ol>
 <h3 id="3-Cu-111-表面的功函数计算"><a href="#3-Cu-111-表面的功函数计算" class="headerlink" title="3 Cu(111) 表面的功函数计算"></a>3 Cu(111) 表面的功函数计算</h3><h4 id="3-1-准备计算文件："><a href="#3-1-准备计算文件：" class="headerlink" title="3.1 准备计算文件："></a>3.1 准备计算文件：</h4><p>新建一个 workfunction 的文件夹，将前面优化计算的： INCAR KPOINTS POTCAR CONTCAR 和提交任务的脚本复制到这个文件夹中。</p>
-<h4 id="3-2-修改-INCAR-改为静态（单点）计算"><a href="#3-2-修改-INCAR-改为静态（单点）计算" class="headerlink" title="3.2 修改 INCAR 改为静态（单点）计算"></a>3.2 修改 INCAR 改为静态（单点）计算</h4><h4 id="3-3-修改-INCAR，添加-LVHAR-TRUE-这一行"><a href="#3-3-修改-INCAR，添加-LVHAR-TRUE-这一行" class="headerlink" title="3.3 修改 INCAR，添加 LVHAR = .TRUE. 这一行"></a>3.3 修改 INCAR，添加 LVHAR = .TRUE. 这一行</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">System = Cull</span><br><span class="line">ISMEAR = 1 </span><br><span class="line">SIMGA = 0.1</span><br><span class="line">ALGO = FAST</span><br><span class="line">ENCUT = 450</span><br><span class="line">EDIFF = 1E-5</span><br><span class="line"></span><br><span class="line">IDIPOL =.TRUE.</span><br><span class="line">IDIPOL = 3</span><br><span class="line"></span><br><span class="line">NWRITE = 0</span><br><span class="line">LWAVE = .FALSE.</span><br><span class="line">LCHARG = .FALSE.</span><br><span class="line">IBRION = 2</span><br><span class="line">POTIM = 0</span><br><span class="line">EDIFFG = -0.01</span><br><span class="line">NSW = 1 </span><br><span class="line"></span><br><span class="line">LVHAR = .TRUE.</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-修改-INCAR-改为静态（单点）计算"><a href="#3-2-修改-INCAR-改为静态（单点）计算" class="headerlink" title="3.2 修改 INCAR 改为静态（单点）计算"></a>3.2 修改 INCAR 改为静态（单点）计算</h4><h4 id="3-3-修改-INCAR，添加-LVHAR-x3D-TRUE-这一行"><a href="#3-3-修改-INCAR，添加-LVHAR-x3D-TRUE-这一行" class="headerlink" title="3.3 修改 INCAR，添加 LVHAR &#x3D; .TRUE. 这一行"></a>3.3 修改 INCAR，添加 LVHAR &#x3D; .TRUE. 这一行</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">System = Cull</span><br><span class="line">ISMEAR = 1 </span><br><span class="line">SIMGA = 0.1</span><br><span class="line">ALGO = FAST</span><br><span class="line">ENCUT = 450</span><br><span class="line">EDIFF = 1E-5</span><br><span class="line"></span><br><span class="line">IDIPOL =.TRUE.</span><br><span class="line">IDIPOL = 3</span><br><span class="line"></span><br><span class="line">NWRITE = 0</span><br><span class="line">LWAVE = .FALSE.</span><br><span class="line">LCHARG = .FALSE.</span><br><span class="line">IBRION = 2</span><br><span class="line">POTIM = 0</span><br><span class="line">EDIFFG = -0.01</span><br><span class="line">NSW = 1 </span><br><span class="line"></span><br><span class="line">LVHAR = .TRUE.</span><br></pre></td></tr></table></figure>
+
 <h4 id="3-4-将-CONTCAR-重命名为-POSCAR"><a href="#3-4-将-CONTCAR-重命名为-POSCAR" class="headerlink" title="3.4 将 CONTCAR 重命名为 POSCAR"></a>3.4 将 CONTCAR 重命名为 POSCAR</h4><h4 id="3-5-提交任务，等待结束。"><a href="#3-5-提交任务，等待结束。" class="headerlink" title="3.5 提交任务，等待结束。"></a>3.5 提交任务，等待结束。</h4><h3 id="4-后处理方法-1：p4vasp"><a href="#4-后处理方法-1：p4vasp" class="headerlink" title="4 后处理方法-1：p4vasp"></a>4 后处理方法-1：p4vasp</h3><p>p4vasp 一直是本人强烈推荐的VASP计算相关的建模，可视化，查看结构，结果的软件。本节我们讲解一下如何通过 p4vasp 对功函数的计算结果可视化。</p>
 <h4 id="4-1-导入数据"><a href="#4-1-导入数据" class="headerlink" title="4.1 导入数据"></a>4.1 导入数据</h4><ol>
 <li><p>Linux 系统下面，进入计算的目录直接敲命令： p4v &amp; 即可 (我们稍微等下 Windows 用户的操作，后面可视化过程是一样的)</p>
@@ -344,26 +346,26 @@
 <li><p>Windows 下面，首先要将计算生成的 LOCPOT 文件保存到本地电脑上。</p>
 <p>注意：有时候这个文件可能会很大，下载的时候比较蛋疼，不想下载的话等待下节的讲解。</p>
 </li>
-<li><p>打开 p4vasp 并导入 LOCPOT 文件：file —&gt; loadsystem，然后找到 LOCPOT 所在的目录，点解导入，效果如下</p>
-<p><img src="/2018/09/03/ex49/ex49-2.png" alt=""></p>
+<li><p>打开 p4vasp 并导入 LOCPOT 文件：file –&gt; loadsystem，然后找到 LOCPOT 所在的目录，点解导入，效果如下</p>
+<p><img src="/2018/09/03/ex49/ex49-2.png"></p>
 </li>
 </ol>
 <h4 id="4-2-开始可视化-Linux-Windows-都一样了"><a href="#4-2-开始可视化-Linux-Windows-都一样了" class="headerlink" title="4.2 开始可视化 (Linux, Windows 都一样了)"></a>4.2 开始可视化 (Linux, Windows 都一样了)</h4><p>Electronic –&gt; Local potential</p>
-<p><img src="/2018/09/03/ex49/ex49-3.png" alt=""></p>
+<p><img src="/2018/09/03/ex49/ex49-3.png"></p>
 <p>效果如下：</p>
-<p><img src="/2018/09/03/ex49/ex49-4.jpeg" alt=""></p>
+<p><img src="/2018/09/03/ex49/ex49-4.jpeg"></p>
 <p>WOC，这是什么东东？ 是不是算错啦？</p>
 <p>别急，看下面：</p>
 <p>点击下图中的 <code>Show</code>，会出现三个方向让你选择，一般都是沿着 z 方向的，按照红色箭头点下即可。</p>
-<p><img src="/2018/09/03/ex49/ex49-5.png" alt=""></p>
+<p><img src="/2018/09/03/ex49/ex49-5.png"></p>
 <p>效果如下：</p>
-<p><img src="/2018/09/03/ex49/ex49-6.png" alt=""></p>
+<p><img src="/2018/09/03/ex49/ex49-6.png"></p>
 <p>Wow, Wonderful!!! 是不是很有成就感？</p>
 <p>But， 怎么才能获取静电势能的数值呢？ 图中的纵坐标范围太大了，目测取值的话，误差应该在 0.5 eV 左右，太大了，不行。 那么我们只能导出数据，慢慢分析了。</p>
-<h4 id="4-3-导出数据"><a href="#4-3-导出数据" class="headerlink" title="4.3 导出数据"></a>4.3 导出数据</h4><p>还记得前面我们讲的 DOS 的计算吗？我们求 <code>d band center</code>，电子数目积分的时候将数据导出来了。同样，图中组成曲线的点的坐标我们也可以导出来。<br>点击： <code>Graph</code>—&gt;<code>Export</code></p>
-<p><img src="/2018/09/03/ex49/ex49-7.png" alt=""></p>
+<h4 id="4-3-导出数据"><a href="#4-3-导出数据" class="headerlink" title="4.3 导出数据"></a>4.3 导出数据</h4><p>还记得前面我们讲的 DOS 的计算吗？我们求 <code>d band center</code>，电子数目积分的时候将数据导出来了。同样，图中组成曲线的点的坐标我们也可以导出来。<br>点击： <code>Graph</code>–&gt;<code>Export</code></p>
+<p><img src="/2018/09/03/ex49/ex49-7.png"></p>
 <p>选择保存的目录，并给保存的文件一个名字。然后点击，<code>Export</code>， 图中的 cu.dat 就会保存你指定的目录下了。</p>
-<p><img src="/2018/09/03/ex49/ex49-8.png" alt=""></p>
+<p><img src="/2018/09/03/ex49/ex49-8.png"></p>
 <p><strong>注意：</strong></p>
 <ol>
 <li>名字后面一定要有尾缀<code>.dat</code>或者 <code>.data</code>， 否则会导出失败；</li>
@@ -372,16 +374,16 @@
 <h4 id="4-4-分析数据"><a href="#4-4-分析数据" class="headerlink" title="4.4 分析数据"></a>4.4 分析数据</h4><p>有了数据，我们就底气十足，什么都不怕了。用 Notepad ++  打开 cu.dat 文件。</p>
 <p><strong>注意</strong>： 这里大师兄说的是用 Notepad++，别问我从哪里下载这个神奇的软件。百度会告诉你的。</p>
 <p>打开之后，我们会发现，和 DOS 计算导出来的结果有几分神似。数据共有三部分，每两部分之间由空行分开。</p>
-<p><img src="/2018/09/03/ex49/ex49-9.png" alt=""></p>
-<p><img src="/2018/09/03/ex49/ex49-10.png" alt=""></p>
+<p><img src="/2018/09/03/ex49/ex49-9.png"></p>
+<p><img src="/2018/09/03/ex49/ex49-10.png"></p>
 <p>这三部分的顺序，如下图，</p>
-<p><img src="/2018/09/03/ex49/ex49-11.png" alt=""></p>
+<p><img src="/2018/09/03/ex49/ex49-11.png"></p>
 <p>我们从图中可以看出，基本上在 10-18 的这个区间范围，三条线的数据差不多是一样的。静电势能的话，可以通过红线( Average 那条线)，也就是第二部分来获取。可以查看下 14-15 $\AA$ 时红色曲线的数值，如下图：</p>
-<p><img src="/2018/09/03/ex49/ex49-12.png" alt=""></p>
-<h4 id="4-5-获取费米能级"><a href="#4-5-获取费米能级" class="headerlink" title="4.5 获取费米能级"></a>4.5 获取费米能级</h4><p><img src="/2018/09/03/ex49/ex49-13.png" alt=""></p>
-<p>套公式，功函数为： 4.84-0.03 = 4.81 eV</p>
+<p><img src="/2018/09/03/ex49/ex49-12.png"></p>
+<h4 id="4-5-获取费米能级"><a href="#4-5-获取费米能级" class="headerlink" title="4.5 获取费米能级"></a>4.5 获取费米能级</h4><p><img src="/2018/09/03/ex49/ex49-13.png"></p>
+<p>套公式，功函数为： 4.84-0.03 &#x3D; 4.81 eV</p>
 <p>对比下维基百科中的数值：</p>
-<p><img src="/2018/09/03/ex49/ex49-14.png" alt=""></p>
+<p><img src="/2018/09/03/ex49/ex49-14.png"></p>
 <p>注意：虽然维基百科给了功函数的一些数值，在发表文章的时候，你不能直接放 wiki 的链接到论文里面，这显得有些不专业。建议大家去参考 CRC handbook 里面的数值，然后引用。别问我 CRC handbook 是啥玩意，前面我也讲过了。 </p>
 <h3 id="5-扩展练习："><a href="#5-扩展练习：" class="headerlink" title="5 扩展练习："></a>5 扩展练习：</h3><ol>
 <li>重复本节的计算；</li>

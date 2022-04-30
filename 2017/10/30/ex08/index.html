@@ -44,9 +44,9 @@
 <meta property="article:modified_time" content="2021-12-28T03:15:54.366Z">
 <meta property="article:author" content="By BigBro(a)s">
 <meta property="article:tag" content="单点能">
-<meta property="article:tag" content="磁性">
 <meta property="article:tag" content="轨道占据">
 <meta property="article:tag" content="氧">
+<meta property="article:tag" content="磁性">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://www.bigbrosci.com/2017/10/30/ex08/oxygen_occupation.jpg">
 
@@ -304,7 +304,7 @@
     <div class="post-body" itemprop="articleBody">
         <h1 id="本节提要"><a href="#本节提要" class="headerlink" title="本节提要"></a>本节提要</h1><p>前面的扩展练习中,要求大家结合自己的化学知识,判断计算结果是否正确。相比很多同学已经知道了氧原子含有磁性,我们在计算用需要考虑进去。在本节练习中,大师兄教给你如何分分析氧原子在轨道中的占据情况,判断计算是否合理,并正确进行氧原子能量的计算。</p>
 <h1 id="氧原子轨道"><a href="#氧原子轨道" class="headerlink" title="氧原子轨道"></a>氧原子轨道</h1><p>氧原子的电子构型是 $1s^2 2s^2 2p^4$ ,轨道占据情况如图:</p>
-<p><img src="/2017/10/30/ex08/oxygen_occupation.jpg" alt=""></p>
+<p><img src="/2017/10/30/ex08/oxygen_occupation.jpg"></p>
 <p>所以氧原子含有两个单电子,具有磁性,且磁矩为2 $μ_B$。</p>
 <h1 id="计算结果"><a href="#计算结果" class="headerlink" title="计算结果"></a>计算结果</h1><p>我们看一下前面的计算结果:</p>
 <h2 id="OSZICAR"><a href="#OSZICAR" class="headerlink" title="OSZICAR"></a>OSZICAR</h2><p><img src="/2017/10/30/ex08/OSZICAR.jpg" alt="OSZICAR"></p>
@@ -321,7 +321,7 @@
 </ul>
 <p>那么怎么解决这个问题呢?</p>
 <h1 id="分两步解决问题"><a href="#分两步解决问题" class="headerlink" title="分两步解决问题"></a>分两步解决问题</h1><h2 id="第一步"><a href="#第一步" class="headerlink" title="第一步:"></a>第一步:</h2><p>由于氧原子具有磁性, 自旋极化计算要进行考虑, 在 VASP 计算中, 需要在 <code>INCAR</code> 中添加一项: <code>ISPIN = 2</code></p>
-<p><code>ISPIN</code> 的取值为 <code>1</code> 或 <code>2</code>:<br>​    1. 代表不考虑自旋极化,是VASP的默认值;<br>​    2. 代表打开自旋极化该选项,计算中考虑。</p>
+<p><code>ISPIN</code> 的取值为 <code>1</code> 或 <code>2</code>:<br>​	1. 代表不考虑自旋极化,是VASP的默认值;<br>​	2. 代表打开自旋极化该选项,计算中考虑。</p>
 <h2 id="自旋极化什么时候该加呢"><a href="#自旋极化什么时候该加呢" class="headerlink" title="自旋极化什么时候该加呢?"></a>自旋极化什么时候该加呢?</h2><p>需要考虑自旋极化一般来说有以下几种：（新手记住前面4个即可。）</p>
 <ul>
 <li>单原子的计算,</li>
@@ -344,21 +344,22 @@
 <blockquote>
 <blockquote>
 <p>6e2ce84518e1be61c275fe32fa33a1df18c0c4c7</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
 <ul>
 <li>如果体系中原子的磁矩不为0，那么需要考虑自旋极化，</li>
 <li>如果体系所有原子的磁矩都为0，那么就不需要考虑自旋极化，而且此时，你会发现测试1 和 2的结果中：结构和能量是一样的。</li>
 </ul>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
-</blockquote>
 </li>
 </ul>
 <p>添加该选项后,重新计算,结果如下:</p>
 <h3 id="INCAR"><a href="#INCAR" class="headerlink" title="INCAR"></a>INCAR</h3><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SYSTEM = O</span><br><span class="line">ISMEAR = <span class="number">0</span></span><br><span class="line">SIGMA = <span class="number">0.01</span></span><br><span class="line">ISPIN = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
 <h3 id="OSZICAR-1"><a href="#OSZICAR-1" class="headerlink" title="OSZICAR"></a>OSZICAR</h3><p><img src="/2017/10/30/ex08/OSZICAR_2.jpg" alt="OSZICAR"></p>
 <p>可以看出, 加了自旋极化后, <strong>电子迭代步数增加了</strong>, 这是因为体系中的电子被强制分成了 $\alpha$ 和 $\beta$ 两种, 并分别进行计算, 因此增加了计算量。</p>
 <p>体系的磁矩大小在 $OSZICAR$ 中查看, 对应右下角的 <code>mag=</code>  该项, 从这里我们可以看到, 磁矩信息与我们已知的 2 $\mu_B$ 吻合, 这一点是合理的, 正确的。</p>
@@ -373,22 +374,25 @@
 <p>但是:</p>
 <pre><code>1. Spincomponent 1中,能带2-4中3个alpha 电子的能量是一样的。这不正确，因为其中一个2px轨道中的alpha电子已经成对,能量要比py 和 pz 低;描述失败!
 2. spincomponent 2 中,另一个beta电子还是平均分配在了三个能带上面。
-</code></pre><p>电子占据依然不合理。</p>
+</code></pre>
+<p>电子占据依然不合理。</p>
 <p>上面的结果是由于体系的高对称性导致的简并所造成的。 $8 \times 8 \times 8$ 的立方体格子, 在这里具有高阶的点群对称性: $O_h$, 见 <code>OUTCAR</code></p>
 <p><img src="/2017/10/30/ex08/OUTCAR_3.jpg" alt="OUTCAR"></p>
 <p>在 GGA 泛函中, 为了获得体系更低的能量,对于原子来说,通常会采用一种 <code>symmetry broken solution</code> 的处理方法。 但是在 VASP 计算中, 体系的对称性则是通过晶胞来获得, 即把这个晶胞当成一个原子来处理, 因此我们需要手动改变晶胞的形状来消除对称性造成的简并结果。 (此处的解释可能有些牵强, 有兴趣的可以查找与 symmetry broken solution 相关的文献)</p>
 <hr>
 <p>INCAR, KPOINTS, POTCAR等均保持不变。修改POSCAR, 如下:</p>
 <h3 id="POSCAR"><a href="#POSCAR" class="headerlink" title="POSCAR"></a>POSCAR</h3><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">O</span><br><span class="line"><span class="number">1.0</span></span><br><span class="line"><span class="number">7.5</span> <span class="number">0.0</span> <span class="number">0.0</span></span><br><span class="line"><span class="number">0.0</span> <span class="number">8.0</span> <span class="number">0.0</span></span><br><span class="line"><span class="number">0.0</span> <span class="number">0.0</span> <span class="number">8.9</span></span><br><span class="line">O</span><br><span class="line"><span class="number">1</span></span><br><span class="line">Cartesian</span><br><span class="line"><span class="number">0.0</span> <span class="number">0.0</span> <span class="number">0.0</span></span><br></pre></td></tr></table></figure>
+
 <p>通过改变格子在三个方向的大小, 降低对称性。 大师兄还尝试了三斜的格子, 结果和这个是一致的。 (有兴趣的可以尝试下)</p>
 <h3 id="POSCAR-1"><a href="#POSCAR-1" class="headerlink" title="POSCAR"></a>POSCAR</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">O</span><br><span class="line"><span class="number">1.0</span></span><br><span class="line">	<span class="number">7.5</span>		<span class="number">7.6</span>		<span class="number">0.0</span></span><br><span class="line">	<span class="number">0.0</span>		<span class="number">8.2564</span>		<span class="number">8.2</span></span><br><span class="line">	<span class="number">8.5</span>		<span class="number">0.0</span>		<span class="number">8.9</span></span><br><span class="line">O</span><br><span class="line">	<span class="number">1</span></span><br><span class="line">Cartesian</span><br><span class="line">	<span class="number">0.0</span>		<span class="number">0.0</span>		<span class="number">0.0</span></span><br></pre></td></tr></table></figure>
+
 <hr>
 <p>下面我们看一下改变晶胞为7.5 x 8.0 x 8.9后的计算结果:</p>
 <h3 id="OSZICAR-2"><a href="#OSZICAR-2" class="headerlink" title="OSZICAR"></a>OSZICAR</h3><p><img src="/2017/10/30/ex08/OSZICAR_3.jpg" alt="OSZICAR"></p>
 <p><code>OSZICAR</code> 中电子迭代步数又增加了, 这是因为对称性的降低增加了计算量。</p>
 <p>磁矩为 $2\mu_B$ ,这一点跟前面一样,正确!</p>
 <hr>
-<p>体系的对称性: 从 $O<em>h$ 降低到了 $D</em>{2h}$</p>
+<p>体系的对称性: 从 $O_h$ 降低到了 $D_{2h}$</p>
 <h3 id="OSZICAR-3"><a href="#OSZICAR-3" class="headerlink" title="OSZICAR"></a>OSZICAR</h3><p><img src="/2017/10/30/ex08/OUTCAR_4.jpg" alt="OSZICAR"></p>
 <hr>
 <p>能量信息:</p>
@@ -436,9 +440,9 @@
     <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/%E5%8D%95%E7%82%B9%E8%83%BD/" rel="tag"># 单点能</a>
-              <a href="/tags/%E7%A3%81%E6%80%A7/" rel="tag"># 磁性</a>
               <a href="/tags/%E8%BD%A8%E9%81%93%E5%8D%A0%E6%8D%AE/" rel="tag"># 轨道占据</a>
               <a href="/tags/%E6%B0%A7/" rel="tag"># 氧</a>
+              <a href="/tags/%E7%A3%81%E6%80%A7/" rel="tag"># 磁性</a>
           </div>
 
         

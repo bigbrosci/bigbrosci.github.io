@@ -304,23 +304,23 @@
 <hr>
 <h2 id="1-下载Linux版的VPN软件："><a href="#1-下载Linux版的VPN软件：" class="headerlink" title="1 下载Linux版的VPN软件："></a>1 下载Linux版的VPN软件：</h2><p>链接：<a target="_blank" rel="noopener" href="https://www.hillstonenet.com/our-products/next-gen-firewalls-e-series/">https://www.hillstonenet.com/our-products/next-gen-firewalls-e-series/</a></p>
 <p>直接跳到网页最底部，右侧点击 Linux OS 下载。<strong>注意</strong>：这个VPN不支持Ubuntu17 和 18的版本。</p>
-<p><img src="/2011/12/25/A09/a09/a09-1.png" alt=""></p>
-<p><img src="/2011/12/25/A09/a09/a09-2.png" alt=""></p>
+<p><img src="/2011/12/25/A09/a09/a09-1.png"></p>
+<p><img src="/2011/12/25/A09/a09/a09-2.png"></p>
 <hr>
 <h2 id="2-安装Linux-版VPN"><a href="#2-安装Linux-版VPN" class="headerlink" title="2 安装Linux 版VPN"></a>2 安装Linux 版VPN</h2><p>Hillstone 官网已经给出了详细的安装说明， 链接如下：</p>
-<p><a target="_blank" rel="noopener" href="http://docs.hillstonenet.com/en/Content/7_VPN/SSL_VPN_Client_L.htm#Starting">http://docs.hillstonenet.com/en/Content/7_VPN/SSL_VPN_Client_L.htm#Starting</a></p>
+<p><a target="_blank" rel="noopener" href="http://docs.hillstonenet.com/en/Content/7_VPN/SSL_VPN_Client_L.htm#Starting">http://docs.hillstonenet.com/en/Content/7_VPN&#x2F;SSL_VPN_Client_L.htm#Starting</a></p>
 <p>大家可以参考链接，也可以根据下面的步骤进行。本人直接将官网的照片复制过来了。</p>
-<p><img src="/2011/12/25/A09/a09/a09-3.png" alt=""></p>
-<p>找到刚才下载的vpn软件： 右击 —&gt; 点击最底部的Properties</p>
+<p><img src="/2011/12/25/A09/a09/a09-3.png"></p>
+<p>找到刚才下载的vpn软件： 右击 –&gt; 点击最底部的Properties</p>
 <hr>
-<p><img src="/2011/12/25/A09/a09/a09-4.png" alt=""></p>
+<p><img src="/2011/12/25/A09/a09/a09-4.png"></p>
 <p>在弹出的窗口中，将Execute的那个框选中，然后点击左上角的叉号直接关闭。、</p>
 <p>双击这个软件的图标，一步一步点下去，这样就完成安装啦，同时桌面上会生成VPN的快捷方式图标。</p>
 <hr>
 <h2 id="3-连接VPN"><a href="#3-连接VPN" class="headerlink" title="3 连接VPN"></a>3 连接VPN</h2><p>1） 打开VPN：双击桌面的VPN图标，会弹出让你输入电脑密码的对话框，输入密码，点击Authenticate按钮。</p>
-<p><img src="/2011/12/25/A09/a09/a09-5.png" alt=""></p>
+<p><img src="/2011/12/25/A09/a09/a09-5.png"></p>
 <p>2） 点击下图中的New 对应的加号，会弹出对话框，让你输入IP，账号密码</p>
-<p><img src="/2011/12/25/A09/a09/a09-6.png" alt=""></p>
+<p><img src="/2011/12/25/A09/a09/a09-6.png"></p>
 <p>注意：</p>
 <ul>
 <li><p>Name, Description 这两项随便填。</p>
@@ -331,24 +331,28 @@
 </li>
 <li><p>User name和Password是VPN的账号和密码！！！</p>
 </li>
-<li>一定要选中Remember Password. 因为管理员给的密码实在是太安全了，Linux的VPN不能修改密码。如果嫌密码麻烦，可以在Windows连接成功后，修改VPN的密码。</li>
+<li><p>一定要选中Remember Password. 因为管理员给的密码实在是太安全了，Linux的VPN不能修改密码。如果嫌密码麻烦，可以在Windows连接成功后，修改VPN的密码。</p>
+</li>
 </ul>
 <p>4） 点击OK就开始连接了</p>
 <p>5） vpn的官网的填写说明，大家把网页中的第三条展开就可以看到了</p>
-<p><img src="/2011/12/25/A09/a09/a09-7.png" alt=""></p>
+<p><img src="/2011/12/25/A09/a09/a09-7.png"></p>
 <p>6） 连接过程以及成功是这个样子：</p>
-<p><img src="/2011/12/25/A09/a09/a09-8.png" alt=""></p>
-<p><img src="/2011/12/25/A09/a09/a09-9.png" alt=""></p>
+<p><img src="/2011/12/25/A09/a09/a09-8.png"></p>
+<p><img src="/2011/12/25/A09/a09/a09-9.png"></p>
 <hr>
 <h2 id="4-通过ssh连接超算中心服务器："><a href="#4-通过ssh连接超算中心服务器：" class="headerlink" title="4 通过ssh连接超算中心服务器："></a>4 通过ssh连接超算中心服务器：</h2><p>VPN登录成功后，后面我们就可以通过Terminal连接超算中心了。为了方便，提高效率，强烈建议大家按照下面的步骤进行：</p>
 <p>1） 安装sshfs </p>
 <p>这个用于把超算中心挂载到你的本地电脑上，后面再细说，先安装好。可以命令行一键搞定。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install sshfs</span><br></pre></td></tr></table></figure>
-<p><img src="/2011/12/25/A09/a09/a09-10.png" alt=""></p>
+
+<p><img src="/2011/12/25/A09/a09/a09-10.png"></p>
 <p>2） 在home目录下建一个文件夹，名字为： lvliang</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/lvliang</span><br></pre></td></tr></table></figure>
+
 <p>3） 将下面的内容加入到 .bashrc 文件中，将下面代码中的<code>172.16.20.XX</code> 换成超算管理员发给你的IP地址。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">####lvliang###</span><br><span class="line">alias lvliang=&#x27;ssh iciq-lq@172.16.20.XX&#x27;</span><br><span class="line">alias mlvliang=&#x27;sshfs iciq-lq@172.16.20.XX: ~/lvliang/&#x27;</span><br><span class="line">alias ulvliang=&quot;sudo umount ~/lvliang  -l&quot;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>lvliang 这个命令用来连接超算中心，提交任务，运行命令处理任务等</li>
 <li>mlvliang 用来挂载超算中心到你的电脑上，相当于把超算中心看作成一个移动硬盘</li>
@@ -358,6 +362,7 @@
 <p>第一次连接，可能会出来一堆提示东西，输入Yes ，回车即可。</p>
 <p>输入自己的超算中心账号密码，就可以登录啦。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ . .bashrc </span><br><span class="line">qli@bigbro:~$ lvliang </span><br><span class="line">iciq-lq@172.16.20.10&#x27;s password: </span><br><span class="line">Last login: Tue Dec  4 18:22:59 2018 from 172.16.31.135</span><br></pre></td></tr></table></figure>
+
 <p>5）新用户刚开始的时候主目录下面什么都没有，强烈建议大家建一个 bin 文件夹，用来存放脚本。直接 <code>mkdir ~/bin</code> 即可。</p>
 <hr>
 <h2 id="5-上传或者下载数据（sshfs的使用）"><a href="#5-上传或者下载数据（sshfs的使用）" class="headerlink" title="5 上传或者下载数据（sshfs的使用）"></a>5 上传或者下载数据（sshfs的使用）</h2><p>1） 挂载超算中心到自己的本地电脑。</p>
@@ -367,22 +372,27 @@
 <li>输入超算中心的密码：</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ mlvliang </span><br><span class="line">iciq-lq@172.16.20.10&#x27;s password: </span><br><span class="line">qli@bigbro:~$ cd lvliang/</span><br><span class="line">qli@bigbro:~/lvliang$ ls</span><br><span class="line">bin  LVASPTHW  POTCAR  test_jobs</span><br><span class="line">qli@bigbro:~/lvliang$ </span><br></pre></td></tr></table></figure>
+
 <p>现在超算中心就成功被挂载到我们电脑上了，我们可以随时进入并访问超算中的文件夹，通过<code>cp、mv、rsync</code>等命令往里面传数据，或者下载数据到本地的电脑。</p>
 <hr>
 <p>2） 例子1 ：</p>
 <p>挂载超算中心登录后，我们将Ex01的文件下载（通过<code>cp</code>命令）到本地电脑桌面上。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/lvliang$ ls</span><br><span class="line">bin  LVASPTHW  POTCAR  test_jobs</span><br><span class="line">qli@bigbro:~/lvliang$ cd LVASPTHW/</span><br><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ ls</span><br><span class="line">ex01  ex02  ex03  ex04  ex05  ex06  ex07  ex08  ex09  ex10  ex11  ex12  ex13  ex14  ex15  ex74  ex77  ex78  potcar</span><br><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ cp ex01 ~/Desktop/</span><br><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ ls ~/Desktop/ex01/</span><br><span class="line">INCAR  KPOINTS  POSCAR  POTCAR</span><br></pre></td></tr></table></figure>
+
 <p>3） 例子2 ：</p>
 <p>我们将电脑桌面的ex16文件夹上传（通过<code>cp</code>命令）到超算中。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ ls</span><br><span class="line">ex01  ex02  ex03  ex04  ex05  ex06  ex07  ex08  ex09  ex10  ex11  ex12  ex13  ex14  ex15  ex74  ex77  ex78  potcar</span><br><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ cp ~/Desktop/ex16 .</span><br><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ ls</span><br><span class="line">ex01  ex02  ex03  ex04  ex05  ex06  ex07  ex08  ex09  ex10  ex11  ex12  ex13  ex14  ex15  ex16  ex74  ex77  ex78  potcar</span><br><span class="line">qli@bigbro:~/lvliang/LVASPTHW$ </span><br></pre></td></tr></table></figure>
+
+
+
 <p>4） 注意事项：</p>
 <p>1） 必须通过mlvliang这个命令将超算中心挂载到本地电脑上之后，我们才可以互传文件。</p>
 <p>2） 如果还没有挂载，就将电脑的内容复制到lvliang这个文件夹中，那么挂载之后，服务器中不会显示刚刚复制的内容</p>
 <p>3） 不要用鼠标点击电脑里面的文件夹查看文件，这样会很慢，只能使用命令！！！切记！！</p>
 <p>4） 卸载的时候，使用mlvliang 这个命令，然后输入自己的电脑密码（不是超算中心的了。）</p>
 <p>5） 我们这样做，相当于把超算中心当做一个移动硬盘来使用，非常方便。</p>
-<h2 id="6-异常问题的处理"><a href="#6-异常问题的处理" class="headerlink" title="6 异常问题的处理"></a>6 异常问题的处理</h2><p>1）挂载超算中心到本地电脑上的时候，有时候因为网络连接，会出现下图中的错误。这时候我们先使用<code>ulvliang</code>命令把超算中心卸载掉，然后再重新挂载就可以了。</p>
-<p><img src="/2011/12/25/A09/a09/a09-11.png" alt=""></p>
+<h2 id="6-异常问题的处理"><a href="#6-异常问题的处理" class="headerlink" title="6 异常问题的处理"></a>6 异常问题的处理</h2><p>1）挂载超算中心到本地电脑上的时候，有时候因为网络连接，会出现下图中的错误。这时候我们先使用<code>ulvliang </code>命令把超算中心卸载掉，然后再重新挂载就可以了。</p>
+<p><img src="/2011/12/25/A09/a09/a09-11.png"></p>
 <p>2） 如果上面还解决不了的话，可以尝试着先关机，出去溜达一会儿，然后回来再弄。或者找超算管理员解决。他们一般都很上心，服务响应很快。</p>
 <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>本节就先介绍到这里，大家可以通过这样的方式，安装VPN，连接以及挂载超算中心，并将自己的文件上传到超算中心（比如VASP的那一堆POTCAR文件，自己的脚本，任务文件等等）。先把准备工作做好，下一节我们就可以提交任务进行计算了。</p>
 

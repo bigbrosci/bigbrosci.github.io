@@ -160,13 +160,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%88%86%E5%AD%90%E7%9A%84%E6%8C%AF%E5%8A%A8"><span class="nav-number">1.</span> <span class="nav-text">1 分子的振动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%A2%91%E7%8E%87%E8%AE%A1%E7%AE%97%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">2 频率计算的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%80%8E%E4%B9%88%E7%94%A8VASP%E8%AE%A1%E7%AE%97%E9%A2%91%E7%8E%87"><span class="nav-number">3.</span> <span class="nav-text">3  怎么用VASP计算频率?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">1
-2
-3
-IBRION&#x3D;5
-NFREE&#x3D;2
-POTIM&#x3D;0.02
-</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0"><span class="nav-number">5.</span> <span class="nav-text">4 扩展练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">5 总结:</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%88%86%E5%AD%90%E7%9A%84%E6%8C%AF%E5%8A%A8"><span class="nav-number">1.</span> <span class="nav-text">1 分子的振动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E9%A2%91%E7%8E%87%E8%AE%A1%E7%AE%97%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">2 频率计算的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%80%8E%E4%B9%88%E7%94%A8VASP%E8%AE%A1%E7%AE%97%E9%A2%91%E7%8E%87"><span class="nav-number">3.</span> <span class="nav-text">3  怎么用VASP计算频率?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%89%A9%E5%B1%95%E7%BB%83%E4%B9%A0"><span class="nav-number">4.</span> <span class="nav-text">4 扩展练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">5 总结:</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -303,21 +297,21 @@ POTIM&#x3D;0.02
     
     
     <div class="post-body" itemprop="articleBody">
-        <p><img src="/2017/12/15/ex23/ex23-0.jpeg" alt=""></p>
+        <p><img src="/2017/12/15/ex23/ex23-0.jpeg"></p>
 <p>大师兄在本节开头放上这张图片的意思是，请大家再仔细体会<code>Rubbish in， Rubbish out</code>这句话，只有对我们要研究的体系有一定的理解，明白我们具体要计算什么内容，设置好输入文件的参数，才能得到我们需要的合理结果。接下来的几节会涉及到分子的振动频率计算，振动频率的可视化等内容，请大家跟着大师兄一起练习，掌握振动频率的基本计算和分析方法。</p>
 <hr>
 <h2 id="1-分子的振动"><a href="#1-分子的振动" class="headerlink" title="1 分子的振动"></a>1 分子的振动</h2><p>我们首先看回顾一下振动相关的基本知识，这里大师兄不具体解释，引用 $9$ 版 $Atkins$ 的《物理化学》书中的内容，书已上传至<strong>QQ群文件</strong>中，也可百度网盘下载: <a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1o8HlyOi">http://pan.baidu.com/s/1o8HlyOi</a>  全是英文，大家耐心阅读下。</p>
 <hr>
 <p>简谐振子、胡克定律、体系势能随着振动距离 $x$ 的关系</p>
-<p><img src="/2017/12/15/ex23/ex23-1.jpeg" alt=""></p>
+<p><img src="/2017/12/15/ex23/ex23-1.jpeg"></p>
 <p>简谐振动的薛定谔方程描述:</p>
-<p><img src="/2017/12/15/ex23/ex23-2.jpeg" alt=""></p>
-<p><img src="/2017/12/15/ex23/ex23-3.jpeg" alt=""></p>
+<p><img src="/2017/12/15/ex23/ex23-2.jpeg"></p>
+<p><img src="/2017/12/15/ex23/ex23-3.jpeg"></p>
 <p>薛定谔方程的解：振动的量子化，振动频率</p>
-<p><img src="/2017/12/15/ex23/ex23-4.jpeg" alt=""></p>
-<p><img src="/2017/12/15/ex23/ex23-5.jpeg" alt=""></p>
+<p><img src="/2017/12/15/ex23/ex23-4.jpeg"></p>
+<p><img src="/2017/12/15/ex23/ex23-5.jpeg"></p>
 <p>零点能的数学和物理两个方面的解释:</p>
-<p><img src="/2017/12/15/ex23/ex23-6.jpeg" alt=""></p>
+<p><img src="/2017/12/15/ex23/ex23-6.jpeg"></p>
 <hr>
 <h2 id="2-频率计算的作用"><a href="#2-频率计算的作用" class="headerlink" title="2 频率计算的作用"></a>2 频率计算的作用</h2><p><strong>频率计算有什么用？为什么要算频率?</strong> 大师兄稍微总结了一下频率计算的意义，大体有以下几个方面，没有提到的用处，烦请大家指出来，以便补充。</p>
 <p>2.1 确定结构是否稳定;</p>
@@ -327,11 +321,13 @@ POTIM&#x3D;0.02
 <p>2.5 热力学中计算<code>entropy</code>，用于计算化学势，微观动力学中的指前因子和反应能垒。</p>
 <hr>
 <h2 id="3-怎么用VASP计算频率"><a href="#3-怎么用VASP计算频率" class="headerlink" title="3  怎么用VASP计算频率?"></a>3  怎么用VASP计算频率?</h2><p>3.1首先进行结构优化，获取稳定的构型，这个我们前面已经讲过了;</p>
-<p>3.2 将原来的<code>CONTCAR</code>复制成<code>POSCAR</code> :<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp CONTCAR  POSCAR</span><br></pre></td></tr></table></figure></p>
+<p>3.2 将原来的<code>CONTCAR</code>复制成<code>POSCAR</code> :</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp CONTCAR  POSCAR</span><br></pre></td></tr></table></figure>
+
 <p>3.3 修改<code>INCAR</code></p>
-<p><img src="/2017/12/15/ex23/ex23-7.jpeg" alt=""></p>
+<p><img src="/2017/12/15/ex23/ex23-7.jpeg"></p>
 <p>修改后如下:  </p>
-<p><img src="/2017/12/15/ex23/ex23-8.jpeg" alt=""></p>
+<p><img src="/2017/12/15/ex23/ex23-8.jpeg"></p>
 <p>频率计算的<code>INCAR</code></p>
 <ul>
 <li><p><code>IBRION</code>的值改成<code>5</code></p>
@@ -348,7 +344,9 @@ POTIM&#x3D;0.02
 </li>
 </ul>
 <p>小结一下频率分析关键的参数:</p>
-<h2 id=""><a href="#" class="headerlink" title=""></a><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IBRION=5</span><br><span class="line">NFREE=2</span><br><span class="line">POTIM=0.02</span><br></pre></td></tr></table></figure></h2><h2 id="4-扩展练习"><a href="#4-扩展练习" class="headerlink" title="4 扩展练习"></a>4 扩展练习</h2><p>4.1 按照本节的流程新建一个文件夹 <code>freq</code> : 该文件夹中包含乙醇分子优化后的结构 (将<code>CONTCAR</code>复制成<code>POSCAR</code>)，以及优化时的<code>POTCAR</code>，<code>INCAR</code>， <code>KPOINTS</code>以及提交命令的脚本文件;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IBRION=5</span><br><span class="line">NFREE=2</span><br><span class="line">POTIM=0.02</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="4-扩展练习"><a href="#4-扩展练习" class="headerlink" title="4 扩展练习"></a>4 扩展练习</h2><p>4.1 按照本节的流程新建一个文件夹 <code>freq</code> : 该文件夹中包含乙醇分子优化后的结构 (将<code>CONTCAR</code>复制成<code>POSCAR</code>)，以及优化时的<code>POTCAR</code>，<code>INCAR</code>， <code>KPOINTS</code>以及提交命令的脚本文件;</p>
 <p>4.2 修改乙醇分子优化的<code>INCAR</code>为频率计算的<code>INCAR</code>；需要修改哪些参数心里要清楚；</p>
 <p>4.3 运行乙醇分子频率计算，并查看频率分析的<code>OUTCAR</code>，<code>OSZICAR</code>等输出文件；</p>
 <p>4.4 查看 <strong>VASP</strong> 官网对于<code>IBRION=5</code> 的解释，搜索网上相关频率计算的文章，帖子，初步了解<code>NFREE</code>，<code>POTIM</code>所代表的含义；</p>
@@ -359,6 +357,7 @@ POTIM&#x3D;0.02
 <h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结:"></a>5 总结:</h2><p>5.1 熟悉频率计算初始文件的准备过程；</p>
 <p>5.2 频率计算<code>INCAR</code>中的三个重要参数；</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">IBRION = 5</span><br><span class="line">NFREE = 2</span><br><span class="line">POTIM = 0.02</span><br></pre></td></tr></table></figure>
+
 <p>5.3 初步了解频率计算中各个参数的含义。</p>
 
     </div>
@@ -378,13 +377,13 @@ POTIM&#x3D;0.02
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2017/12/14/ex22/" rel="prev" title="Ex22 乙醇气相分子的优化">
-                  <i class="fa fa-chevron-left"></i> Ex22 乙醇气相分子的优化
+                <a href="/2017/12/15/ex24/" rel="prev" title="Ex24 乙醇分子的振动频率计算(二)">
+                  <i class="fa fa-chevron-left"></i> Ex24 乙醇分子的振动频率计算(二)
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2017/12/15/ex24/" rel="next" title="Ex24 乙醇分子的振动频率计算(二)">
-                  Ex24 乙醇分子的振动频率计算(二) <i class="fa fa-chevron-right"></i>
+                <a href="/2017/12/16/ex25/" rel="next" title="Ex25 乙醇分子的振动频率计算(三)">
+                  Ex25 乙醇分子的振动频率计算(三) <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

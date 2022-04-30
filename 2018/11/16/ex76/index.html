@@ -293,13 +293,14 @@
 <p>怎么检查呢？</p>
 <p>大师兄本人的方法就是：不断在心里按着顺序默念：INCAR，KPOINTS，POSCAR，POTCAR。然后根据自己的经验检查并修改。这里你也许会说，大师兄，那是因为你有经验了啊，才能这么做，没有经验的我，该怎么办呢？</p>
 <p>不要怕，我们下面慢慢分析。</p>
-<h4 id="INCAR"><a href="#INCAR" class="headerlink" title="INCAR"></a>INCAR</h4><p> 对于大多数的计算，影响计算时间的主要因素是KPOINTS，体系的大小，INCAR中关于收敛的参数。这三者紧密相连。而INCAR中的计算在粗算的这一个环节里面，对时间的影响不是很大。这给我们的启示就是：不管是粗算，还是后面提高精度的计算，我们使用同样的设置即可。大家一般来说的低高精度的计算，主要集中在EDIFF和EDIFFG这两个参数上。体系不是很特殊，EDIFF=1E-5; EDIFFG=-0.02 就足够了。完全没有必要再粗算的时候将它们的数值调大点或者调小点。如果可以这样思考的话，那我们就可以将INCAR的参数提前设置好，用的时候直接拿来就可以了。</p>
+<h4 id="INCAR"><a href="#INCAR" class="headerlink" title="INCAR"></a>INCAR</h4><p> 对于大多数的计算，影响计算时间的主要因素是KPOINTS，体系的大小，INCAR中关于收敛的参数。这三者紧密相连。而INCAR中的计算在粗算的这一个环节里面，对时间的影响不是很大。这给我们的启示就是：不管是粗算，还是后面提高精度的计算，我们使用同样的设置即可。大家一般来说的低高精度的计算，主要集中在EDIFF和EDIFFG这两个参数上。体系不是很特殊，EDIFF&#x3D;1E-5; EDIFFG&#x3D;-0.02 就足够了。完全没有必要再粗算的时候将它们的数值调大点或者调小点。如果可以这样思考的话，那我们就可以将INCAR的参数提前设置好，用的时候直接拿来就可以了。</p>
 <p>想到了这一点，下面我们的任务就轻松了，可以写个脚本，直接敲个命令生成CI-NEB计算的INCAR。这里大师兄用的是另外一个办法：</p>
 <p>1） 先准备好一个INCAR，里面肯定把CI-NEB计算的参数等乱七八糟的都写好了。</p>
-<p>2）将INCAR放在一个固定的目录下面，比如：~/bin/INCAR_neb</p>
+<p>2）将INCAR放在一个固定的目录下面，比如：~&#x2F;bin&#x2F;INCAR_neb</p>
 <p>3）提交任务前，将INCAR复制过来即可。</p>
 <p>4）划重点：alias 的骚操作。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp ~/bin/INCAR_neb INCAR </span><br><span class="line">alias neb=&#x27;cp ~/bin/INCAR_neb INCAR&#x27;</span><br></pre></td></tr></table></figure>
+
 <p>这样的话，我们直接敲个命令，就可以得到INCAR文件了。</p>
 <p><strong>INCAR的检查：</strong></p>
 <p>前面的做法，并不代表我们就可以直接使用INCAR文件了。能不能直接用，取决于我们的具体计算细节。若INCAR中的参数与当前任务的不一致，或者缺少某些参数，我们就需要更新一下，主要有以下几个方面：</p>
@@ -312,26 +313,38 @@
 <p><strong>KPOINTS的检查：</strong></p>
 <p>我们在粗算阶段，KPOINTS直接用gamma点即可。为了方便可以使用脚本kponits.sh 1 1 1 直接生成。也可以添加到我们的alias这个命令中：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias neb=&#x27;cp ~/bin/INCAR_neb INCAR &amp;&amp; kpoints.sh 1 1 1 &#x27;</span><br></pre></td></tr></table></figure>
+
+
+
 <p><strong>POTCAR 的检查：</strong></p>
 <p>可以使用我们前面的自动生成与POSCAR对应POTCAR的脚本：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp 01/POSCAR . &amp;&amp; pospot.sh &amp;&amp; rm POSCAR </span><br></pre></td></tr></table></figure>
+
 <p>为了方便，也可以直接将上面这句话添加到alias里面：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias neb=&#x27;cp ~/bin/INCAR_neb INCAR &amp;&amp; kpoints.sh 1 1 1 &amp;&amp; cp 01/POSCAR . &amp;&amp; pospot.sh &amp;&amp; rm POSCAR &#x27;</span><br></pre></td></tr></table></figure>
+
+
+
 <p><strong>POSCAR的检查：</strong></p>
 <p>POSCAR被归结到枪这一部分，其实也是我们狙杀的对象。在粗算这部分的检查，需要注意的地方有：</p>
 <p>1） 确保slab被固定住了；否则你算完会发现表面的原子都疯掉了。前面我们讲过怎么通过脚本或者sed命令批量固定了，就不再过多叙述。</p>
-<p>2）使用p4v一次性打开所有的POSCAR文件：p4v 0*/POSCAR ; 这里大师兄也是用了alias</p>
+<p>2）使用p4v一次性打开所有的POSCAR文件：p4v 0*&#x2F;POSCAR ; 这里大师兄也是用了alias</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alias pp=&#x27;p4v 0*/POSCAR&#x27;</span><br><span class="line">alias ap=&#x27;ase-gui 0*/POSCAR&#x27;</span><br></pre></td></tr></table></figure>
+
 <p>上面的2个操作都是在Linux下面的，p4v和ase-gui大家根据习惯随便选一款即可。</p>
 <ul>
 <li><p>使用p4vasp，然后挨个点IMAGE对应的POSCAR，检查结构对不对；</p>
 </li>
 <li><p>使用ase-gui 将所有的文件全部打开后，摁键盘的PageUp和PageDown这2个键，类似于自己看一帧一帧的电影，体验也很棒。</p>
 </li>
-<li>检查插点的时候，原子是不是乱套了，没有一一对应；</li>
-<li>检查我们插的点，是不是具有很好的化学或者物理意义，也就是预先评估下自己猜的这个路径靠不靠谱。</li>
+<li><p>检查插点的时候，原子是不是乱套了，没有一一对应；</p>
+</li>
+<li><p>检查我们插的点，是不是具有很好的化学或者物理意义，也就是预先评估下自己猜的这个路径靠不靠谱。</p>
+</li>
 </ul>
-<p>3) 使用Windows的用户先不用着急，大师兄正在学习VASPkit+VDM的骚操作。学会了下一节会及时更新，并提交过渡态的计算。</p>
+<ol start="3">
+<li>使用Windows的用户先不用着急，大师兄正在学习VASPkit+VDM的骚操作。学会了下一节会及时更新，并提交过渡态的计算。</li>
+</ol>
 <p>前面一节，我们提到说，在<code>Ubuntu</code>或者其他<code>Linux</code>系统下面，可以使用<code>p4vasp</code>或者<code>ASE</code>将结构批量打开，查看我们初步设置的NEB路径是否合理。但是在<code>Windows</code>系统下，我们不方便使用命令进行查看。这里介绍一下在<code>Windows</code>下面通过<code>VASPkit</code>结合<code>VMD</code>查看NEB路径结构的方法。</p>
 <h3 id="软件的获取："><a href="#软件的获取：" class="headerlink" title="软件的获取："></a>软件的获取：</h3><ul>
 <li><code>VASPkit</code>程序的下载<ul>
@@ -339,11 +352,14 @@
 <li>QQ群：217821116， 364586948</li>
 </ul>
 </li>
-<li><code>VMD</code>的下载链接：<a target="_blank" rel="noopener" href="http://www.ks.uiuc.edu/Research/vmd/">http://www.ks.uiuc.edu/Research/vmd/</a> </li>
+<li><code>VMD</code>的下载链接：<a target="_blank" rel="noopener" href="http://www.ks.uiuc.edu/Research/vmd/">http://www.ks.uiuc.edu/Research/vmd/</a></li>
 </ul>
 <h3 id="vaspkit的使用"><a href="#vaspkit的使用" class="headerlink" title="vaspkit的使用"></a><code>vaspkit</code>的使用</h3><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ ls</span><br><span class="line"><span class="number">00</span>  <span class="number">01</span>  <span class="number">02</span>  <span class="number">03</span>  <span class="number">04</span>  <span class="number">05</span>  <span class="number">06</span>  <span class="number">07</span>  <span class="number">08</span>  <span class="number">09</span>  INCAR  KPOINTS  NEB.pdb  POTCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ rm NEB.pdb </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ ls</span><br><span class="line"><span class="number">00</span>  <span class="number">01</span>  <span class="number">02</span>  <span class="number">03</span>  <span class="number">04</span>  <span class="number">05</span>  <span class="number">06</span>  <span class="number">07</span>  <span class="number">08</span>  <span class="number">09</span>  INCAR  KPOINTS  POTCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ vaspkit </span><br><span class="line"> </span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> |             VASPKIT Version: <span class="number">0.71</span> (<span class="number">16</span> Nov. <span class="number">2018</span>)              |</span><br><span class="line"> |       A Pre- and Post-Processing <span class="function"><span class="keyword">Program</span></span> for VASP Code        |</span><br><span class="line"> |       Official Website: http://vaspkit.sourceforge.net        |</span><br><span class="line"></span><br><span class="line">*</span><br><span class="line">*</span><br><span class="line">*</span><br><span class="line">*                                                                 </span><br><span class="line"> <span class="number">0</span>)  Quit                                                         </span><br><span class="line"> ------------&gt;&gt;</span><br><span class="line"><span class="number">5</span></span><br><span class="line"> ==================== Catalysis-ElectroChem Kit ==================</span><br><span class="line"> <span class="number">501</span>) Thermal Corrections for Adsorbate                      </span><br><span class="line"> <span class="number">502</span>) Thermal Corrections for Gas                    </span><br><span class="line"> <span class="number">503</span>) d-Band Center (experimental)                    </span><br><span class="line"> <span class="number">504</span>) Convert NEB-Path to PDB <span class="keyword">Format</span> for Animation                    </span><br><span class="line">                                                                  </span><br><span class="line"> <span class="number">0</span>)   Quit                                                        </span><br><span class="line"> <span class="number">9</span>)   Back                                                        </span><br><span class="line"> ------------&gt;&gt;</span><br><span class="line"><span class="number">504</span></span><br><span class="line"> +-------------------------- Warm Tips --------------------------+</span><br><span class="line">         See An Example <span class="keyword">in</span> vaspkit/examples/neb_animation.        </span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> --&gt;&gt; (<span class="number">1</span>) Reading Structural Parameters from <span class="number">00</span>/POSCAR <span class="keyword">File</span>...</span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line">*</span><br><span class="line">*</span><br><span class="line">*</span><br><span class="line">+---------------------------------------------------------------+</span><br><span class="line"> |               Selective Dynamics is Activated<span class="comment">!                |</span></span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> --&gt;&gt; (*) Reading Structural Parameters from <span class="number">09</span>/POSCAR <span class="keyword">File</span>...</span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> |               Selective Dynamics is Activated<span class="comment">!                |</span></span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> |                         * DISCLAIMER *                        |</span><br><span class="line"> |        CHECK Your Results for Consistency <span class="keyword">if</span> Necessary        |</span><br><span class="line"> |   Bug Reports and Suggestions for Improvements Are Welcome    |</span><br><span class="line"> | Citation of VASPKIT Is Not Mandatory BUT Would Be Appreciated |</span><br><span class="line"> |                     (^.^) GOOD LUCK (^.^)                     |</span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ ls</span><br><span class="line"><span class="number">00</span>  <span class="number">01</span>  <span class="number">02</span>  <span class="number">03</span>  <span class="number">04</span>  <span class="number">05</span>  <span class="number">06</span>  <span class="number">07</span>  <span class="number">08</span>  <span class="number">09</span>  INCAR  KPOINTS  NEB.pdb  POTCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
 <ul>
-<li>在终端输入:<code>vaspkit</code></li>
+<li>在终端输入:<code> vaspkit</code></li>
 <li>输入：5 后回车</li>
 <li>输入：504 后回车</li>
 <li>然后你会得到一个<code>NEB.pdb</code>文件。</li>
@@ -353,11 +369,11 @@
 <ul>
 <li>在<code>Windows</code>系统中启动<code>VMD</code>程序</li>
 <li>将我们在服务器中生成的<code>NEB.pdb</code>文件下载到本地，然后拖到<code>VMD</code>的界面</li>
-<li>在<code>VMD</code>主窗口选择菜单 <code>Display</code> —&gt; <code>Orthographic</code> 正交显示模式 </li>
-<li>在<code>VMD</code>主窗口选择菜单<code>Graphics</code> —&gt; <code>Representations</code> —&gt; <code>Drawing Methods</code> 选择 <code>CPK</code></li>
+<li>在<code>VMD</code>主窗口选择菜单 <code>Display</code> –&gt; <code>Orthographic</code> 正交显示模式 </li>
+<li>在<code>VMD</code>主窗口选择菜单<code>Graphics</code> –&gt; <code>Representations</code> –&gt; <code>Drawing Methods</code> 选择 <code>CPK</code></li>
 <li>默认是不显示盒子边界的，在<code>VMD</code>主窗口选择菜单 <code>Extensions</code> ,选择 <code>Tk Console</code> , 在弹出的<code>VMD TkConsole</code> 窗口中输入 <code>pbc box -color white</code> ，然后回车，查看模型结构。</li>
 <li>点界面的右下角的箭头后，你可以看到我们初步猜测的<code>NEB</code>路径中原子快速动起来了。箭头左面有个<code>speed</code>，我们可以调节原子的速度。</li>
-<li>在<code>VMD</code>主窗口选择菜单 <code>Mouse</code> —&gt; <code>Label</code> —&gt; <code>2</code>， 然后去模型界面上，点与<code>NEB</code>路径中最相关的2个原子，就可以查看<code>NEB</code>路径中，原子间距离随着<code>IMAGE</code>结构的变化了。</li>
+<li>在<code>VMD</code>主窗口选择菜单 <code>Mouse</code> –&gt; <code>Label</code> –&gt; <code>2</code>， 然后去模型界面上，点与<code>NEB</code>路径中最相关的2个原子，就可以查看<code>NEB</code>路径中，原子间距离随着<code>IMAGE</code>结构的变化了。</li>
 </ul>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Windows下的用户，在做过渡态计算的时候，可视化是一个痛点，通常来说，Images中的结构都只能一个一个打开查看，计算的时候不能很好地体会一个反应的发生路径。使用VASPkit则可以顺利地解决这个问题，这个功能更详细的说明，请参考VASPkit的使用手册。当然，这个方法也适用于Linux操作系统下VASPkit + VMD的操作。此外，大师兄还是建议大家有余力的时候多多接触类似于Ubuntu，Centos这样的Linux操作系统。</p>
 

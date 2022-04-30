@@ -20,12 +20,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="$\require{mediawiki-texvc}$ 本节我们简单讨论一下覆盖度对吸附能的影响。首先回顾一下，前面我们讲到的内容。  吸附能为初态和末态的能量差：  初态为纯净的slab 和 O$_2$分子或者O原子 末态为O吸附的slab   O$_2$分子优化计算的时候，要注意:   从数据库获取O$_2$分子的键长，作为初始值； ISPIN &#x3D; 2   ISMEAR &#x3D; 0; SIMGA">
+<meta name="description" content="$\require{mediawiki-texvc}$ 本节我们简单讨论一下覆盖度对吸附能的影响。首先回顾一下，前面我们讲到的内容。  吸附能为初态和末态的能量差：  初态为纯净的slab 和 O$_2$分子或者O原子 末态为O吸附的slab   O$_2$分子优化计算的时候，要注意:   从数据库获取O$_2$分子的键长，作为初始值；  ISPIN &#x3D; 2    ISMEAR &amp;#x3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ex57 吸附能的计算（二）">
 <meta property="og:url" content="http://www.bigbrosci.com/2018/10/04/ex57/index.html">
 <meta property="og:site_name" content="Learn VASP The Hard Way">
-<meta property="og:description" content="$\require{mediawiki-texvc}$ 本节我们简单讨论一下覆盖度对吸附能的影响。首先回顾一下，前面我们讲到的内容。  吸附能为初态和末态的能量差：  初态为纯净的slab 和 O$_2$分子或者O原子 末态为O吸附的slab   O$_2$分子优化计算的时候，要注意:   从数据库获取O$_2$分子的键长，作为初始值； ISPIN &#x3D; 2   ISMEAR &#x3D; 0; SIMGA">
+<meta property="og:description" content="$\require{mediawiki-texvc}$ 本节我们简单讨论一下覆盖度对吸附能的影响。首先回顾一下，前面我们讲到的内容。  吸附能为初态和末态的能量差：  初态为纯净的slab 和 O$_2$分子或者O原子 末态为O吸附的slab   O$_2$分子优化计算的时候，要注意:   从数据库获取O$_2$分子的键长，作为初始值；  ISPIN &#x3D; 2    ISMEAR &amp;#x3">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://www.bigbrosci.com/2018/10/04/ex57/ex57-1.jpeg">
 <meta property="og:image" content="http://www.bigbrosci.com/2018/10/04/ex57/ex57-2.jpeg">
@@ -314,66 +314,74 @@
 </ul>
 </li>
 <li><p>O$_2$分子优化计算的时候，要注意: </p>
-<ul>
-<li>从数据库获取O$_2$分子的键长，作为初始值；</li>
-<li>ISPIN = 2  </li>
-<li>ISMEAR = 0; SIMGA = 0.05 </li>
-<li>IBRION= 2; POTIM = 0.1</li>
-<li>用gamma点。</li>
-</ul>
 </li>
-<li>O 原子优化计算的时候，注意的计算细节与前面相同。额外注意的是：<ul>
+<li><p>从数据库获取O$_2$分子的键长，作为初始值；</p>
+</li>
+<li><p>ISPIN &#x3D; 2  </p>
+</li>
+<li><p>ISMEAR &#x3D; 0; SIMGA &#x3D; 0.05 </p>
+</li>
+<li><p>IBRION&#x3D; 2; POTIM &#x3D; 0.1</p>
+</li>
+<li><p>用gamma点。</p>
+</li>
+<li><p>O 原子优化计算的时候，注意的计算细节与前面相同。额外注意的是：</p>
+<ul>
 <li>O 原子再怎么优化还是一个O原子，所以上一行表述是不恰当的，应该是O原子的单点计算；</li>
 <li>Box的尺寸为：$13\times14\times15~\AA^3$  或者$13.1\times13.2\times13.3 \AA^3$ 但绝对不能为$13\times13\times13$这种正方体的</li>
 </ul>
 </li>
-<li>怎么优化Bulk的结构，扫晶格拟合和ISIF = 3直接优化（ENCUT要大，不妨取个700~eV）</li>
-<li>slab怎么优化，Selective 和 坐标后面 T F 的关系</li>
-<li>O吸附模型怎么搭建，如何得到合理的初始模型（有实验值优先使用，没有的话用粗精度的初算一下）。</li>
-<li>此外，还要学会怎么判断计算结束，不同类型任务结束的特征是什么？</li>
+<li><p>怎么优化Bulk的结构，扫晶格拟合和ISIF &#x3D; 3直接优化（ENCUT要大，不妨取个700~eV）</p>
+</li>
+<li><p>slab怎么优化，Selective 和 坐标后面 T F 的关系</p>
+</li>
+<li><p>O吸附模型怎么搭建，如何得到合理的初始模型（有实验值优先使用，没有的话用粗精度的初算一下）。</p>
+</li>
+<li><p>此外，还要学会怎么判断计算结束，不同类型任务结束的特征是什么？</p>
+</li>
 </ul>
 <hr>
 <h2 id="打个比方"><a href="#打个比方" class="headerlink" title="打个比方"></a>打个比方</h2><p>回到上一节我们留的问题，为什么O在p-(1x1)-Cu(111)表面上的吸附能是正的呢？在解释这个问题先，我们先看下面一组照片：</p>
-<p><img src="/2018/10/04/ex57/ex57-1.jpeg" alt=""></p>
-<p><img src="/2018/10/04/ex57/ex57-2.jpeg" alt=""></p>
-<p><img src="/2018/10/04/ex57/ex57-3.jpeg" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-1.jpeg"></p>
+<p><img src="/2018/10/04/ex57/ex57-2.jpeg"></p>
+<p><img src="/2018/10/04/ex57/ex57-3.jpeg"></p>
 <hr>
 <p>第一张里面，地铁车厢里面是空的，这时候你上去，座位随便挑。</p>
 <p>第二张里面，有些人了已经占了，但还是有座位的，你的选择并没有那么多了。</p>
 <p>第三张里面，人太多，能不能出来都是个问题，有没有座位想都不敢想了。</p>
 <p>那么回到我们的这个问题，我们把O的吸附结构在xy平面上重复一下：</p>
-<p><img src="/2018/10/04/ex57/ex57-4.png" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-4.png"></p>
 <p>你会发现，表面上密密麻麻全是O原子（绿色的为Cu原子）！空间这么小，如果你是O原子，你愿意在这上面挤么？ 你是选择空旷的车厢还是人满为患的呢？如果我是氧原子，我肯定不愿意。所以，如果非得在这个表面上挤的话。我们就需要一些外力的作用，比如下图中的这俩年轻力壮的小伙子协警。</p>
-<p><img src="/2018/10/04/ex57/ex57-5.jpeg" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-5.jpeg"></p>
 <p>这俩人使的劲就是O原子的吸附能。正值的意思表明我们需要额外的力才能将其吸附在表面上。表面越挤，正值越大。</p>
 <hr>
 <p>如果你还是不理解的话，我们看另外一个例子：</p>
-<p><img src="/2018/10/04/ex57/ex57-6.jpeg" alt=""></p>
-<p>早上，开学了。老师有1个苹果，需要将这个苹果分给教室里面的学生。而学生还没有来齐，当你第一个到达教室时，发现整个苹果都是你的。开心程度 100%。正要吃的时候，小明进来了，老师说你俩要分一下，你只能得到一半了，开心程度 50%; 你俩正要吃的时候，小红和小白也进来了，老师说，打住，你们四个分，于是每人只能拿1/4，你的开心程度掉到 25%了。</p>
+<p><img src="/2018/10/04/ex57/ex57-6.jpeg"></p>
+<p>早上，开学了。老师有1个苹果，需要将这个苹果分给教室里面的学生。而学生还没有来齐，当你第一个到达教室时，发现整个苹果都是你的。开心程度 100%。正要吃的时候，小明进来了，老师说你俩要分一下，你只能得到一半了，开心程度 50%; 你俩正要吃的时候，小红和小白也进来了，老师说，打住，你们四个分，于是每人只能拿1&#x2F;4，你的开心程度掉到 25%了。</p>
 <p>表面就是这个苹果，O原子就是学生，总共就这一个苹果，学生越多，平均分到的就越少。学生之间可能还会因为分的不均匀而打架（相互排斥），导致开心程度越来越低。当开心程度成负的时候，老师就需要施展神通费心思（额外的功）逗你们开心。</p>
 <hr>
 <p>看完这两个例子，你也许就明白了，为什么这个时候O原子的吸附能这么大了。太他妈挤了或者人太多，分不到苹果吃了，心里肯定不爽！下面，我们把车厢清空，学生数目控制一下，看看心情能不能好点。</p>
 <hr>
 <h2 id="搭建p-2x2-Cu-111-表面"><a href="#搭建p-2x2-Cu-111-表面" class="headerlink" title="搭建p-(2x2)-Cu(111)表面"></a>搭建p-(2x2)-Cu(111)表面</h2><p>1 用p4vasp打开p-(1x1)-Cu(111)的CONTCAR</p>
 <p>2 选择Edit —&gt; Multiply cell</p>
-<p><img src="/2018/10/04/ex57/ex57-7.png" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-7.png"></p>
 <p>3 弹出的窗口，如图填入扩展的倍数：</p>
-<p><img src="/2018/10/04/ex57/ex57-8.png" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-8.png"></p>
 <p>这代表我们在x和y方向上分别扩展到原来的2倍。点击Multiply，效果如下图：</p>
-<p><img src="/2018/10/04/ex57/ex57-9.png" alt=""></p>
-<p>4 关闭Multiply这个窗口，p4vasp主界面左上角选择：<code>File</code> —&gt; <code>Save system as</code></p>
+<p><img src="/2018/10/04/ex57/ex57-9.png"></p>
+<p>4 关闭Multiply这个窗口，p4vasp主界面左上角选择：<code>File</code> –&gt; <code>Save system as</code></p>
 <p>5 在弹出的窗口，选择目录，保存成POSCAR，点击OK即可。</p>
-<p><img src="/2018/10/04/ex57/ex57-10.png" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-10.png"></p>
 <p>6 这样我们就有了一个p-(2x2)的slab模型了。</p>
 <hr>
 <h2 id="搭建O在p-2x2-Cu-111-上的吸附结构"><a href="#搭建O在p-2x2-Cu-111-上的吸附结构" class="headerlink" title="搭建O在p-(2x2)-Cu(111)上的吸附结构"></a>搭建O在p-(2x2)-Cu(111)上的吸附结构</h2><p>1 我们可以用之前计算的结果搭建这个初始结构,O吸附优化的CONTCAR：</p>
-<p><img src="/2018/10/04/ex57/ex57-11.png" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-11.png"></p>
 <p>O原子在$z$方向的坐标为8.0928$\AA$。先记住这个数字。</p>
 <hr>
 <p>p-(2x2)的Slab坐标（在p-(1x1)基础上扩展的）:</p>
-<p><img src="/2018/10/04/ex57/ex57-12.png" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-12.png"></p>
 <p>在这个坐标上面修改，搭建结构：</p>
-<p><img src="/2018/10/04/ex57/ex57-13.png" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-13.png"></p>
 <p>1）添加O原子元素</p>
 <p>2）添加O原子数目</p>
 <p>3）添加O原子坐标</p>
@@ -381,22 +389,18 @@
 <p>到现在，p-(2x2)的slab以及O原子的吸附模型都有了，准备INCAR,KPOINTS,POTCAR以及任务脚本，提交这两个结构的优化计算。等待结束。</p>
 <hr>
 <p>计算吸附能：</p>
-<p>公式1： </p>
-<script type="math/tex; mode=display">
-E_{ads1}(O) = E_{slab+O} – E_{slab} – E_{O_2}/2</script><p>公式2： </p>
-<script type="math/tex; mode=display">
-E_{ads2}(O) = E_{slab+O} – E_{slab} – E_{O}</script><p>带入数据：</p>
-<script type="math/tex; mode=display">
-E_{ads1}(O) = -60.61682891~eV – (-55.96049190~eV )- (-9.85498627~eV)/2 = 0.271~eV</script><script type="math/tex; mode=display">
-E_{ads2}(O) = -60.61682891~eV – (-55.96049190~eV )- (-1.89237882~eV)= -2.764~eV</script><p>发现吸附能$E_{ads1}(O)$从正的1.216降低到0.271 eV了。看来空间对O原子的吸附影响很大。</p>
+<p>公式1：<br>$$<br>E_{ads1}(O) &#x3D; E_{slab+O} – E_{slab} – E_{O_2}&#x2F;2<br>$$<br>公式2：<br>$$<br>E_{ads2}(O) &#x3D; E_{slab+O} – E_{slab} – E_{O}<br>$$<br>带入数据：</p>
+<p>$$<br>E_{ads1}(O) &#x3D; -60.61682891<del>eV – (-55.96049190</del>eV )- (-9.85498627<del>eV)&#x2F;2 &#x3D; 0.271</del>eV<br>$$</p>
+<p>$$<br>E_{ads2}(O) &#x3D; -60.61682891<del>eV – (-55.96049190</del>eV )- (-1.89237882<del>eV)&#x3D; -2.764</del>eV<br>$$</p>
+<p>发现吸附能$E_{ads1}(O)$从正的1.216降低到0.271 eV了。看来空间对O原子的吸附影响很大。</p>
 <hr>
 <p>地铁里面空间稍微大了些，现在不需要年轻小伙子暴力推搡了，大妈指挥下就可以了。</p>
-<p><img src="/2018/10/04/ex57/ex57-14.jpeg" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-14.jpeg"></p>
 <p>分的苹果稍微多了些，虽然还是有些不情愿，稍微诱导一下，就开心了。</p>
-<p><img src="/2018/10/04/ex57/ex57-15.png" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-15.png"></p>
 <hr>
 <p>前面的解释只是用现实的例子瞎扯一顿。但发表文章的时候不能这样说啊，我们就需要一些科学和专业的解释。而在实际表面上，覆盖度影响吸附能的因素有很多。体相中电子的分布转移，与吸附物种的成键，吸附物种之间的排斥和吸引等等。如果你想了解的更多，更专业！阅读下面这篇文献：</p>
-<p><img src="/2018/10/04/ex57/ex57-16.png" alt=""></p>
+<p><img src="/2018/10/04/ex57/ex57-16.png"></p>
 <p>谷歌上可以下载免费的，有权限的也可以直接下载。类似这样已经注明的文献，请不要花时间找我要，自己去下载。</p>
 <p>（每设一道坎，就会把很多懒家伙挡住！跨过一道又一道坎，你就把别人远远甩在后面了。所以，请自己主动起来！）</p>
 <hr>

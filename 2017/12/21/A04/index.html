@@ -35,9 +35,9 @@
 <meta property="article:published_time" content="2017-12-21T07:06:48.000Z">
 <meta property="article:modified_time" content="2021-12-28T03:15:54.194Z">
 <meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="KPOINTS">
 <meta property="article:tag" content="脚本">
 <meta property="article:tag" content="Bash">
-<meta property="article:tag" content="KPOINTS">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://www.bigbrosci.com/2017/12/21/A04/A04-1.jpg">
 
@@ -303,7 +303,7 @@
 <p>2.1  <code>kpoints.sh</code>版本1 </p>
 <p>A）终端里面输入： <code>vi kpoints.sh</code></p>
 <p>B）在vi 界面里面输入下面几行内容：</p>
-<p><img src="/2017/12/21/A04/A04-1.jpg" alt=""></p>
+<p><img src="/2017/12/21/A04/A04-1.jpg"></p>
 <p>输入完毕后保存 。</p>
 <p>C）脚本讲解：图中的除了第4行，所有命令都可以复制到 Terminal里面自己运行，然后查看结果。</p>
 <p>C.1）前面我们学习了如何手动制作KPOINTS文件， 并知道KPOINTS文件每一行所代表的内容。因此该脚本就是帮助我们自动生成每一行的内容。忘记的同学请复习Ex01的内容。 </p>
@@ -322,23 +322,25 @@
 <p>代表的是我们运行脚本命令的时候，加入的三个方向上KPOINTS的数目。通过<code>$1 $2 $3</code>传递给 echo 命令。</p>
 <p>如果不理解的话，跳过，等运行命令的时候就明白了。</p>
 <p>C.6）第5行：Kpoints网格在三个方向的移动。一般来说0 0 0 即可。</p>
-<p><strong>2.2 脚本运行：</strong> </p>
-<p>A)     调用bash运行脚本：</p>
-<p><img src="/2017/12/21/A04/A04-2.jpg" alt=""></p>
-<p>图中我们运行脚本的时候命令为：<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash kpoints.sh 3 3 1</span><br></pre></td></tr></table></figure><br>bash 意思是我们调用bash来执行该脚本；</p>
+<p><strong>2.2 脚本运行：</strong> </p>
+<p>A)     调用bash运行脚本：</p>
+<p><img src="/2017/12/21/A04/A04-2.jpg"></p>
+<p>图中我们运行脚本的时候命令为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash kpoints.sh 3 3 1</span><br></pre></td></tr></table></figure>
+<p>bash 意思是我们调用bash来执行该脚本；</p>
 <p>kpoints.sh 为脚本的名称, 当然啦，名字可以任意换， .sh也可以不用加；</p>
 <p>3 3 1 为脚本后面的参数，第一个3 对应脚本里面的<code>$1</code>, 第二个3 为<code>$2</code>,  1 为脚本里面的<code>$3</code></p>
 <p>B）赋予脚本可执行权限： </p>
-<p><img src="/2017/12/21/A04/A04-3.jpg" alt=""></p>
+<p><img src="/2017/12/21/A04/A04-3.jpg"></p>
 <p>赋予权限：<code>chmod  u+x  kpoint.sh</code></p>
 <p>取消权限：<code>chmod u-x kpoint.sh</code></p>
 <p>你会发现之前白色的脚本变成绿色的了，这说明本脚本可以执行了。不同电脑可能显示的颜色不容，有些甚至都不显示，大家不要纠结。但图中直接输入<code>kpoints.sh  3 3 1</code> 的时候失败了，我们必须用<code>./ kpoints.sh 3 3 1</code> 来执行。原因是系统不知道我们把脚本放在这里了。</p>
 <p>怎么样才可以直接使用这个命令呢？ 将脚本转移到<code>~/bin</code> 文件夹中即可，如果你的系统中没有<code>~/bin</code> 这个文件夹，<code>mkdir ~/bin</code> 创建一下就完事。</p>
-<p><img src="/2017/12/21/A04/A04-4.jpg" alt=""></p>
+<p><img src="/2017/12/21/A04/A04-4.jpg"></p>
 <p>OK，现在大功告成。我们可以根据之前的经验规则设置<code>KPOINTS</code>文件了。 </p>
-<p><strong>2.3 脚本升级： 版本2</strong> </p>
-<p>前面的脚本实现了我们所期望的功能，这里我们所说的升级，无非就是在前面的基础上再增添点东西，使得脚本看起来更加高大上，具有可读性或者更加智能化。这里我们主要介绍一下使用# 注释自己的脚本，使其可以被广大吃瓜群众所理解和接受。 </p>
-<p><img src="/2017/12/21/A04/A04-5.jpg" alt=""></p>
+<p><strong>2.3 脚本升级： 版本2</strong> </p>
+<p>前面的脚本实现了我们所期望的功能，这里我们所说的升级，无非就是在前面的基础上再增添点东西，使得脚本看起来更加高大上，具有可读性或者更加智能化。这里我们主要介绍一下使用# 注释自己的脚本，使其可以被广大吃瓜群众所理解和接受。 </p>
+<p><img src="/2017/12/21/A04/A04-5.jpg"></p>
 <p>a）加入第一行，<code>#!</code>称为shebang （就是拼音，没错！）表示执行该脚本时会调用后面的程序；自行百度shebang的用途；</p>
 <p>b）   3-5行中用 <code>#</code> 注释下，简单介绍本脚本的功能， 作者，使用方法；</p>
 <p>c）   7-11 行用 <code>#</code> 注释下每一行命令中的作用。</p>
@@ -361,22 +363,22 @@
 
     <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/KPOINTS/" rel="tag"># KPOINTS</a>
               <a href="/tags/%E8%84%9A%E6%9C%AC/" rel="tag"># 脚本</a>
               <a href="/tags/Bash/" rel="tag"># Bash</a>
-              <a href="/tags/KPOINTS/" rel="tag"># KPOINTS</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2017/12/20/A03/" rel="prev" title="Linux命令之cd使用心得">
-                  <i class="fa fa-chevron-left"></i> Linux命令之cd使用心得
+                <a href="/2017/12/21/A05/" rel="prev" title="自动生成POTCAR的脚本">
+                  <i class="fa fa-chevron-left"></i> 自动生成POTCAR的脚本
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2017/12/21/A05/" rel="next" title="自动生成POTCAR的脚本">
-                  自动生成POTCAR的脚本 <i class="fa fa-chevron-right"></i>
+                <a href="/2017/12/22/A06/" rel="next" title="VASP计算遇到错误怎么办？">
+                  VASP计算遇到错误怎么办？ <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
