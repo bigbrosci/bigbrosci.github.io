@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">122</span>
+          <span class="site-state-item-count">123</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -195,6 +195,211 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/01/ex54/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/10/01/ex54/" class="post-title-link" itemprop="url">Ex54 简单粗暴地获取初始构型（一）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-10-01 15:30:16" itemprop="dateCreated datePublished" datetime="2018-10-01T15:30:16-04:00">2018-10-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/10/01/ex54/" class="post-meta-item leancloud_visitors" data-flag-title="Ex54 简单粗暴地获取初始构型（一）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/10/01/ex54/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/01/ex54/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>$\require{mediawiki-texvc}$</p>
+<p>Ex54-Ex56主要介绍一下如何计算：单个氧原子在p(1x1)-Cu(111)表面top位上的吸附。在实际的计算过程中，一个好的初始结构会极大地加快并节约你的计算时间，这不仅仅体现在服务器运行的时间上，也会避免很多错误的结果，因为这些错误结果的纠正耗时费力，通常折磨得新手们心力交瘁。可以回顾下前面我们O$_2$ 分子的优化过程：不合理的初始结构导致的错误结果以及计算时间的增加。本节主要介绍一个快速获取优化初始构型的方法。该方法简单粗暴，可以让你在极短的时间内快速获得一个化学的feeling。</p>
+<hr>
+<h2 id="1-Top-site-的构型"><a href="#1-Top-site-的构型" class="headerlink" title="1 Top site 的构型"></a>1 Top site 的构型</h2><p>在Cu(111)表面上，top位指的是直接吸附在Cu原子上方。其他的位点是什么，先不要着急，后面会慢慢学。如果一个O原子吸附在Cu原子上方，在空间坐标上，大家很容易想到，O和Cu在xy方向的坐标应该是差不多的，z方向O的坐标为：Cu的z坐标 + Cu-O键的键长。如下图：</p>
+<p><img src="/2018/10/01/ex54/ex54-1.png" alt=""></p>
+<hr>
+<h2 id="2-确定O原子在z方向上的坐标"><a href="#2-确定O原子在z方向上的坐标" class="headerlink" title="2  确定O原子在z方向上的坐标"></a>2  确定O原子在z方向上的坐标</h2><p>知道了前面的基本原理，O原子的坐标我们就可以通过Cu-O的键长来初步获得了。那么Cu-O的键长怎么获得呢？这里列举了一下几个常用的方法。</p>
+<p>1）查数据库：</p>
+<p>2）查文献：自己去查，不要在QQ群里让别人给你发文献。</p>
+<p><img src="/2018/10/01/ex54/ex54-2.png" alt=""></p>
+<p>这两条主要考验的是大家查询资料的能力，这里暂且不详细介绍了。有兴趣的可以加入大师兄文献互助超级群，跟众多文献检索大牛学习。(群号:<strong>157099073</strong>)</p>
+<hr>
+<p>3）自己估算</p>
+<p>估算的话，可以根据Cu和O原子的半径：Cu和O成键，键长肯定要小于两者的半径之和。搜一下维基百科，Cu的半径为1.35 Å，O的为0.60 Å。(<a target="_blank" rel="noopener" href="https://www.wikipedia.org/">维基百科</a>，搜索<code>Atomic Radius</code>就可以得到下面这个表)</p>
+<p><img src="/2018/10/01/ex54/ex54-4.png" alt=""></p>
+<p>从上面的数据我们可以得出：Cu-O键要小于1.95 Å。在吸附构型搭建的时候设置比1.95 Å小点的值作为初始，进行优化。一般来说，原子半径之和减去0.1-0.3 Å都是可以的。但是不能太小，否则第一步优化的时候排斥力太大，会导致计算出错。</p>
+<hr>
+<p>4）自己初算：</p>
+<p>初算就是初步采用一个小的模型，简单优化一下，得到一个合理的键长数值。小的模型主要指2个方面： </p>
+<ul>
+<li><p>结构简单；</p>
+</li>
+<li><p>计算参数简单。</p>
+</li>
+</ul>
+<p>下面我们主要在估算的基础上，介绍一个初算的方法：直接优化一下气相中Cu-O双原子分子的结构。</p>
+<p>这个结构不难搭建，将前面练习中O$_2$分子中的一个O原子换成Cu进行优化即可。</p>
+<p>为了加深大家对搭建模型的印象，我们从<code>p(1x1)-Cu(111)</code>表面的结构出发，然后一步一步搭建CuO的气相结构模型，并计算。</p>
+<hr>
+<h2 id="3-搭建初算的模型-Cu-O双原子结构"><a href="#3-搭建初算的模型-Cu-O双原子结构" class="headerlink" title="3  搭建初算的模型(Cu-O双原子结构)"></a>3  搭建初算的模型(Cu-O双原子结构)</h2><p>1）p(1x1)-Cu(111)表面的结构</p>
+<p><img src="/2018/10/01/ex54/ex54-5.png" alt=""></p>
+<p>将前面几节计算的一个真空层为15 $\AA$的例子直接拿过来。表层原子在z方向的坐标为6.259 (第十二行)。</p>
+<hr>
+<p>2）修改格子大小(3-5行)</p>
+<p>这里修改的很随意，第三行中直接把2.571改成了12.571；</p>
+<p>第四行中把2.227改成了12.227。</p>
+<p>第五行中将21.299改成了12.299</p>
+<p><img src="/2018/10/01/ex54/ex54-6.png" alt=""></p>
+<p>效果如下:</p>
+<p><img src="/2018/10/01/ex54/ex54-7.png" alt=""></p>
+<p>注意：</p>
+<p>A）当然也可以用其他大小的格子；(例如：8x8x8 $\AA^3$)</p>
+<p>B）格子大小直接影响计算量和时间。(回顾下前面所学)</p>
+<hr>
+<p>3）保留表层的Cu原子，删除其他的Cu原子。</p>
+<p><img src="/2018/10/01/ex54/ex54-8.png" alt=""></p>
+<p>注意：</p>
+<p>A）我们这里将表层以下的三个原子删掉了，只保留z坐标为6.259的这个原子；</p>
+<p>B） 第7行中原子数目也要相应的改变。从4 改成1。</p>
+<p>C） 效果如下图：</p>
+<p><img src="/2018/10/01/ex54/ex54-9.png" alt=""></p>
+<hr>
+<p>4）加入O原子</p>
+<p><img src="/2018/10/01/ex54/ex54-10.png" alt=""></p>
+<p>注意：</p>
+<p>A）第6行中，在Cu的后面加上了一个O，不是数字0；</p>
+<p>B）Cu 和 O 之间用1个或者几个空格隔开，不要用<code>Tab</code>；</p>
+<p>C）第7行中，记得加上O原子的数目</p>
+<p>D）最后一行添加O原子的坐标，这里我们直接把Cu原子的复制过来了。</p>
+<p><img src="/2018/10/01/ex54/ex54-11.png" alt=""></p>
+<p>由于两个原子坐标一样，Cu和O堆在一起了。</p>
+<hr>
+<p>5）修改O原子坐标</p>
+<p><img src="/2018/10/01/ex54/ex54-12.png" alt=""></p>
+<p>注意:</p>
+<p>A）这里我们把Cu固定住了;为了方便下一步的计算。</p>
+<p>B）Cu-O之间的键长，设置的为1.8 Å；</p>
+<p>C）O的z坐标为：6.259 + 1.8 = 8.059。</p>
+<p><img src="/2018/10/01/ex54/ex54-13.png" alt=""></p>
+<hr>
+<p>6）到这里，Cu-O双原子分子的气相结构就搭建完毕了，保存成POSCAR即可。</p>
+<p>上面的效果图是本人每一步打开展示给大家的。实际操作中，完全没有必要。我们需要学习的是：</p>
+<p>A）怎么将脑子中的模型转化为VASP的POSCAR文件；</p>
+<p>B）格子大小怎么修改；</p>
+<p>C）怎么添加原子，添加或者删除原子后，原子数目怎么弄；</p>
+<p>D）怎么添加原子坐标。</p>
+<p>E）怎么通过改坐标修改原子位置。</p>
+<hr>
+<h2 id="4-INCAR检查"><a href="#4-INCAR检查" class="headerlink" title="4 INCAR检查"></a>4 INCAR检查</h2><p><img src="/2018/10/01/ex54/ex54-14.png" alt=""></p>
+<p>注意:</p>
+<p>1）算的是气相中的：ISMEAR = 0；SIGMA = 0.05 (本书前面就讲过了)</p>
+<p>2）IBRION = 2；POTIM = 0.1；NSW =100 是优化的参数</p>
+<p>3）EDIFF和EDIFFG是电子步和离子步的收敛标准。</p>
+<hr>
+<p>师兄，磁性呢？对称性呢？</p>
+<p>因为本例子是一个初算，几步算完，看下键长。这个任务的使命就完成了。</p>
+<p>很多细节的东西可以暂时不用考虑。这里EDIFFG用的也有点小，本人忘了修改了。大家可以设置为 -0.05或者直接使用能量作为标准，这些都可以的。</p>
+<p>虽然本节我们很多地方都没有考虑，这是由于任务的性质所决定的。我们对其定位就是瞎算下，得到一个初始的构型。这也是一个课题中为数不多的，可以为所欲为的计算了。但你正儿八经开始算的时候，各种细节问题都要考虑进去。而这一步的计算，也可以作为一个缓冲期，让你有充足的时间去思考一下正式计算时其他需要的注意事项。</p>
+<hr>
+<h2 id="5-POTCAR、KPOINTS检查"><a href="#5-POTCAR、KPOINTS检查" class="headerlink" title="5  POTCAR、KPOINTS检查"></a>5  POTCAR、KPOINTS检查</h2><p>A) 根据POSCAR获取对应的POTCAR：见附录自动生成POTCAR的脚本。</p>
+<p>B) 使用gamma点计算。<code>cat POTCAR</code></p>
+<p><strong>注意：</strong></p>
+<p>在提交一个任务前，一定要将INCAR、KPOINTS、POSCAR、POTCAR以及脚本在心里默念一遍。然后对应的检查一下，是否有些遗漏的地方。否则等算完了，发现错了，又得浪费很多时间重新计算了。</p>
+<hr>
+<h2 id="6-检查结果"><a href="#6-检查结果" class="headerlink" title="6 检查结果"></a>6 检查结果</h2><p><img src="/2018/10/01/ex54/ex54-16.png" alt=""></p>
+<p>1）上个厕所的功夫，任务就结束了，共算了6步。(其实是切换电脑系统的功夫)<img src="/2018/10/01/ex54/ex54-17.gif" alt=""></p>
+<p>2）Cu—O 的键长：7.95-6.26 = 1.69 Å</p>
+<p><strong>注意：</strong> </p>
+<p>此时的键长只作为下一步的初始猜测，如果和文献去比有点差异，也不要太较真。</p>
+<h2 id="7-总结"><a href="#7-总结" class="headerlink" title="7 总结:"></a>7 总结:</h2><p>本节，你会学到：</p>
+<p>1）如何通过原子半径，估算一个初始的键长值。</p>
+<p>2）如果搭建一个简单的模型，初算一个键长值。</p>
+<p>3）复习气相中的优化。</p>
+<p>4）复习下计算前准备工作：INCAR、POSCAR、POTCAR、KPONTS的检查。</p>
+<p>如果本节的内容，你有不理解的地方；想获取脚本等信息；请查阅前面讲的以及附录中的内容。搭建几何模型，无非就是按照软件的格式，修改原子坐标罢了。这里我们强调的是几何模型。但，几何模型所具有或者要表达的物理、化学意义，这才是最关键的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3402,127 +3607,6 @@ x x = \frac{-2c_2 + \sqrt{(2c_2)^2 - 4\times3C_3\times C_1}}{2\times3C_3}</scrip
 <h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><p>本节我们详细讲解了BM方程拟合脚本，相信大家应该了解的差不多了，拟合的办法有很多，但BM方程只有一个。请务必掌握至少一个拟合的方法。后面的这句话本来想删掉，因为本人已经早就毕业了。暂且留下来吧，权当本书的一个时间证据。</p>
 <hr>
 <p>此外，本人马上就要毕业答辩了，后面更新会有所放缓，努力争取保证每周一篇的速度。如果你有什么科研心得，欢迎分享。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/03/ex34/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/02/03/ex34/" class="post-title-link" itemprop="url">Ex34 晶格参数的确定（Birch-Murnaghan状态方程-2）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-02-03 02:06:48" itemprop="dateCreated datePublished" datetime="2018-02-03T02:06:48-05:00">2018-02-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/02/03/ex34/" class="post-meta-item leancloud_visitors" data-flag-title="Ex34 晶格参数的确定（Birch-Murnaghan状态方程-2）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/02/03/ex34/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/03/ex34/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>前面一节，我们通过批量操作，获得了拟合BM方程的数据。这一节，我们通过这些数据，使用脚本进行拟合并获取Fe单胞的晶格参数。 本节的脚本和读取的数据文件，可在QQ群文件和百度网盘中下载，见底部。 </p>
-<h2 id="1-脚本使用方法："><a href="#1-脚本使用方法：" class="headerlink" title="1 脚本使用方法："></a>1 脚本使用方法：</h2><p>在介绍脚本之前，先介绍一下脚本的使用方法：</p>
-<p>首先：将前面一节得到的 data 文件和脚本放在一个目录下</p>
-<p>其次：进入该目录，运行脚本的命令为（见下图）： </p>
-<p>python   bm0.py </p>
-<p>注意： bm0.py 为脚本名，你也可以随意写成 birch,  birch.py等。</p>
-<p><img src="/2018/02/03/ex34/ex34-1.jpeg" alt=""></p>
-<p>通过脚本，我们可以得到Fe单胞的晶格参数为： 2.8332 Å</p>
-<h2 id="2-脚本的内容-1："><a href="#2-脚本的内容-1：" class="headerlink" title="2 脚本的内容-1："></a>2 脚本的内容-1：</h2><p>我们看一下bm0.py 这个脚本的内容：只有几行而已。大家先自己根据前面介绍的通过BM方程获得晶格参数的原理，阅读以下该脚本，看不懂不要紧，多看几遍。大体上了解是怎么回事。</p>
-<p><img src="/2018/02/03/ex34/ex34-2.jpeg" alt=""></p>
-<h2 id="3-脚本的内容-2："><a href="#3-脚本的内容-2：" class="headerlink" title="3 脚本的内容-2："></a>3 脚本的内容-2：</h2><p>前面的脚本没有任何的说明，阅读起来很是费力，大师兄把注释加上去了，并命名为: bm.py。大家再阅读一遍，看看有没有新的收获。</p>
-<p><img src="/2018/02/03/ex34/ex34-3.jpeg" alt=""></p>
-<p>图中的链接为：(左下角查看原文)</p>
-<p><a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html">https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html</a></p>
-<p>该脚本运行效果如下图：</p>
-<p><img src="/2018/02/03/ex34/ex34-4.jpeg" alt=""></p>
-<p>脚本的工作原理下一节介绍，本节中大家只看脚本，分析里面的内容，自己结合前面一节琢磨是怎么回事。脚本和读取的data文件可以在QQ群中下载，也可以通过百度网盘，链接： <a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1o8cCdBG">http://pan.baidu.com/s/1o8cCdBG</a> </p>
-<h2 id="4-扩展练习"><a href="#4-扩展练习" class="headerlink" title="4 扩展练习"></a>4 扩展练习</h2><p>4.1 查找文献，获取Fe的晶格常数的实验数据，与脚本获取的结果进行对比；</p>
-<p>4.2 Windows用户使用notepad++或者其他文本编辑软件，自己将bm0.py脚本重新写一遍，然后运行，如果出错了，请与图中对比并修改，直至完美匹配为止！！！</p>
-<p>4.3 Linux用户，使用vim或者其他文本编辑软件，进行4.2中的操作；</p>
-<p>4.4 结合Ex33的介绍，初步了解本脚本的运行原理。</p>
 
       
     </div>
