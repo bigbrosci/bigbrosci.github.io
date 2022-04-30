@@ -20,12 +20,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="前面练习中我们在0.01的文件夹基础上，通过一个命令，复制得到了从0.02到0.09的文件夹。但是， 所有文件夹中的输入文件都是一样的，我们还需要把INCAR中的SIGMA参数值 SIGMA &#x3D; 0.01 改成与文件夹对应的数值。 首先我们可以逐个进行编辑，但太浪费时间，这也不是大师兄的风格。Ex03练习分为2小节：  新命令 sed 的学习 for + sed 组合  最终我们会结合f">
+<meta name="description" content="前面练习中我们在0.01的文件夹基础上，通过一个命令，复制得到了从0.02到0.09的文件夹。但是， 所有文件夹中的输入文件都是一样的，我们还需要把INCAR中的SIGMA参数值 SIGMA &#x3D; 0.01 改成与文件夹对应的数值。 首先我们可以逐个进行编辑，但太浪费时间，这也不是大师兄的风格。Ex03练习分为2小节：  新命令 sed 的学习 for + sed 组合  最终我们会结合for循环和">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ex03 做计算常用的批量处理方法（三）">
 <meta property="og:url" content="http://www.bigbrosci.com/2017/10/22/ex03/index.html">
 <meta property="og:site_name" content="Learn VASP The Hard Way">
-<meta property="og:description" content="前面练习中我们在0.01的文件夹基础上，通过一个命令，复制得到了从0.02到0.09的文件夹。但是， 所有文件夹中的输入文件都是一样的，我们还需要把INCAR中的SIGMA参数值 SIGMA &#x3D; 0.01 改成与文件夹对应的数值。 首先我们可以逐个进行编辑，但太浪费时间，这也不是大师兄的风格。Ex03练习分为2小节：  新命令 sed 的学习 for + sed 组合  最终我们会结合f">
+<meta property="og:description" content="前面练习中我们在0.01的文件夹基础上，通过一个命令，复制得到了从0.02到0.09的文件夹。但是， 所有文件夹中的输入文件都是一样的，我们还需要把INCAR中的SIGMA参数值 SIGMA &#x3D; 0.01 改成与文件夹对应的数值。 首先我们可以逐个进行编辑，但太浪费时间，这也不是大师兄的风格。Ex03练习分为2小节：  新命令 sed 的学习 for + sed 组合  最终我们会结合for循环和">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-10-22T19:30:16.000Z">
 <meta property="article:modified_time" content="2021-12-28T04:26:52.685Z">
@@ -287,26 +287,22 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>前面练习中我们在0.01的文件夹基础上，通过一个命令，复制得到了从0.02到0.09的文件夹。但是， 所有文件夹中的输入文件都是一样的，我们还需要把INCAR中的SIGMA参数值 SIGMA &#x3D; 0.01 改成与文件夹对应的数值。 首先我们可以逐个进行编辑，但太浪费时间，这也不是大师兄的风格。Ex03练习分为2小节：</p>
+        <p>前面练习中我们在0.01的文件夹基础上，通过一个命令，复制得到了从0.02到0.09的文件夹。但是， 所有文件夹中的输入文件都是一样的，我们还需要把INCAR中的SIGMA参数值 SIGMA = 0.01 改成与文件夹对应的数值。 首先我们可以逐个进行编辑，但太浪费时间，这也不是大师兄的风格。Ex03练习分为2小节：</p>
 <ul>
 <li>新命令 sed 的学习</li>
 <li>for + sed 组合</li>
 </ul>
 <p>最终我们会结合for循环和sed命令，来学会批量处理输入文本的另一个方法。<strong>还是要强调一下：</strong>大家要主动，多去网上找资料，并系统性的学习linux下面的基本命令。光指望着本书中的这么一点，是很难提高的。</p>
 <h3 id="复习上一节的功课"><a href="#复习上一节的功课" class="headerlink" title="复习上一节的功课"></a>复习上一节的功课</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ ls</span><br><span class="line">ex01  ex02</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ mkdir ex03 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ cp ex02/0.01 ex03 -r </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ cd ex03/0.01/</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  </span><br><span class="line">SYSTEM = O atom </span><br><span class="line">ISMEAR = 0       </span><br><span class="line">SIGMA = 0.01      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  -n </span><br><span class="line">     1	SYSTEM = O atom </span><br><span class="line">     2	ISMEAR = 0       </span><br><span class="line">     3	SIGMA = 0.01      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p>上面的操作依次为：</p>
 <ul>
 <li><p>新建ex03文件夹</p>
 </li>
 <li><p>将ex02中的0.01 复制到ex03中</p>
 </li>
-<li><p>进入ex03&#x2F;0.01的目录中</p>
-</li>
-<li><p>使用cat 查看0.01中INCAR的内容</p>
-</li>
-<li><p>使用cat -n 查看INCAR中的内容，该选项在输出中给每一行标出了行数，方便我们查看。</p>
-</li>
+<li>进入ex03/0.01的目录中</li>
+<li>使用cat 查看0.01中INCAR的内容</li>
+<li>使用cat -n 查看INCAR中的内容，该选项在输出中给每一行标出了行数，方便我们查看。</li>
 </ul>
 <p><strong>注意:</strong> </p>
 <p>1）Linux 下面的命令都有很多的选项，用以丰富我们的不同需求，比如上面的 cat -n，可以使用 man cat 这个命令查看 cat 的其他选项。使用这个命令后，如果想退出，敲 q 键即可;</p>
@@ -314,55 +310,33 @@
 <p><strong>sed 命令修改INCAR</strong></p>
 <p>前面我们提到，可以使用vim打开INCAR然后修改SIGMA的参数。除了vim当然还有文本编辑器等其他的工具。但这些工具都有个缺点，就是得把文件打开后才能修改。下面我们使用sed命令，不打开文本，直接对里面的内容进行替换操作。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ sed &#x27;3s/0.01/0.02/g&#x27; INCAR </span><br><span class="line">SYSTEM = O atom </span><br><span class="line">ISMEAR = 0       </span><br><span class="line">SIGMA = 0.02      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  </span><br><span class="line">SYSTEM = O atom </span><br><span class="line">ISMEAR = 0       </span><br><span class="line">SIGMA = 0.01      </span><br></pre></td></tr></table></figure>
-
 <p><strong>精解：</strong></p>
-<ol>
-<li><pre><code>单引号中是我们的操作， 3s 表示的是选择第三行，因为我们知道 0.01 在第三行中出现，s 是substitute 的缩写
-</code></pre>
-</li>
-<li><pre><code>3s 后面跟一个斜杠 /  用来和后面被替换的内容分开，这里0.01 表示选择第三行的0.01;
-</code></pre>
-</li>
-<li><pre><code>0.01后面再用一个斜杠，将其和替换后的数字分开(0.01  0.02  0.03 等)，表示将0.01替换为斜杠后面的内容;
-</code></pre>
-</li>
-<li><pre><code>再加一个斜杠，后面的g 代表 global ，意思是全部替换。
-</code></pre>
-</li>
-<li><pre><code>输入完毕后，我们选择要执行该命令的对象(要替换的文件)，也就是当前目录下INCAR 文件。
-</code></pre>
-</li>
-<li><pre><code> 命令的意思就是：我们用sed命令，将INCAR中的第三行的0.01全部替换成0.02。
-</code></pre>
-</li>
-</ol>
+<p>1)     单引号中是我们的操作， 3s 表示的是选择第三行，因为我们知道 0.01 在第三行中出现，s 是substitute 的缩写<br>2)    3s 后面跟一个斜杠 /  用来和后面被替换的内容分开，这里0.01 表示选择第三行的0.01;</p>
+<p>3)    0.01后面再用一个斜杠，将其和替换后的数字分开(0.01  0.02  0.03 等)，表示将0.01替换为斜杠后面的内容;</p>
+<p>4)    再加一个斜杠，后面的g 代表 global ，意思是全部替换。</p>
+<p>5)    输入完毕后，我们选择要执行该命令的对象(要替换的文件)，也就是当前目录下INCAR 文件。</p>
+<p>6)     命令的意思就是：我们用sed命令，将INCAR中的第三行的0.01全部替换成0.02。</p>
 <p>从上面实例中最后的cat INCAR命令结果不难发现，实际上我们并没有将INCAR文件中的0.01替换成0.02。也就是说这个命令只是输出了替换后的结果，但没有更新INCAR文件。那怎么样才可以更新INCAR文件呢？ 我们可以这样做：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ sed &#x27;3s/0.01/0.02/g&#x27; INCAR &gt; INCAR_new</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR_new </span><br><span class="line">SYSTEM = O atom </span><br><span class="line">ISMEAR = 0       </span><br><span class="line">SIGMA = 0.02      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ mv INCAR_new  INCAR </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  </span><br><span class="line">SYSTEM = O atom </span><br><span class="line">ISMEAR = 0       </span><br><span class="line">SIGMA = 0.02      </span><br></pre></td></tr></table></figure>
-
 <p>箭头（&gt;）的意思是：我们将命令的输出存到一个新的文件INCAR_new中，</p>
 <p>通过mv命令之前的INCAR替换掉。</p>
 <p>但，这样做也太麻烦了，更简单一点，如下：</p>
-<p>前面例子的INCAR中SIGMA的值已经不是0.01了，我们先从ex02&#x2F;0.01中复制一个过来。</p>
+<p>前面例子的INCAR中SIGMA的值已经不是0.01了，我们先从ex02/0.01中复制一个过来。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cp ../../ex02/0.01/INCAR  .</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  -n </span><br><span class="line">     1	SYSTEM = O atom </span><br><span class="line">     2	ISMEAR = 0       </span><br><span class="line">     3	SIGMA = 0.01      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ sed -i &#x27;3s/0.01/0.02/g&#x27; INCAR </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  -n </span><br><span class="line">     1	SYSTEM = O atom </span><br><span class="line">     2	ISMEAR = 0       </span><br><span class="line">     3	SIGMA = 0.02      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p><strong>详解：</strong></p>
 <p>sed –i 是sed 的命令和其附加选项， -i 表示直接对源文件进行编辑，也就是说编辑之后源文件被新文件替换掉。因此，使用这个参数的时候要小心，小心，再小心。要格外小心！！！</p>
 <ul>
 <li>最保险的做法就是运行前，先对操作的对象进行备份：如下：</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cp INCAR  INCAR_back</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ sed -i &#x27;3s/0.01/0.02/g&#x27; INCAR </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ ls</span><br><span class="line">INCAR  INCAR_back  KPOINTS  POSCAR  POTCAR</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>其次是，先不加 -i 运行下sed命令，确保输出的是正确结果后，然后再加上 -i 运行.</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cp INCAR_back  INCAR </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ sed &#x27;3s/0.01/0.02/g&#x27; INCAR</span><br><span class="line">SYSTEM = O atom </span><br><span class="line">ISMEAR = 0       </span><br><span class="line">SIGMA = 0.02      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ sed -i &#x27;3s/0.01/0.02/g&#x27; INCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  -n </span><br><span class="line">     1	SYSTEM = O atom </span><br><span class="line">     2	ISMEAR = 0       </span><br><span class="line">     3	SIGMA = 0.02    </span><br></pre></td></tr></table></figure>
-
-
-
 <p><strong>小结:</strong></p>
 <p>sed 是一个非常强大的命令，对于做计算的我们来说，熟练正确地使用sed可以极大的提高我们的工作效率，大家务必硬着头皮掌握这个命令。这个网站列举了一些基本的用法：</p>
 <p><strong><a target="_blank" rel="noopener" href="http://man.linuxde.net/sed">http://man.linuxde.net/sed</a></strong> </p>
-<p>大家参照着进行练习，也可以百度里面搜索一些其他的 sed 使用技巧，如果你有认为很好的sed 技巧，也可以发邮件分享给大师兄（<a href="mailto:&#108;&#113;&#x63;&#97;&#116;&#x61;&#64;&#x67;&#109;&#x61;&#x69;&#108;&#46;&#x63;&#x6f;&#x6d;">&#108;&#113;&#x63;&#97;&#116;&#x61;&#64;&#x67;&#109;&#x61;&#x69;&#108;&#46;&#x63;&#x6f;&#x6d;</a>）。</p>
+<p>大家参照着进行练习，也可以百度里面搜索一些其他的 sed 使用技巧，如果你有认为很好的sed 技巧，也可以发邮件分享给大师兄（lqcata@gmail.com）。</p>
 <p>本节我们学习2个批量操作：</p>
 <ul>
 <li>通过sed单个命令进行批量操作</li>
@@ -370,44 +344,30 @@
 </ul>
 <p>1  sed 批量将0.01到0.09中所有INCAR中的0.01替换成0.05。到现在为止，相信大家都可以看懂下面的命令操作。就不再啰嗦解释了。有一点需要注意的是grep 命令中的星号，检查输入输出的时候用*非常方便。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ ls</span><br><span class="line">0.01</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ for i in &#123;2..9&#125;; do cp 0.01 0.0$i -r ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ ls </span><br><span class="line">0.01  0.02  0.03  0.04  0.05  0.06  0.07  0.08  0.09</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ grep SIGMA */INCAR</span><br><span class="line">0.01/INCAR:SIGMA = 0.01</span><br><span class="line">0.02/INCAR:SIGMA = 0.01</span><br><span class="line">0.03/INCAR:SIGMA = 0.01</span><br><span class="line">0.04/INCAR:SIGMA = 0.01</span><br><span class="line">0.05/INCAR:SIGMA = 0.01</span><br><span class="line">0.06/INCAR:SIGMA = 0.01</span><br><span class="line">0.07/INCAR:SIGMA = 0.01</span><br><span class="line">0.08/INCAR:SIGMA = 0.01</span><br><span class="line">0.09/INCAR:SIGMA = 0.01</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ sed -i &#x27;3s/0.01/0.05/g&#x27; */INCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ grep SIGMA */INCAR</span><br><span class="line">0.01/INCAR:SIGMA = 0.05</span><br><span class="line">0.02/INCAR:SIGMA = 0.05</span><br><span class="line">0.03/INCAR:SIGMA = 0.05</span><br><span class="line">0.04/INCAR:SIGMA = 0.05</span><br><span class="line">0.05/INCAR:SIGMA = 0.05</span><br><span class="line">0.06/INCAR:SIGMA = 0.05</span><br><span class="line">0.07/INCAR:SIGMA = 0.05</span><br><span class="line">0.08/INCAR:SIGMA = 0.05</span><br><span class="line">0.09/INCAR:SIGMA = 0.05</span><br></pre></td></tr></table></figure>
-
-
-
 <p>2 for 循环结合sed </p>
 <p>前面我们使用sed命令，将文件夹中所有的0.01替换成了0.05。但我们的目标是，每个文件夹中的SIGMA值与文件夹相同。既然我们知道了sed可以对单个文件进行操作，那么我们也可以结合for循环，来实现一个批量操作的目的。命令如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ ls</span><br><span class="line">0.01  0.02  0.03  0.04  0.05  0.06  0.07  0.08  0.09</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ for i in *; do sed -i &quot;3s/0.05/$i/g&quot; $i/INCAR ; done  </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ grep SIGMA */INCAR</span><br><span class="line">0.01/INCAR:SIGMA = 0.01</span><br><span class="line">0.02/INCAR:SIGMA = 0.02</span><br><span class="line">0.03/INCAR:SIGMA = 0.03</span><br><span class="line">0.04/INCAR:SIGMA = 0.04</span><br><span class="line">0.05/INCAR:SIGMA = 0.05</span><br><span class="line">0.06/INCAR:SIGMA = 0.06</span><br><span class="line">0.07/INCAR:SIGMA = 0.07</span><br><span class="line">0.08/INCAR:SIGMA = 0.08</span><br><span class="line">0.09/INCAR:SIGMA = 0.09</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 <p><strong>注意：</strong></p>
 <ul>
 <li>这里我们用的是双引号 “ “ ，sed 命令中你会见到大部分都用单引号 ‘ ‘ 。但如果这里使用单引号，则所有的 0.01 都会被替换成 $i (单引号中的$i 是纯字符)，因为单引号中的所有内容都会被当做字符来处理，也就是里面是什么就输出什么。使用双引号，则可以读取变量 $i 的值，下面的例子大家一看就知道怎么回事了:</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ abc=bigbro</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ echo abc</span><br><span class="line">abc</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ echo &#x27;$abc&#x27;</span><br><span class="line">$abc</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ echo $abc</span><br><span class="line">bigbro</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ echo &quot;$abc&quot;</span><br><span class="line">bigbro</span><br></pre></td></tr></table></figure>
-
 <p>这里单引号中的内容被原封不动地打印出来了。而双引号的话，则可以顺利地把变量调用起来。</p>
 <ul>
-<li>for i in *;  这里的 * 指的是当前目录下所有的文件以及文件夹，本例中没有文件，只有从0.01， 0.02， 0.03 到 0.09 的文件夹；所以： for i in  *  &#x3D;   for i in 0.01  0.02 0.03  0.04  0.05 0.06  0.07  0.08 0.09</li>
+<li>for i in <em>;  这里的 </em> 指的是当前目录下所有的文件以及文件夹，本例中没有文件，只有从0.01， 0.02， 0.03 到 0.09 的文件夹；所以： for i in  *  =   for i in 0.01  0.02 0.03  0.04  0.05 0.06  0.07  0.08 0.09</li>
 </ul>
 <p>1.5.2 使用sed 命令将INCAR中的 0.05 (所有文件夹中的都是0.05)替换成文件夹的数字;  </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &quot;3s/0.05/$i/g&quot; $i/INCAR </span><br></pre></td></tr></table></figure>
-
-<p>当$i的值为0.01的时候，我们就把0.01&#x2F;INCAR中的0.05替换为0.01；为0.02的时候，就把0.02&#x2F;INCAR中的0.05替换为0.02，依次类推，直至for循环完成。</p>
+<p>当$i的值为0.01的时候，我们就把0.01/INCAR中的0.05替换为0.01；为0.02的时候，就把0.02/INCAR中的0.05替换为0.02，依次类推，直至for循环完成。</p>
 <p>1.6 该命令瞬间运行完成，我们使用grep SIGMA 来查看下这些文件夹中的INCAR参数 ，圆满完成任务!</p>
 <hr>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在ex03的练习中，我们并不着急去提交任务，反正已经走了计算的路，以后提交任务的机会还多着呢，也不差这一两天的学习时间。先从简单到复杂些，逐渐掌握Linux的一节操作命令，对以后的学习帮助很大。</p>
-<ol>
-<li><p>学会 man command 或者 command –help 查看命令的具体参数;</p>
-</li>
-<li><p>大量使用sed 命令进行操作练习;</p>
-</li>
-<li><p>知道 * 在for循环中代表的含义</p>
-</li>
-<li><p>熟知单引号和双引号的使用，以及区别</p>
-</li>
-<li><p>主动搜索相关的Linux命令的相关知识，积极操练。</p>
-</li>
-<li><p>学会从单一操作，通过for循环转化成批量操作的思路。</p>
-</li>
-</ol>
+<p>1) 学会 man command 或者 command –help 查看命令的具体参数;</p>
+<p>2) 大量使用sed 命令进行操作练习;</p>
+<p>3) 知道 * 在for循环中代表的含义</p>
+<p>3) 熟知单引号和双引号的使用，以及区别</p>
+<p>4) 主动搜索相关的Linux命令的相关知识，积极操练。</p>
+<p>5) 学会从单一操作，通过for循环转化成批量操作的思路。</p>
 <ul>
 <li>for i in XXX; do YYY; done </li>
 <li>XXX就是我们要操作的范围或者对象</li>

@@ -295,52 +295,49 @@
 <p><strong>注意2</strong>：INCAR中IMAGES的数目和实际的不符，这是很多人常犯的错误。比如插了8个点，INCAR中却是<code>IMAGES= 4</code>，这会导致VASP只读取00到05的结构，从而05到08文件夹中没有输出文件。</p>
 <h3 id="第三部分"><a href="#第三部分" class="headerlink" title="第三部分"></a>第三部分</h3><p> 过渡态计算的优化器（Optimizer）</p>
 <p>CI-NEB是基于Force 也就是力来获取能量最低的反应路径。优化的方法有2个选择，一个是VASP默认的。一个是VTST中自带的。</p>
-<h5 id="3-1）VASP默认的优化方法："><a href="#3-1）VASP默认的优化方法：" class="headerlink" title="3.1）VASP默认的优化方法："></a>3.1）VASP默认的优化方法：</h5><p>IBRION &#x3D;1 (quasi-Newton) 和3 (quick-min) 是基于力的优化方法。一般来说，如果你感觉自己插的点基本上就是反应的路径了，可以使用IBRION&#x3D; 1。如果你的初始和末态结构不是很理想，插的点也是马马虎虎，那么3则是一个很好的选择。IBRION选择完了，我们还要设置一个合理的POTIM。个人经验0.1-1.0之间都是可以接受的。</p>
+<h5 id="3-1）VASP默认的优化方法："><a href="#3-1）VASP默认的优化方法：" class="headerlink" title="3.1）VASP默认的优化方法："></a>3.1）VASP默认的优化方法：</h5><p>IBRION =1 (quasi-Newton) 和3 (quick-min) 是基于力的优化方法。一般来说，如果你感觉自己插的点基本上就是反应的路径了，可以使用IBRION= 1。如果你的初始和末态结构不是很理想，插的点也是马马虎虎，那么3则是一个很好的选择。IBRION选择完了，我们还要设置一个合理的POTIM。个人经验0.1-1.0之间都是可以接受的。</p>
 <p>所以：使用VASP自带的优化器：</p>
-<p>IBRION &#x3D; 1 或者3</p>
-<p>POTIM &#x3D; 取个合理的数值。</p>
+<p>IBRION = 1 或者3</p>
+<p>POTIM = 取个合理的数值。</p>
 <h5 id="3-2）VTST中也自带了一些基于力的优化方法。"><a href="#3-2）VTST中也自带了一些基于力的优化方法。" class="headerlink" title="3.2）VTST中也自带了一些基于力的优化方法。"></a>3.2）VTST中也自带了一些基于力的优化方法。</h5><p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/vasp/optimizers.html#optimizers">http://theory.cm.utexas.edu/vasp/optimizers.html#optimizers</a></p>
 <p>使用VTST自带的优化方法，我们先要关闭VASP自带的，加下面2个参数。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">IBRION = 3</span><br><span class="line">POTIM = 0</span><br></pre></td></tr></table></figure>
-
 <p>然后你就可以通过IOPT来选择自己喜欢的了。下面红色部分是官网的介绍：</p>
 <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Optimizer input parameters</span><br><span class="line">The following parameters are readfrom the INCAR <span class="keyword">file</span>.</span><br><span class="line">(IOPT = <span class="number">0</span>) <span class="keyword">Use</span> VASP optimizersspecified from IBRION (<span class="keyword">default</span>)</span><br><span class="line">(IOPT = <span class="number">1</span>) LBFGS = Limited-memoryBroyden-Fletcher-Goldfarb-Shanno</span><br><span class="line">(IOPT = <span class="number">2</span>) CG = Conjugate Gradient</span><br><span class="line">(IOPT = <span class="number">3</span>) QM = Quick-<span class="built_in">Min</span></span><br><span class="line">(IOPT = <span class="number">4</span>) SD = Steepest Descent</span><br><span class="line">(IOPT =<span class="number">7</span>) FIRE = Fast Inertial Relaxation Engine</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意：</strong>如果你已经打算用VTST自带的优化器，那么IOPT &#x3D;0 不要选。</p>
-<p>因为0对应的是VASP自带的。使用VTST的这个前提是我们把VASP的优化器给关掉了。但你关掉后，又设置IOPT&#x3D;0，这是一个自相矛盾的选择，会导致计算过程中，你的原子纹丝不动，因为POTIM&#x3D; 0.</p>
+<p><strong>注意：</strong>如果你已经打算用VTST自带的优化器，那么IOPT =0 不要选。</p>
+<p>因为0对应的是VASP自带的。使用VTST的这个前提是我们把VASP的优化器给关掉了。但你关掉后，又设置IOPT=0，这是一个自相矛盾的选择，会导致计算过程中，你的原子纹丝不动，因为POTIM= 0.</p>
 <p>所以，使用VTST自带的优化器：</p>
-<p>IBRION &#x3D; 3</p>
-<p>POTIM &#x3D; 0</p>
-<p>IOPT &#x3D; 1,2,3,4,7  有5个选择，官网建议使用1或者2。</p>
-<h3 id="第四部分"><a href="#第四部分" class="headerlink" title="第四部分"></a>第四部分</h3><p> SPRING &#x3D; -5 (这是默认值)</p>
+<p>IBRION = 3</p>
+<p>POTIM = 0</p>
+<p>IOPT = 1,2,3,4,7  有5个选择，官网建议使用1或者2。</p>
+<h3 id="第四部分"><a href="#第四部分" class="headerlink" title="第四部分"></a>第四部分</h3><p> SPRING = -5 (这是默认值)</p>
 <p>这个参数是干嘛的? 查阅一下VTST的官网，链接如下：</p>
 <p><a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/vtsttools/neb.html">http://theory.cm.utexas.edu/vtsttools/neb.html</a></p>
 <p>The nudged elastic band (NEB) is a method for finding saddle points and minimum energy paths between known reactants and products. The method works by optimizing a number of intermediate images along the reaction path. Each image finds the lowest energy possible while maintaining equal spacing to neighboring images. This constrained optimization is done by adding spring forces along the band between images and by projecting out the component of the force due to the potential perpendicular to the band.</p>
 <p>什么意思呢？打个比方，这8个IMAGES就是一条绳上的8只蚂蚱，这些蚂蚱只能在一个方向上跳，在优化的时候，蚂蚱跳的太远，或者太偏就会被拉回来。拉回来的这个力就是通过SPRING这个参数来设置的。而我们之前的优化优化计算中，一条绳上只栓一只蚂蚱，该蚂蚱则比较自由，前后左右可以随便跳，并且没有人往回拽，这也是过渡态计算和普通优化所不同的地方。具体的理论部分，大家自行查阅NEB相关的参考文献。</p>
-<p>如果你算的一个基元反应，两个原子之间的键很强，那么我们就需要将SPRING这个参数设置的更负一些，比如SPRING&#x3D; -10，-15 或者-20。（不一定是-5的倍数，也可以是-6，-11 等。）如果你不知道怎么设置，一般来说默认值-5就足够用了。</p>
+<p>如果你算的一个基元反应，两个原子之间的键很强，那么我们就需要将SPRING这个参数设置的更负一些，比如SPRING= -10，-15 或者-20。（不一定是-5的倍数，也可以是-6，-11 等。）如果你不知道怎么设置，一般来说默认值-5就足够用了。</p>
 <h3 id="第五部分"><a href="#第五部分" class="headerlink" title="第五部分"></a>第五部分</h3><p>收敛相关的参数（粗算中的芝麻部分）：</p>
 <p>当然，粗算的时候，还要设置电子步以及以及离子步的收敛标准。</p>
-<p>EDIFF &#x3D; 1E-4 完全够用，不放心可以设置成-5；</p>
-<p>NELM &#x3D; 60 或者使用默认值40；</p>
-<p>EDIFFG: 由于我们这一步是粗算，不用那么精确，EDIFFG &#x3D; -0.05 完全够用了；</p>
+<p>EDIFF = 1E-4 完全够用，不放心可以设置成-5；</p>
+<p>NELM = 60 或者使用默认值40；</p>
+<p>EDIFFG: 由于我们这一步是粗算，不用那么精确，EDIFFG = -0.05 完全够用了；</p>
 <p>NSW: 个人经验，一般跑个50-60步左右就可以大体看个样子出来了，不用非得等计算达到EDIFFG设置的收敛标准。所以，前面的EDIFFG只是个形式罢了，这里我们先让这个参数占个坑，避免下一步提高精度计算的时候忘记这个参数。</p>
 <p>小结一下：如果我们使用VASP自带的优化器，过渡态计算相关的参数如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">LCLIMB = .TRUE.  # 用CI-NEB方法算TS</span><br><span class="line">IMAGES =   8     # 反应路径插了8个点</span><br><span class="line">IBRION = 1       # 初始结构（路径）感觉不太好，可以用 IBRION = 3</span><br><span class="line">POTIM = 0.2      # 一般0.2可以满足大部分的情况</span><br><span class="line">SPRING = -5      # 约束不同IMAGES之间的力</span><br><span class="line">EDIFF = 1E-4     # 电子步的收敛标准</span><br><span class="line">EDIFFG = -0.05   # 离子步的收敛标准，在粗算中就是个摆设</span><br><span class="line">NSW = 60         # 粗算中50-100均可</span><br></pre></td></tr></table></figure>
-
 <p>如果你粗算了一下，跑了60步没有收敛，自己查看下各个IMAGES中的CONTCAR结构，感觉差不多就可以继续提高精度继续算了。如果感觉结构不是很好，那么就把各个IMAGES中的CONTCAR复制成POSCAR，然后继续再跑。后面大师兄会带着你一步一步跑，这个先不用着急。</p>
 <p><strong>总结：</strong></p>
 <p>这一节我们主要学习了过渡态计算中INCAR的一些基本设置。插点算过渡态时必须要有的参数如下：</p>
 <p>1）告诉程序给我们要开始算过渡态了，并且指定插点的数目(这两个参数必须要写！！！)</p>
-<p> LCLIMB &#x3D; .TRUE. </p>
-<p> IMAGES &#x3D;   8  </p>
+<p> LCLIMB = .TRUE. </p>
+<p> IMAGES =   8  </p>
 <p>2）选择优化器(optimizer)</p>
 <p>有VASP自带的和VTST自带的两种，大家选一种即可。</p>
 <p>3）使用多大的劲控制蚂蚱不乱跳：</p>
-<p>SPRING  &#x3D; -5 （默认值）</p>
+<p>SPRING  = -5 （默认值）</p>
 <p>4）其他的参数跟前面结构优化的基本一致。</p>
 <p>在准备工作中：第1）个是最关键的，不设置就不给你算。后面的2-4）由于都有默认的参数，即使不设置也不会导致VASP罢工的情况。但它们是一些经验性很强的参数，需要结合自己的体系具体设置。不过，经验性再强，目的也只有一个，就是过渡态要算准，所以一定要将能量和结构结合起来分析。尤其是结构，Linux用户多多使用类似</p>
-<p>I）              p4v  0*&#x2F;CONTCAR</p>
-<p>II）            ase-gui  0*&#x2F;CONTCAR</p>
+<p>I）              p4v  0*/CONTCAR</p>
+<p>II）            ase-gui  0*/CONTCAR</p>
 <p>的命令将所有的结构一次性打开，分析结构变化和能量变化之间的关系。如果是在Windows下进行计算，自行搜索办法，或学习下一节中<code>VASPkit + VMD</code>的可视化办法。</p>
 
     </div>

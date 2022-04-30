@@ -318,7 +318,7 @@
 <p>答：完全可以，只是本人不经常用这种办法而已。个人偏好将INCAR保持不变，以避免ENCUT不同所导致的计算结果错误。</p>
 <hr>
 <h2 id="1-H-2-O-吸附构型的第一步筛选："><a href="#1-H-2-O-吸附构型的第一步筛选：" class="headerlink" title="1. H$_2$O 吸附构型的第一步筛选："></a>1. H$_2$O 吸附构型的第一步筛选：</h2><p>这里，大师兄采用的是前面提到的第一个办法，即固定住表面，采用gamma点，然后优化H$_2$O。</p>
-<p><img src="/2018/11/05/ex67/ex67-01.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-01.png" alt=""></p>
 <ul>
 <li><p>1） 准备INCAR，KPOINTS(1x1x1)；</p>
 </li>
@@ -334,25 +334,23 @@
 <hr>
 <p>任务结束后，首先查看一下能量信息：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in */*; do echo $i $(grep &#x27;  without&#x27; $i/OUTCAR | tail -n 1| awk &#x27;&#123;print $7&#125;&#x27;) ; done</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/11/05/ex67/ex67-02.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-02.png" alt=""></p>
 <p>上图，我们发现能量数值相近的差不多，这表明它们很可能是同一个结构。我们把数值sort一下，如下图：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in */*; do echo $i $(grep &#x27;  without&#x27; $i/OUTCAR | tail -n 1| awk &#x27;&#123;print $7&#125;&#x27;) ; done | sort -k 2</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2018/11/05/ex67/ex67-03.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-03.png" alt=""></p>
 <hr>
-<p>通过使用p4vasp 批量查看：（p4v <em>&#x2F;</em>&#x2F;CONTCAR） 你会发现能量为-145.56XXX的都是H$_2$O平行吸附在Cu表面，O在Cu的top位上。</p>
-<p><img src="/2018/11/05/ex67/ex67-04.png"></p>
+<p>通过使用p4vasp 批量查看：（p4v <em>/</em>/CONTCAR） 你会发现能量为-145.56XXX的都是H$_2$O平行吸附在Cu表面，O在Cu的top位上。</p>
+<p><img src="/2018/11/05/ex67/ex67-04.png" alt=""></p>
 <hr>
 <p>而剩下的，就只有两种结构了：</p>
 <ul>
-<li>结构1） type_3&#x2F;bri 为V型吸附，O在桥式位置上。</li>
+<li>结构1） type_3/bri 为V型吸附，O在桥式位置上。</li>
 </ul>
-<p><img src="/2018/11/05/ex67/ex67-05.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-05.png" alt=""></p>
 <ul>
-<li>结构2）type_3&#x2F;top为V型结构，O在top位置上。</li>
+<li>结构2）type_3/top为V型结构，O在top位置上。</li>
 </ul>
-<p><img src="/2018/11/05/ex67/ex67-06.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-06.png" alt=""></p>
 <h2 id="2-进一步优化"><a href="#2-进一步优化" class="headerlink" title="2. 进一步优化"></a>2. 进一步优化</h2><p>到现在位置，前面的12个初始结构，可以快速的被筛选成了3个。将这三个结构复制step2的文件夹中。在此基础上，开始正常计算：</p>
 <ul>
 <li><p>1） 将CONTCAR批量复制成POSCAR：</p>
@@ -369,17 +367,22 @@
 <li><p>6）等待结束，查看结果</p>
 </li>
 </ul>
-<p><img src="/2018/11/05/ex67/ex67-07.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-07.png" alt=""></p>
 <p>你会发现两个top的能量也一样了，说明这两个结构很可能优化到一块去了。查看后发现都是平行吸附的结构了。</p>
 <ul>
 <li>7） 结构细节：化学上，我们对键长，键角这些信息一定不要放过。测量一下Cu—O 的距离，为： 2.343 $\AA$。</li>
 </ul>
-<p><img src="/2018/11/05/ex67/ex67-08.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-08.png" alt=""></p>
 <ul>
-<li>8） 计算吸附能：<br>$$<br>\begin{align}<br>E_{ads} &amp;&#x3D; E_{slab+H_2O} – E_{slab} – E_{H_2O^{gas}} \<br>&amp;&#x3D; (-140.33072118 eV) – (-125.93154318 eV) – (-14.21915741 eV)  \<br>&amp;&#x3D; - 0.18 eV。<br>\end{align}<br>$$</li>
+<li>8） 计算吸附能：<script type="math/tex; mode=display">
+\begin{align}
+E_{ads} &= E_{slab+H_2O} – E_{slab} – E_{H_2O^{gas}} \\
+&= (-140.33072118 eV) – (-125.93154318 eV) – (-14.21915741 eV)  \\
+&= - 0.18 eV。
+\end{align}</script></li>
 </ul>
 <p>与本人4年前的计算结果（-0.17 eV）相差0.01 eV。<a target="_blank" rel="noopener" href="https://pubs.acs.org/doi/abs/10.1021/cs501698w">ACS Catal., 2015, 5, 1027-1036： https://pubs.acs.org/doi/abs/10.1021/cs501698w </a> </p>
-<p><img src="/2018/11/05/ex67/ex67-09.png"></p>
+<p><img src="/2018/11/05/ex67/ex67-09.png" alt=""></p>
 <p>本人发表文章支持信息里面的数据。</p>
 <p><strong>☆☆☆注意1：</strong></p>
 <p>这里吸附能计算的时候，我们取的是最稳定的结构。文献里面提到的也通常是作者所找到的稳定结构。当然，对于不稳定的结构，吸附能也就是顺带的事情了。写在文章里面的话，要标明什么结构对应的吸附能是多少。</p>

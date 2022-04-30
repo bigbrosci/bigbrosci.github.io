@@ -30,9 +30,9 @@
 <meta property="article:published_time" content="2017-11-18T20:30:16.000Z">
 <meta property="article:modified_time" content="2021-12-28T03:15:54.170Z">
 <meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="Ubuntu">
 <meta property="article:tag" content="超算中心">
 <meta property="article:tag" content="sshfs">
-<meta property="article:tag" content="Ubuntu">
 <meta name="twitter:card" content="summary">
 
 
@@ -299,11 +299,9 @@
 <li>为了方便理解，本人将管理员给的秘钥重新命名了一下。将下面的999改成管理员给你的那个数字。</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ cp  ~/Desktop/id_rsa_gkzshpc999.gkzshpc999  .ssh/my_key</span><br></pre></td></tr></table></figure>
-
 <p>经过上面的一步，管理员给的秘钥就被我们命名成：my_key了。这好比是我们在钥匙上贴了个标签，开门的时候直接找这个标签对应的钥匙就可以了。</p>
 <p>如果你的Ubuntu系统下没有 .ssh 文件夹，可以自己先建一个，然后再运行上面的命令</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ mkdir .ssh</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li><p>安装sshfs </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ sudo apt-get install sshfs </span><br><span class="line">[sudo] password <span class="keyword">for</span> qli: </span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br></pre></td></tr></table></figure>
@@ -311,17 +309,17 @@
 <li><p>创建挂载国科智算的文件目录：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ mkdir gkzs</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>打开~&#x2F;.bashrc文件，并添加下面的两行：</p>
+<li><p>打开~/.bashrc文件，并添加下面的两行：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> gkzs=<span class="string">&#x27;ssh -i /home/qli/.ssh/my_key  gkzshpc999@59.49.37.9 -p 9236&#x27;</span></span><br><span class="line"><span class="built_in">alias</span> mgkzs=<span class="string">&#x27;sshfs -o IdentityFile=/home/qli/.ssh/my_key  -p 9236 gkzshpc999@59.49.37.9:  /home/qli/gkzs&#x27;</span></span><br></pre></td></tr></table></figure>
-
 <p>上面我们的两行alias后面的内容主要为：</p>
 <ul>
-<li>我们的手（ssh）拿着钥匙（-i &#x2F;home&#x2F;qli&#x2F;.ssh&#x2F;my_key） 打开大门 （<a href="mailto:&#x67;&#107;&#122;&#115;&#104;&#x70;&#x63;&#x39;&#x39;&#57;&#x40;&#53;&#x39;&#x2e;&#x34;&#57;&#x2e;&#51;&#x37;&#46;&#x39;">&#x67;&#107;&#122;&#115;&#104;&#x70;&#x63;&#x39;&#x39;&#57;&#x40;&#53;&#x39;&#x2e;&#x34;&#57;&#x2e;&#51;&#x37;&#46;&#x39;</a> -p 9236）</li>
-<li>我们的手（sshfs）拿着钥匙 （-o IdentityFile&#x3D;&#x2F;home&#x2F;qli&#x2F;.ssh&#x2F;my_key） 打开大门 （-p 9236 <a href="mailto:&#103;&#x6b;&#122;&#115;&#104;&#x70;&#x63;&#57;&#57;&#x39;&#64;&#53;&#57;&#46;&#x34;&#57;&#46;&#x33;&#55;&#46;&#x39;">&#103;&#x6b;&#122;&#115;&#104;&#x70;&#x63;&#57;&#57;&#x39;&#64;&#53;&#57;&#46;&#x34;&#57;&#46;&#x33;&#55;&#46;&#x39;</a>）后，并将宝藏运回家（&#x2F;home&#x2F;qli&#x2F;gkzs）</li>
+<li>我们的手（ssh）拿着钥匙（-i /home/qli/.ssh/my_key） 打开大门 （gkzshpc999@59.49.37.9 -p 9236）</li>
+<li>我们的手（sshfs）拿着钥匙 （-o IdentityFile=/home/qli/.ssh/my_key） 打开大门 （-p 9236 gkzshpc999@59.49.37.9）后，并将宝藏运回家（/home/qli/gkzs） </li>
 </ul>
 </li>
-<li><p>source 一下 ~&#x2F;.bashrc 文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ . ~/.bashrc</span><br></pre></td></tr></table></figure></li>
+<li><p>source 一下 ~/.bashrc 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ . ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <h3 id="连接超算中心"><a href="#连接超算中心" class="headerlink" title="连接超算中心"></a>连接超算中心</h3><p>上面的工作完成之后，剩下的就是命令操作的事情了：</p>
 <ul>
@@ -332,23 +330,18 @@
 </li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ ls</span><br><span class="line">Desktop  Documents  Downloads  gkzs  lvliang  Music  Pictures  Public  SCVPN  teklahome  Templates  Videos</span><br><span class="line">qli@bigbro:~$ ls gkzs/</span><br><span class="line"> </span><br><span class="line">qli@bigbro:~$ mgksz</span><br><span class="line">qli@bigbro:~$ ls gkzs/</span><br><span class="line">perl5</span><br></pre></td></tr></table></figure>
-
-
-
 <h3 id="数据传输测试"><a href="#数据传输测试" class="headerlink" title="数据传输测试"></a>数据传输测试</h3><ul>
 <li><p>在连接到服务器的界面：我们创建一个文件：mount_test。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[gkzshpc999@login02 ~]$ <span class="built_in">echo</span>  <span class="string">&#x27;I love BigBro&#x27;</span> &gt;  mount_test</span><br><span class="line">[gkzshpc999@login02 ~]$ ls</span><br><span class="line">mount_test  perl5</span><br><span class="line">[gkzshpc999@login02 ~]$ cat mount_test </span><br><span class="line">I love BigBro</span><br><span class="line">[gkzshpc999@login02 ~]$ </span><br></pre></td></tr></table></figure>
-
-
 </li>
+</ul>
+<ul>
 <li><p>在挂载的目录下查看：目录下多出来了刚刚创建的 mount_test文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ <span class="built_in">cd</span>  gkzs/</span><br><span class="line">qli@bigbro:~/gkzs$ ls</span><br><span class="line">mount_test  perl5</span><br><span class="line">qli@bigbro:~/gkzs$ cat mount_test </span><br><span class="line">I love BigBro</span><br><span class="line">qli@bigbro:~/gkzs$ </span><br><span class="line">qli@bigbro:~/gkzs$ cp ~/Desktop/CONTCAR  .</span><br><span class="line">qli@bigbro:~/gkzs$ ls</span><br><span class="line">CONTCAR  mount_test  perl5</span><br><span class="line">qli@bigbro:~/gkzs$ </span><br></pre></td></tr></table></figure></li>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ <span class="built_in">cd</span>  gkzs/</span><br><span class="line">qli@bigbro:~/gkzs$ ls</span><br><span class="line">mount_test  perl5</span><br><span class="line">qli@bigbro:~/gkzs$ cat mount_test </span><br><span class="line">I love BigBro</span><br><span class="line">qli@bigbro:~/gkzs$ </span><br><span class="line">qli@bigbro:~/gkzs$ cp ~/Desktop/CONTCAR  .</span><br><span class="line">qli@bigbro:~/gkzs$ ls</span><br><span class="line">CONTCAR  mount_test  perl5</span><br><span class="line">qli@bigbro:~/gkzs$ </span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>上面的最后操作中，我们从桌面上复制了一个CONTCAR到挂载的目录下，然后查看下服务器的终端：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[gkzshpc999@login02 ~]$ ls</span><br><span class="line">CONTCAR  mount_test  perl5</span><br><span class="line">[gkzshpc999@login02 ~]$ head -n 5 CONTCAR  </span><br><span class="line">Ru\(0\0\1)                              </span><br><span class="line">   1.00000000000000     </span><br><span class="line">     8.1377999784000004    0.0000000000000000    0.0000000000000000</span><br><span class="line">     4.0688999892000002    7.0475415119999996    0.0000000000000000</span><br><span class="line">     0.0000000000000000    0.0000000000000000   21.5631999968999999</span><br><span class="line">[gkzshpc999@login02 ~]$ </span><br></pre></td></tr></table></figure>
-
-
-
 <p>完成了上面的操作，下面你就可以将自己电脑上准备的一些计算文件或者文件夹通过命令复制到超算中心，然后就可以提交任务了。</p>
 
     </div>
@@ -359,9 +352,9 @@
 
     <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
               <a href="/tags/%E8%B6%85%E7%AE%97%E4%B8%AD%E5%BF%83/" rel="tag"># 超算中心</a>
               <a href="/tags/sshfs/" rel="tag"># sshfs</a>
-              <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
           </div>
 
         

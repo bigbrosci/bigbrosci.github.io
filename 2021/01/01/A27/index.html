@@ -154,7 +154,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1%EF%BC%9A%E8%8E%B7%E5%8F%96%E5%8C%96%E5%AD%A6%E5%BC%8F%E4%B8%BA-Si-%E7%9A%84%E6%89%80%E6%9C%89%E6%9D%90%E6%96%99%E7%9A%84%E5%AE%9E%E9%AA%8C%E6%B5%8B%E5%BE%97%E7%9A%84%E8%83%BD%E5%B8%A6"><span class="nav-number">1.</span> <span class="nav-text">示例1：获取化学式为 Si 的所有材料的实验测得的能带</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B2%EF%BC%9A%E8%8E%B7%E5%8F%96%E6%9D%90%E6%96%99%E5%AF%B9-OH-%E5%92%8C-O%E7%89%A9%E7%A7%8D%E7%9A%84%E5%90%B8%E9%99%84%E8%83%BD"><span class="nav-number">2.</span> <span class="nav-text">示例2：获取材料对 *OH 和 *O物种的吸附能</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1%EF%BC%9A%E8%8E%B7%E5%8F%96%E5%8C%96%E5%AD%A6%E5%BC%8F%E4%B8%BA-Si-%E7%9A%84%E6%89%80%E6%9C%89%E6%9D%90%E6%96%99%E7%9A%84%E5%AE%9E%E9%AA%8C%E6%B5%8B%E5%BE%97%E7%9A%84%E8%83%BD%E5%B8%A6"><span class="nav-number">1.</span> <span class="nav-text">示例1：获取化学式为 Si 的所有材料的实验测得的能带</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B2%EF%BC%9A%E8%8E%B7%E5%8F%96%E6%9D%90%E6%96%99%E5%AF%B9-OH-%E5%92%8C-O%E7%89%A9%E7%A7%8D%E7%9A%84%E5%90%B8%E9%99%84%E8%83%BD"><span class="nav-number">2.</span> <span class="nav-text">示例2：获取材料对 OH 和 O物种的吸附能</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -291,25 +291,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>Citrine 也是一个材料学数据库，自带了机器学习工具，大家也可以研究琢磨一下。官网是 <a target="_blank" rel="noopener" href="https://citrination.com/search/simple?searchMatchOption=fuzzyMatch%E3%80%82%E8%BF%99%E9%87%8C%EF%BC%8C%E6%88%91%E4%BB%AC%E5%B0%86%E9%80%9A%E8%BF%87%E5%87%A0%E4%B8%AA%E4%BE%8B%E5%AD%90%E4%BA%86%E8%A7%A3%E5%A6%82%E4%BD%95%E5%9C%A8%E8%BF%99%E4%B8%AA%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E3%80%82%E5%9C%A8Citrine%E4%B8%AD%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9C%80%E8%A6%81%E7%94%A8%E5%88%B0">https://citrination.com/search/simple?searchMatchOption=fuzzyMatch。这里，我们将通过几个例子了解如何在这个数据库中获取数据。在Citrine中获取数据需要用到</a> matminer.data_retrieval.retrieve_Citrine.CitrineDataRetrieval 这个工具，其跟materials project类似，也学要一个API_key。大家可以在官网注册，并记录下API_Key。</p>
+        <p>Citrine 也是一个材料学数据库，自带了机器学习工具，大家也可以研究琢磨一下。官网是 <a target="_blank" rel="noopener" href="https://citrination.com/search/simple?searchMatchOption=fuzzyMatch。这里，我们将通过几个例子了解如何在这个数据库中获取数据。在Citrine中获取数据需要用到">https://citrination.com/search/simple?searchMatchOption=fuzzyMatch。这里，我们将通过几个例子了解如何在这个数据库中获取数据。在Citrine中获取数据需要用到</a> matminer.data_retrieval.retrieve_Citrine.CitrineDataRetrieval 这个工具，其跟materials project类似，也学要一个API_key。大家可以在官网注册，并记录下API_Key。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#请先在终端中输入： pip install citrination_client ； 否则会报错</span></span><br><span class="line"><span class="comment">#然后我们回到代码，导入 CitrineDataRetrieval 这个模块</span></span><br><span class="line"><span class="keyword">from</span> matminer.data_retrieval.retrieve_Citrine <span class="keyword">import</span> CitrineDataRetrieval</span><br></pre></td></tr></table></figure>
-
 <h4 id="示例1：获取化学式为-Si-的所有材料的实验测得的能带"><a href="#示例1：获取化学式为-Si-的所有材料的实验测得的能带" class="headerlink" title="示例1：获取化学式为 Si 的所有材料的实验测得的能带"></a>示例1：获取化学式为 Si 的所有材料的实验测得的能带</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 先实例化这个工具，需要提供你的API_Key</span></span><br><span class="line">cdr = CitrineDataRetrieval(api_key=<span class="string">&#x27;&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 接下来，类似从materials project获取数据，我们需要用get_dataframe函数</span></span><br><span class="line">df = cdr.get_dataframe(criteria=&#123;<span class="string">&#x27;formula&#x27;</span>:<span class="string">&#x27;Si&#x27;</span>, <span class="string">&#x27;data_type&#x27;</span>: <span class="string">&#x27;EXPERIMENTAL&#x27;</span>&#125;, </span><br><span class="line">                       properties=[<span class="string">&#x27;Band gap&#x27;</span>],</span><br><span class="line">                       secondary_fields=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  0%|                                                                                            | 0/7 [00:00&lt;?, ?it/s]d:\programs\anaconda3\envs\py36\lib\site-packages\matminer\data_retrieval\retrieve_Citrine.py:103: FutureWarning:</span><br><span class="line"></span><br><span class="line">pandas.io.json.json_normalize is deprecated, use pandas.json_normalize instead</span><br><span class="line"></span><br><span class="line">100%|████████████████████████████████████████████████████████████████████████████████████| 7/7 [00:00&lt;00:00, 87.33it/s]</span><br><span class="line"></span><br><span class="line">all available fields:</span><br><span class="line">[<span class="string">&#x27;Band gap&#x27;</span>, <span class="string">&#x27;uid&#x27;</span>, <span class="string">&#x27;Band gap-units&#x27;</span>, <span class="string">&#x27;category&#x27;</span>, <span class="string">&#x27;references&#x27;</span>, <span class="string">&#x27;chemicalFormula&#x27;</span>, <span class="string">&#x27;Crystallinity&#x27;</span>, <span class="string">&#x27;Band gap-conditions&#x27;</span>, <span class="string">&#x27;Band gap-methods&#x27;</span>, <span class="string">&#x27;Band gap-dataType&#x27;</span>]</span><br><span class="line"></span><br><span class="line">suggested common fields:</span><br><span class="line">[<span class="string">&#x27;references&#x27;</span>, <span class="string">&#x27;chemicalFormula&#x27;</span>, <span class="string">&#x27;Crystallinity&#x27;</span>, <span class="string">&#x27;Band gap&#x27;</span>, <span class="string">&#x27;Band gap-units&#x27;</span>, <span class="string">&#x27;Band gap-conditions&#x27;</span>, <span class="string">&#x27;Band gap-methods&#x27;</span>, <span class="string">&#x27;Band gap-dataType&#x27;</span>]</span><br></pre></td></tr></table></figure>
-
-
-
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df <span class="comment">#查看表格</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2021/01/01/A27/r1.png"></p>
+<p><img src="/2021/01/01/A27/r1.png" alt=""></p>
 <p>从上面结果可以看出，数据库里有化学式为Si的材料共7中实验测得的能带数据。这些数据来源的文献，带隙的值，实验方法都被记录了下来。</p>
-<h4 id="示例2：获取材料对-OH-和-O物种的吸附能"><a href="#示例2：获取材料对-OH-和-O物种的吸附能" class="headerlink" title="示例2：获取材料对 *OH 和 *O物种的吸附能"></a>示例2：获取材料对 *OH 和 *O物种的吸附能</h4><p>想不到citrine数据库还有各种材料对*OH 和 *O 物种的吸附能，一起来看看怎么获取把。要查询更多的数据库，请探索官网<a target="_blank" rel="noopener" href="https://citrination.com/datasets">https://citrination.com/datasets</a> </p>
+<h4 id="示例2：获取材料对-OH-和-O物种的吸附能"><a href="#示例2：获取材料对-OH-和-O物种的吸附能" class="headerlink" title="示例2：获取材料对 OH 和 O物种的吸附能"></a>示例2：获取材料对 <em>OH 和 </em>O物种的吸附能</h4><p>想不到citrine数据库还有各种材料对<em>OH 和 </em>O 物种的吸附能，一起来看看怎么获取把。要查询更多的数据库，请探索官网<a target="_blank" rel="noopener" href="https://citrination.com/datasets">https://citrination.com/datasets</a> </p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 我们发现这里不需要指定筛选条件，只需要返回所需要的性质即可。</span></span><br><span class="line">df_OH = cdr.get_dataframe(criteria=&#123;&#125;, properties=[<span class="string">&#x27;adsorption energy of OH&#x27;</span>], secondary_fields=<span class="literal">True</span>)</span><br><span class="line">df_O = cdr.get_dataframe(criteria=&#123;&#125;, properties=[<span class="string">&#x27;adsorption energy of O&#x27;</span>], secondary_fields=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
-
 <pre><code>  0%|                                                                                            | 0/9 [00:00&lt;?, ?it/s]d:\programs\anaconda3\envs\py36\lib\site-packages\matminer\data_retrieval\retrieve_Citrine.py:103: FutureWarning:
 
 pandas.io.json.json_normalize is deprecated, use pandas.json_normalize instead
@@ -331,13 +322,10 @@ all available fields:
 
 suggested common fields:
 [&#39;references&#39;, &#39;chemicalFormula&#39;, &#39;Surface facet&#39;, &#39;Adsorption energy of O&#39;, &#39;Adsorption energy of O-units&#39;, &#39;Adsorption energy of O-conditions&#39;, &#39;Reconstruction&#39;]
-</code></pre>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_OH.head()</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2021/01/01/A27/r2.png"></p>
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_OH.head()</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/01/01/A27/r2.png" alt=""></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df_O.head()</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2021/01/01/A27/r3.png"></p>
+<p><img src="/2021/01/01/A27/r3.png" alt=""></p>
 <p>大家可以看到，这些数据库里面的数据还不够丰富。大家也可以把自己计算得到的数据上传到citrine数据库中，促进科学知识的开放获取。</p>
 <ul>
 <li>实际上 citrine 数据库包含了很多实验数据，下次的分享中，我们会把citrine数据库中的实验数据和materials project中的计算数据做个对比。</li>

@@ -301,36 +301,34 @@
         <p>DOS积分的原理，积分公式相信大学的时候，大家已经掌握了，现在还有可能忘记了。不过没关系，虽然本节将积分，高等数学里面的暂时还用不到。对于DOS图来说，通过求积分可以得到相应的电子数。积分也就是求DOS曲线下的面积。但DOS图并不能通过一个函数的积分来获得，因为所对应的区域毫无规则可言。那么我们该怎么样积分呢？</p>
 <p><strong>1</strong> <strong>积分的原理</strong></p>
 <p>积分的原理就是把区域分成N个小块，计算每一块的面积，然后求和。如下图：</p>
-<p><img src="/2018/02/09/ex40/ex40-1.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-1.png" alt=""></p>
 <p>大师兄…..</p>
-<p><img src="/2018/02/09/ex40/ex40-2.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-2.png" alt=""></p>
 <p>好吧，言归正传，大师兄亲自画了一幅图，讲解积分的原理，如下：</p>
-<p><img src="/2018/02/09/ex40/ex40-3.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-3.png" alt=""></p>
 <p>1)将每一个小区间近似看成一个小的梯形，</p>
-<ol start="2">
-<li>梯形的上底和下底为：$y_2$ 和$y_1$，高为：$x_2-x_1$。</li>
-</ol>
-<p>3, 4)  也可以看成一个高为：$（y_1+y_2）&#x2F;2$， 底为$x_2-x_1$ 的长方形。</p>
-<p>5）面积为两者的乘积：$ΔA &#x3D;（x_2-x_1）* （y_1+y_2）&#x2F;2$。</p>
-<p>6）将所有的小区间面积求和便得到了曲线所覆盖的面积，也就得到了我们所想要的电子数：$A &#x3D;\sum\Delta A$</p>
+<p>2) 梯形的上底和下底为：$y_2$ 和$y_1$，高为：$x_2-x_1$。</p>
+<p>3, 4)  也可以看成一个高为：$（y_1+y_2）/2$， 底为$x_2-x_1$ 的长方形。</p>
+<p>5）面积为两者的乘积：$ΔA =（x_2-x_1）* （y_1+y_2）/2$。</p>
+<p>6）将所有的小区间面积求和便得到了曲线所覆盖的面积，也就得到了我们所想要的电子数：$A =\sum\Delta A$</p>
 <hr>
 <p>注意：</p>
 <p>1）电子数的积分区间是从负无穷到费米能级；</p>
 <p>2）p4vasp的图中的0点就是费米能级，已经扣除过了。</p>
-<p>3）科学网的一个参考链接：&lt;&lt;<a target="_blank" rel="noopener" href="http://blog.sciencenet.cn/blog-567091-736149.html">http://blog.sciencenet.cn/blog-567091-736149.html</a>&#x2F;&gt;&gt;</p>
-<p><img src="/2018/02/09/ex40/ex40-4.png"></p>
+<p>3）科学网的一个参考链接：<a href="&lt;&lt;http://blog.sciencenet.cn/blog-567091-736149.html">&lt;&lt;http://blog.sciencenet.cn/blog-567091-736149.html</a>/&gt;&gt;</p>
+<p><img src="/2018/02/09/ex40/ex40-4.png" alt=""></p>
 <p>注意： 图中的DOS，如果你计算了，发现和大师兄的不一样，不用担心，大师兄本人把这个例子再运行了一遍，跟上面的图也不一样。（原因正在调查中）</p>
 <hr>
-<h2 id="2-d-band-center-的公式"><a href="#2-d-band-center-的公式" class="headerlink" title="2 d-band center 的公式"></a>2 d-band center 的公式</h2><p><img src="/2018/02/09/ex40/ex40-5.png"></p>
+<h2 id="2-d-band-center-的公式"><a href="#2-d-band-center-的公式" class="headerlink" title="2 d-band center 的公式"></a>2 d-band center 的公式</h2><p><img src="/2018/02/09/ex40/ex40-5.png" alt=""></p>
 <p>在这里：</p>
 <p>ε为前面的我们提到的x， $n_d$(ε)为y。在DOS图中，ε为能量， $n_d$(ε)为电子的密度。</p>
 <p>注意： 积分区间是从 <strong>负无穷</strong> 到 <strong>正无穷</strong></p>
 <p>参考书籍： Fundamental Concepts in Heterogeneous Catalysis，Jens K. Nørskov, Felix Studt, Frank Abild-Pedersen, Thomas Bligaard， John Wiley &amp; Sons, Inc.</p>
-<p>!<img src="/2018/02/09/ex40/ex40-6.png"></p>
+<p>!<img src="/2018/02/09/ex40/ex40-6.png" alt=""></p>
 <p>QQ群文件的Books文件夹中下载 </p>
-<p><img src="/2018/02/09/ex40/ex40-7.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-7.png" alt=""></p>
 <p>百度网盘下载链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1bWS2Gu">http://pan.baidu.com/s/1bWS2Gu</a></p>
-<p><img src="/2018/02/09/ex40/ex40-8.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-8.png" alt=""></p>
 <hr>
 <p>d 带穿过了费米能级，说明Ru是金属。（废话，等于白说！）</p>
 <p>d带的积分从最左面到最右面。</p>
@@ -340,19 +338,19 @@
 <p><strong>3 Excel手动求积分：</strong></p>
 <p>对应的公式都写在第二行里面了，excel中计算完第一个数值，直接选中然后往下拽就可以得到后面的数据了。计算文件以及Excel表格已经上传到QQ群和百度网盘，大家可以下载仔细观看练习，掌握该技能。</p>
 <p>计算下载链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1kVqWFQn">http://pan.baidu.com/s/1kVqWFQn</a> </p>
-<p><img src="/2018/02/09/ex40/ex40-9.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-9.png" alt=""></p>
 <p>Step1: p4vasp 的 d band 数据！</p>
 <p>Step2：A,B两列的乘积，也就是能量和密度的乘积：对应d band center公式中的<strong>分子</strong>：</p>
-<p><img src="/2018/02/09/ex40/ex40-10.png"></p>
+<p><img src="/2018/02/09/ex40/ex40-10.png" alt=""></p>
 <p>Step3：</p>
 <p>1）A4-A3:  小区间的能量间隔，也就是 dε，或者 xdx，$\Delta$x， $x_2-x_1$;</p>
 <p>2）B4+B3: 小区间的两个起点和终点的高度：也就是对应的小区间两端的能量密度：$y_2+y_1$</p>
 <p>3）C4+C3：小区间两端能量和密度乘积的加和： $x_1<em>y_1 + x_2</em>y_2 $ </p>
 <p>4）Step4：求小区间的面积：</p>
-<p>​      $D4<em>E4</em>0.5$：$(x_2-x_1) * (y_2+y_1)&#x2F;2$</p>
-<p>​      $D4<em>F4</em>0.5$: $ (x_2-x_1) * (x_1<em>y_1 + x_2</em>y_2)&#x2F;2$</p>
+<p>​      $D4<em>E4</em>0.5$：$(x_2-x_1) * (y_2+y_1)/2$</p>
+<p>​      $D4<em>F4</em>0.5$: $ (x_2-x_1) <em> (x_1</em>y_1 + x_2*y_2)/2$</p>
 <p>5）Step5: 将所有小区间的面积求和：</p>
-<p>电子数：$\sum( (x_2-x_1) * (y_2+y_1)&#x2F;2 ) $，从G4到G137(G137对应的是费米能级的那个点！！！)求和。</p>
+<p>电子数：$\sum( (x_2-x_1) * (y_2+y_1)/2 ) $，从G4到G137(G137对应的是费米能级的那个点！！！)求和。</p>
 <p><strong>再次强调：电子数目是从负无穷积分到费米能级！</strong></p>
 <p>d带中心公式中的分子：从H4到H303求和</p>
 <p>d带中心公式中的分母：和电子数的积分一样，但积分区间不同，这里从G4到G303求加和。</p>

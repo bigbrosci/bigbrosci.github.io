@@ -312,8 +312,7 @@
 <li>出错，自己检查有没有在提交任务前运行：dos2linux 这个命令转换下格式</li>
 </ul>
 </li>
-<li><p>一步一步按照本书的练习进行操作，有问题，先记下来，如果后面没有得到解答，去<strong>《序言》</strong>找联系方式咨询大师兄。</p>
-</li>
+<li>一步一步按照本书的练习进行操作，有问题，先记下来，如果后面没有得到解答，去<strong>《序言》</strong>找联系方式咨询大师兄。</li>
 </ul>
 <h3 id="VASP输入和输出文件"><a href="#VASP输入和输出文件" class="headerlink" title="VASP输入和输出文件"></a>VASP输入和输出文件</h3><ul>
 <li><p>有了上面的概念，我们就可以准备输入文件了。下面是官网列出VASP的输入和输出文件，in 代表输入，out代表输出。先声明一下:大家不要被下面这么多文件吓傻了，脑子里有个印象就行，很多文件可能穷奇你一生的计算都用不到，而且你以后会花很多时间在删这些乱七八糟的文件上面。所以，大家先简单过目一下即可:</p>
@@ -351,16 +350,14 @@
 </ul>
 <h3 id="INCAR-的输入工作"><a href="#INCAR-的输入工作" class="headerlink" title="INCAR 的输入工作"></a>INCAR 的输入工作</h3><p>打开编辑器，把下面几行挨个输入进去: </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SYSTEM = O atom       # 氧元素符号，不是零!</span><br><span class="line">ISMEAR = 0            # 是零，不是氧元素符号，对于分子或者原子，用0.</span><br><span class="line">SIGMA = 0.01          # 对于分子或者原子，用0.01</span><br></pre></td></tr></table></figure>
-
 <p><strong>INCAR的注意事项：</strong></p>
 <ul>
-<li><p>**#**后面写的是汉语，是给大家展示用的，大家在写的时候，最好不要把汉语写进去，有可能会出错！</p>
+<li><strong>#</strong>后面写的是汉语，是给大家展示用的，大家在写的时候，最好不要把汉语写进去，有可能会出错！</li>
+<li><p><strong>#</strong>号后面的内容对计算不会造成影响，可以不用输入；</p>
 </li>
-<li><p>**#**号后面的内容对计算不会造成影响，可以不用输入；</p>
+<li><p>每个参数后面跟着等号 <strong>=</strong> ， </p>
 </li>
-<li><p>每个参数后面跟着等号 <strong>&#x3D;</strong> ， </p>
-</li>
-<li><p>等号（**&#x3D;**）前后可以有空格，也可以没有。ISMEAR&#x3D;0 和 ISMEAR &#x3D; 0 是一样的，</p>
+<li><p>等号（<strong>=</strong>）前后可以有空格，也可以没有。ISMEAR=0 和 ISMEAR = 0 是一样的，</p>
 </li>
 <li><p>写INCAR的时候，<strong>不要使用 tab</strong>，用空格替换tab；</p>
 </li>
@@ -369,7 +366,7 @@
 </ul>
 <h3 id="INCAR的详解"><a href="#INCAR的详解" class="headerlink" title="INCAR的详解"></a>INCAR的详解</h3><h4 id="SYSTEM"><a href="#SYSTEM" class="headerlink" title="SYSTEM"></a>SYSTEM</h4><p>SYSTEM 后面是该计算的说明。你的这个任务算的是什么，目的是什么，体系是什么？等等，这写都可以<strong>随便</strong>写在里面。随便的意思就是可以任意写：</p>
 <ul>
-<li>SYSTEM &#x3D; O atom 和 SYSTEM &#x3D; I LOVE BigBro  和 SYSTEM &#x3D; VASP， 除了多出几个字符外，对计算没有什么影响。</li>
+<li>SYSTEM = O atom 和 SYSTEM = I LOVE BigBro  和 SYSTEM = VASP， 除了多出几个字符外，对计算没有什么影响。</li>
 <li>不建议大家在这一行里写一堆乱七八糟的东西。</li>
 <li>当然，这一行有或者没有，对计算结果不会有任何影响，看着不爽也可以直接删除。</li>
 </ul>
@@ -382,24 +379,23 @@
 <ul>
 <li>对于半导体和绝缘体体系，ISMEAR的值取绝对不能大于0， 一般用0；</li>
 <li>对所有体系，如果想获取更加精确能量的时候用-5：但使用-5的时候，K点数目小于3则程序会罢工；</li>
-<li>K 点少，半导体或者绝缘体，那么只能用 ISMEAR &#x3D; 0；</li>
-<li>在DOS能带计算中，使用ISMEAR&#x3D; -5 用于获取精确的信息。 </li>
+<li>K 点少，半导体或者绝缘体，那么只能用 ISMEAR = 0；</li>
+<li>在DOS能带计算中，使用ISMEAR= -5 用于获取精确的信息。 </li>
 <li>对于金属来说，ISMEAR的取值一般为0，1；</li>
-<li>保守地说，ISMEAR &#x3D; 0 (Gaussian Smearing) 可以满足大部分的体系（金属，导体，半导体，分子）；</li>
+<li>保守地说，ISMEAR = 0 (Gaussian Smearing) 可以满足大部分的体系（金属，导体，半导体，分子）；</li>
 <li>如果不知道怎么取ISMEAR，1）直接用0；2）测试不同的值对计算的影响。</li>
 </ul>
 <h4 id="SIGMA"><a href="#SIGMA" class="headerlink" title="SIGMA:"></a>SIGMA:</h4><p>SIGMA的取值和ISMEAR息息相关，也就是和ISMEAR这个参数同时出现，设定。下面是一些基本的介绍：</p>
 <ul>
-<li><p>如果用了ISMEAR &#x3D; -5； SIGMA的值可以忽略，也可以不管。（对于所有体系都适用)；</p>
+<li><p>如果用了ISMEAR = -5； SIGMA的值可以忽略，也可以不管。（对于所有体系都适用)；</p>
 </li>
-<li><p>对于金属： ISMEAR &#x3D; 1 或者0，非金属: ISMEAR&#x3D; 0 的时候，一般取 SIGMA &#x3D; 0.10 即可，默认值是0.20。不放心的话，用0.05。</p>
+<li><p>对于金属： ISMEAR = 1 或者0，非金属: ISMEAR= 0 的时候，一般取 SIGMA = 0.10 即可，默认值是0.20。不放心的话，用0.05。</p>
 </li>
-<li><p>对于气体分子，原子体系（也就是你把分子或者原子放到一个box里面）：死死记住下面组合就可以了， ISMEAR &#x3D; 0; SIGMA &#x3D; 0.01。</p>
+<li><p>对于气体分子，原子体系（也就是你把分子或者原子放到一个box里面）：死死记住下面组合就可以了， ISMEAR = 0; SIGMA = 0.01。</p>
 </li>
 </ul>
 <p>不过很多人都不放心，为了保险想测试一番。标准是： SIGMA的取值要保证OUTCAR 中的 entropy T*S 这一项，平均到每个原子上，要小于 1-2 meV。检查的时候可以用这个命令: </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep &#x27;entropy T&#x27;  OUTCAR </span><br></pre></td></tr></table></figure>
-
 <p><strong>注意1：</strong>这里有两个单引号，不要输入的时候漏掉。</p>
 <p>用这个命令，得出的能量除以体系中原子的数目（也就是平均到每个原子上），然后再和 0.001 eV 比较。如果小于，SIGMA取值OK，如果大于，再换个小点的数值进行测试。</p>
 <p><strong>注意2：</strong>这里的说的entropy，是因为ISMEAR展宽这个计算方法引入的，跟我们物理化学书里面的entropy完全是两码事。后面我们会介绍如何通过频率分析计算物理化学里面的Entropy。</p>
@@ -411,16 +407,13 @@
 <p>前面说了很多，对新手，可能会犯晕。不过不用担心，<strong>只要记住关键三点，我们就圆满完成本节的任务</strong>：</p>
 <ul>
 <li>INCAR是纯文本没有尾缀; </li>
-<li>算原子或者分子时：ISMEAR &#x3D; 0， SIGMA &#x3D; 0.01</li>
+<li>算原子或者分子时：ISMEAR = 0， SIGMA = 0.01</li>
 <li>Windows用户请使用Notepad++作为文本编辑器，不要使用自带的记事本或者写字板</li>
 </ul>
-<p>上一节，我们学习了INCAR的简单准备工作。这一节，我们学习另外一个输入文件的写法：<em><strong>KPOINTS</strong></em></p>
+<p>上一节，我们学习了INCAR的简单准备工作。这一节，我们学习另外一个输入文件的写法：<strong><em>KPOINTS</em></strong></p>
 <h3 id="简单说明-1"><a href="#简单说明-1" class="headerlink" title="简单说明"></a>简单说明</h3><p>KPOINTS文件在计算中的作用，一方面决定了计算的精度，同时也影响计算所需要的时间。精度高，时间长，精度低，时间短。所以：合理设置KPOINTS文件，可以保证我们使用最少的时间，来获取准确可靠的结果。</p>
 <h3 id="KPOINTS的输入和保存"><a href="#KPOINTS的输入和保存" class="headerlink" title="KPOINTS的输入和保存"></a>KPOINTS的输入和保存</h3><p>打开编辑器，把下面几行输入进去: </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">K-POINTS      #  第一行随便写都行，但不能没有</span><br><span class="line"> 0             # 零，格子自动生成</span><br><span class="line">Gamma         #  gamma点centered </span><br><span class="line">1 1 1         #  1*1*1格子</span><br><span class="line">0 0 0         #  S1 S2 S3， 一般保持 0 0 0 不变。</span><br></pre></td></tr></table></figure>
-
-
-
 <p><strong>详解:</strong></p>
 <ul>
 <li><p>该KPOINTS 文件里面，共有5行，#号以及后面的不用输入；</p>
@@ -434,14 +427,14 @@
 <li><p>第三行：VASP只认第一个字母，大小写均可。在这里Gamma和gamma，Gorge，gorge效果是一样的，当然这一行也可以直接写字母G或者g。</p>
 <ul>
 <li>G表示的是以gamma点为中心生成网格。</li>
-<li>另外一种是原始的Monkhorst-Pack 网格，两者的区别是 M 或者 m 在 G的基础上在三个方向上平移了1&#x2F;（2N）个单位。</li>
+<li>另外一种是原始的Monkhorst-Pack 网格，两者的区别是 M 或者 m 在 G的基础上在三个方向上平移了1/（2N）个单位。</li>
 <li>G，也叫 gamma centered Monkhorst-Pack Grid；所以，gamma centered 只是MP网格的一种特殊情况。</li>
 </ul>
 </li>
 <li><p>第四行，在xyz三个方向上生成对应数目的K点，本例是111;</p>
 <ul>
 <li>对于原子或者分子的计算，K点取一个gamma点就够了（1 1 1），也就是这个KPOINTS文件可以用于绝大多数的原子或者分子计算，不用再修改；</li>
-<li>但如果你要用ISMEAR &#x3D; -5 来计算能量，那么就需要把 1 1 1 改成 2 2 2或者3 3 3。</li>
+<li>但如果你要用ISMEAR = -5 来计算能量，那么就需要把 1 1 1 改成 2 2 2或者3 3 3。</li>
 </ul>
 </li>
 <li><p>第五行，一般都写成 0 0 0 ，不用动即可；</p>
@@ -455,14 +448,12 @@
 </li>
 <li><p>如非六角晶系的计算，如果已经设置的M算起来了，继续用M算就行，没必要改成G再重新算一遍；</p>
 </li>
-<li><p>前面看不懂，没事。<strong>记住这一点，本节就圆满完成任务</strong>：气体分子，原子计算的时候，使用gamma点即可。</p>
-</li>
+<li>前面看不懂，没事。<strong>记住这一点，本节就圆满完成任务</strong>：气体分子，原子计算的时候，使用gamma点即可。</li>
 </ul>
 <p>$\require{mediawiki-texvc}$</p>
-<p>这一节，我们学习VASP计算中模型的文件：<em><strong>POSCAR</strong></em></p>
+<p>这一节，我们学习VASP计算中模型的文件：<strong><em>POSCAR</em></strong></p>
 <h3 id="简单说明-2"><a href="#简单说明-2" class="headerlink" title="简单说明"></a>简单说明</h3><p>POSCAR 里面包含了你要进行计算的模型结构信息。也就是你要研究的对象。POSCAR有自己固定的格式，每一行都有特定的含义，认真掌握这些，对于搭建模型非常有帮助。对于本节的例子：O原子的计算中，我们要把O原子放到一个格子里面，格子大小为：8 $\times$ 8 $\times$ 8 $\AA{^3}$。那么POSCAR应该这样写。</p>
 <h4 id="POSCAR的输入"><a href="#POSCAR的输入" class="headerlink" title="POSCAR的输入"></a>POSCAR的输入</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">O atom in a box </span><br><span class="line">1.0             # universal scaling parameters </span><br><span class="line">8.0 0.0 0.0     # lattice vector a(1) </span><br><span class="line">0.0 8.0 0.0     # lattice vector a(2)  </span><br><span class="line">0.0 0.0 8.0     # lattice vector a(3)  </span><br><span class="line">O               # O element， not zero</span><br><span class="line">1               # number of atoms </span><br><span class="line">Cartesian       # positions in cartesian coordinates </span><br><span class="line">0 0 0           #</span><br></pre></td></tr></table></figure>
-
 <p><strong>详解：</strong></p>
 <ul>
 <li><p>第一行：同样随便写，但不能不写；</p>
@@ -490,8 +481,7 @@
 </li>
 <li><p>第九行：体系中原子的坐标信息。这里我们把O原子放到了原点（0.0 0.0 0.0）的位置，大家也可以随便放一个位置，比如：（4.0 5.0 6.0），（1.1 2.5 6.5）都是可以的。由于周期性的存在，不管你怎么放，相邻两个格子之间氧原子的距离都是一样的。</p>
 </li>
-<li><p>写完之后，和INCAR，KPOINTS文件一样，直接保存成POSCAR即可。</p>
-</li>
+<li>写完之后，和INCAR，KPOINTS文件一样，直接保存成POSCAR即可。</li>
 </ul>
 <h5 id="两点说明"><a href="#两点说明" class="headerlink" title="两点说明"></a>两点说明</h5><ul>
 <li><p>第二行中的Scale factor还可以写成其他的数字，例如：写成2.0，则后面的格子以及原子坐标相关的数值都要除以2。一般来说，写成1.0即可，这样比较直观，清晰;</p>
@@ -503,12 +493,11 @@
 <li>学会写O原子在格子里面这个模型的POSCAR；</li>
 <li>知道每一行所代表的含义。</li>
 </ul>
-<p>这一节，我们学习VASP计算中的赝势文件：<em><strong>POTCAR</strong></em></p>
+<p>这一节，我们学习VASP计算中的赝势文件：<strong><em>POTCAR</em></strong></p>
 <h3 id="简单说明-3"><a href="#简单说明-3" class="headerlink" title="简单说明"></a>简单说明</h3><p>如果组里安装了VASP，则在某个目录下，一定会有对应的一套对应的赝势文件，本书默认大家已经知道去哪里找，不讨论从哪里下载POTCAR（小窍门：一般各个VASP相关的QQ群中，都会有打包的POTCAR文件）。在该目录下， 一般来说，会有LDA，PBE，和PW91这三个文件夹，主流的计算一般都是用PBE。当你进入PBE的文件夹后，就会找到各个元素所对应的POTCAR文件了。</p>
 <p><strong>POTCAR中各项的含义</strong></p>
 <p>POTCAR中有很多信息，对于大部分的参数，本人也是只认识字母，不知具体含义，所以只能介绍一下在实际计算中会用到的一些参数。我们用Fe的POTCAR中前面的几行作为一个例子，简单介绍一下。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">PAW_PBE Fe 06Sep2000</span><br><span class="line">8.00000000000000000</span><br><span class="line">parameters from PSCTR are:</span><br><span class="line">  VRHFIN =Fe:  d7 s1</span><br><span class="line">  LEXCH  = PE</span><br><span class="line">  EATOM  =   594.4687 eV,   43.6922 Ry</span><br><span class="line"></span><br><span class="line">  TITEL  = PAW_PBE Fe 06Sep2000</span><br><span class="line">  LULTRA =        F    use ultrasoft PP ?</span><br><span class="line">  IUNSCR =        1    unscreen: 0-lin 1-nonlin 2-no</span><br><span class="line">  RPACOR =    2.000    partial core radius</span><br><span class="line">  POMASS =   55.847; ZVAL   =    8.000    mass and valenz</span><br><span class="line">  RCORE  =    2.300    outmost cutoff radius</span><br><span class="line">  RWIGS  =    2.460; RWIGS  =    1.302    wigner-seitz radius (au A)</span><br><span class="line">  ENMAX  =  267.883; ENMIN  =  200.912 eV</span><br><span class="line">  RCLOC  =    1.701    cutoff for local pot</span><br><span class="line">  LCOR   =        T    correct aug charges</span><br><span class="line">  LPAW   =        T    paw PP</span><br><span class="line">  EAUG   =  511.368</span><br><span class="line">  DEXC   =    -.022</span><br><span class="line">  RMAX   =    2.817    core radius for proj-oper</span><br><span class="line">  RAUG   =    1.300    factor for augmentation sphere</span><br><span class="line">  RDEP   =    2.442    radius for radial grids</span><br><span class="line">  QCUT   =   -4.437; QGAM   =    8.874    optimization parameters</span><br></pre></td></tr></table></figure>
-
 <p>依个人的学习经验，VRHFIN， LEXCH，TITEL，ZVAL，ENMAX是用到最多的几个参数。</p>
 <ul>
 <li>VRHFIN 用来看元素的价电子排布，如果你元素周期表倒背如流，可以忽略这个参数；</li>
@@ -524,33 +513,25 @@
 <li>此时，我们就需要学习一个非常有用的Linux命令了： grep。 下面是我们使用grep命令，来获取所有与Fe相关POTCAR的价电子信息。</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ ls Fe*</span><br><span class="line">Fe:</span><br><span class="line">POTCAR  PSCTR</span><br><span class="line"></span><br><span class="line">Fe_GW:</span><br><span class="line">POTCAR  PSCTR</span><br><span class="line"></span><br><span class="line">Fe_pv:</span><br><span class="line">POTCAR  PSCTR</span><br><span class="line"></span><br><span class="line">Fe_sv:</span><br><span class="line">POTCAR  PSCTR</span><br><span class="line"></span><br><span class="line">Fe_sv_GW:</span><br><span class="line">POTCAR  PSCTR</span><br><span class="line"></span><br><span class="line">$ grep ZVAL Fe*/POTCAR</span><br><span class="line">Fe/POTCAR:   POMASS =   55.847; ZVAL   =    8.000    mass and valenz</span><br><span class="line">Fe_GW/POTCAR:   POMASS =   55.847; ZVAL   =    8.000    mass and valenz</span><br><span class="line">Fe_pv/POTCAR:   POMASS =   55.847; ZVAL   =   14.000    mass and valenz</span><br><span class="line">Fe_sv/POTCAR:   POMASS =   55.847; ZVAL   =   16.000    mass and valenz</span><br><span class="line">Fe_sv_GW/POTCAR:   POMASS =   55.847; ZVAL   =   16.000    mass and valenz</span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>还有把内层d轨道考虑到价电子层里面去的，比如：Ge_d。</li>
 <li>某些元素，还有一些以 _h， _s 结尾的，应该是 hard和soft的缩写。带h的POTCAR中截断能比普通的要高出很多。带s的截断能要小很多。这里我们就可以通过grep 结合 ENMAX来查看一下：</li>
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ grep ENMAX Ge*/POTCAR</span><br><span class="line">Ge/POTCAR:   ENMAX  =  173.807; ENMIN  =  130.355 eV</span><br><span class="line">Ge_d/POTCAR:   ENMAX  =  310.294; ENMIN  =  232.720 eV</span><br><span class="line">Ge_d_GW/POTCAR:   ENMAX  =  375.434; ENMIN  =  281.576 eV</span><br><span class="line">Ge_GW/POTCAR:   ENMAX  =  173.807; ENMIN  =  130.355 eV</span><br><span class="line">Ge_h/POTCAR:   ENMAX  =  410.425; ENMIN  =  307.818 eV</span><br><span class="line">Ge_sv_GW/POTCAR:   ENMAX  =  410.425; ENMIN  =  307.818 eV</span><br></pre></td></tr></table></figure>
-
-
-
 <p><strong>POTCAR的选择</strong></p>
 <p>既然对于同一个元素，存在那么多的POTCAR类型，计算的时候我们改怎么选择呢？这里大师兄只能给的建议是：如果没有特别的需求，直接采用VASP官网推荐的即可。参考链接：</p>
 <p><a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/vasp/vasp/Recommended_PAW_potentials_DFT_calculations_using_vasp_5_2.html">https://cms.mpi.univie.ac.at/vasp/vasp/Recommended_PAW_potentials_DFT_calculations_using_vasp_5_2.html</a></p>
 <p>我们在计算的时候，根据体系中的元素，将这些元素的POTCAR结合起来，组成一个新的POTCAR，这个结合的步骤，我们需要用到Linux的另一个命令：cat。比如VASP官网的例子，体系中含有Al， C，H三种元素。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat ~/pot/Al/POTCAR ~/pot/C/POTCAR ~/pot/H/POTCAR &gt;POTCAR</span><br></pre></td></tr></table></figure>
-
 <p>通过这一行命令就可以把Al，C，H各自的POTCAR结合在一起。OUTCAR中的元素顺序一定要和POSCAR保持一致,否则计算会出错，为了避免计算出错，还有一些高级的方法，这个在后面会慢慢讲解。</p>
 <p>本节讲的是O原子的计算，官网推荐的氧原子POTCAR，默认的截断能是400，价层有6个原子。直接把O这个文件夹中的POTCAR直接复制到INCAR所在的目录即可。</p>
 <p><strong>POTCAR检查常用的Linux命令：</strong></p>
 <p>查看POTCAR中的元素:  </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep  TIT POTCAR</span><br></pre></td></tr></table></figure>
-
 <p>查看POTCAR的截断能: </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep  ENMAX POTCAR</span><br></pre></td></tr></table></figure>
-
 <p>查看POTCAR中元素的价电子数目：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep  ZVAL POTCAR</span><br></pre></td></tr></table></figure>
-
 <p>举一反三，只要找到了关键词，我们就可以通过grep命令来进行查看。</p>
 <h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>这一节，我们简单介绍了一下POTCAR中的内容，选取规则，以及通过grep命令和关键词进行查看。如果你能独立完成下面的几点，就圆满完成了本节的学习：</p>
 <ul>
@@ -563,8 +544,7 @@
 <p>本书的名字为：The Hard Way。意思是，学习VASP并不是一蹴而就的，需要一个长时间的积累过程。所以，新手切勿急躁，很多内容看不懂不要紧，务必要静下心来浏览一遍，自己跟着说明亲自去实践，切不可复制粘贴。 本节所讲解的东西，都务必去VASP官网找对应的说明，认真阅读，反复思考。养成潜心学习官网教程的良好习惯，从而远离网络上那些错误的信息。尤其是对于新手来说，很多都不懂的时候，没有自己的主见，别人一说就被牵着鼻子走了。</p>
 <p><strong>相关的参考资料：</strong></p>
 <ol>
-<li><p>Vim使用练习：自己搜资料学习，百度里面很多，学会怎么输入，保存。</p>
-</li>
+<li>Vim使用练习：自己搜资料学习，百度里面很多，学会怎么输入，保存。</li>
 <li><p>VASP文件: <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node50.html">http://cms.mpi.univie.ac.at/vasp/guide/node50.html</a></p>
 </li>
 <li><p>INCAR:    <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node91.html">http://cms.mpi.univie.ac.at/vasp/guide/node91.html</a></p>
@@ -573,18 +553,12 @@
 </li>
 <li><p>KPOINTS2:  <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/vasp/vasp/Automatic_k_mesh_generation.html">https://cms.mpi.univie.ac.at/vasp/vasp/Automatic_k_mesh_generation.html</a></p>
 </li>
-<li><p>POSCAR1:   <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node59.html">http://cms.mpi.univie.ac.at/vasp/guide/node59.html</a></p>
-</li>
-<li><p>POSCAR2:  <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/vasp/vasp/POSCAR_file.html">https://cms.mpi.univie.ac.at/vasp/vasp/POSCAR_file.html</a></p>
-</li>
-<li><p>POTCAR1:   <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node54.html">http://cms.mpi.univie.ac.at/vasp/guide/node54.html</a></p>
-</li>
-<li><p>POTCAR2:   <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/vasp/vasp/Recommended_PAW_potentials_DFT_calculations_using_vasp_5_2.html">https://cms.mpi.univie.ac.at/vasp/vasp/Recommended_PAW_potentials_DFT_calculations_using_vasp_5_2.html</a></p>
-</li>
-<li><p>ISMEAR1:   <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node124.html">http://cms.mpi.univie.ac.at/vasp/guide/node124.html</a></p>
-</li>
-<li><p>ISMEAR2:   <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/vasp/Number_k_points_method_smearing.html">http://cms.mpi.univie.ac.at/vasp/vasp/Number_k_points_method_smearing.html</a></p>
-</li>
+<li>POSCAR1:   <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node59.html">http://cms.mpi.univie.ac.at/vasp/guide/node59.html</a></li>
+<li>POSCAR2:  <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/vasp/vasp/POSCAR_file.html">https://cms.mpi.univie.ac.at/vasp/vasp/POSCAR_file.html</a></li>
+<li>POTCAR1:   <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node54.html">http://cms.mpi.univie.ac.at/vasp/guide/node54.html</a></li>
+<li>POTCAR2:   <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/vasp/vasp/Recommended_PAW_potentials_DFT_calculations_using_vasp_5_2.html">https://cms.mpi.univie.ac.at/vasp/vasp/Recommended_PAW_potentials_DFT_calculations_using_vasp_5_2.html</a></li>
+<li>ISMEAR1:   <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node124.html">http://cms.mpi.univie.ac.at/vasp/guide/node124.html</a></li>
+<li>ISMEAR2:   <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/vasp/Number_k_points_method_smearing.html">http://cms.mpi.univie.ac.at/vasp/vasp/Number_k_points_method_smearing.html</a></li>
 </ol>
 
     </div>

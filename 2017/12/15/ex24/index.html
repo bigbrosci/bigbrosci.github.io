@@ -20,12 +20,12 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="按照前面一节介绍的方法，结构优化过程完毕后，准备频率计算的输入文件，提交任务等待结束。然后我们介绍一下频率计算的输出与POSCAR原子的固定。 1 查看结果1.1 查看OSZICAR，你会发现一共计算了55步。 下面我们分析一下这$55$步是怎么回事： A）乙醇分子$\rm{CH_{3}CH_{2}OH}$ 含有 $9$ 个原子，每个原子在 $x, y, z$三个方向上均有一个自由度，共 $9 \">
+<meta name="description" content="按照前面一节介绍的方法，结构优化过程完毕后，准备频率计算的输入文件，提交任务等待结束。然后我们介绍一下频率计算的输出与POSCAR原子的固定。 1 查看结果1.1 查看OSZICAR，你会发现一共计算了55步。 下面我们分析一下这$55$步是怎么回事： A）乙醇分子$\rm{CH{3}CH{2}OH}$ 含有 $9$ 个原子，每个原子在 $x, y, z$三个方向上均有一个自由度，共 $9 \ti">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ex24 乙醇分子的振动频率计算(二)">
 <meta property="og:url" content="http://www.bigbrosci.com/2017/12/15/ex24/index.html">
 <meta property="og:site_name" content="Learn VASP The Hard Way">
-<meta property="og:description" content="按照前面一节介绍的方法，结构优化过程完毕后，准备频率计算的输入文件，提交任务等待结束。然后我们介绍一下频率计算的输出与POSCAR原子的固定。 1 查看结果1.1 查看OSZICAR，你会发现一共计算了55步。 下面我们分析一下这$55$步是怎么回事： A）乙醇分子$\rm{CH_{3}CH_{2}OH}$ 含有 $9$ 个原子，每个原子在 $x, y, z$三个方向上均有一个自由度，共 $9 \">
+<meta property="og:description" content="按照前面一节介绍的方法，结构优化过程完毕后，准备频率计算的输入文件，提交任务等待结束。然后我们介绍一下频率计算的输出与POSCAR原子的固定。 1 查看结果1.1 查看OSZICAR，你会发现一共计算了55步。 下面我们分析一下这$55$步是怎么回事： A）乙醇分子$\rm{CH{3}CH{2}OH}$ 含有 $9$ 个原子，每个原子在 $x, y, z$三个方向上均有一个自由度，共 $9 \ti">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://www.bigbrosci.com/2017/12/15/ex24/ex24-1.jpeg">
 <meta property="og:image" content="http://www.bigbrosci.com/2017/12/15/ex24/ex24-2.jpeg">
@@ -300,20 +300,18 @@
     
     <div class="post-body" itemprop="articleBody">
         <p>按照前面一节介绍的方法，结构优化过程完毕后，准备频率计算的输入文件，提交任务等待结束。然后我们介绍一下频率计算的输出与POSCAR原子的固定。</p>
-<h2 id="1-查看结果"><a href="#1-查看结果" class="headerlink" title="1 查看结果"></a>1 查看结果</h2><h3 id="1-1-查看OSZICAR，你会发现一共计算了55步。"><a href="#1-1-查看OSZICAR，你会发现一共计算了55步。" class="headerlink" title="1.1 查看OSZICAR，你会发现一共计算了55步。"></a>1.1 查看OSZICAR，你会发现一共计算了55步。</h3><p><img src="/2017/12/15/ex24/ex24-1.jpeg"></p>
+<h2 id="1-查看结果"><a href="#1-查看结果" class="headerlink" title="1 查看结果"></a>1 查看结果</h2><h3 id="1-1-查看OSZICAR，你会发现一共计算了55步。"><a href="#1-1-查看OSZICAR，你会发现一共计算了55步。" class="headerlink" title="1.1 查看OSZICAR，你会发现一共计算了55步。"></a>1.1 查看OSZICAR，你会发现一共计算了55步。</h3><p><img src="/2017/12/15/ex24/ex24-1.jpeg" alt=""></p>
 <p>下面我们分析一下这$55$步是怎么回事：</p>
-<p>A）乙醇分子$\rm{CH_{3}CH_{2}OH}$ 含有 $9$ 个原子，每个原子在 $x, y, z$三个方向上均有一个自由度，共 $9 \times 3 &#x3D; 27$ 个</p>
-<p>B）我们设置的<code>NFREE=2</code> ，也就是在每个方向上 <code>+POTIM</code> 和 <code>–POTIM</code>都移动并算一下，这样就有了 $27 \times 2 &#x3D; 54$ 步：官网原文如下：大家自己去查阅<code>IBRION</code>和<code>NFREE</code>的相关内容。</p>
+<p>A）乙醇分子$\rm{CH<em>{3}CH</em>{2}OH}$ 含有 $9$ 个原子，每个原子在 $x, y, z$三个方向上均有一个自由度，共 $9 \times 3 = 27$ 个</p>
+<p>B）我们设置的<code>NFREE=2</code> ，也就是在每个方向上 <code>+POTIM</code> 和 <code>–POTIM</code>都移动并算一下，这样就有了 $27 \times 2 = 54$ 步：官网原文如下：大家自己去查阅<code>IBRION</code>和<code>NFREE</code>的相关内容。</p>
 <blockquote>
-<p>The parameter NFREEdetermines how many displacements are used for each direction and ion, andPOTIM determines the step size. The step size is defaulted to 0.015 ? (startingfrom VASP.5.1), if too large values are supplied in the input file. Expertiseshows that this is a very reasonable compromise.&#96;</p>
+<p>The parameter NFREEdetermines how many displacements are used for each direction and ion, andPOTIM determines the step size. The step size is defaulted to 0.015 ? (startingfrom VASP.5.1), if too large values are supplied in the input file. Expertiseshows that this is a very reasonable compromise.`</p>
+<p>NFREE=2 usescentral differences, i.e., each ion is displaced by a small positive andnegative displacement, ±POTIM, along each of the cartesian directions.`</p>
 </blockquote>
-<blockquote>
-<p>NFREE&#x3D;2 usescentral differences, i.e., each ion is displaced by a small positive andnegative displacement, ±POTIM, along each of the cartesian directions.&#96;</p>
-</blockquote>
-<p>C）还有一步：$55  -54 &#x3D; 1$, 这一步指的是第一个离子步，为频率计算前的单点计算。</p>
+<p>C）还有一步：$55  -54 = 1$, 这一步指的是第一个离子步，为频率计算前的单点计算。</p>
 <p>所以当你设置了<code>NFREE=2</code>的时候，频率计算需要 $1+N \times 6$ 步。$N$ 为体系中的振动的原子数。</p>
 <h2 id="2-固定原子"><a href="#2-固定原子" class="headerlink" title="2 固定原子"></a>2 固定原子</h2><p>默认的是所有的原子在$x, y, z$三个方向上均可移动。但很多时候，我们只需要振动感兴趣的原子或者某一特定的方向就可以了，也就是说选择性计算频率。比如我们只想算乙醇的羟基振动峰，那么其他的原子就可以固定。VASP可以通过设置POSCAR来实现这个功能？首先我们看一下当前的<code>POSCAR</code>：</p>
-<p><img src="/2017/12/15/ex24/ex24-2.jpeg"></p>
+<p><img src="/2017/12/15/ex24/ex24-2.jpeg" alt=""></p>
 <p>左下角的<code>:set nu</code>  显示文本的行数，取消行数可以通过 <code>:set nonu</code></p>
 <hr>
 <p>如果想要选择性地固定某些原子，我们需要以下几个步骤：</p>
@@ -329,34 +327,34 @@
 <p>是的，下面大师兄教给你的是通过 <strong>Vim</strong> 的命令或者 <strong>p4vasp</strong> 实现这个功能。</p>
 <hr>
 <h3 id="2-1-通过-Vim-实现原子的固定和选择"><a href="#2-1-通过-Vim-实现原子的固定和选择" class="headerlink" title="2.1 通过 Vim 实现原子的固定和选择"></a>2.1 通过 <strong>Vim</strong> 实现原子的固定和选择</h3><p><strong>第一步</strong>：加入 <code>Select</code> 的关键字母<code>S</code>，并在坐标后面全部加上 <code>T T T</code></p>
-<p><img src="/2017/12/15/ex24/ex24-3.jpeg"></p>
+<p><img src="/2017/12/15/ex24/ex24-3.jpeg" alt=""></p>
 <p>图中<code>箭头1</code>：插入一行，告诉 <strong>VASP</strong> 我们要选择性的固定某些原子或者在某些方向上；</p>
 <p>图中<code>方块2</code> <code>:10,18s</code>  中 <code>s</code> 代表替换（<code>substitute</code>）的意思，这里表示我们选中了第 $10$ 到 $18$ 行，$10$ 和 $18$ 之间有个逗号表示连续；<code>10,18s</code>后面用一个 <code>/</code> 分开，紧跟着你我们要替换的内容；</p>
 <p><code>$</code> 在这里是末尾的意思，<code>$/T T T</code>我们要把每一行的最后替换成 <code>T T T</code></p>
 <p>后面再用一个<code>/</code>分开，加上<code>g</code> 表示 global 全部替换的意思。</p>
 <p>输入完毕后，回车，效果如下：</p>
-<p><img src="/2017/12/15/ex24/ex24-4.jpeg"></p>
+<p><img src="/2017/12/15/ex24/ex24-4.jpeg" alt=""></p>
 <p>每一行的末尾都加入了 <code>T T T</code>  箭头指的地方告诉我们：$9$ 行中的 $9$ 个地方发生了替换。</p>
 <p>（自己复习下<code>sed</code>的用法，比较两者的区别）</p>
 <hr>
 <p><strong>第二步</strong>，下面我们要把OH之外的原子全部固定住：</p>
 <p>通过 <strong>p4vasp</strong> 我们可以知道，OH 的两个原子为第一个（O）和最后一个（H），因此我们把第 $11$ 行到 $17$ 行中的所有<code>T</code>替换成<code>F</code>就可以了。我们可以使用 <code>:11,17s/T/F/g</code>来实现。最后效果如下：</p>
-<p><img src="/2017/12/15/ex24/ex24-5.jpeg"></p>
+<p><img src="/2017/12/15/ex24/ex24-5.jpeg" alt=""></p>
 <p>C）扩展：</p>
 <p>如果所有的原子后面为： <code>T T T</code>，这与我们之前的计算效果是一样的（第 $8$ 行没有<code>S</code>，坐标后面没有<code>T T T</code>）。此外，固定之前要先找到哪些原子我们希望固定的，以及它们在坐标中的顺序。</p>
 <hr>
 <h3 id="2-2-使用p4vasp实现上述功能"><a href="#2-2-使用p4vasp实现上述功能" class="headerlink" title="2.2 使用p4vasp实现上述功能:"></a>2.2 使用p4vasp实现上述功能:</h3><p>基于 <strong>p4vasp</strong> 的可视化特性，直接用鼠标操作是很多<code>linux</code> 小白最喜欢看到的，下面我们主要讲解一下 <strong>p4vasp</strong> 的操作，请务必将 <strong>Vim</strong> 和 <strong>p4vasp</strong> 的操作关联起来，这样你会就会发现可视化和命令之间的微妙关系了。</p>
-<h4 id="1）-打开p4vasp，导入POSCAR；"><a href="#1）-打开p4vasp，导入POSCAR；" class="headerlink" title="1） 打开p4vasp，导入POSCAR；"></a>1） 打开p4vasp，导入<code>POSCAR</code>；</h4><p><img src="/2017/12/15/ex24/ex24-6.jpeg"></p>
+<h4 id="1）-打开p4vasp，导入POSCAR；"><a href="#1）-打开p4vasp，导入POSCAR；" class="headerlink" title="1） 打开p4vasp，导入POSCAR；"></a>1） 打开p4vasp，导入<code>POSCAR</code>；</h4><p><img src="/2017/12/15/ex24/ex24-6.jpeg" alt=""></p>
 <p><code>System</code> 显示 ethanol 说明数据已导入。</p>
 <h4 id="2）-鼠标系列操作"><a href="#2）-鼠标系列操作" class="headerlink" title="2）   鼠标系列操作"></a>2）   鼠标系列操作</h4><p>A）点一下 <code>Show</code> 按钮，显示乙醇分子结构；</p>
 <p>B）  点击<code>Build</code>按钮：显示分子的坐标信息：这里的坐标顺序和<code>POSCAR</code>完全一致：</p>
-<p><img src="/2017/12/15/ex24/ex24-7.jpeg"></p>
+<p><img src="/2017/12/15/ex24/ex24-7.jpeg" alt=""></p>
 <p>C）  选择乙醇的羟基（使用空格键选择原子），下图中可以知道 O 和 H 在坐标顺序中为第一个和最后一个；</p>
-<p><img src="/2017/12/15/ex24/ex24-8.jpeg"></p>
+<p><img src="/2017/12/15/ex24/ex24-8.jpeg" alt=""></p>
 <p>D）选中右上角的<code>Selective Dynamics</code>，效果如图中箭头2指出来的部分，这个动作和我们之前在第八行插入<code>Selective Dynamics</code> 以及在坐标每一行加入<code>T T T</code>是等效的</p>
-<p><img src="/2017/12/15/ex24/ex24-9.jpeg"></p>
+<p><img src="/2017/12/15/ex24/ex24-9.jpeg" alt=""></p>
 <p>E）选中第二行坐标，摁住shift键，然后再点一下倒数第二行，选中整个区域后，点击右上方的 <code>Unselect</code> ， 这个动作等效于我们将 $11$ 到 $17$ 行中的<code>T</code>全部替换为<code>F</code>。</p>
-<p><img src="/2017/12/15/ex24/ex24-10.jpeg"></p>
+<p><img src="/2017/12/15/ex24/ex24-10.jpeg" alt=""></p>
 <p>F）操作完成后，左上角： <code>File --&gt; Save System As</code> 保存新的<code>POSCAR</code>即可。</p>
 <hr>
 <h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a>4 扩展练习：</h2><p>4.1 掌握本节的两个<code>POSCAR</code>处理方法；</p>
