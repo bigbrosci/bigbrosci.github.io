@@ -229,7 +229,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-04-29 05:30:16 / 修改时间：23:01:58" itemprop="dateCreated datePublished" datetime="2022-04-29T05:30:16-04:00">2022-04-29</time>
+      <time title="创建时间：2022-04-29 05:30:16 / 修改时间：23:15:07" itemprop="dateCreated datePublished" datetime="2022-04-29T05:30:16-04:00">2022-04-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -288,7 +288,7 @@
 <p><img src="/2022/04/29/A30/fig3.png"></p>
 <p>建议大家关注下VASP的Youtube频道，这么牛逼的软件，才300多号人关注。哈哈。不过得科学上网，没有条件可以通过大师兄分享的网盘链接下载，</p>
 <p>下载方式：关注公众号：大师兄科研网，后台回复： youtube   即可。</p>
-<img src="/2022/04/29/A30/A28/qrcode.JPG" style="zoom:25%;">
+<p><img src="/2022/04/29/A30/qrcode.png"></p>
 
       
     </div>
@@ -340,7 +340,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2022-04-29 00:30:16 / 修改时间：23:01:47" itemprop="dateCreated datePublished" datetime="2022-04-29T00:30:16-04:00">2022-04-29</time>
+      <time title="创建时间：2022-04-29 00:30:16 / 修改时间：23:15:06" itemprop="dateCreated datePublished" datetime="2022-04-29T00:30:16-04:00">2022-04-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -411,7 +411,9 @@
 </ol>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Qiang Li</span></span><br><span class="line"><span class="string">Command: python3 vib_correct.py</span></span><br><span class="line"><span class="string">This is a temporary script file.</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment">#获取虚频开始行</span></span><br><span class="line">l_position = <span class="number">0</span>  <span class="comment">#虚频振动方向部分在OUTCAR中的起始行数</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;OUTCAR&#x27;</span>) <span class="keyword">as</span> f_in:</span><br><span class="line">    lines = f_in.readlines()</span><br><span class="line">    wave_num = <span class="number">0.0</span></span><br><span class="line">    <span class="keyword">for</span> num, line <span class="keyword">in</span> <span class="built_in">enumerate</span>(lines):</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;f/i&#x27;</span> <span class="keyword">in</span> line:</span><br><span class="line">            wave_tem = <span class="built_in">float</span>(line.rstrip().split()[<span class="number">6</span>])</span><br><span class="line">            <span class="keyword">if</span> wave_tem &gt; wave_num: <span class="comment">#获取最大的虚频</span></span><br><span class="line">                wave_num = wave_tem</span><br><span class="line">                l_position = num+<span class="number">2</span></span><br><span class="line"><span class="comment"># 读POSCAR</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;POSCAR&#x27;</span>) <span class="keyword">as</span> f_pos:</span><br><span class="line">    lines_pos = f_pos.readlines()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取虚频对应的OUTCAR部分    </span></span><br><span class="line">num_atoms = <span class="built_in">sum</span>([<span class="built_in">int</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> lines_pos[<span class="number">6</span>].rstrip().split()])</span><br><span class="line">vib_lines = lines[l_position:l_position + num_atoms] <span class="comment">#振动部分 7222到7248行</span></span><br><span class="line"></span><br><span class="line">model_positions = []</span><br><span class="line">vib_dis = []</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> vib_lines:</span><br><span class="line">    position = [<span class="built_in">float</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> line.rstrip().split()[:<span class="number">3</span>]]</span><br><span class="line">    vib_infor = [<span class="built_in">float</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> line.rstrip().split()[<span class="number">3</span>:]] <span class="comment"># dx， dy， dz对应的那三列</span></span><br><span class="line">    model_positions.append(position)</span><br><span class="line">    vib_dis.append(vib_infor)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 微调结构</span></span><br><span class="line">model_positions = np.array(model_positions)</span><br><span class="line">vib_dis = np.array(vib_dis) <span class="comment">#将振动部分写到一个array中。</span></span><br><span class="line">new_positions = model_positions + vib_dis * <span class="number">0.4</span> <span class="comment"># 0.4是微调的校正因子，即虚频对应振动位移的0.4，具体多大自己根据经验调。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###保存结构</span></span><br><span class="line">f_out = <span class="built_in">open</span>(<span class="string">&#x27;POSCAR_new&#x27;</span>,<span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">f_out.writelines(lines_pos[:<span class="number">8</span>])</span><br><span class="line">f_out.write(<span class="string">&#x27;Cartesian\n&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> new_positions:</span><br><span class="line">    f_out.write(<span class="string">&#x27; &#x27;</span>.join([<span class="built_in">str</span>(coord) <span class="keyword">for</span> coord <span class="keyword">in</span> i]) + <span class="string">&#x27;  F  F  F\n&#x27;</span>)</span><br><span class="line">f_out.close()</span><br></pre></td></tr></table></figure>
 
-<img src="/2022/04/29/A29/A28/qrcode.JPG" style="zoom:25%;">
+
+
+<p><img src="/2022/04/29/A29/qrcode.png"></p>
 
       
     </div>
@@ -469,7 +471,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-04-29 23:01:31" itemprop="dateModified" datetime="2022-04-29T23:01:31-04:00">2022-04-29</time>
+      <time title="修改时间：2022-04-29 23:15:01" itemprop="dateModified" datetime="2022-04-29T23:15:01-04:00">2022-04-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -542,7 +544,7 @@
 
 <p>没有<code>~/bin</code>的话，自己创建一个即可：<code>mkdir ~/bin</code></p>
 <p>有兴趣的也可以自己尝试着解决周期性边界条件对计算两原子之间距离的影响，GitHub上也有很多类似的代码。也欢迎大家分享自己的代码或者链接；可以发送到我的邮箱：<code>lqcata@gmail.com</code>或者直接Q:<code>122103465</code>，微信：<code>BigBroSci</code> 联系。</p>
-<img src="/2022/04/04/A28/qrcode.JPG" style="zoom:25%;">
+<p><img src="/2022/04/04/A28/qrcode.png"></p>
 
       
     </div>
