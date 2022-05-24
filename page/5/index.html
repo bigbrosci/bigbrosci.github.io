@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">161</span>
+        <span class="site-state-item-count">162</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,190 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/05/ex36/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/02/05/ex36/" class="post-title-link" itemprop="url">Ex36 晶格参数的确定（直接优化晶格常数）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-02-05 02:06:48" itemprop="dateCreated datePublished" datetime="2018-02-05T02:06:48-05:00">2018-02-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/02/05/ex36/" class="post-meta-item leancloud_visitors" data-flag-title="Ex36 晶格参数的确定（直接优化晶格常数）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/02/05/ex36/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/05/ex36/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面一节我们学习了如何通过提交一系列不同晶格常数的单点计算以及拟合BM方程获取稳定结构的方法，此外，我们还学习了BM方程拟合的一个python脚本以及分析了脚本的工作流程。</p>
+<p>师兄，算个晶格常数这也太麻烦了吧？有没有简单点的，一步到位的方法？</p>
+<p>有！！！前面我们提到说可以通过两个方法： BM方程拟合是一个，现在大家已经掌握了。今天我们学习第二个方法。</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ISIF = <span class="number">3</span></span><br><span class="line">ENCUT = XXX</span><br></pre></td></tr></table></figure>
+<h2 id="1-ISIF-参数"><a href="#1-ISIF-参数" class="headerlink" title="1  ISIF 参数"></a>1  ISIF 参数</h2><p>在学习ISIF = 3 前，我们先总结一下，之前不论是单点计算，结构优化，还是频率分析，我们都没有讲过这个参数。因此使用的是默认值。</p>
+<p><img src="/2018/02/05/ex36/ex36-1.png" alt=""></p>
+<p>查找VASP官网说明书，默认值是ISIF= 2 。是的，前面我们都是用的 ISIF = 2 。（废话，等于白说！）你还会发现有一堆其他的ISIF参数，从1 - 7，看的眼花缭乱。</p>
+<p><img src="/2018/02/05/ex36/ex36-2.png" alt=""></p>
+<p>坚持一下，你会发现它们有各自的特点，原子坐标是否变化，晶胞形状是否改变，以及晶胞体系是够变化。不同的参数大家根据自己研究体系的性质进行选取。</p>
+<p>本文主要介绍ISIF = 3 时对晶胞的优化。其他的取值比如加压计算等，为避免对大家造成误解，在这里不做进一步地说明。因为本人计算的时候，只用到过2 和 3 的情况。</p>
+<p>ISIF = 3 的时候，晶胞中原子的坐标，晶胞形状，以及体系都随着优化的过程发生变化。 回到Fe单胞的计算，我们先看一下INCAR的输入，然后再详细解释其中的内容。</p>
+<p><img src="/2018/02/05/ex36/ex36-3.png" alt=""></p>
+<p>对比下，前面单点计算的INCAR，你会发现有几个不同：</p>
+<p>1） ENCUT = 600 设置的比之前的450大。</p>
+<p>2） EDIFFG = -0.015 结构优化的收敛标准</p>
+<p>3） NSW = 100 结构优化，肯定不是一步！</p>
+<p>4） ISIF = 3 （讲的就是ISF =3 ，肯定要加上）</p>
+<p>5） 此外， ISMEAR，SIGMA, ISPIN以及 MAGMOM大家自己主动回顾一下</p>
+<p>PS： 很多人在单点计算的时候，除了NSW = 0， 还画蛇添足地设置了ISIF = 0。虽然对计算结果没有影响，但我还是想问一句：大哥，脑子去哪里了？单点计算就是原子不动弹，设置NSW = 0 或者 1， 或者 IBRION = -1，其他的按照之前的即可。</p>
+<p>POSCAR，KPOINTS，POTCAR直接将前面单点计算目录（1.00）下的复制过来。</p>
+<h2 id="2-ENCUT-取值"><a href="#2-ENCUT-取值" class="headerlink" title="2 ENCUT 取值"></a>2 ENCUT 取值</h2><p>师兄，Fe的ENCUT 默认值是：ENMAX  =  267.882 eV， 前面单点计算设置的 450 eV。这里为什么设置成600 eV ？ </p>
+<p>如果你仔细看VASP官网的说明书，在底部有这么一段话：</p>
+<p><img src="/2018/02/05/ex36/ex36-4.png" alt=""></p>
+<p>红色的链接如下：</p>
+<p><a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/vasp/Volume_vs_energy_volume_relaxations_Pulay_Stress.html">http://cms.mpi.univie.ac.at/vasp/vasp/Volume_vs_energy_volume_relaxations_Pulay_Stress.html</a>   </p>
+<p>最后一句，如果计算时体积发生了变化，我们需要增加ENCUT的值，比如说：ENCUT = 1.3 * max(ENMAX) ， max(ENMAX) 的意思是，如果有N个元素，取最大元素的ENMAX值。</p>
+<p>这么做的原因是为了尽可能地消除 Pulay stress 对计算的影响。那么什么是Pulay Stress 呢？</p>
+<h3 id="3-Pulay-Stress"><a href="#3-Pulay-Stress" class="headerlink" title="3 Pulay Stress"></a>3 Pulay Stress</h3><p><img src="/2018/02/05/ex36/ex36-5.png" alt=""></p>
+<p>通过查看红色的链接内容，字面上的理解就是，当晶胞体积发生变化时，由于计算时的平面波基组不全（设置的ENCUT不够大）使得计算时的收敛不是绝对的，进而导致应力张量不对，最终导致体系的形状，体积以及能量不正确。（这个我不是很懂，字面上直译过来的。）维基百科的描述如下，链接：<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Pulay_Stress">https://en.wikipedia.org/wiki/Pulay_Stress</a></p>
+<p><img src="/2018/02/05/ex36/ex36-6.png" alt=""></p>
+<p>A plane wave basis set is created for thehexagonal lattice (left), using the reciprocal lattice vectors inside the redcircle. Then the lattice relaxes into a cubic symmetry (right). Keeping the redcircle basis constant results in lattice vectors taken from an ellipsoidinstead of a spherical area (compare to the blue circle).</p>
+<p>深层次的俺也不懂，但是PulayStess 有2个办法可以减小： </p>
+<p>A)  体积不变，采用一系列的晶格常数计算，然后拟合得到准确的晶格常数；（你已经知道怎么去做了，这么做是为了避免计算时晶格体积发生变化！）；</p>
+<p>注意： </p>
+<p>1） 在LVASPTHW的拟合流程中，拟合出来的是BM方程， BM方程的最高次数是3，也就是x的三次方。此时：x = (1/a$^2$)  ，具体见Ex32-35的详细说明。</p>
+<p>2) 如果直接用晶格常数去拟合，则是6次方的关系。</p>
+<p><img src="/2018/02/05/ex36/ex36-8.png" alt=""></p>
+<p>3) 如果你用体积去拟合BM方程的话，最高次数是2：</p>
+<p><img src="/2018/02/05/ex36/ex36-9.png" alt=""></p>
+<p>B)  既然是因为ENCUT不够导致的，那么我就使劲增加ENCUT来消除（上图中unless后面的那句）。借用维基百科的一句话：Pulay stress can be reduced by increasing the energy cutoff. 所以，当有人用ISIF= 3计算，而不去设置ENCUT的时候，尽情地去嘲笑他傻X吧！！！感觉不过瘾，还可以继续吓唬他说后面的计算也有问题。</p>
+<h2 id="4-ENCUT-取值"><a href="#4-ENCUT-取值" class="headerlink" title="4 ENCUT 取值"></a>4 ENCUT 取值</h2><p>官网说设置到130% * max(ENMAX)，一般来说就可以了。但很多人还是不放心，那我们就继续疯狂一些，设置到600 或者700。本人一般习惯用600。</p>
+<p>师兄，前面你不是讲到增加ENCUT会增加计算量么？而且要保持计算中使用同一个计算的参数？</p>
+<p>是的，这些你说的都是正确的。但是，我们使用ISIF = 3 的目的是获取稳定的晶格常数，但为了避免Pulay stress导致的误差，就必须要增加ENCUT（No Choice！！！）。一旦我们计算完成晶格常数的计算后，可以在此结果基础上，统一使用其他的ENCUT值进行计算。也就是只有确定晶格常数的这一步是个例外，其他情况还是用原来的值。</p>
+<p><img src="/2018/02/05/ex36/ex36-10.jpeg" alt=""></p>
+<p>举个不恰当的例子，这就好比当初你追女朋友的时候，为讨人家欢心，疯狂地买买买，什么要求都答应。等追到手了，结婚了，新鲜劲过去了，就原形毕露，不再这么大手大脚地去疯狂了。 </p>
+<p><img src="/2018/02/05/ex36/ex36-11.jpeg" alt=""></p>
+<p>讲到这里，使用ISIF = 3 时，你脑子第一反应就是疯狂地增加ENCUT，600不够，上700， 700感觉不够，上800，在计算承受的范围之内，越大越好！ 因此ISIF = 3 和 ENCUT两个参数必须同时出现。</p>
+<h2 id="5-计算结果"><a href="#5-计算结果" class="headerlink" title="5  计算结果"></a>5  计算结果</h2><p>设置完后，提交任务：计算出来的Fe晶格参数为： 2.8318 Å，对比下前面拟合出来的结果： 2.8332 Å，两者相差：0.0014 / 2.8332 = 0.019 %， 这么点误差，完全可以忽略掉了。如果不放心，将ISIF =3 的结果，使用前面的设置，算个单点，然后跟BM拟合结果对比下，两者能量相差甚微，完全可以忽略。 </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Methods</th>
+<th>Lattice Constant</th>
+<th style="text-align:left">Energy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BM拟合</td>
+<td>2.8332 $\AA$</td>
+<td style="text-align:left">-16.47179683 eV</td>
+</tr>
+<tr>
+<td>直接优化（ISIF=3，ENCUT=600）</td>
+<td>2.8318 $\AA $</td>
+<td style="text-align:left">-16.47181669 eV</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="6-总结："><a href="#6-总结：" class="headerlink" title="6 总结："></a>6 总结：</h2><p>学习完本节，怎么计算晶格常数的两个方法你应该都掌握了，希望大家能学到的东西有以下几个：</p>
+<p>1 什么是BM方程？</p>
+<p>2 BM方程拟合的方法（最小二乘法，脚本以及运行）；</p>
+<p>3 BM方程获取晶格常数的原理；</p>
+<p>4 ISIF = 3 和 ENCUT 必须同时设置；</p>
+<p>5 Pulay Stress 是什么，如何避免； </p>
+<p>6 （ISPIN，MAGMOM）：什么时候加，怎么设置；</p>
+<p>7 （ISMEAR，SIMGA）：什么体系用什么值，怎么设置；</p>
+<p>8 （IBRION，POTIM，NSW）：根据初始结构好坏进行设置；</p>
+<p>9 （EDIFF，EDIFFG）：怎么决定收敛的；</p>
+<p>10  KPOINTS的取值：经验方法（k * a）， 以及脚本；</p>
+<p>11  POTCAR的生成： 手动方法以及脚本。</p>
+<p>12  以及怎么追女朋友，如何防止被追？</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3746,149 +3930,6 @@ E_{ads} = E_{CO + slab} – E_{slab} – E_{CO^{gas}}</script><p>等号后面的
 <hr>
 <h3 id="扩展练习："><a href="#扩展练习：" class="headerlink" title="扩展练习："></a>扩展练习：</h3><p>1 本文所提到的内容，必须去官网查看，并认真阅读，如有不懂的，请在群里自由提问；</p>
 <p>2 思考一下，还有其他因素影响我们的机时吗？</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/07/ex15/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/12/07/ex15/" class="post-title-link" itemprop="url">Ex15 论合理结构的重要性（三）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-12-07 02:06:48" itemprop="dateCreated datePublished" datetime="2017-12-07T02:06:48-05:00">2017-12-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2017/12/07/ex15/" class="post-meta-item leancloud_visitors" data-flag-title="Ex15 论合理结构的重要性（三）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2017/12/07/ex15/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/07/ex15/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>继续前面一节，我们分析一下结构优化过程的细节问题，以及合理结构的重要性。</p>
-<h3 id="哪里出错了？"><a href="#哪里出错了？" class="headerlink" title="哪里出错了？"></a>哪里出错了？</h3><p>查看每一离子步后的能量结果，注意命令中的单引号里面有两个空格！如果你看到这样的结果时，意味着大事不妙，结构优化失败了，SCF 也失败了！！！也就是结构没有优化好，离子步中电子步收敛也同样失败。</p>
-<p>查看一下OSZICAR:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">DAV:  52     0.142641482694E+03   -0.87447E-01   -0.50432E-03   120   0.175E-01    0.188E+00</span><br><span class="line">DAV:  53     0.142675598279E+03    0.34116E-01   -0.20261E-03   120   0.869E-02    0.185E+00</span><br><span class="line">DAV:  54     0.142703773182E+03    0.28175E-01   -0.26393E-03   144   0.121E-01    0.190E+00</span><br><span class="line">DAV:  55     0.142724228087E+03    0.20455E-01   -0.11280E-03   120   0.795E-02    0.193E+00</span><br><span class="line">DAV:  56     0.142809666479E+03    0.85438E-01   -0.29739E-02   120   0.433E-01    0.211E+00</span><br><span class="line">DAV:  57     0.142939449864E+03    0.12978E+00   -0.29353E-02   192   0.367E-01    0.196E+00</span><br><span class="line">DAV:  58     0.142943989012E+03    0.45391E-02   -0.90264E-04    96   0.810E-02    0.193E+00</span><br><span class="line">DAV:  59     0.142966025527E+03    0.22037E-01   -0.43114E-04   120   0.704E-02    0.196E+00</span><br><span class="line">DAV:  60     0.142973535062E+03    0.75095E-02   -0.53590E-05   144   0.234E-02</span><br><span class="line">   3 F= 0.14297354E+03 E0= 0.14297354E+03  d E =0.142711E+03  mag=     0.0441</span><br></pre></td></tr></table></figure>
-<p>这里说明，第三步中电子收敛的步数达到了默认值，被强制停止了。每一个离子步中电子步数的最大值是由NELM这个参数控制的，VASP中默认值为60，也就是最大的电子收敛为60步，过了60步还不收敛就必须停止。自己VASP官网查看下相关的NELM参数。</p>
-<p>下面两行如果你能看懂，说明优化的基本情况已经摸清了。</p>
-<p>电子步（SCF）: <code>EDIFF</code> &lt;====&gt; <code>NELM</code></p>
-<p>离子步（结构优化）：<code>EDIFFG</code> &lt;====&gt; <code>NSW</code></p>
-<h3 id="电子步不收敛怎么办？"><a href="#电子步不收敛怎么办？" class="headerlink" title="电子步不收敛怎么办？"></a>电子步不收敛怎么办？</h3><p>遇到图中这种情况，大师兄分享一下自己的经验：</p>
-<p>1） 首先检查自己的初始结构是不是合理的。这是关键点之一。如果合理，那么再进行下面的步骤：</p>
-<p>2）如果第一个离子步中：<code>SCF</code>（也就是电子步）的计算不收敛，尝试下增加NELM的值；</p>
-<ul>
-<li>对于一般普通的体系可以设置<code>NELM = 100</code></li>
-<li>对于一些电子结构比较难收敛的体系，可以设置更大一些：<code>NELM = 200</code></li>
-<li>增加NELM后依然不收敛，尝试下改变<code>AMIX</code>，<code>BMIX</code>，官网推荐的参数如下：不过个人的感觉，调这些参数好像没什么用，效果甚微。</li>
-</ul>
-<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">AMIX = <span class="number">0.2</span></span><br><span class="line">BMIX = <span class="number">0.00001</span></span><br><span class="line">AMIX_MAG = <span class="number">0.8</span></span><br><span class="line">BMIX_MAG = <span class="number">0.00001</span></span><br></pre></td></tr></table></figure>
-<p>3) 第一个离子步中的电子步收敛了，后面的不收敛，能量变的极大（本例），首先应该想到的是去检查结构，一般在结构不合理的时候会出现类似的情况；调整结构再提交任务。</p>
-<p>4）如果前面几个离子步中电子步都不收敛，且能量变化正常，可以尝试着让任务再多算几步，后面跑着跑着可能就收敛了。</p>
-<p>5）如果跑了很长时间，每一个离子步中的电子步都不收敛，可以尝试着换一个更加稳定的电子步迭代算法（ALGO参数）。这种情况：<code>ALGO = ALL</code>  结合 <code>NELM = 200</code> 可以解决大部分的问题。</p>
-<p>6）但需要注意的是：<code>ALGO= ALL</code> 这个算法虽然稳定，但比较耗时。自己要权衡一下。可以尝试着两步走的战略：step1）先用<code>ALGO =ALL</code>的办法算一个单点，保存WAVECAR。step2）然后将ALGO改回原来的，读WAVECAR继续优化。</p>
-<p>大师兄尝试了很多种办法，意图把初始结构从0.9 $\AA$一步直接计算正确，但是大部分时候都失败了！而且出现了各种各样的问题和错误的结果，因此，出现这种情况，第一直觉是去看结构而不是想着调节参数去怎么解决这个错误！！！从这里可以看到，如果你的初始结构不合理，会出现各种各样的问题，这也是大师兄们解决不了的。</p>
-<h3 id="为什么会这样子"><a href="#为什么会这样子" class="headerlink" title="为什么会这样子"></a>为什么会这样子</h3><p>这是因为：两个氧原子之间距离在初始结构中很小，导致第一步估算之间的作用力过大，以至于后面没有办法再矫正过来。这里我们看一下<code>IBRION=2</code>时的计算步骤。</p>
-<p> <img src="/2017/12/07/ex15/ex15-1.jpeg" alt=""></p>
-<p>第一步，从初始结构出发，计算体系中离子间的作用力，</p>
-<p>第二步，VASP尝试着把离子沿着前面估算的方向移动，尝试移动的大小由<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/POTIM"><code>POTIM</code></a>这一项决定，</p>
-<p>第三步，计算尝试移动后能量和力的大小，据此加入一个矫正项来控制真实移动的大小；</p>
-<p>第四部， 移动后，重新计算能量和力，重复前三步直至能量或者力收敛到我们设置的EDIFFG值。</p>
-<p><code>IBRION = 2</code> 时，对<code>POTIM</code>的依赖性很强，因此我们计算的时候要设置一个合理值。在我们的计算中，由于初始的原子间距离很小，第一步计算时，得到的原子间的初始排斥力很强，第二步中，VASP默认的<code>POTIM</code>值是0.50，前面两步导致了尝试步中离子的移动过大，以至于后面没有办法矫正回来，最后导致O$_2$分子计算出错。</p>
-<h3 id="POTIM-显神威"><a href="#POTIM-显神威" class="headerlink" title="POTIM 显神威"></a>POTIM 显神威</h3><p>大师兄，用0.9 $\AA$的时候可以调节POTIM来获得正确的结果吗？答案是肯定的。</p>
-<p>如果想要正确计算的话，可以设置POTIM一个更小的值。<code>POTIM=0.1</code>，虽然从初始值算出来的力很大，我们通过POTIM强制VASP一点一点调节，来保证计算的准确。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SYSTEM = O atom</span><br><span class="line">ISMEAR = 0</span><br><span class="line">SIGMA = 0.01</span><br><span class="line">ISPIN = 2</span><br><span class="line">MAGMOM = 2*2</span><br><span class="line">IBRION = 2</span><br><span class="line">POTIM = 0.1</span><br><span class="line">NSW = 10</span><br></pre></td></tr></table></figure>
-<p>提交任务，查看结果：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex15$ tail OSZICAR</span><br><span class="line">DAV:   3    -0.984191032147E+01   -0.12318E-01   -0.38005E-02    96   0.891E-01    0.516E-01</span><br><span class="line">DAV:   4    -0.984475378528E+01   -0.28435E-02   -0.74281E-03   144   0.367E-01    0.198E-01</span><br><span class="line">DAV:   5    -0.984632399820E+01   -0.15702E-02   -0.51626E-04    96   0.101E-01    0.914E-02</span><br><span class="line">DAV:   6    -0.984676440618E+01   -0.44041E-03   -0.15294E-04   144   0.511E-02    0.169E-02</span><br><span class="line">DAV:   7    -0.984690803808E+01   -0.14363E-03   -0.99478E-06   144   0.122E-02    0.829E-03</span><br><span class="line">DAV:   8    -0.984706391665E+01   -0.15588E-03   -0.95528E-06   120   0.898E-03    0.489E-03</span><br><span class="line">DAV:   9    -0.984722304729E+01   -0.15913E-03   -0.99988E-06   120   0.862E-03    0.292E-03</span><br><span class="line">DAV:  10    -0.984733039102E+01   -0.10734E-03   -0.63466E-06    96   0.690E-03    0.215E-03</span><br><span class="line">DAV:  11    -0.984738716468E+01   -0.56774E-04   -0.27665E-06    96   0.463E-03</span><br><span class="line">   7 F= -.98473872E+01 E0= -.98473872E+01  d E =-.101099E+02  mag=    -2.0000</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex15$ cat CONTCAR</span><br><span class="line">O</span><br><span class="line">   1.00000000000000</span><br><span class="line">     7.5000000000000000    0.0000000000000000    0.0000000000000000</span><br><span class="line">     0.0000000000000000    8.0000000000000000    0.0000000000000000</span><br><span class="line">     0.0000000000000000    0.0000000000000000    8.9000000000000004</span><br><span class="line">   O</span><br><span class="line">     2</span><br><span class="line">Direct</span><br><span class="line">  0.0000000000000000  0.0000000000000000 -0.0196261760084087</span><br><span class="line">  0.0000000000000000  0.0000000000000000  0.1207497715140281</span><br><span class="line"></span><br><span class="line">  0.00000000E+00  0.00000000E+00  0.00000000E+00</span><br><span class="line">  0.00000000E+00  0.00000000E+00  0.00000000E+00</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex15$ python</span><br><span class="line">Python 2.6.6 (r266:84292， Sep  4 2013， 07:46:00)</span><br><span class="line">[GCC 4.4.7 20120313 (Red Hat 4.4.7-3)] on linux2</span><br><span class="line">Type <span class="string">&quot;help&quot;</span>， <span class="string">&quot;copyright&quot;</span>， <span class="string">&quot;credits&quot;</span> or <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt;(0.1207497715140281--0.0196261760084087)*8.9</span><br><span class="line">1.2493459329496877</span><br><span class="line">&gt;&gt;&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>算出来的能量和磁矩等信息与之前正确计算的结果一致，键长也对上了。 说明我们修改<code>POTIM</code>生效了。这里<code>POTIM</code>的作用相信大家有了一个大体的了解。在<code>IBRION=2</code> 时（这是前提！！），如果初始结构很差，设置较小的<code>POTIM</code>可以有效的避免过度矫正。初始结构越好，<code>POTIM</code>的选择也就越随意。</p>
-<h3 id="Python计算器"><a href="#Python计算器" class="headerlink" title="Python计算器"></a>Python计算器</h3><p>在上面的演示中，大师兄还教给你了一个终端里面的计算器，python！加减乘除非常好用，注意，使用python计算时，&gt;&gt;&gt; 和数字之间不能有空格，否则python会提示出错！</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Python <span class="number">2.6</span><span class="number">.6</span> (r266:<span class="number">84292</span>， Sep  <span class="number">4</span> <span class="number">2013</span>， 07:<span class="number">46</span>:<span class="number">00</span>)</span><br><span class="line">[GCC <span class="number">4.4</span><span class="number">.7</span> <span class="number">20120313</span> (Red Hat <span class="number">4.4</span><span class="number">.7</span>-<span class="number">3</span>)] on linux2</span><br><span class="line"><span class="type">Type</span> <span class="string">&quot;help&quot;</span>， <span class="string">&quot;copyright&quot;</span>， <span class="string">&quot;credits&quot;</span> <span class="keyword">or</span> <span class="string">&quot;license&quot;</span> <span class="keyword">for</span> more information.</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span> <span class="number">5</span> + <span class="number">2</span></span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>， line <span class="number">1</span></span><br><span class="line">    <span class="number">5</span> + <span class="number">2</span></span><br><span class="line">    ^</span><br><span class="line">IndentationError: unexpected indent</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span> (<span class="number">0.1207497715140281</span>--<span class="number">0.0196261760084087</span>)*<span class="number">8.9</span></span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>， line <span class="number">1</span></span><br><span class="line">    (<span class="number">0.1207497715140281</span>--<span class="number">0.0196261760084087</span>)*<span class="number">8.9</span></span><br><span class="line">    ^</span><br><span class="line">IndentationError: unexpected indent</span><br></pre></td></tr></table></figure>
-<h3 id="扩展练习"><a href="#扩展练习" class="headerlink" title="扩展练习"></a>扩展练习</h3><p>1 阅读<code>IBRION</code> 参数说明：<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/vasp/vasp/IBRION_2.html">https://cms.mpi.univie.ac.at/vasp/vasp/IBRION_2.html</a> 知道优化过程的具体细节；</p>
-<p>2 尝试不同的初始结构配合<code>POTIM</code>值，完成O$_2$的正确计算；</p>
-<p>3 使用0.9 $\AA$作为初始结构，改变<code>POTIM</code>的参数值，直至计算正确；</p>
-<p>4 尝试用0.9 $\AA$作为初始结构，<code>POTIM</code>采用默认值，调节其他自己认为会影响计算的参数，查看相关输出，如有错误，复制到<code>google</code>里面查找相关的原因。 </p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>体系的初始结构越合理，不仅仅是节约我们的时间，还会我们的计算过程越省心。从前面出现的问题可以看出来，结构不合理，对应出错的地方越多，我们也要绞尽脑汁去纠正。O$_2$分子的例子比较简单，我们简单通过<code>POTIM</code>实现了正确的计算。但是大家计算的体系比O$_2$ 分子复杂的多，处理起来也会更加棘手。所以需要在初始结构上下功夫。更严肃的说：初始结构就是我们的计算模型，如果模型不合理，后续的计算都会出错，甚至失败。</p>
-<p>如果初始结构不合理，用<code>IBRION=2</code>的时候，<code>POTIM</code>可以很好的控制收敛，还是建议初始结构搭建的合理些，省时省力。认真学习化学基础知识，搭建好合理的初始模型才是王道，正应了那句古话：磨刀不误砍柴工！</p>
 
       
     </div>

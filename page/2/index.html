@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">124</span>
+          <span class="site-state-item-count">125</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">161</span>
+        <span class="site-state-item-count">162</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,128 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2019/10/13/S04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/10/13/S04/" class="post-title-link" itemprop="url">浅谈Hall Petch关系(一)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-10-13 18:30:16" itemprop="dateCreated datePublished" datetime="2019-10-13T18:30:16-04:00">2019-10-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:29:33" itemprop="dateModified" datetime="2021-12-27T22:29:33-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Share/" itemprop="url" rel="index"><span itemprop="name">Share</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2019/10/13/S04/" class="post-meta-item leancloud_visitors" data-flag-title="浅谈Hall Petch关系(一)" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/10/13/S04/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/13/S04/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Hall Petch关系是材料学中描述多晶材料最为重要的一个相关关系，它反映了材料强度与晶粒的尺寸的开方成反比。同时材料在极小晶粒尺寸下表现出的反常Hall Petch 关系也一度成为材料学家的研究热点。关于反常Hall Petch关系的研究发现屡现于高水平期刊，本文将不做更多介绍。从Hall Petch关系的第一次报导开始，已经有大量的文章针对各种材料体系（纯金属，金属间化合物，多相合金等等）进行了相关研究。然而，从Hall Petch 关系提出至今，依旧没有出现一个完美简洁的理论可以解释这个现象。研究人员为了解释这个现象已经提出了大量的理论，在接下来的篇幅中，作者将从中提取了几个典型的理论做简要介绍</p>
+<p>1951年，Hall（文献1）发表的论文中首次报导了钢中存在的Hall Petch关系:</p>
+<p>$\sigma=\sigma<em>0 + k</em>{HP}d^{-1/2} $</p>
+<p>其中$\sigma$表示流变应力，d表示晶粒尺寸，k是Hall Petch 系数，其对不同材料，温度和应变条件都非常敏感。</p>
+<p>与此同时，他也在文章中首次提出了试图解释Hall Petch关系的pile up（位错阻塞）模型。</p>
+<p><img src="/2019/10/13/S04/share04/share042.png" alt=""></p>
+<p>该理论认为材料的强度来自于外力作用下导致的晶粒内部位错源开动，位错源启动后形成的位错林被晶粒之间的界面（晶界）阻碍后引起了材料的应力强化。简单起见，我们不妨假设两个近似六边形的晶粒以晶界AB接触，左边晶粒的中心O点存在一个位错源，在外加应力的作用下位错源沿着某一滑移面释放出一系列位错。随着第一个发射的位错冲撞到晶界AB上，整个位错列队被禁锢在位错源与晶界之间。由于晶界墙的阻力和新产生位错的弹性应变，整个位错列最后会形成一个稳定分布，假设晶粒的平均尺寸为d，则位错列中位错的数目为：</p>
+<p>$n=\frac{(1-v)d\tau_e}{2\mu{b}}$</p>
+<p>其中$\tau_e$表示位错的有效剪切应力，它可以表示为：</p>
+<p>$\tau_e=\tau-\tau_i$</p>
+<p>显然，它实际上是在加载应力中扣除了弹性应力部分。试想如果你要产生一根位错，首先晶体要发生塑性变形，因此塑性变形前的弹性部分并不是我们应该要考虑的部分。既然我们已经知道位错列中位错的数目，如果我们粗略地认为，所有的位错作用到晶界上的应力都是等效的，那么晶界上受到的应力$\tau_p$为</p>
+<p>$\tau_p = n\tau_e$</p>
+<p>Hall认为，材料屈服发生于位错列冲破晶界的时候，也就是说 $\tau_p$大于临界值$\tau_c$。如果我们取等号，再将前面的n代入，我们就可以得到：</p>
+<p>$\tau = \tau_i +\surd{\frac{2\tau_c\mu{b}}{1-v}} \times d^{-1/2}$</p>
+<p>该公式看起来非常合理简洁，-1/2次方的关系也出来了。但是如果材料的屈服依靠的是位错像裂纹一般冲破晶界，我们应该在实验中大量发现，但实际上，只有少数几篇文献报导过相关现象。更重要的是，依据该理论计算的屈服强度跟实际数据还是有较大出入。</p>
+<p>在pile up模型的基础上，Cotrell（文献2）认为，材料的屈服并非来自于位错林冲破晶界，而是由于位错林在晶界的终端的应力场诱发了邻近晶粒中的位错源(如下图的R处)的开动。这样子需要的 临界应力要小于pile-up模型。<br><img src="/2019/10/13/S04/share04/share047.png" alt=""><br>晶粒内部出现位错源固然可行，但是另一方面，晶界本身就是天生的位错源，在晶粒内部没有经受剧烈变形的情况下，晶界上的位错形核位置要远远多于晶粒内部。Li （文献3）于1963年提出了boundary source（晶界位错源）模型。为了方便起见，我们不妨假设晶粒是边长为d的立方体。假设晶粒的每一个面上的台阶密度为m，假设每一个台阶都有一定几率发射位错。进一步简化，我们不妨认为每个台阶都会发射位错，则一个面的总位错数目为$md^2$。每一个晶粒与毗邻晶粒公用一个晶面，则一个晶粒可以认为有三个晶界面属于这个晶粒。所以:<br><img src="/2019/10/13/S04/share04/share048.png" alt=""><br>我们可以认为一个晶粒有3$md^2$个位错。这些位错在外加应力作用下继续向晶内扩散，形成位错林。位错林的密度为:<br>$\rho = 3md^2 / d^3 = 3m/d$<br>另一方面，晶体材料的位错密度和强度之间可以由著名的Taylor公式来描述:<br>$\sigma = \sigma_0 + M\alpha\mu{b}\surd\rho$<br>代入前者即得:</p>
+<p>$\sigma = \sigma_0 + M\alpha\mu{b}3^{1/2}m^{1/2}d^{-1/2}$ </p>
+<p>我们再一次获得了Hall Petch关系。在原文中也有说明这个方式计算的理论屈服强度与pile up模型基本一致。目前介绍的这两个模型，前者认为位错完全起源于晶粒内部，后者则认为位错完全起源于晶界，两者分别是实际情况下的两个极端。但是殊途同归，两个极端最后得到了相同的结论和近似的屈服强度。不过，这两个模型的局限性也是明显的，实验中Hall Petch曲线的斜率对晶粒结构和化学成分非常敏感，但是上述模型中并未考虑这些实际因素。</p>
+<p>值得注意的是，在2002年的一篇文章4中，该文作者成功在MD模拟中发现了晶界处位错的形核和发射过程。</p>
+<p><img src="/2019/10/13/S04/share04/share0412.png" alt=""></p>
+<p>（未完待续）</p>
+<p>1 Hall, E. O. The deformation and ageing of mild steel: III discussion of results. Proceedings of the Physical Society. Section B 64.9 (1951): 747.<br>2  A.H. Cottrell,: The Mechanical Properties of Matter, Wiley, New York (1964)<br>3 Li, James CM. Petch relation and grain boundary sources. Transactions of the Metallurgical Society of AIME 227.1 (1963): 239.<br>4 Van Swygenhoven, H., P. M. Derlet, and A. Hasnaoui. Atomic mechanism for dislocation emission from nanosized grain boundaries. Physical Review B 66.2 (2002): 024101.<br>本文经ponychen授权发布，版权属于ponychen。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2700,179 +2822,6 @@
 <h3 id="本节要求"><a href="#本节要求" class="headerlink" title="本节要求"></a>本节要求</h3><p>1） 会提交NEB的计算任务</p>
 <p>2） 会使用自己写的或者<code>nebresults.pl</code>脚本查看能量信息。</p>
 <p>下一节，我们学习怎么分析这些能量。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/11/16/ex76/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/11/16/ex76/" class="post-title-link" itemprop="url">Ex76 过渡态任务的检查（一）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-11-16 15:30:16" itemprop="dateCreated datePublished" datetime="2018-11-16T15:30:16-05:00">2018-11-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 23:29:25" itemprop="dateModified" datetime="2021-12-27T23:29:25-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/11/16/ex76/" class="post-meta-item leancloud_visitors" data-flag-title="Ex76 过渡态任务的检查（一）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/11/16/ex76/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/16/ex76/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>前面我们介绍了怎么准备过渡态计算的INCAR，POSCAR，POTCAR和POTCAR，这一节理所当然，就是要提交任务了。过渡态计算的时候，和大多数的计算是一样的：检查输入文件，准备好脚本，敲命令提交任务。所以，我们就在这三个方面展开，具体讨论一下里面的细节部分，避免不必要的出错，提高计算的成功率和效率。</p>
-<h3 id="心态"><a href="#心态" class="headerlink" title="心态"></a>心态</h3><p>算过渡态的时候，要把自己想象成一个整装待命的狙击手，要熟悉自己的枪（VASP），周围的环境（影响计算的因素），以及狙杀的对象（计算的体系）。</p>
-<h4 id="枪"><a href="#枪" class="headerlink" title="枪"></a>枪</h4><p>也就是VASP的输入文件，开枪前，先检查一遍自己的枪有没有问题。</p>
-<p>怎么检查呢？</p>
-<p>大师兄本人的方法就是：不断在心里按着顺序默念：INCAR，KPOINTS，POSCAR，POTCAR。然后根据自己的经验检查并修改。这里你也许会说，大师兄，那是因为你有经验了啊，才能这么做，没有经验的我，该怎么办呢？</p>
-<p>不要怕，我们下面慢慢分析。</p>
-<h4 id="INCAR"><a href="#INCAR" class="headerlink" title="INCAR"></a>INCAR</h4><p> 对于大多数的计算，影响计算时间的主要因素是KPOINTS，体系的大小，INCAR中关于收敛的参数。这三者紧密相连。而INCAR中的计算在粗算的这一个环节里面，对时间的影响不是很大。这给我们的启示就是：不管是粗算，还是后面提高精度的计算，我们使用同样的设置即可。大家一般来说的低高精度的计算，主要集中在EDIFF和EDIFFG这两个参数上。体系不是很特殊，EDIFF=1E-5; EDIFFG=-0.02 就足够了。完全没有必要再粗算的时候将它们的数值调大点或者调小点。如果可以这样思考的话，那我们就可以将INCAR的参数提前设置好，用的时候直接拿来就可以了。</p>
-<p>想到了这一点，下面我们的任务就轻松了，可以写个脚本，直接敲个命令生成CI-NEB计算的INCAR。这里大师兄用的是另外一个办法：</p>
-<p>1） 先准备好一个INCAR，里面肯定把CI-NEB计算的参数等乱七八糟的都写好了。</p>
-<p>2）将INCAR放在一个固定的目录下面，比如：~/bin/INCAR_neb</p>
-<p>3）提交任务前，将INCAR复制过来即可。</p>
-<p>4）划重点：alias 的骚操作。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp ~/bin/INCAR_neb INCAR </span><br><span class="line">alias neb=&#x27;cp ~/bin/INCAR_neb INCAR&#x27;</span><br></pre></td></tr></table></figure>
-<p>这样的话，我们直接敲个命令，就可以得到INCAR文件了。</p>
-<p><strong>INCAR的检查：</strong></p>
-<p>前面的做法，并不代表我们就可以直接使用INCAR文件了。能不能直接用，取决于我们的具体计算细节。若INCAR中的参数与当前任务的不一致，或者缺少某些参数，我们就需要更新一下，主要有以下几个方面：</p>
-<p>1） INCAR中默认的插点数目和实际不一致，记得更新。</p>
-<p>2）若POSCAR中的结构有磁性，并且和INCAR中的不一致，记得更新；</p>
-<p>3）如使用DFT-D2，INCAR中C6和R6的设置和POSCAR中的元素不一致，记得更新；</p>
-<p>4）如使用DFT+U，INCAR中U和J的设置与POSCAR中的元素不一致，记得更新。</p>
-<p>5）若计算的体系键能比较大，ISPRING这个参数可以稍微修改下，比如从-5调小到-8。</p>
-<p>6）若发现slab体系粗算的时候，不怎么收敛，偶极校正取消一下。</p>
-<p><strong>KPOINTS的检查：</strong></p>
-<p>我们在粗算阶段，KPOINTS直接用gamma点即可。为了方便可以使用脚本kponits.sh 1 1 1 直接生成。也可以添加到我们的alias这个命令中：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias neb=&#x27;cp ~/bin/INCAR_neb INCAR &amp;&amp; kpoints.sh 1 1 1 &#x27;</span><br></pre></td></tr></table></figure>
-<p><strong>POTCAR 的检查：</strong></p>
-<p>可以使用我们前面的自动生成与POSCAR对应POTCAR的脚本：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp 01/POSCAR . &amp;&amp; pospot.sh &amp;&amp; rm POSCAR </span><br></pre></td></tr></table></figure>
-<p>为了方便，也可以直接将上面这句话添加到alias里面：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias neb=&#x27;cp ~/bin/INCAR_neb INCAR &amp;&amp; kpoints.sh 1 1 1 &amp;&amp; cp 01/POSCAR . &amp;&amp; pospot.sh &amp;&amp; rm POSCAR &#x27;</span><br></pre></td></tr></table></figure>
-<p><strong>POSCAR的检查：</strong></p>
-<p>POSCAR被归结到枪这一部分，其实也是我们狙杀的对象。在粗算这部分的检查，需要注意的地方有：</p>
-<p>1） 确保slab被固定住了；否则你算完会发现表面的原子都疯掉了。前面我们讲过怎么通过脚本或者sed命令批量固定了，就不再过多叙述。</p>
-<p>2）使用p4v一次性打开所有的POSCAR文件：p4v 0*/POSCAR ; 这里大师兄也是用了alias</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alias pp=&#x27;p4v 0*/POSCAR&#x27;</span><br><span class="line">alias ap=&#x27;ase-gui 0*/POSCAR&#x27;</span><br></pre></td></tr></table></figure>
-<p>上面的2个操作都是在Linux下面的，p4v和ase-gui大家根据习惯随便选一款即可。</p>
-<ul>
-<li><p>使用p4vasp，然后挨个点IMAGE对应的POSCAR，检查结构对不对；</p>
-</li>
-<li><p>使用ase-gui 将所有的文件全部打开后，摁键盘的PageUp和PageDown这2个键，类似于自己看一帧一帧的电影，体验也很棒。</p>
-</li>
-<li>检查插点的时候，原子是不是乱套了，没有一一对应；</li>
-<li>检查我们插的点，是不是具有很好的化学或者物理意义，也就是预先评估下自己猜的这个路径靠不靠谱。</li>
-</ul>
-<p>3) 使用Windows的用户先不用着急，大师兄正在学习VASPkit+VDM的骚操作。学会了下一节会及时更新，并提交过渡态的计算。</p>
-<p>前面一节，我们提到说，在<code>Ubuntu</code>或者其他<code>Linux</code>系统下面，可以使用<code>p4vasp</code>或者<code>ASE</code>将结构批量打开，查看我们初步设置的NEB路径是否合理。但是在<code>Windows</code>系统下，我们不方便使用命令进行查看。这里介绍一下在<code>Windows</code>下面通过<code>VASPkit</code>结合<code>VMD</code>查看NEB路径结构的方法。</p>
-<h3 id="软件的获取："><a href="#软件的获取：" class="headerlink" title="软件的获取："></a>软件的获取：</h3><ul>
-<li><code>VASPkit</code>程序的下载<ul>
-<li>链接：<a target="_blank" rel="noopener" href="https://sourceforge.net/projects/vaspkit/">https://sourceforge.net/projects/vaspkit/</a></li>
-<li>QQ群：217821116， 364586948</li>
-</ul>
-</li>
-<li><code>VMD</code>的下载链接：<a target="_blank" rel="noopener" href="http://www.ks.uiuc.edu/Research/vmd/">http://www.ks.uiuc.edu/Research/vmd/</a> </li>
-</ul>
-<h3 id="vaspkit的使用"><a href="#vaspkit的使用" class="headerlink" title="vaspkit的使用"></a><code>vaspkit</code>的使用</h3><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ ls</span><br><span class="line"><span class="number">00</span>  <span class="number">01</span>  <span class="number">02</span>  <span class="number">03</span>  <span class="number">04</span>  <span class="number">05</span>  <span class="number">06</span>  <span class="number">07</span>  <span class="number">08</span>  <span class="number">09</span>  INCAR  KPOINTS  NEB.pdb  POTCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ rm NEB.pdb </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ ls</span><br><span class="line"><span class="number">00</span>  <span class="number">01</span>  <span class="number">02</span>  <span class="number">03</span>  <span class="number">04</span>  <span class="number">05</span>  <span class="number">06</span>  <span class="number">07</span>  <span class="number">08</span>  <span class="number">09</span>  INCAR  KPOINTS  POTCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ vaspkit </span><br><span class="line"> </span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> |             VASPKIT Version: <span class="number">0.71</span> (<span class="number">16</span> Nov. <span class="number">2018</span>)              |</span><br><span class="line"> |       A Pre- and Post-Processing <span class="function"><span class="keyword">Program</span></span> for VASP Code        |</span><br><span class="line"> |       Official Website: http://vaspkit.sourceforge.net        |</span><br><span class="line"></span><br><span class="line">*</span><br><span class="line">*</span><br><span class="line">*</span><br><span class="line">*                                                                 </span><br><span class="line"> <span class="number">0</span>)  Quit                                                         </span><br><span class="line"> ------------&gt;&gt;</span><br><span class="line"><span class="number">5</span></span><br><span class="line"> ==================== Catalysis-ElectroChem Kit ==================</span><br><span class="line"> <span class="number">501</span>) Thermal Corrections for Adsorbate                      </span><br><span class="line"> <span class="number">502</span>) Thermal Corrections for Gas                    </span><br><span class="line"> <span class="number">503</span>) d-Band Center (experimental)                    </span><br><span class="line"> <span class="number">504</span>) Convert NEB-Path to PDB <span class="keyword">Format</span> for Animation                    </span><br><span class="line">                                                                  </span><br><span class="line"> <span class="number">0</span>)   Quit                                                        </span><br><span class="line"> <span class="number">9</span>)   Back                                                        </span><br><span class="line"> ------------&gt;&gt;</span><br><span class="line"><span class="number">504</span></span><br><span class="line"> +-------------------------- Warm Tips --------------------------+</span><br><span class="line">         See An Example <span class="keyword">in</span> vaspkit/examples/neb_animation.        </span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> --&gt;&gt; (<span class="number">1</span>) Reading Structural Parameters from <span class="number">00</span>/POSCAR <span class="keyword">File</span>...</span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line">*</span><br><span class="line">*</span><br><span class="line">*</span><br><span class="line">+---------------------------------------------------------------+</span><br><span class="line"> |               Selective Dynamics is Activated<span class="comment">!                |</span></span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> --&gt;&gt; (*) Reading Structural Parameters from <span class="number">09</span>/POSCAR <span class="keyword">File</span>...</span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> |               Selective Dynamics is Activated<span class="comment">!                |</span></span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> |                         * DISCLAIMER *                        |</span><br><span class="line"> |        CHECK Your Results for Consistency <span class="keyword">if</span> Necessary        |</span><br><span class="line"> |   Bug Reports and Suggestions for Improvements Are Welcome    |</span><br><span class="line"> | Citation of VASPKIT Is Not Mandatory BUT Would Be Appreciated |</span><br><span class="line"> |                     (^.^) GOOD LUCK (^.^)                     |</span><br><span class="line"> +---------------------------------------------------------------+</span><br><span class="line"> iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ ls</span><br><span class="line"><span class="number">00</span>  <span class="number">01</span>  <span class="number">02</span>  <span class="number">03</span>  <span class="number">04</span>  <span class="number">05</span>  <span class="number">06</span>  <span class="number">07</span>  <span class="number">08</span>  <span class="number">09</span>  INCAR  KPOINTS  NEB.pdb  POTCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/demo_neb$ </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<ul>
-<li>在终端输入:<code>vaspkit</code></li>
-<li>输入：5 后回车</li>
-<li>输入：504 后回车</li>
-<li>然后你会得到一个<code>NEB.pdb</code>文件。</li>
-<li><code>pdb</code>文件包含了00到09这几个文件夹中<code>POSCAR</code>的结构信息，用以<code>VMD</code>进行 查看。</li>
-</ul>
-<h3 id="VMD-查看pdb文件"><a href="#VMD-查看pdb文件" class="headerlink" title="VMD 查看pdb文件"></a><code>VMD</code> 查看<code>pdb</code>文件</h3><p>使用<code>VMD</code>查看<code>pdb</code>的方法，我们将<code>VASPkit</code>中的具体说明拿过来展示一下：</p>
-<ul>
-<li>在<code>Windows</code>系统中启动<code>VMD</code>程序</li>
-<li>将我们在服务器中生成的<code>NEB.pdb</code>文件下载到本地，然后拖到<code>VMD</code>的界面</li>
-<li>在<code>VMD</code>主窗口选择菜单 <code>Display</code> —&gt; <code>Orthographic</code> 正交显示模式 </li>
-<li>在<code>VMD</code>主窗口选择菜单<code>Graphics</code> —&gt; <code>Representations</code> —&gt; <code>Drawing Methods</code> 选择 <code>CPK</code></li>
-<li>默认是不显示盒子边界的，在<code>VMD</code>主窗口选择菜单 <code>Extensions</code> ,选择 <code>Tk Console</code> , 在弹出的<code>VMD TkConsole</code> 窗口中输入 <code>pbc box -color white</code> ，然后回车，查看模型结构。</li>
-<li>点界面的右下角的箭头后，你可以看到我们初步猜测的<code>NEB</code>路径中原子快速动起来了。箭头左面有个<code>speed</code>，我们可以调节原子的速度。</li>
-<li>在<code>VMD</code>主窗口选择菜单 <code>Mouse</code> —&gt; <code>Label</code> —&gt; <code>2</code>， 然后去模型界面上，点与<code>NEB</code>路径中最相关的2个原子，就可以查看<code>NEB</code>路径中，原子间距离随着<code>IMAGE</code>结构的变化了。</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Windows下的用户，在做过渡态计算的时候，可视化是一个痛点，通常来说，Images中的结构都只能一个一个打开查看，计算的时候不能很好地体会一个反应的发生路径。使用VASPkit则可以顺利地解决这个问题，这个功能更详细的说明，请参考VASPkit的使用手册。当然，这个方法也适用于Linux操作系统下VASPkit + VMD的操作。此外，大师兄还是建议大家有余力的时候多多接触类似于Ubuntu，Centos这样的Linux操作系统。</p>
 
       
     </div>
