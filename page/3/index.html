@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">162</span>
+        <span class="site-state-item-count">163</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,180 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/11/20/ex77/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/11/20/ex77/" class="post-title-link" itemprop="url">Ex77 过渡态任务的提交与查看（一）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-11-20 15:30:16" itemprop="dateCreated datePublished" datetime="2018-11-20T15:30:16-05:00">2018-11-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/11/20/ex77/" class="post-meta-item leancloud_visitors" data-flag-title="Ex77 过渡态任务的提交与查看（一）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/11/20/ex77/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/11/20/ex77/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面的准备工作完成了，<code>INCAR</code>，<code>KPOINTS</code>，<code>POSCAR</code>（IMAGES）， <code>POTCAR</code>也检查完了。剩下的就是准备脚本提交文件了。本节主要是在天河II号超算中心上给大家简单示范一下：</p>
+<ul>
+<li>1）准备脚本，提交任务；</li>
+<li>2）过渡态任务运行时候的查看；</li>
+<li>3） <code>VTST</code>脚本<code>nebresults.pl</code>的安装和使用。</li>
+</ul>
+<h3 id="提交任务"><a href="#提交任务" class="headerlink" title="提交任务"></a>提交任务</h3><p>首先通过命令操作，熟悉下天河II号超算中心提交NEB计算的流程。</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ ls</span><br><span class="line"><span class="number">00</span>  <span class="number">01</span>  <span class="number">02</span>  <span class="number">03</span>  <span class="number">04</span>  <span class="number">05</span>  <span class="number">06</span>  <span class="number">07</span>  <span class="number">08</span>  <span class="number">09</span>  INCAR  job_sub  KPOINTS  POTCAR </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ cat job_sub</span><br><span class="line">#<span class="comment">!/bin/bash</span></span><br><span class="line">export LD_LIBRARY_PATH=/THFS/opt/intel/composer_xe_2013_sp1<span class="number">.3</span><span class="number">.174</span>/mkl/lib/intel64:$LD_LIBRARY_PATH</span><br><span class="line">yhrun -p gsc -n <span class="number">24</span> /THFS/opt/vasp/<span class="number">5.4</span><span class="number">.4_neb</span>/vasp<span class="number">.5</span><span class="number">.4</span><span class="number">.4</span>/bin/vasp_std</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77/$ yhbatch -p gsc -N <span class="number">2</span> -J test job_sub</span><br><span class="line">Submitted batch job <span class="number">1004311</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个节点有24核，我们使用了2个节点，共48核，来计算这个NEB任务。</li>
+<li>共有8个IMAGES，也就是6个核算一个IMAGE。</li>
+<li>我们调用的VASP版本是:<code>/THFS/opt/vasp/5.4.4_neb/vasp.5.4.4/bin/vasp_std</code></li>
+<li>本例子下载链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1shjrJsRuDNYGEd2qDqvdFQ">https://pan.baidu.com/s/1shjrJsRuDNYGEd2qDqvdFQ</a>  提取码：<code>k3pp</code> </li>
+</ul>
+<h3 id="查看NEB计算"><a href="#查看NEB计算" class="headerlink" title="查看NEB计算"></a>查看NEB计算</h3><p>NEB一般收敛的很慢，需要跑很多离子步才会收敛，所以大家要心里有个准备，这也是为什么我们先用gamma点粗算一下，再用高密度的K点计算的原因，总之就是节约时间。虽然NEB要花很长时间才收敛，但提交任务后，我们不能守株待兔似的等着<code>NEB</code>算完，而是要勤检查结果，因为NEB的计算中，也会经常出现结构跑乱的情况。那么该怎么检查呢？ 一看能量，二看结构，三看能量和结构。</p>
+<h4 id="一看能量："><a href="#一看能量：" class="headerlink" title="一看能量："></a>一看能量：</h4><p>主要是因为在<code>terminal</code>下面，相对于打开可视化软件查看结构来说，我们通过命令提取每个<code>IMAGE</code>中<code>OUTCAR</code>能量信息的操作更加方便些而已。更重要的其实还是结构的变化，也就是你的反应路径。查看能量有2个办法：</p>
+<h5 id="自己用脑子想象或者写脚本："><a href="#自己用脑子想象或者写脚本：" class="headerlink" title="自己用脑子想象或者写脚本："></a>自己用脑子想象或者写脚本：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ ls</span><br><span class="line">00  01  02  03  04  05  06  07  08  09  INCAR  job_sub  KPOINTS  NEB.pdb  POTCAR  slurm-995085.out  vasprun.xml</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ ta.sh</span><br><span class="line">01       -298.00705385</span><br><span class="line">02       -297.96462657</span><br><span class="line">03       -297.92754864</span><br><span class="line">04       -297.90142637</span><br><span class="line">05       -297.88475532</span><br><span class="line">06       -297.87681445</span><br><span class="line">07       -297.89025285</span><br><span class="line">08       -297.93374021</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ cat ~/bin/ta.sh</span><br><span class="line"><span class="comment">#!/usr/bin/env bash</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *; <span class="keyword">do</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="variable">$i</span>/OUTCAR ]; <span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> -e  <span class="variable">$i</span> <span class="string">&quot;\t&quot;</span> $(grep <span class="string">&#x27;  without&#x27;</span> <span class="variable">$i</span>/OUTCAR |tail -n 1 | awk <span class="string">&#x27;&#123;print $7&#125;&#x27;</span>)</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ </span><br></pre></td></tr></table></figure>
+<p><strong>用脑子想象：</strong></p>
+<p>在<code>ts.sh</code> 脚本的输出中，从01的能量一直往下看，自己脑子里面自带一个xy的坐标系，将这些能量填到坐标系中，直至08。你会想象得到这样的一个曲线： 能量从01的-298.007慢慢上升到06的-297.87，然后再下降到08的-297.934。这个曲线的顶点再06处，也就是我们粗算得到的过渡态。</p>
+<p>当然，你也写个小脚本提取每个<code>IMAGE</code>中的能量信息，然后画图即可。</p>
+<h5 id="使用VTST的脚本：nebresults-pl"><a href="#使用VTST的脚本：nebresults-pl" class="headerlink" title="使用VTST的脚本：nebresults.pl"></a>使用VTST的脚本：<code>nebresults.pl</code></h5><p>前面Ex72中，我们讲过了怎么准备VTST的那些脚本，这一节，我们讲另外一个办法。</p>
+<ul>
+<li><p>下载VTST的脚本：<a target="_blank" rel="noopener" href="http://theory.cm.utexas.edu/vasp/scripts.html">http://theory.cm.utexas.edu/vasp/scripts.html</a> </p>
+</li>
+<li><p>爬梯子技术不好的话，通过这个链接下载：</p>
+<p><a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1bSoH8wdk2XvfzdmT75SZWQ">https://pan.baidu.com/s/1bSoH8wdk2XvfzdmT75SZWQ</a> 提取码：<code>dmlt</code> </p>
+</li>
+<li><p>将下载的文件上传到服务器的<code>~/bin/vtst</code> 目录下；</p>
+</li>
+<li><p>进行如下的操作:</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/bin$ <span class="built_in">cd</span> vtst/</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/bin/vtst$ ls</span><br><span class="line">vtstscripts.tgz</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/bin/vtst$ tar -zxvf vtstscripts.tgz</span><br><span class="line">vtstscripts-937/</span><br><span class="line">vtstscripts-937/pos2xyz.py</span><br><span class="line">vtstscripts-937/sum_dos_np</span><br><span class="line">vtstscripts-937/chg2cube.pl</span><br><span class="line">vtstscripts-937/chgsplit.sh</span><br><span class="line">vtstscripts-937/akmcprocess.pl</span><br><span class="line">*</span><br><span class="line">*</span><br><span class="line">*</span><br><span class="line">vtstscripts-937/nebbarrier.pl</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/bin/vtst$ ls</span><br><span class="line">vtstscripts-937  vtstscripts.tgz</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/bin/vtst$ <span class="built_in">cd</span>  vtstscripts-937/</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/bin/vtst/vtstscripts-937$ ls</span><br><span class="line">2con.py           center.py     diffcon.pl     dymanalyze.pl    dymseldsp.pl     insplot.pl  ....</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用<code>vim</code>打开<code>nebresults.pl</code>文件，将<code>58-71</code>行注释掉，或者可以使用<code>sed</code>命令：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &#x27;58,71s/^/#/g&#x27; nebresults.pl</span><br></pre></td></tr></table></figure>
+<p>效果如下图：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">57 # Zip the OUTCARs again</span><br><span class="line">58 #print &#x27;Zipping the OUTCARs again ... &#x27; ;</span><br><span class="line">59 #$zip = $ENV&#123;&#x27;VTST_ZIP&#x27;&#125;;</span><br><span class="line">60 #if($zip eq &#x27;&#x27;)&#123; $zip = &#x27;gzip&#x27;; &#125;</span><br><span class="line">61 #</span><br><span class="line">62 #$i = 0;</span><br><span class="line">63 #$string = &quot;00&quot;;</span><br><span class="line">64 #while(chdir $string) &#123;</span><br><span class="line">65 #    system &quot;$zip OUTCAR&quot;;</span><br><span class="line">66 #    $i++;</span><br><span class="line">67 #    if($i &lt; 10) &#123; $string = &quot;0$i&quot;; &#125;</span><br><span class="line">68 #    elsif($i &lt; 100) &#123; $string = &quot;$i&quot;; &#125;</span><br><span class="line">69 #    chdir $dir;</span><br><span class="line">70 #&#125;</span><br><span class="line">71 #print &quot;done\n&quot;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在<code>~/.bashrc</code>文件中设置脚本的目录：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/bin/vtst/vtstscripts-937$ pwd</span><br><span class="line">/THFS/home/iciq-lq/bin/vtst/vtstscripts-937</span><br></pre></td></tr></table></figure>
+<ul>
+<li>复制上面<code>pwd</code>命令的目录，打开<code>~/.bashrc</code> 文件，添加这一行：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:/THFS/home/iciq-lq/bin/vtst/vtstscripts-937</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>source</code>一下<code>~/.bashrc</code>文件：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/bin/vtst/vtstscripts-937$ . ~/.bashrc</span><br></pre></td></tr></table></figure>
+<ul>
+<li>进入计算的目录下，运行<code>nebresults.pl</code>命令，操作如下图:</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ ls</span><br><span class="line">00  01  02  03  04  05  06  07  08  09  INCAR  job_sub  KPOINTS  NEB.pdb  POTCAR  slurm-995085.out  vasprun.xml</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ nebresults.pl</span><br><span class="line"></span><br><span class="line">No OUTCAR in 00</span><br><span class="line">Unziping the OUTCARs ... </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ cp 01/OUTCAR  00</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ nebresults.pl</span><br><span class="line"></span><br><span class="line">No OUTCAR in 09</span><br><span class="line">Unziping the OUTCARs ... </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ cp 08/OUTCAR  09</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ nebresults.pl</span><br><span class="line"></span><br><span class="line">Unziping the OUTCARs ... done</span><br><span class="line">Do nebbarrier.pl ; nebspline.pl</span><br><span class="line">Do nebef.pl</span><br><span class="line">Do nebmovie.pl</span><br><span class="line">Do nebjmovie.pl</span><br><span class="line">Do nebconverge.pl</span><br><span class="line"></span><br><span class="line">Forces and Energy:</span><br><span class="line">   0         0.003505      -298.009300         0.000000</span><br><span class="line">   1         0.003505      -298.009300         0.000000</span><br><span class="line">   2         0.008701      -297.969500         0.039800</span><br><span class="line">   3         0.015508      -297.932900         0.076400</span><br><span class="line">   4         0.018300      -297.905700         0.103600</span><br><span class="line">   5         0.016765      -297.887500         0.121800</span><br><span class="line">   6         0.011627      -297.877000         0.132300</span><br><span class="line">   7         0.007293      -297.885300         0.124000</span><br><span class="line">   8         0.003607      -297.929100         0.080200</span><br><span class="line">   9         0.003607      -297.929100         0.080200</span><br><span class="line"></span><br><span class="line">Extremum 1 found at image  0.210729 with energy:  0.002874</span><br><span class="line">Extremum 2 found at image  0.788081 with energy: -0.002910</span><br><span class="line">Extremum 3 found at image  6.265931 with energy:  0.132792</span><br><span class="line">Extremum 4 found at image  8.211450 with energy:  0.074781</span><br><span class="line">Extremum 5 found at image  8.788801 with energy:  0.085561</span><br><span class="line"></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ </span><br></pre></td></tr></table></figure>
+<p><img src="/2018/11/20/ex77/ex77_01.png" alt=""></p>
+<p>上面的那个图在Ubuntu的终端里面，通过<code>gs mep.eps</code>命令可以直接打开。</p>
+<p><strong>解释：</strong></p>
+<p>1)  使用<code>nebresults.pl</code>脚本的时候，我们需要在<code>00</code>和<code>09</code>的文件夹中分别放上初始结构和末态结构所对应的<code>OUTCAR</code>。上面操作中，大师兄把<code>01</code>和<code>08</code>中的<code>OUTCAR</code>分别复制到了<code>00</code>和<code>09</code>中。</p>
+<p>为什么这么做呢？</p>
+<p>答：偷懒。原因有2个：</p>
+<p>A）之前优化结构都是用到的高密度的K点，直接把<code>OUTCAR</code>拿过来用的话，会出现能量差别很大。做出图来能量很奇怪的样子。如下面的例子所示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">  iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77/high_k$ ta.sh</span><br><span class="line">  00       -321.15187450</span><br><span class="line">  01       -298.00935617</span><br><span class="line">  02       -297.96955082</span><br><span class="line">  03       -297.93296493</span><br><span class="line">  04       -297.90579729</span><br><span class="line">  05       -297.88754704</span><br><span class="line">  06       -297.87700139</span><br><span class="line">  07       -297.88531984</span><br><span class="line">  08       -297.92917858</span><br><span class="line">  09       -321.09850728</span><br><span class="line">  iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77/high_k$ nebresults.pl</span><br><span class="line">  </span><br><span class="line">  Unziping the OUTCARs ... <span class="keyword">done</span></span><br><span class="line">  Do nebbarrier.pl ; nebspline.pl</span><br><span class="line">  Do nebef.pl</span><br><span class="line">  Do nebmovie.pl</span><br><span class="line">  Do nebjmovie.pl</span><br><span class="line">  Do nebconverge.pl</span><br><span class="line">  </span><br><span class="line">  Forces and Energy:</span><br><span class="line">     0         0.023782      -321.151800         0.000000</span><br><span class="line">     1         0.003505      -298.009300        23.142500</span><br><span class="line">     2         0.008701      -297.969500        23.182300</span><br><span class="line">     3         0.015508      -297.932900        23.218900</span><br><span class="line">     4         0.018300      -297.905700        23.246100</span><br><span class="line">     5         0.016765      -297.887500        23.264300</span><br><span class="line">     6         0.011627      -297.877000        23.274800</span><br><span class="line">     7         0.007293      -297.885300        23.266500</span><br><span class="line">     8         0.003607      -297.929100        23.222700</span><br><span class="line">     9         0.011589      -321.098500         0.053300</span><br><span class="line">  </span><br><span class="line">  Extremum 1 found at image  0.000009 with energy: -0.000000</span><br><span class="line">  Extremum 2 found at image  6.265997 with energy: 23.275310</span><br><span class="line">  </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/11/20/ex77/ex77_02.png" alt=""></p>
+<p>看到了没有，上面例子中<code>01</code>到<code>08</code> 结构的能量很大。这是因为参考的能量是<code>00</code>的。对于同一个体系，K点大的话，绝对能量更负一些。能量差别太大，导致过渡态的能量变化都可以忽略掉了。</p>
+<p>B）当然我们也可以分别对<code>00</code>和<code>09</code>对应对的机构算个单点。生成各自对应的<code>OUTCAR</code>，然后再使用<code>nebresults.pl</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ ta.sh</span><br><span class="line">00       -298.03233582</span><br><span class="line">01       -298.00705385</span><br><span class="line">02       -297.96462657</span><br><span class="line">03       -297.92754864</span><br><span class="line">04       -297.90142637</span><br><span class="line">05       -297.88475532</span><br><span class="line">06       -297.87681445</span><br><span class="line">07       -297.89025285</span><br><span class="line">08       -297.93374021</span><br><span class="line">09       -297.97265721</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ nebresults.pl</span><br><span class="line"></span><br><span class="line">Unziping the OUTCARs ... done</span><br><span class="line">Do nebbarrier.pl ; nebspline.pl</span><br><span class="line">Do nebef.pl</span><br><span class="line">Do nebmovie.pl</span><br><span class="line">Do nebjmovie.pl</span><br><span class="line">Do nebconverge.pl</span><br><span class="line"></span><br><span class="line">Forces and Energy:</span><br><span class="line">   0         0.100196      -298.032300         0.000000</span><br><span class="line">   1         0.003505      -298.009300         0.023000</span><br><span class="line">   2         0.008701      -297.969500         0.062800</span><br><span class="line">   3         0.015508      -297.932900         0.099400</span><br><span class="line">   4         0.018300      -297.905700         0.126600</span><br><span class="line">   5         0.016765      -297.887500         0.144800</span><br><span class="line">   6         0.011627      -297.877000         0.155300</span><br><span class="line">   7         0.007293      -297.885300         0.147000</span><br><span class="line">   8         0.003607      -297.929100         0.103200</span><br><span class="line">   9         0.084593      -297.972600         0.059700</span><br><span class="line"></span><br><span class="line">Extremum 1 found at image  0.057295 with energy: -0.000155</span><br><span class="line">Extremum 2 found at image  6.265997 with energy:  0.155771</span><br><span class="line"></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex77$ </span><br></pre></td></tr></table></figure>
+<p><img src="/2018/11/20/ex77/ex77_03.png" alt=""></p>
+<p>仔细观察，你会发现，<code>00</code> 和 <code>01</code>， <code>08</code> 和 <code>09</code> 的能量差别基本不大。所以上面我们的偷懒做法也是可取的。</p>
+<p><strong>敲黑板：</strong></p>
+<p>一般在粗算的时候，不用考虑那么多细节，怎么粗怎么弄。所以，我们前面讲的这个懒办法是在粗算情况下的操作。由于高K点的计算我们在优化初末态结构的时候已经有了，所以提高精度的时候就可以直接用了。</p>
+<h3 id="本节要求"><a href="#本节要求" class="headerlink" title="本节要求"></a>本节要求</h3><p>1） 会提交NEB的计算任务</p>
+<p>2） 会使用自己写的或者<code>nebresults.pl</code>脚本查看能量信息。</p>
+<p>下一节，我们学习怎么分析这些能量。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3299,207 +3473,6 @@ E_{ads}(CO) = E_{slab+CO} - E_{slab} - E_{CO^{gas}}</script><p>前面我们还�
 <p>当扩展完之后，你会看到，Cu原子的坐标，是按照每个单胞中的坐标来排列的。在p(2x2)中有4个p(1x1)的单胞，先列出来第一个(1x1)中4个原子的坐标，然后再列出来第二个(1x1)的，以此类推。但是，比如我们想仅仅放开表面的第一层原子（也就是纵坐标为6.26的所有原子），就得把纵坐标为4.189的原子挨个由T T T 改成 F F F （图中箭头所指的部分）。这样会很麻烦，还浪费很多时间。</p>
 <p>怎么解决这个问题，快速将表层，次表层原子固定或者放开呢 ? 看下一节的内容。</p>
 <hr>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/04/ex57/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/10/04/ex57/" class="post-title-link" itemprop="url">Ex57 吸附能的计算（二）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-10-04 15:30:16" itemprop="dateCreated datePublished" datetime="2018-10-04T15:30:16-04:00">2018-10-04</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/10/04/ex57/" class="post-meta-item leancloud_visitors" data-flag-title="Ex57 吸附能的计算（二）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/10/04/ex57/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/04/ex57/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>$\require{mediawiki-texvc}$</p>
-<p>本节我们简单讨论一下覆盖度对吸附能的影响。首先回顾一下，前面我们讲到的内容。</p>
-<ul>
-<li><p>吸附能为初态和末态的能量差：</p>
-<ul>
-<li>初态为纯净的slab 和 O$_2$分子或者O原子</li>
-<li>末态为O吸附的slab</li>
-</ul>
-</li>
-<li><p>O$_2$分子优化计算的时候，要注意: </p>
-<ul>
-<li>从数据库获取O$_2$分子的键长，作为初始值；</li>
-<li>ISPIN = 2  </li>
-<li>ISMEAR = 0; SIMGA = 0.05 </li>
-<li>IBRION= 2; POTIM = 0.1</li>
-<li>用gamma点。</li>
-</ul>
-</li>
-<li>O 原子优化计算的时候，注意的计算细节与前面相同。额外注意的是：<ul>
-<li>O 原子再怎么优化还是一个O原子，所以上一行表述是不恰当的，应该是O原子的单点计算；</li>
-<li>Box的尺寸为：$13\times14\times15~\AA^3$  或者$13.1\times13.2\times13.3 \AA^3$ 但绝对不能为$13\times13\times13$这种正方体的</li>
-</ul>
-</li>
-<li>怎么优化Bulk的结构，扫晶格拟合和ISIF = 3直接优化（ENCUT要大，不妨取个700~eV）</li>
-<li>slab怎么优化，Selective 和 坐标后面 T F 的关系</li>
-<li>O吸附模型怎么搭建，如何得到合理的初始模型（有实验值优先使用，没有的话用粗精度的初算一下）。</li>
-<li>此外，还要学会怎么判断计算结束，不同类型任务结束的特征是什么？</li>
-</ul>
-<hr>
-<h2 id="打个比方"><a href="#打个比方" class="headerlink" title="打个比方"></a>打个比方</h2><p>回到上一节我们留的问题，为什么O在p-(1x1)-Cu(111)表面上的吸附能是正的呢？在解释这个问题先，我们先看下面一组照片：</p>
-<p><img src="/2018/10/04/ex57/ex57-1.jpeg" alt=""></p>
-<p><img src="/2018/10/04/ex57/ex57-2.jpeg" alt=""></p>
-<p><img src="/2018/10/04/ex57/ex57-3.jpeg" alt=""></p>
-<hr>
-<p>第一张里面，地铁车厢里面是空的，这时候你上去，座位随便挑。</p>
-<p>第二张里面，有些人了已经占了，但还是有座位的，你的选择并没有那么多了。</p>
-<p>第三张里面，人太多，能不能出来都是个问题，有没有座位想都不敢想了。</p>
-<p>那么回到我们的这个问题，我们把O的吸附结构在xy平面上重复一下：</p>
-<p><img src="/2018/10/04/ex57/ex57-4.png" alt=""></p>
-<p>你会发现，表面上密密麻麻全是O原子（绿色的为Cu原子）！空间这么小，如果你是O原子，你愿意在这上面挤么？ 你是选择空旷的车厢还是人满为患的呢？如果我是氧原子，我肯定不愿意。所以，如果非得在这个表面上挤的话。我们就需要一些外力的作用，比如下图中的这俩年轻力壮的小伙子协警。</p>
-<p><img src="/2018/10/04/ex57/ex57-5.jpeg" alt=""></p>
-<p>这俩人使的劲就是O原子的吸附能。正值的意思表明我们需要额外的力才能将其吸附在表面上。表面越挤，正值越大。</p>
-<hr>
-<p>如果你还是不理解的话，我们看另外一个例子：</p>
-<p><img src="/2018/10/04/ex57/ex57-6.jpeg" alt=""></p>
-<p>早上，开学了。老师有1个苹果，需要将这个苹果分给教室里面的学生。而学生还没有来齐，当你第一个到达教室时，发现整个苹果都是你的。开心程度 100%。正要吃的时候，小明进来了，老师说你俩要分一下，你只能得到一半了，开心程度 50%; 你俩正要吃的时候，小红和小白也进来了，老师说，打住，你们四个分，于是每人只能拿1/4，你的开心程度掉到 25%了。</p>
-<p>表面就是这个苹果，O原子就是学生，总共就这一个苹果，学生越多，平均分到的就越少。学生之间可能还会因为分的不均匀而打架（相互排斥），导致开心程度越来越低。当开心程度成负的时候，老师就需要施展神通费心思（额外的功）逗你们开心。</p>
-<hr>
-<p>看完这两个例子，你也许就明白了，为什么这个时候O原子的吸附能这么大了。太他妈挤了或者人太多，分不到苹果吃了，心里肯定不爽！下面，我们把车厢清空，学生数目控制一下，看看心情能不能好点。</p>
-<hr>
-<h2 id="搭建p-2x2-Cu-111-表面"><a href="#搭建p-2x2-Cu-111-表面" class="headerlink" title="搭建p-(2x2)-Cu(111)表面"></a>搭建p-(2x2)-Cu(111)表面</h2><p>1 用p4vasp打开p-(1x1)-Cu(111)的CONTCAR</p>
-<p>2 选择Edit —&gt; Multiply cell</p>
-<p><img src="/2018/10/04/ex57/ex57-7.png" alt=""></p>
-<p>3 弹出的窗口，如图填入扩展的倍数：</p>
-<p><img src="/2018/10/04/ex57/ex57-8.png" alt=""></p>
-<p>这代表我们在x和y方向上分别扩展到原来的2倍。点击Multiply，效果如下图：</p>
-<p><img src="/2018/10/04/ex57/ex57-9.png" alt=""></p>
-<p>4 关闭Multiply这个窗口，p4vasp主界面左上角选择：<code>File</code> —&gt; <code>Save system as</code></p>
-<p>5 在弹出的窗口，选择目录，保存成POSCAR，点击OK即可。</p>
-<p><img src="/2018/10/04/ex57/ex57-10.png" alt=""></p>
-<p>6 这样我们就有了一个p-(2x2)的slab模型了。</p>
-<hr>
-<h2 id="搭建O在p-2x2-Cu-111-上的吸附结构"><a href="#搭建O在p-2x2-Cu-111-上的吸附结构" class="headerlink" title="搭建O在p-(2x2)-Cu(111)上的吸附结构"></a>搭建O在p-(2x2)-Cu(111)上的吸附结构</h2><p>1 我们可以用之前计算的结果搭建这个初始结构,O吸附优化的CONTCAR：</p>
-<p><img src="/2018/10/04/ex57/ex57-11.png" alt=""></p>
-<p>O原子在$z$方向的坐标为8.0928$\AA$。先记住这个数字。</p>
-<hr>
-<p>p-(2x2)的Slab坐标（在p-(1x1)基础上扩展的）:</p>
-<p><img src="/2018/10/04/ex57/ex57-12.png" alt=""></p>
-<p>在这个坐标上面修改，搭建结构：</p>
-<p><img src="/2018/10/04/ex57/ex57-13.png" alt=""></p>
-<p>1）添加O原子元素</p>
-<p>2）添加O原子数目</p>
-<p>3）添加O原子坐标</p>
-<p>4）弄完后，保存成POSCAR</p>
-<p>到现在，p-(2x2)的slab以及O原子的吸附模型都有了，准备INCAR,KPOINTS,POTCAR以及任务脚本，提交这两个结构的优化计算。等待结束。</p>
-<hr>
-<p>计算吸附能：</p>
-<p>公式1： </p>
-<script type="math/tex; mode=display">
-E_{ads1}(O) = E_{slab+O} – E_{slab} – E_{O_2}/2</script><p>公式2： </p>
-<script type="math/tex; mode=display">
-E_{ads2}(O) = E_{slab+O} – E_{slab} – E_{O}</script><p>带入数据：</p>
-<script type="math/tex; mode=display">
-E_{ads1}(O) = -60.61682891~eV – (-55.96049190~eV )- (-9.85498627~eV)/2 = 0.271~eV</script><script type="math/tex; mode=display">
-E_{ads2}(O) = -60.61682891~eV – (-55.96049190~eV )- (-1.89237882~eV)= -2.764~eV</script><p>发现吸附能$E_{ads1}(O)$从正的1.216降低到0.271 eV了。看来空间对O原子的吸附影响很大。</p>
-<hr>
-<p>地铁里面空间稍微大了些，现在不需要年轻小伙子暴力推搡了，大妈指挥下就可以了。</p>
-<p><img src="/2018/10/04/ex57/ex57-14.jpeg" alt=""></p>
-<p>分的苹果稍微多了些，虽然还是有些不情愿，稍微诱导一下，就开心了。</p>
-<p><img src="/2018/10/04/ex57/ex57-15.png" alt=""></p>
-<hr>
-<p>前面的解释只是用现实的例子瞎扯一顿。但发表文章的时候不能这样说啊，我们就需要一些科学和专业的解释。而在实际表面上，覆盖度影响吸附能的因素有很多。体相中电子的分布转移，与吸附物种的成键，吸附物种之间的排斥和吸引等等。如果你想了解的更多，更专业！阅读下面这篇文献：</p>
-<p><img src="/2018/10/04/ex57/ex57-16.png" alt=""></p>
-<p>谷歌上可以下载免费的，有权限的也可以直接下载。类似这样已经注明的文献，请不要花时间找我要，自己去下载。</p>
-<p>（每设一道坎，就会把很多懒家伙挡住！跨过一道又一道坎，你就把别人远远甩在后面了。所以，请自己主动起来！）</p>
-<hr>
-<h2 id="扩展训练："><a href="#扩展训练：" class="headerlink" title="扩展训练："></a>扩展训练：</h2><p>1 重复p-(2x2)-Cu(111)的练习，心里面默念一遍INCAR, KPOINTS, POTCAR, POSCAR。看看都有些什么需要注意的。</p>
-<p>2 阅读推荐的文献，学习表面物种之间的相互作用，覆盖度是怎么影响吸附能的。有哪几方面？</p>
-<p>3 本文提到了一个专业名词：覆盖度，查找相关的文献，了解这个名词是怎么回事，文献报道的覆盖度都是怎么算出来的。</p>
-<hr>
-<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本节，大师兄带你做了趟地铁，当了回幼儿园的小朋友。来体验下人多的感觉。覆盖度高的时候吸附能很小或者是正值，说明物种在表面不稳定，需要额外的力来促使它们老老实实待在表面上。表面就那么大点的地方，空间有限，p-(1x1)上吸附的时候，表面太挤了，O原子不愿意待在上面。而表面扩成p-(2x2)后，空间明显大了很多，O原子虽然不情愿，但明显不像在(1x1)上那么不爽了。从吸附能就可以看出来，降低了1~eV左右。从另一个角度来看，这明显就是一场O原子争夺表面资源的战争。</p>
 
       
     </div>

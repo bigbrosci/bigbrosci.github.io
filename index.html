@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">162</span>
+        <span class="site-state-item-count">163</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,135 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2022/06/22/A32/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/06/22/A32/" class="post-title-link" itemprop="url">Improved Dimer Method计算过渡态的脚本</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-22 15:30:16" itemprop="dateCreated datePublished" datetime="2022-06-22T15:30:16-04:00">2022-06-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-06-23 20:03:58" itemprop="dateModified" datetime="2022-06-23T20:03:58-04:00">2022-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/06/22/A32/" class="post-meta-item leancloud_visitors" data-flag-title="Improved Dimer Method计算过渡态的脚本" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/06/22/A32/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/06/22/A32/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>今天分享一个Improved Dimer Method （IDM）的小脚本。IDM和传统的Dimer方法，NEB一样，都用于优化过渡态。Dimer方法的话，VTST（<a target="_blank" rel="noopener" href="https://theory.cm.utexas.edu/vtsttools/）已经包含很多相关的脚本，咱们就不重复造车了。NEB结合IDM优化过渡态也很高效，成功率非常高，有兴趣的可以尝试下。分享脚本前主要介绍以下几点：">https://theory.cm.utexas.edu/vtsttools/）已经包含很多相关的脚本，咱们就不重复造车了。NEB结合IDM优化过渡态也很高效，成功率非常高，有兴趣的可以尝试下。分享脚本前主要介绍以下几点：</a></p>
+<p>1） IDM已经编译在VASP里面了，不需要额外编译。</p>
+<p>2） IDM跟平时的优化计算差不多，主要修改IBRION = 44即可。</p>
+<p>3） IDM计算主要包括5步：</p>
+<p>3.1： 生成初始的过渡态结构：可以有以下三种做法:</p>
+<p>3.1.1 经验多的，可以直接手动初步搭一个，保存成<code>POSCAR</code>；</p>
+<p>3.1.2 胆儿不大不小小的，可以借助NEB的方法，先准备初末态的结构，然后用VTST的nebmake.pl插点，挑出来接近过渡态结构的POSCAR；</p>
+<p>3.1.3 胆儿最小的，可以先NEB跑上30步左右，把能量最高的结构检查下，感觉过渡态结构合理的话，把CONTCAR保存成POSCAR。</p>
+<p>3.2：用3.1步中获得的POSCAR做一个频率计算；主要有以下几个注意事项：</p>
+<p>3.2.1： NWRITE = 3  一定要注意，必须是3。</p>
+<p>3.2.2:  这一步频率计算用不着那么高的精度，差不多就OK。比如我主要做表面催化反应，这一步计算的时候，</p>
+<p>i) slab的原子都直接固定住，</p>
+<p>ii) 分子大的话只放开对应键断开、生成的原子，分子其他部分都固定住。</p>
+<p>iii) gamma点直接算。</p>
+<p>这样的话，可以在很快的时间内完成频率计算，得到键断开、生成时过渡态所对应的虚频振动方向。如果有好几个小虚频，不用尝试着去消虚频，因为过渡态结构本来就是一个粗糙的，这里消虚频也没必要；不过一定要有过渡态对应的虚频，如果没有的话，重新搭一个过渡态结构，继续算频率。</p>
+<p>3.3 读取频率计算的结果，生成IDM计算的POSCAR。这也是本节中脚本的作用；</p>
+<p>3.4 准备IDM计算的INCAR, KPOINTS, POTCAR, 提交任务，等待结束。</p>
+<p>3.5 精度稍微高点的频率计算，验证IDM优化出来的过渡态结构。</p>
+<p>3.6 以上是正常计算的一个流程，具体细节，大家根据自己情况随机应变，官网的介绍只有一页，很短，一定要认真读一下：<a target="_blank" rel="noopener" href="https://www.vasp.at/wiki/index.php/Improved_Dimer_Method">https://www.vasp.at/wiki/index.php/Improved_Dimer_Method</a></p>
+<p>脚本部分：</p>
+<p>脚本<a target="_blank" rel="noopener" href="https://github.com/bigbrosci/q-robot/blob/main/actions/get_dimer.py">get_dimer.py</a>可以在我的Github页面下载: <a target="_blank" rel="noopener" href="https://github.com/bigbrosci/q-robot/tree/main/actions。">https://github.com/bigbrosci/q-robot/tree/main/actions。</a> <code>q-robot</code>是本人这些年来计算常用的一些小脚本，有兴趣的也可以全部下载下来。根据自己需求酌情修改使用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python3</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">@author: qli</span><br><span class="line">Created on Thu Jun  2 22:09:18 2022</span><br><span class="line">Creat POSCAR for improved dimer calculations from frequency calculations.</span><br><span class="line">1) run frequency calculation: </span><br><span class="line">IBRION = 5</span><br><span class="line">POTIM = 0.015</span><br><span class="line">NFREE = 2</span><br><span class="line">NWRITE = 3 ### Must be 3</span><br><span class="line">2) run this script:</span><br><span class="line">get_dimer.py </span><br><span class="line">3) use the POSCAR for IDM calc.</span><br><span class="line">NSW = 100           </span><br><span class="line">Prec=Normal</span><br><span class="line">IBRION=44           !  use the dimer method as optimization engine</span><br><span class="line">EDIFFG=-0.05</span><br><span class="line">POTIM = 0.05</span><br><span class="line">    </span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">import numpy as np</span><br><span class="line">from ase.io import read, write</span><br><span class="line">import os</span><br><span class="line">from sys import exit</span><br><span class="line"></span><br><span class="line">model = read(&#x27;POSCAR_relax&#x27;) ### POSCAR_relax is the POSCAR before freq calculations, that means some atoms are not fixed.</span><br><span class="line">#model_positions = model.get_positions()</span><br><span class="line">model.write(&#x27;POSCAR_dimer&#x27;, vasp5=True)</span><br><span class="line"></span><br><span class="line"># print(model_positions)</span><br><span class="line"># print(len(model))</span><br><span class="line"></span><br><span class="line">l_start = 0 # the number of line which contains  &#x27;Eigenvectors after division by SQRT(mass)&#x27; </span><br><span class="line">with open(&#x27;OUTCAR&#x27;) as f_in:</span><br><span class="line">    lines = f_in.readlines()</span><br><span class="line">    for num, line in enumerate(lines):</span><br><span class="line">        if &#x27;Eigenvectors after division by SQRT(mass)&#x27; in line:</span><br><span class="line">            l_start = num</span><br><span class="line"></span><br><span class="line">if l_start == 0:</span><br><span class="line">    print(&#x27;&#x27;&#x27;Check Frequency results and then rerun this script.\n**Remember**: NWRITE must be 3. BYEBYE! &#x27;&#x27;&#x27; )</span><br><span class="line">    exit()</span><br><span class="line">    </span><br><span class="line">freq_infor_block = lines[l_start:]        </span><br><span class="line">l_position = 0</span><br><span class="line">wave_num = 0.0</span><br><span class="line">for num, line in enumerate(freq_infor_block): </span><br><span class="line">        if &#x27;f/i&#x27; in line:           </span><br><span class="line">            wave_tem = float(line.rstrip().split()[6])</span><br><span class="line">            if wave_tem &gt; wave_num:</span><br><span class="line">                wave_num = wave_tem  </span><br><span class="line">                l_position = num+2</span><br><span class="line"></span><br><span class="line">pos_dimer = open(&#x27;POSCAR_dimer&#x27;, &#x27;a&#x27;)</span><br><span class="line">pos_dimer.write(&#x27;  ! Dimer Axis Block\n&#x27;)</span><br><span class="line"></span><br><span class="line">vib_lines = freq_infor_block[l_position:l_position+len(model)]</span><br><span class="line">for line in vib_lines:</span><br><span class="line">    infor = line.rstrip().split()[3:]</span><br><span class="line">    pos_dimer.write(&#x27; &#x27;.join(infor)+&#x27;\n&#x27;)</span><br><span class="line"></span><br><span class="line">pos_dimer.close()</span><br><span class="line">print(&#x27;&#x27;&#x27;</span><br><span class="line">      DONE!</span><br><span class="line">      Output file is named as: POSCAR_dimer and can be used for dimer calculations.</span><br><span class="line">      Don&#x27;t forget to rename POSCAR_dimer to POSCAR before you run the dimer jobs.      </span><br><span class="line">      &#x27;&#x27;&#x27;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>需要注意的有以下几点：</p>
+<p>1） 前面介绍了，频率计算为了图快，我们固定了一些原子。脚本会读取一个<code>POSCAR_relax</code>,也就是没有固定这些原子的结构。用ASE读取，输出一下，保证POSCAR里面的结构干净，避免出错。</p>
+<p>2）脚本会读取最大的虚频，然后把它所对应的振动方向附到POSCAR_relax的后面，然后IDM的POSCAR就准备好了。</p>
+<p>3）输出为POSCAR_dimer， 计算的时候记得把它改成POSCAR。</p>
+<p>4）IDM任务的INCAR在脚本里面有说明，改下IBRION = 44。 剩下的基本跟平时优化是一样的。</p>
+<p>IDM结合NEB的成功率很高，非常推荐。另外，计算出的结果极少出现多个虚频的情况。因此，这个方法也可以用来消虚频。差不多就这些了，剩下的就是多操作练习，熟能生巧的事情了。欢迎大家分享自己的经验，放到自己的网站，公众号等平台，帮助更多的人解决VASP计算相关的问题，有兴趣的也可以把自己的经验心得放到大师兄网站上，直接给我发邮件即可（lqcata@gmail.com）。</p>
+<p><img src="/2022/06/22/A32/A30/qrcode.png" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -235,7 +364,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-05-24 08:51:07" itemprop="dateModified" datetime="2022-05-24T08:51:07-04:00">2022-05-24</time>
+      <time title="修改时间：2022-05-24 09:17:30" itemprop="dateModified" datetime="2022-05-24T09:17:30-04:00">2022-05-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -284,7 +413,7 @@
 <p>为什么要编译VTST，说白了还是VASP自带的功能不强大，没法解决我们的实际计算问题，主要是过渡态结构的搜索。因此，我们需要把VTST的一些功能添加到VASP中。网上可以搜到很多相关的编译教程，这里主要简单介绍下编译的几点注意事项，理清编译的思路，增加成功率。</p>
 <p>首先，在编译VTST之前，要确定你顺利编译了VASP。如果这一步你还没搞定，就打算直接编译VTST，会导致你不知道问题从哪里来？是VASP编译的原因呢？还是VTST的原因？另外，VTST编译命令跟VASP是一样的，都是make，只要按照VTST官网的说明，复制文件到指定目录， 修改特定的文件内容，其他的和VASP编译设置一致即可。</p>
 <p>其次，一定要看官网。记住，官网永远是学习的第一手资料，很多人喜欢看各种各样的教程，大部分教程都是官网的阉割版。或多或少会丢失些重要的信息，导致出错了不知道怎么解决。</p>
-<p>最后，我们介绍下官网的编译说明 (<a target="_blank" rel="noopener" href="https://theory.cm.utexas.edu/vtsttools/installation.html)%EF%BC%8C%E5%A4%A7%E5%AE%B6%E7%BC%96%E8%AF%91%E5%A5%BDVASP%E4%B9%8B%E5%90%8E%EF%BC%8C%E6%8C%89%E7%85%A7%E8%AF%B4%E6%98%8E%E4%B8%80%E6%AD%A5%E4%B8%80%E6%AD%A5%E8%B5%B0%EF%BC%8C%E5%9F%BA%E6%9C%AC%E9%83%BD%E8%83%BD%E9%A1%BA%E5%88%A9%E7%BC%96%E8%AF%91VTST%E5%88%B0VASP%E4%B8%AD%EF%BC%9A">https://theory.cm.utexas.edu/vtsttools/installation.html)，大家编译好VASP之后，按照说明一步一步走，基本都能顺利编译VTST到VASP中：</a></p>
+<p>最后，我们介绍下官网的编译说明 (<a target="_blank" rel="noopener" href="https://theory.cm.utexas.edu/vtsttools/installation.html)，大家编译好VASP之后，按照说明一步一步走，基本都能顺利编译VTST到VASP中：">https://theory.cm.utexas.edu/vtsttools/installation.html)，大家编译好VASP之后，按照说明一步一步走，基本都能顺利编译VTST到VASP中：</a></p>
 <ol>
 <li>第一步当然是下载并解压VTST的程序包喽：(<a target="_blank" rel="noopener" href="https://theory.cm.utexas.edu/vtsttools/download.html">https://theory.cm.utexas.edu/vtsttools/download.html</a>)</li>
 </ol>
@@ -293,57 +422,45 @@
 <p>ii) vtstcode6.1 文件夹里面对应的是VASP6.1和6.2版本的</p>
 <p>iii) vtstcode5 和 vtstcode6.1两个文件夹外面的文件对应的是VASP6.3版本的。</p>
 <p>iv) VASP5升级到VASP6不管是6.1还是6.3）要额外花钱，如果你有VASP5的版权，那么就用vtstcode5的文件，VASP5也有很多的子版本，尽量用最新的5.4.4。</p>
-<p>v)  VASP6.1&#x2F;2升级到VASP6.3不花钱，6.3还支持机器学习，所以vtst6.1这个文件夹，直接删掉就OK了，暂不用它，直接搞6.3。</p>
-<p><img src="/2022/05/23/A31/A31.png"></p>
-<ol start="2">
-<li><p>编译前的准备：</p>
-<p>i) cp 5.4.4   5.4.4_vtst   &amp;&amp; cd  5.4.4_vtst  </p>
-<p>这样的话，我们可以用原生的VASP,亦可以用VTST强化过的。另外，这也是对VASP的一个备份；</p>
-<p>ii) 将下载的文件复制到 src文件中： </p>
-<p>ii) 编辑src文件中的main.F 文件</p>
-<p>按照官网的说明，VIM打开src&#x2F;main.F 文件，找到对应的部分，直接替换即可。 </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">In VTST v2.04 and later, a modification is required in main.F for the solid-state NEB.</span><br><span class="line"></span><br><span class="line">Find and replace:</span><br><span class="line"></span><br><span class="line">CALL CHAIN_FORCE(T_INFO%NIONS,DYN%POSION,TOTEN,TIFOR, &amp;</span><br><span class="line">     LATT_CUR%A,LATT_CUR%B,IO%IU6)</span><br><span class="line">with</span><br><span class="line"></span><br><span class="line">CALL CHAIN_FORCE(T_INFO%NIONS,DYN%POSION,TOTEN,TIFOR, &amp;</span><br><span class="line">     TSIF,LATT_CUR%A,LATT_CUR%B,IO%IU6)</span><br><span class="line">For vasp.6.2 also find and replace:</span><br><span class="line"></span><br><span class="line">IF (LCHAIN) CALL chain_init( T_INFO, IO)</span><br><span class="line">with</span><br><span class="line"></span><br><span class="line">CALL chain_init( T_INFO, IO)</span><br><span class="line">For vasp.6.2.1 you will need vtstcode 4.1 (revision 182). A version of the vtstcode that will work with vasp.6.1.x - vasp.6.2.0 has been saved in the vtstcode6.1 directory.</span><br></pre></td></tr></table></figure>
-
-<p><strong>注意</strong>：VASP6.2还需要额外替换一行，至于6.3是不是跟6.2一样？ 可以编译2个版本,一个替换，一个不替换，然后对比下。本人测试的结果是，如果不替换，编译会失败。</p>
-<p>iii) 编辑 src&#x2F;.objects文件</p>
-<p>先看下官网的说明：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">To build the code, the VASP makefile needs to be changed. Find the variable SOURCE, which defines which objects will be built, and add the following objects before chain.o:</span><br><span class="line"></span><br><span class="line">bfgs.o dynmat.o  instanton.o  lbfgs.o sd.o   cg.o dimer.o bbm.o \</span><br><span class="line">fire.o lanczos.o neb.o  qm.o opt.o</span><br><span class="line">The objects dynmat.o, neb.o, dimer.o, lanczos.o, and instanton.o must be in the SOURCE list before chain.o appears. The optimizer objects, sd.o, cg.o, qm.o, lbfgs.o, bfgs.o, and fire.o must appear before the optimizer driver opt.o. Nothing else needs to be done. </span><br></pre></td></tr></table></figure>
-
-<p>官网里面有句话：Find the variable SOURCE, which defines which objects will be built, and add the following objects before chain.o。</p>
-<p>这里的<code>variable SOURCE</code>指的就是src目录里面的<code>.objects</code>文件，这个文件前面带<code>.</code>，是隐藏的。用VIM或者其他文本编辑软件直接打开编辑就行。</p>
-<p>主要有2点，加粗的<code>Before</code>告诉你怎么改<code>.objects</code>文件：</p>
-<p>1： The objects dynmat.o, neb.o, dimer.o, lanczos.o, and instanton.o must be in the SOURCE list <strong>before</strong> chain.o appears. </p>
-<p>2： The optimizer objects, sd.o, cg.o, qm.o, lbfgs.o, bfgs.o, and fire.o must appear <strong>before</strong> the optimizer driver opt.o. </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">70         tetweight.o \</span><br><span class="line">71         hamil_rot.o \</span><br><span class="line">72         bfgs.o dynmat.o  instanton.o  lbfgs.o sd.o   cg.o dimer.o bbm.o \</span><br><span class="line">73         fire.o lanczos.o neb.o  qm.o opt.o \</span><br><span class="line">74         chain.o \</span><br></pre></td></tr></table></figure>
-
-<p>直接复制官网的文本，将72,73行内容放到指定的位置即可(chain.o前面)，不要随便改顺序。</p>
-</li>
-<li><p>回顾下，1）将VTST的文件复制到src目录里面，2） 修改main.F，3） 修改 .object文件。没有遗漏的话，就可以直接编译了。直接make命令，喝杯咖啡等着即可，下面是本人编译的一些具体命令：<code>5.4.4</code> 是已经编译好的VASP5的目录，VTST（<code>5.4.4_vtst</code>）编译时环境变量的设置跟<code>5.4.4</code>完全一样。</p>
-</li>
-</ol>
+<p>v)  VASP6.1/2升级到VASP6.3不花钱，6.3还支持机器学习，所以vtst6.1这个文件夹，直接删掉就OK了，暂不用它，直接搞6.3。</p>
+<p><img src="/2022/05/23/A31/Users/qli/Desktop/A31.png" alt=""></p>
+<p>2) 编译前的准备：</p>
+<p>   i) cp 5.4.4   5.4.4_vtst   &amp;&amp; cd  5.4.4_vtst  </p>
+<p>   5.4.4 为已经编译好的VASP目录，这样的话，我们可以用原生的VASP,亦可以用VTST强化过的。另外，这也是对VASP的一个备份；</p>
+<p>   ii) 将下载的文件复制到 src文件中： </p>
+<p>   ii) 编辑src文件中的main.F 文件</p>
+<p>   按照官网的说明，VIM打开src/main.F 文件，找到对应的部分，直接替换即可。 </p>
+   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">In VTST v2.04 and later, a modification is required in main.F for the solid-state NEB.</span><br><span class="line"></span><br><span class="line">Find and replace:</span><br><span class="line"></span><br><span class="line">CALL CHAIN_FORCE(T_INFO%NIONS,DYN%POSION,TOTEN,TIFOR, &amp;</span><br><span class="line">     LATT_CUR%A,LATT_CUR%B,IO%IU6)</span><br><span class="line">with</span><br><span class="line"></span><br><span class="line">CALL CHAIN_FORCE(T_INFO%NIONS,DYN%POSION,TOTEN,TIFOR, &amp;</span><br><span class="line">     TSIF,LATT_CUR%A,LATT_CUR%B,IO%IU6)</span><br><span class="line">For vasp.6.2 also find and replace:</span><br><span class="line"></span><br><span class="line">IF (LCHAIN) CALL chain_init( T_INFO, IO)</span><br><span class="line">with</span><br><span class="line"></span><br><span class="line">CALL chain_init( T_INFO, IO)</span><br><span class="line">For vasp.6.2.1 you will need vtstcode 4.1 (revision 182). A version of the vtstcode that will work with vasp.6.1.x - vasp.6.2.0 has been saved in the vtstcode6.1 directory.</span><br></pre></td></tr></table></figure>
+<p>   <strong>注意</strong>：VASP6.2还需要额外替换一行，至于6.3是不是跟6.2一样？ 可以编译2个版本,一个替换，一个不替换，然后对比下。本人测试的结果是，如果不替换，编译会失败。</p>
+<p>   iii) 编辑 src/.objects文件</p>
+<p>   先看下官网的说明：</p>
+   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">To build the code, the VASP makefile needs to be changed. Find the variable SOURCE, which defines which objects will be built, and add the following objects before chain.o:</span><br><span class="line"></span><br><span class="line">bfgs.o dynmat.o  instanton.o  lbfgs.o sd.o   cg.o dimer.o bbm.o \</span><br><span class="line">fire.o lanczos.o neb.o  qm.o opt.o</span><br><span class="line">The objects dynmat.o, neb.o, dimer.o, lanczos.o, and instanton.o must be in the SOURCE list before chain.o appears. The optimizer objects, sd.o, cg.o, qm.o, lbfgs.o, bfgs.o, and fire.o must appear before the optimizer driver opt.o. Nothing else needs to be done. </span><br></pre></td></tr></table></figure>
+<p>   官网里面有句话：Find the variable SOURCE, which defines which objects will be built, and add the following objects before chain.o。</p>
+<p>   这里的<code>variable SOURCE</code>指的就是src目录里面的<code>.objects</code>文件，这个文件前面带<code>.</code>，是隐藏的。用VIM或者其他文本编辑软件直接打开编辑就行。</p>
+<p>   主要有2点，加粗的<code>Before</code>告诉你怎么改<code>.objects</code>文件：</p>
+<p>   1： The objects dynmat.o, neb.o, dimer.o, lanczos.o, and instanton.o must be in the SOURCE list <strong>before</strong> chain.o appears. </p>
+<p>   2： The optimizer objects, sd.o, cg.o, qm.o, lbfgs.o, bfgs.o, and fire.o must appear <strong>before</strong> the optimizer driver opt.o. </p>
+   <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">70         tetweight.o \</span><br><span class="line">71         hamil_rot.o \</span><br><span class="line">72         bfgs.o dynmat.o  instanton.o  lbfgs.o sd.o   cg.o dimer.o bbm.o \</span><br><span class="line">73         fire.o lanczos.o neb.o  qm.o opt.o \</span><br><span class="line">74         chain.o \</span><br></pre></td></tr></table></figure>
+<p>   直接复制官网的文本，将72,73行内容放到指定的位置即可(chain.o前面)，不要随便改顺序。</p>
+<p>3) 回顾下，1）将VTST的文件复制到src目录里面，2） 修改main.F，3） 修改 .object文件。没有遗漏的话，就可以直接编译了。直接make命令，喝杯咖啡等着即可，下面是本人编译的一些具体命令：<code>5.4.4</code> 是已经编译好的VASP5的目录，VTST（<code>5.4.4_vtst</code>）编译时环境变量的设置跟<code>5.4.4</code>完全一样。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cp 5.4.4   5.4.4_vtst  </span><br><span class="line">cd  5.4.4_vtst  </span><br><span class="line">cp ~/Downloads/vtstcode-184/vtstcode5/*  src/</span><br><span class="line">vi src/main.F</span><br><span class="line">vi src/.objects</span><br><span class="line">make </span><br></pre></td></tr></table></figure>
-
-<ol start="4">
+<ol>
 <li>确认是否顺利编译，直接运行个例子看看就知道了。</li>
 </ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep VTST -A 10 02/OUTCAR</span><br></pre></td></tr></table></figure>
-
 <p>没问题的话则会出现下面的内容：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">VTST: version 3.2, (02/03/18)</span><br><span class="line"></span><br><span class="line"> CHAIN: initializing optimizer</span><br><span class="line"> </span><br><span class="line"> OPT: Using Conjugate-Gradient optimizer</span><br><span class="line"> OPT: CG, Init</span><br><span class="line"> OPT: CG, FDSTEP      0.005000</span><br><span class="line"> OPT: CG, MAXMOVE      0.200000</span><br><span class="line"> </span><br><span class="line"> CHAIN: Read ICHAIN            0</span><br><span class="line"> CHAIN: Running the NEB</span><br></pre></td></tr></table></figure>
-
-
-
-<ol start="5">
+<ol>
 <li><p>简单总结下：编译VTST主要有以下4个小细节：</p>
 <p>i) 前提是顺利编译完成了VASP，这也是最关键的地方。</p>
 <p>ii) 下载VTST的code，找到对应VASP版本的文件，并复制到src目录中</p>
-<p>iii) 修改src&#x2F;main.F 文件</p>
-<p>iv) 修改src&#x2F;.objects 文件</p>
+<p>iii) 修改src/main.F 文件</p>
+<p>iv) 修改src/.objects 文件</p>
 </li>
-<li><p>欢迎大家分享自己的经验，放到自己的网站，公众号等平台，帮助更多的人解决VTST编译的问题，也可以添加到本文章中 （<a href="mailto:&#x6c;&#113;&#99;&#x61;&#116;&#x61;&#x40;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#x6d;">&#x6c;&#113;&#99;&#x61;&#116;&#x61;&#x40;&#103;&#x6d;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#x6d;</a>）。此外，VTST的Code怎么下载？有没有具体运行的案例？提交任务的命令怎么写？按照这个说明编译失败了，怎么办？这些问题就不要找我了。我相当圣母，可俺是男的。实在没办法，放弃也是个很好的选择。</p>
+<li><p>欢迎大家分享自己的经验，放到自己的网站，公众号等平台，帮助更多的人解决VTST编译的问题，也可以添加到本文章中 （lqcata@gmail.com）。此外，VTST的Code怎么下载？有没有具体运行的案例？提交任务的命令怎么写？按照这个说明编译失败了，怎么办？这些问题就不要找我了。我相当圣母，可俺是男的。实在没办法，放弃也是个很好的选择。</p>
 </li>
 </ol>
-<p><img src="/2022/05/23/A31/A30/qrcode.png"></p>
+<p><img src="/2022/05/23/A31/A30/qrcode.png" alt=""></p>
 
       
     </div>
@@ -2787,129 +2904,6 @@ D_s=\frac{averageMSD}{2dt}</script><p>$d$ 是离子在材料中的扩散维度�
 </div>
 <p>同文献一样，笔者使用了非常高精度的k点半径和截断能。随着精度的提高，结果趋于较好的收敛。笔者在此展示了笔者自己算的TOECs与实验的比较，两者相对来说还是比较接近的（相对实验的误差与文献差不多）。总的来说，如果有小伙伴需要计算材料的TOECs或者FOECs，笔者建议一定要对应变，k点，截断能三者都要做仔细地收敛测试。</p>
 <p>Wang,Hao, and Mo Li. “Ab initio calculations of second-, third-, andfourth-order elastic constants for single crystals.” <em>PhysicalReview B</em> 79.22 (2009): 224102.</p>
-<p>本文经ponychen授权发布，版权属于ponychen。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2019/10/14/S05/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2019/10/14/S05/" class="post-title-link" itemprop="url">浅谈Hall Petch关系(二)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2019-10-14 18:30:16" itemprop="dateCreated datePublished" datetime="2019-10-14T18:30:16-04:00">2019-10-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:29:41" itemprop="dateModified" datetime="2021-12-27T22:29:41-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Share/" itemprop="url" rel="index"><span itemprop="name">Share</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2019/10/14/S05/" class="post-meta-item leancloud_visitors" data-flag-title="浅谈Hall Petch关系(二)" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2019/10/14/S05/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/14/S05/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>在上文中，我们介绍了用于解释Hall Petch关系的位错阻塞模型和晶界位错源模型。两种理论都是较为早期出现的模型，原理上相对简单，因此文章中仔细介绍了相对应的推导过程。本文将继续介绍剩下的相关模型，由于推理过程相对复杂，读者如果对具体推导过程有兴趣可以阅读对应参考文献。</p>
-<p>上文介绍的两种模型都未在公式中直接体现材料变形中塑性应变对Hall Petch系数的影响。因此，位错阻塞模型和晶界位错源模型仅仅只能描述多晶材料在屈服极限之下的情况。我们知道，当多晶材料所受应变超过其屈服极限，材料由于位错的交截和阻碍出现了加工硬化。加工硬化势必会影响Hall Petch系数的数值。在Meakin和Petch（文献1）提出的work haraening（加工硬化）模型中，Hall Petch系数被看成是一个与应变有关的因变量。</p>
-<p><img src="/2019/10/14/S05/share05/share051.png" alt=""></p>
-<p>由于Hall Petch系数中包含了应变，该模型同时成功预测了材料中的加工硬化行为。如果我们将晶粒尺寸d固定，可以发现该模型描述了一种应力与应变成抛物线形状的加工硬化关系，这与很多实验是相符合的。</p>
-<p>目前为止介绍的所有模型都默认认为位错来自于位错源的开动。然而实际上，当晶体被弯曲，或者在晶粒之间的交叠以及孔洞处，由于非均匀变形，晶体为了降低变形带来的巨大应力，会自发形成一些几何必须位错来释放应力。下图展示:</p>
-<p><img src="/2019/10/14/S05/share05/share052.png" alt=""></p>
-<p>当晶体被弯曲时，晶体中自发在易滑移面上出现的几何必须位错林。在Ashby（文献2）等提出的几何必须位错模型中，作者认为晶界作为晶体中的应力协调区，其上的位错类型主要为几何必须位错主导，并且晶体中绝大部分的几何必须位错都位于晶界上，因此材料的强度由晶界上的几何必须位错密度决定。而平衡位错密度又由晶粒尺寸决定，通过结合加工硬化模型，作者获得了如下的Hall Petch关系式。</p>
-<p><img src="/2019/10/14/S05/share05/share053.png" alt=""></p>
-<p>位错阻塞模型将材料的强度归功于晶粒内部位错源开动的位错受阻，而目前介绍的其他模型则都将材料的强度归功于晶界处的位错密度受阻。在这两种极端情况的基础上，Meyersm（文献3）等人认为（复合模型），一个多晶材料应该被分为两部分：连续的拥有较高流变强度的晶界部分以及被晶界包围的离散的拥有较低流变强度的块体部分（见下图4，t为晶界厚度）。</p>
-<p><img src="/2019/10/14/S05/share05/share054.png" alt=""></p>
-<p>当材料承受外力时，晶界部分首先发生变形，形成大量几何必须位错；随着进一步变形，晶界首先发生局部屈服形成加工硬化层，并形核大量位错向晶粒内运动；最后，随着晶粒内位错密度的上升，晶粒部分发生屈服。至此，材料整体完成了整个塑性变形过程。基于这一过程假设，作者得出了如下关系。</p>
-<p><img src="/2019/10/14/S05/share05/share055.png" alt=""></p>
-<p>可以发现，该关系式并非符合正常的Hall Petch关系，式子中同时出现了一次方和二次方项。作者进一步假设随着晶粒尺寸的增大，其容纳几何必须位错的数量也在上升，因此其厚度t也在上升。基于这一假设，作者得到了下图的强度与晶粒尺寸的关系。</p>
-<p><img src="/2019/10/14/S05/share05/share056.png" alt=""></p>
-<p>可以发现，复合模型在晶粒尺寸较大的时候可以较好的匹配Hall Petch关系，而当晶粒尺寸小到纳米级的时候，复合模型成功预测了超细晶材料的强度反常降低现象的存在。这是之前所有的理论模型都无法给出的结果。</p>
-<p>实际上，在复合模型之后材料学家依旧提出了大量的理论模型，其目的也不仅仅是在于解释Hall Petch关系。由于篇幅所限，本文仅仅介绍了一些具有代表性的模型。实际上，从实验的角度来说，很多材料也并非严格遵循Hall Petch关系中-1/2指数，该指数存在一个很大的范围。对于我们来说，-1/2只是代表材料强度与晶粒尺寸联系的一个优美符号。</p>
-<ol>
-<li>Meakin, J., and N. J. Petch. “Report ASD-TDR-63-324.” <em>Symposium on the Role of Substructure in the Mechanical Behavior of Metals,(ASD-7DR-63-324, Orlando, 1963) pp</em>. 1963.</li>
-<li>Ashby, M. F. “The deformation of plastically non-homogeneous materials.” <em>The Philosophical Magazine: A Journal of Theoretical Experimental and Applied Physics</em>21.170 (1970): 399-424.</li>
-<li>Meyersm, Marc A., and E. Ashworth. “A model for the effect of grain size on the yield stress of metals.” <em>Philosophical Magazine A</em> 46.5 (1982): 737-759.</li>
-<li>Kato, Masaharu. “Hall–Petch relationship and dislocation model for deformation of ultrafine-grained and nanocrystalline metals.” <em>Materials Transactions</em> 55.1 (2014): 19-24.</li>
-</ol>
 <p>本文经ponychen授权发布，版权属于ponychen。</p>
 
       

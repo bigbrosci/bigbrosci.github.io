@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">125</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">162</span>
+        <span class="site-state-item-count">163</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,223 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/06/ex37/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/02/06/ex37/" class="post-title-link" itemprop="url">Ex-37 DOS 计算(一)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-02-06 15:30:16" itemprop="dateCreated datePublished" datetime="2018-02-06T15:30:16-05:00">2018-02-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/02/06/ex37/" class="post-meta-item leancloud_visitors" data-flag-title="Ex-37 DOS 计算(一)" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/02/06/ex37/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/06/ex37/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>使用VASP计算，很多时候都逃不掉DOS，能带计算的相关问题，尤其是对于计算材料的童鞋们，更是家常便饭一般。群里很多人，很多新手们都时常在讨论DOS的计算。这里我们通过VASP官网的说明，解释一下算DOS的具体步骤。前面我们学会了如何拟合或者优化稳定的晶胞结构。在此基础上，我们可以计算一下相关的DOS信息。</p>
+<h2 id="1-KPOINTS"><a href="#1-KPOINTS" class="headerlink" title="1 KPOINTS"></a>1 KPOINTS</h2><p> <strong>1.1 K点数目</strong></p>
+<p>与结构优化相比，算DOS的时候，需要用到更多的K点数目，这是因为K点越多，画出来的DOS图质量越高。</p>
+<p>引用官网的话：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A high quality DOS requires usually very fine k-meshes.</span><br></pre></td></tr></table></figure>
+<hr>
+<p><strong>1.2 K点数目的选取</strong></p>
+<p> K点数目越多越好，我们该如何设置K点数目呢？</p>
+<p>还记的前面我们讲到的K点选择的经验规则吗？那一个规则可以认为是我们平时计算时K点选择的标配。对于DOS计算，我们就需要把配置提高一个档次了。</p>
+<p><img src="/2018/02/06/ex37/ex37-1.png" alt=""> </p>
+<p>一般来说，<code>K * a = 45</code>左右之间完全可以满足你的要求，大伙可以根据这个经验来选择K点。 </p>
+<h2 id="2-NEDOS"><a href="#2-NEDOS" class="headerlink" title="2 NEDOS"></a>2 NEDOS</h2><p>NEDOS这个参数在DOS图的质量上面也有着很重要的作用。比如我们的DOS能量区间范围（DOS图的横坐标）为：[-10 eV，10eV]，VASP默认的将这个能量范围分成301点，然后作图。301也就是默认的NEDOS的取值。如果我们设置的NEDOS值够大，那么DOS区间就会被区分地越精确。NEDOS的取值一般来说：</p>
+<ul>
+<li><p><code>NEDOS = 3000</code>左右就足够好了。太大也没什么意义；</p>
+</li>
+<li><p>NEDOS越大，VASP输出的DOSCAR，vasprun.xml文件也就越大，占用存储空间。</p>
+</li>
+<li><p>经常有人抱怨说自己的DOS图有很多尖锐的峰，可以尝试着通过增加NEDOS这个办法来解决。</p>
+</li>
+<li><p>更多的信息，自己参考一下：<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/NEDOS">https://cms.mpi.univie.ac.at/wiki/index.php/NEDOS</a></p>
+</li>
+</ul>
+<h2 id="3-ISMEAR（一）"><a href="#3-ISMEAR（一）" class="headerlink" title="3  ISMEAR（一）"></a>3  ISMEAR（一）</h2><p>首先我们看官网的话： <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/ISMEAR">https://cms.mpi.univie.ac.at/wiki/index.php/ISMEAR</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">For the calculation of the total energy in bulk materials we recommend thetetrahedron method with Blöchl corrections (ISMEAR=-5). This method also givesa smooth nice electronic density of states (DOS).</span><br></pre></td></tr></table></figure>
+<p>也就是说 ISMEAR = -5 的时候（Blöchl修正的四面体方法），我们可以得到一个非常平滑的DOS图。</p>
+<p><strong>注意：</strong></p>
+<p>3.1 K点数目</p>
+<p>设置<code>ISMEAR = -5</code> 的时候，如果K点数目K点的数目小于等于4 ， 计算会出错，得到如下的错误结果：</p>
+<p> <strong>VERY BAD NEWS! internal error in subroutineIBZKPT:</strong></p>
+<p> <strong>Tetrahedron method fails for NKPT&lt;4. NKPT=       1</strong></p>
+<p>这也是很多人常见的错误。官网说的是K点数目小于三：the tetrahedron method is not applicable， if less than three k-points are used. （QQ群的<code>恒驰一强</code>发现官网的这个错误。）</p>
+<p>K点不够，用<code>ISMEAR = -5</code>出错的解决办法：</p>
+<ul>
+<li><p>既然Ｋ点不够，那么我就增加Ｋ点，然后再使用<code>ISMEAR= -5</code>　（<strong>简单粗暴，强烈推荐使用</strong>）</p>
+</li>
+<li><p>如果增加了K点，可能还是会出错。有时也会出现下面的错误（微信群的群友（<strong>Cu—Ni</strong>）提供）。我们先把解决方法列出来，错误部分大家慢慢看：</p>
+<ul>
+<li>直接换一下ISMEAR的取值。</li>
+<li>群友还发现：在保证K点数目大于4的时候，有时候减少K点数目或者增加K点数目都可以解决这个问题。如果你的服务器还算可以，建议增加K点数目，毕竟和K点数目越多，DOS的质量越高。这个办法大家可以参考一下。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WARNING: DENTET:can&#x27;t reach specified precision</span><br><span class="line">Number of Electronsis NELECT =</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/02/06/ex37/ex38-3.png" alt=""></p>
+</li>
+</ul>
+<p>  <strong>官方的解释：</strong></p>
+<p>  <a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp-forum/viewtopic.php?t=416">http://cms.mpi.univie.ac.at/vasp-forum/viewtopic.php?t=416</a></p>
+<p>  <a target="_blank" rel="noopener" href="http://www.error.wiki/The_old_and_the_new_charge_density_differ">http://www.error.wiki/The_old_and_the_new_charge_density_differ</a></p>
+<p>  <img src="/2018/02/06/ex37/C:/Users/lqlhz/OneDrive/%E6%A1%8C%E9%9D%A2/ex37-41/ex38/ex38-4.png" alt=""></p>
+<p>出现此警告(DENTET)的原因是因为无法通过tetrahedron方法得到足够精确的费米能级。也就是将态密度积分到费米面的电子数和体系的价电子数目不一致。</p>
+<p>3.2 适用体系：</p>
+<ul>
+<li><p><code>ISMEAR = -5</code> 适用于所有体系的<strong>DOS计算</strong>。非DOS计算的时候：</p>
+</li>
+<li><p>对于金属体系来说，结构优化的时候不能使用<code>ISMEAR= -5</code>（注意：是<strong>优化结构的时候不能用</strong>！），这是因为四面体方法不能很好地处理费米能级处的电子占据情况，导致算出来的力会有一定百分比的误差。所以，对金属体系结构优化的时候，<code>ISMEAR &gt; = 0</code> 参考：<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/vasp/vasp/Partial_occupancies_different_methods.html">https://cms.mpi.univie.ac.at/vasp/vasp/Partial_occupancies_different_methods.html</a></p>
+</li>
+<li><p>对于半导体和绝缘体的体系，<code>ISMEAR&gt;0</code> 是不可以的。只能ISMEAR&lt;=0。</p>
+</li>
+<li><p>四面体方法（<code>ISMEAR = -5</code>）不适合计算能带（对所有的体系来说的）。多谢wuli8老师帮忙完善！</p>
+</li>
+<li>使用ISMEAR= -5 的时候，SIGMA的取值没有影响，如果不放心，取<code>SIGMA = 0.01</code>。</li>
+</ul>
+<p>3.3 小结：</p>
+<ul>
+<li>算DOS，只要K点不少于3； 用ISMEAR=-5是个不错的选择。</li>
+</ul>
+<h2 id="4-ISMEAR（二）"><a href="#4-ISMEAR（二）" class="headerlink" title="4 ISMEAR（二）"></a>4 ISMEAR（二）</h2><p>如果体系很大，只能适用gamma点来算，<code>ISMEAR = -5</code>的时候，肯定会出错，但服务器不给力，不能增加Ｋ点的时候，怎么办？</p>
+<ul>
+<li><p>对于所有的体系（K点数目小于4也可以）：可以使用<code>ISMEAR = 0</code>；<code>SIGMA = 0.01</code>。对于大部分的体系都能得到理想的结果。原则上来说，使用GS方法的时候(ISMEAR=0)，SIGMA的数值要测试下，保证<code>entropy T*S</code>这一项平均到每个原子上小于0.001 eV也就是1meV。不想测试的话，直接用个很小的值，比如这里我们说的：<code>SIGMA = 0.01</code>。</p>
+<p><img src="/2018/02/06/ex37/C:/Users/lqlhz/OneDrive/%E6%A1%8C%E9%9D%A2/ex37-41/ex37/ex37-4.png" alt=""></p>
+</li>
+<li><p>对于金属体系来说，也可以使用<code>ISMEAR = 1</code>；<code>SIGMA = 0.01</code>。SIGMA取值太大，计算出来的能量可能不正确；SIGMA取值越小，计算越精确，需要的时间也就越多。值得注意的是：这里我们使用的0.01已经很小，没有必要设置的再小。因为对于金属体系，使用MP方法(ISMEAR=1..N)时，SIGMA= 0.10 差不多就足够了。官网给的参考值是0.20。</p>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="http://cms.mpi.univie.ac.at/vasp/guide/node124.html">http://cms.mpi.univie.ac.at/vasp/guide/node124.html</a></p>
+<p><img src="/2018/02/06/ex37/ex37-2.png" alt=""></p>
+<ul>
+<li>在KPOINTS确定之后，使用多大的SIGMA值，大家最好测试一下。<strong>原则如下</strong>：SIGMA取值在<strong>保证</strong>OUTCAR中<code>entropy T*S</code>这项的能量平均到每个原子上小于 1 meV的<strong>前提下</strong>：<strong>尽可能地大</strong>。这样可以在保证准确度的同时，也加快收敛速度。 </li>
+</ul>
+<p><img src="/2018/02/06/ex37/ex37-3.png" alt=""></p>
+<ul>
+<li><strong>记住：</strong> VASP学习最快的途径就是不停地看官网，然后亲自上手去测试，测试，测试！并观察分析结果。</li>
+</ul>
+<hr>
+<hr>
+<h2 id="4-扩展练习"><a href="#4-扩展练习" class="headerlink" title="4 扩展练习:"></a><strong>4</strong> <strong>扩展练习:</strong></h2><p>4.1 阅读VASP官网关于ISMEAR和SIGMA的所有说明：</p>
+<p>4.2 下载VASP的pdf说明书，搜索书中所有的ISMEAR和SIGMA关键词，阅读所有相关的内容；</p>
+<p>4.3 思考SMEAR方法的意义？SIGMA的意义？</p>
+<p>4.4 查看VASP说明书，查阅相关文献，了解MP和GS方法</p>
+<p>4.5 测试MP和 GS方法中，SIGMA取值对计算时间，能量，收敛步数的影响。</p>
+<p>4.6 分析下为什么算DOS的时候，要算两步： selfconsistent  和 none-selfconsistent calculations? </p>
+<hr>
+<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5 总结:"></a><strong>5</strong> <strong>总结:</strong></h2><p>看完本节：你应该知道计算DOS的时候：</p>
+<ul>
+<li>KPOINTS和NEDOS设置的一些内容。</li>
+<li>ISMEAR要用-5。</li>
+<li><p>KPOINTS因计算硬件限制不能设置的很大，数目小于4的时候：</p>
+<ul>
+<li>对于所有体系均可以使用ISMEAR=0。</li>
+<li>金属体系还可以用ISMEAR=1..N，官网建议SIGMA为0.20，太小的SIGMA值对收敛会产生影响。使用0.01-0.10的数值都是很安全的选择。</li>
+<li>SIGMA的数值需要测试一下，一般来说在0.01-0.05之间足够了。</li>
+</ul>
+</li>
+<li><p>非DOS计算的时候，对于金属来说ISMEAR不能等于 -5，优先使用ISMEAR= 1。非金属来说（半导体和绝缘体），不能 &gt; 0 。对于所有的体系， ISMEAR= 0 则是一个很安全的选择，但SIGMA的数值要测试一下。说了这么多废话，还是官网简单明了：</p>
+</li>
+</ul>
+<p><img src="/2018/02/06/ex37/ex37-14.png" alt=""></p>
+<p>For further considerations on the choice for the smearing method see sections 9.4， 10.6. To summarize， use the following guidelines:</p>
+<ul>
+<li>​        For <strong>semiconductors or insulators</strong> use <strong>always</strong> tetrahedron method (ISMEAR=-5)， if the cell is too large (or if you use only 1 or two k-points) use ISMEAR=0.</li>
+</ul>
+<ul>
+<li>​        For <strong>relaxations in metals always</strong> use ISMEAR=1 and an appropriated SIGMA value (the entropy term should <strong>less than 1 meV per atom</strong>). <strong>Mind:</strong> <strong>Avoid</strong> to use ISMEAR&gt;0 for semiconductors and insulators， it might result in problems.</li>
+</ul>
+<p>For metals a sensible value is usually SIGMA= 0.2 (that’s the value we use for most transition metal surfaces).</p>
+<ul>
+<li>​        For the <strong>DOS</strong> and very accurate <em>total energy</em> calculations (<strong>no relaxation in metals</strong>) use the tetrahedron method (ISMEAR=-5).</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3799,137 +4016,6 @@ E_{ads} = E_{CO + slab} – E_{slab} – E_{CO^{gas}}</script><p>等号后面的
 <p>5 能量和计算时间随ENCUT的变化；</p>
 <p>6 看图时坐标轴的区间范围要注意；</p>
 <p>7 总结ENCUT取值的一些注意事项。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/08/ex16/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/12/08/ex16/" class="post-title-link" itemprop="url">Ex16 谁偷走的我的机时？（一）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-12-08 15:30:16" itemprop="dateCreated datePublished" datetime="2017-12-08T15:30:16-05:00">2017-12-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2017/12/08/ex16/" class="post-meta-item leancloud_visitors" data-flag-title="Ex16 谁偷走的我的机时？（一）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2017/12/08/ex16/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/08/ex16/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>前面O$_2$初始结构为0.9 $\AA$时，如果使用<code>BRION=2</code>，相对于初始结构为1.07$\AA$的时候，为避免过度矫正，我们需要设置一个更小的POTIM，大师兄尝试过了，<code>POTIM = 0.01</code> 的时候得到了正确的计算结果。到此，O$_2$分子的计算我们暂且告一段落。做计算，机时很重要，尤其是缺钱，捉襟见肘的时候，我们就更加需要珍惜，保证并提高自己的计算成功率，避免重复计算。这一节我们总结下前面讲到的影响计算时间的一些细节。大家在计算的时候知道如何把握时间，在有限的机时内获取更多的有效的计算结果。</p>
-<hr>
-<h3 id="1-体系的磁性-EX8"><a href="#1-体系的磁性-EX8" class="headerlink" title="1 体系的磁性 (EX8)"></a>1 体系的磁性 (EX8)</h3><p>考虑自旋后（<code>ISPIN=2</code>），VASP计算时会将电子分为两部分处理，一部分是$\alpha$电子，另一部分是$\beta$电子，我们在氧原子的自旋极化计算中提到过了，忘了的可以查看Ex8，Ex11中的内容。</p>
-<p>补充一下：如果原子的<code>MAGMOM</code>为负值：应该这么写：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MAGMOM = 10*-2 # 有10个原子，每个原子的初始磁矩为 -2</span><br></pre></td></tr></table></figure>
-<p>注意： -2 不用括号（）括起来</p>
-<hr>
-<h3 id="2-对称性-EX8"><a href="#2-对称性-EX8" class="headerlink" title="2 对称性 (EX8)"></a>2 对称性 (EX8)</h3><p>体系的对称性降低，会增加相应的计算量。查看O原子计算时，改变晶胞大小，取消对称性前后的计算时间。</p>
-<hr>
-<h3 id="3-SIGMA的取值-EX1"><a href="#3-SIGMA的取值-EX1" class="headerlink" title="3  SIGMA的取值 (EX1)"></a>3  SIGMA的取值 (EX1)</h3><p>我们看一下VASP练习手册：handonsession-I 里面的一句话说明：</p>
-<p><img src="/2017/12/08/ex16/ex16-1.jpg" alt=""></p>
-<p>因此，设置一个较小的SIGMA值会使收敛变慢。大家对于ISMEAR的选择，一定要多看官网的说明！</p>
-<hr>
-<h4 id="3-1-半导体和绝缘体："><a href="#3-1-半导体和绝缘体：" class="headerlink" title="3.1 半导体和绝缘体："></a>3.1 半导体和绝缘体：</h4><p>1） K点小于4 的时候，用<code>ISMEAR=0</code>, <code>SIGMA</code>取值小一些；比如SIGMA=0.05; 此时用ISMEAR = -5 会出错；</p>
-<p>2）K点数目大于4的时候，可以使用<code>ISMEAR= -5</code>；</p>
-<p>3） 注意： 我们算的气体分子，是绝缘体，且只用了gamma点，所以我们参数的设置如下： </p>
-<hr>
-<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ISMEAR=<span class="number">0</span> </span><br><span class="line">SIGMA=<span class="number">0.01</span> </span><br></pre></td></tr></table></figure>
-<hr>
-<h4 id="3-2-金属体系："><a href="#3-2-金属体系：" class="headerlink" title="3.2 金属体系："></a>3.2 金属体系：</h4><p>ISMEAR一般用<code>ISMEAR=0</code> 或者整数1，2即可。</p>
-<p><code>SIGMA =0.1</code> 足够。</p>
-<hr>
-<h3 id="4-合理的初始结构-（Ex13-15）"><a href="#4-合理的初始结构-（Ex13-15）" class="headerlink" title="4 合理的初始结构 （Ex13-15）"></a>4 合理的初始结构 （Ex13-15）</h3><p>前面我们刚讲到，一个合理的初始结构，可以避免很多意外的错误以及快速得到正确的结果。</p>
-<p>如果你的初始结构不合理导致的计算出错，首先应该去调整结构，最后才是去调节参数，比如上一节中<code>IBRION=2</code>时的POTIM值。</p>
-<hr>
-<h3 id="5-EDIFF-（Ex9）"><a href="#5-EDIFF-（Ex9）" class="headerlink" title="5 EDIFF （Ex9）"></a>5 EDIFF （Ex9）</h3><p>EDIFF 控制了电子迭代的收敛标准，如果你设置的标准比较严格，则每一个离子步需要更多的电子步数，需要的时间也会随着离子步的增加成线性关系增长。</p>
-<hr>
-<h3 id="6-EDIFFG-（Ex9）"><a href="#6-EDIFFG-（Ex9）" class="headerlink" title="6 EDIFFG （Ex9）"></a>6 EDIFFG （Ex9）</h3><p>EDIFFG控制了结构收敛的标准，同样严格的标准需要更多的结构优化步骤来实现。</p>
-<hr>
-<h3 id="扩展练习："><a href="#扩展练习：" class="headerlink" title="扩展练习："></a>扩展练习：</h3><p>1 本文所提到的内容，必须去官网查看，并认真阅读，如有不懂的，请在群里自由提问；</p>
-<p>2 思考一下，还有其他因素影响我们的机时吗？</p>
 
       
     </div>
