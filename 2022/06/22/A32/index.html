@@ -27,15 +27,15 @@
 <meta property="og:site_name" content="Learn VASP The Hard Way">
 <meta property="og:description" content="今天分享一个Improved Dimer Method （IDM）的小脚本。IDM和传统的Dimer方法，NEB一样，都用于优化过渡态。Dimer方法的话，VTST（https:&#x2F;&#x2F;theory.cm.utexas.edu&#x2F;vtsttools&#x2F;）已经包含很多相关的脚本，咱们就不重复造车了。NEB结合IDM优化过渡态也很高效，成功率非常高，有兴趣的可以尝试下。分享脚本前主要介绍以下几点： 1） ID">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.bigbrosci.com/2022/06/22/A32/A30/qrcode.png">
+<meta property="og:image" content="http://www.bigbrosci.com/2022/06/22/A32/qrcode.png">
 <meta property="article:published_time" content="2022-06-22T19:30:16.000Z">
-<meta property="article:modified_time" content="2022-06-24T00:07:54.963Z">
+<meta property="article:modified_time" content="2022-06-24T00:12:23.143Z">
 <meta property="article:author" content="By BigBro(a)s">
 <meta property="article:tag" content="过渡态">
 <meta property="article:tag" content="VTST">
 <meta property="article:tag" content="Improved Dimer Method">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://www.bigbrosci.com/2022/06/22/A32/A30/qrcode.png">
+<meta name="twitter:image" content="http://www.bigbrosci.com/2022/06/22/A32/qrcode.png">
 
 
 <link rel="canonical" href="http://www.bigbrosci.com/2022/06/22/A32/">
@@ -245,7 +245,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-06-23 20:07:54" itemprop="dateModified" datetime="2022-06-23T20:07:54-04:00">2022-06-23</time>
+      <time title="修改时间：2022-06-23 20:12:23" itemprop="dateModified" datetime="2022-06-23T20:12:23-04:00">2022-06-23</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -288,16 +288,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>今天分享一个Improved Dimer Method （IDM）的小脚本。IDM和传统的Dimer方法，NEB一样，都用于优化过渡态。Dimer方法的话，VTST（<a target="_blank" rel="noopener" href="https://theory.cm.utexas.edu/vtsttools/%EF%BC%89%E5%B7%B2%E7%BB%8F%E5%8C%85%E5%90%AB%E5%BE%88%E5%A4%9A%E7%9B%B8%E5%85%B3%E7%9A%84%E8%84%9A%E6%9C%AC%EF%BC%8C%E5%92%B1%E4%BB%AC%E5%B0%B1%E4%B8%8D%E9%87%8D%E5%A4%8D%E9%80%A0%E8%BD%A6%E4%BA%86%E3%80%82NEB%E7%BB%93%E5%90%88IDM%E4%BC%98%E5%8C%96%E8%BF%87%E6%B8%A1%E6%80%81%E4%B9%9F%E5%BE%88%E9%AB%98%E6%95%88%EF%BC%8C%E6%88%90%E5%8A%9F%E7%8E%87%E9%9D%9E%E5%B8%B8%E9%AB%98%EF%BC%8C%E6%9C%89%E5%85%B4%E8%B6%A3%E7%9A%84%E5%8F%AF%E4%BB%A5%E5%B0%9D%E8%AF%95%E4%B8%8B%E3%80%82%E5%88%86%E4%BA%AB%E8%84%9A%E6%9C%AC%E5%89%8D%E4%B8%BB%E8%A6%81%E4%BB%8B%E7%BB%8D%E4%BB%A5%E4%B8%8B%E5%87%A0%E7%82%B9%EF%BC%9A">https://theory.cm.utexas.edu/vtsttools/）已经包含很多相关的脚本，咱们就不重复造车了。NEB结合IDM优化过渡态也很高效，成功率非常高，有兴趣的可以尝试下。分享脚本前主要介绍以下几点：</a></p>
+        <p>今天分享一个Improved Dimer Method （IDM）的小脚本。IDM和传统的Dimer方法，NEB一样，都用于优化过渡态。Dimer方法的话，VTST（<a target="_blank" rel="noopener" href="https://theory.cm.utexas.edu/vtsttools/）已经包含很多相关的脚本，咱们就不重复造车了。NEB结合IDM优化过渡态也很高效，成功率非常高，有兴趣的可以尝试下。分享脚本前主要介绍以下几点：">https://theory.cm.utexas.edu/vtsttools/）已经包含很多相关的脚本，咱们就不重复造车了。NEB结合IDM优化过渡态也很高效，成功率非常高，有兴趣的可以尝试下。分享脚本前主要介绍以下几点：</a></p>
 <p>1） IDM已经编译在VASP里面了，不需要额外编译。</p>
-<p>2） IDM跟平时的优化计算差不多，主要修改IBRION &#x3D; 44即可。</p>
+<p>2） IDM跟平时的优化计算差不多，主要修改IBRION = 44即可。</p>
 <p>3） IDM计算主要包括5步：</p>
 <p>3.1： 生成初始的过渡态结构：可以有以下三种做法:</p>
 <p>3.1.1 经验多的，可以直接手动初步搭一个，保存成<code>POSCAR</code>；</p>
 <p>3.1.2 胆儿不大不小小的，可以借助NEB的方法，先准备初末态的结构，然后用VTST的nebmake.pl插点，挑出来接近过渡态结构的POSCAR；</p>
 <p>3.1.3 胆儿最小的，可以先NEB跑上30步左右，把能量最高的结构检查下，感觉过渡态结构合理的话，把CONTCAR保存成POSCAR。</p>
 <p>3.2：用3.1步中获得的POSCAR做一个频率计算；主要有以下几个注意事项：</p>
-<p>3.2.1： NWRITE &#x3D; 3  一定要注意，必须是3。</p>
+<p>3.2.1： NWRITE = 3  一定要注意，必须是3。</p>
 <p>3.2.2:  这一步频率计算用不着那么高的精度，差不多就OK。比如我主要做表面催化反应，这一步计算的时候，</p>
 <p>i) slab的原子都直接固定住，</p>
 <p>ii) 分子大的话只放开对应键断开、生成的原子，分子其他部分都固定住。</p>
@@ -308,19 +308,16 @@
 <p>3.5 精度稍微高点的频率计算，验证IDM优化出来的过渡态结构。</p>
 <p>3.6 以上是正常计算的一个流程，具体细节，大家根据自己情况随机应变，官网的介绍只有一页，很短，一定要认真读一下：<a target="_blank" rel="noopener" href="https://www.vasp.at/wiki/index.php/Improved_Dimer_Method">https://www.vasp.at/wiki/index.php/Improved_Dimer_Method</a></p>
 <p>脚本部分：</p>
-<p>脚本<a target="_blank" rel="noopener" href="https://github.com/bigbrosci/q-robot/blob/main/actions/get_dimer.py">get_dimer.py</a>可以在我的Github页面下载: <a target="_blank" rel="noopener" href="https://github.com/bigbrosci/q-robot/tree/main/actions%E3%80%82">https://github.com/bigbrosci/q-robot/tree/main/actions。</a> <code>q-robot</code>是本人这些年来计算常用的一些小脚本，有兴趣的也可以全部下载下来。根据自己需求酌情修改使用。</p>
+<p>脚本<a target="_blank" rel="noopener" href="https://github.com/bigbrosci/q-robot/blob/main/actions/get_dimer.py">get_dimer.py</a>可以在我的Github页面下载: <a target="_blank" rel="noopener" href="https://github.com/bigbrosci/q-robot/tree/main/actions。">https://github.com/bigbrosci/q-robot/tree/main/actions。</a> <code>q-robot</code>是本人这些年来计算常用的一些小脚本，有兴趣的也可以全部下载下来。根据自己需求酌情修改使用。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python3</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">@author: qli</span><br><span class="line">Created on Thu Jun  2 22:09:18 2022</span><br><span class="line">Creat POSCAR for improved dimer calculations from frequency calculations.</span><br><span class="line">1) run frequency calculation: </span><br><span class="line">IBRION = 5</span><br><span class="line">POTIM = 0.015</span><br><span class="line">NFREE = 2</span><br><span class="line">NWRITE = 3 ### Must be 3</span><br><span class="line">2) run this script:</span><br><span class="line">get_dimer.py </span><br><span class="line">3) use the POSCAR for IDM calc.</span><br><span class="line">NSW = 100           </span><br><span class="line">Prec=Normal</span><br><span class="line">IBRION=44           !  use the dimer method as optimization engine</span><br><span class="line">EDIFFG=-0.05</span><br><span class="line">POTIM = 0.05</span><br><span class="line">    </span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">import numpy as np</span><br><span class="line">from ase.io import read, write</span><br><span class="line">import os</span><br><span class="line">from sys import exit</span><br><span class="line"></span><br><span class="line">model = read(&#x27;POSCAR_relax&#x27;) ### POSCAR_relax is the POSCAR before freq calculations, that means some atoms are not fixed.</span><br><span class="line">#model_positions = model.get_positions()</span><br><span class="line">model.write(&#x27;POSCAR_dimer&#x27;, vasp5=True)</span><br><span class="line"></span><br><span class="line"># print(model_positions)</span><br><span class="line"># print(len(model))</span><br><span class="line"></span><br><span class="line">l_start = 0 # the number of line which contains  &#x27;Eigenvectors after division by SQRT(mass)&#x27; </span><br><span class="line">with open(&#x27;OUTCAR&#x27;) as f_in:</span><br><span class="line">    lines = f_in.readlines()</span><br><span class="line">    for num, line in enumerate(lines):</span><br><span class="line">        if &#x27;Eigenvectors after division by SQRT(mass)&#x27; in line:</span><br><span class="line">            l_start = num</span><br><span class="line"></span><br><span class="line">if l_start == 0:</span><br><span class="line">    print(&#x27;&#x27;&#x27;Check Frequency results and then rerun this script.\n**Remember**: NWRITE must be 3. BYEBYE! &#x27;&#x27;&#x27; )</span><br><span class="line">    exit()</span><br><span class="line">    </span><br><span class="line">freq_infor_block = lines[l_start:]        </span><br><span class="line">l_position = 0</span><br><span class="line">wave_num = 0.0</span><br><span class="line">for num, line in enumerate(freq_infor_block): </span><br><span class="line">        if &#x27;f/i&#x27; in line:           </span><br><span class="line">            wave_tem = float(line.rstrip().split()[6])</span><br><span class="line">            if wave_tem &gt; wave_num:</span><br><span class="line">                wave_num = wave_tem  </span><br><span class="line">                l_position = num+2</span><br><span class="line"></span><br><span class="line">pos_dimer = open(&#x27;POSCAR_dimer&#x27;, &#x27;a&#x27;)</span><br><span class="line">pos_dimer.write(&#x27;  ! Dimer Axis Block\n&#x27;)</span><br><span class="line"></span><br><span class="line">vib_lines = freq_infor_block[l_position:l_position+len(model)]</span><br><span class="line">for line in vib_lines:</span><br><span class="line">    infor = line.rstrip().split()[3:]</span><br><span class="line">    pos_dimer.write(&#x27; &#x27;.join(infor)+&#x27;\n&#x27;)</span><br><span class="line"></span><br><span class="line">pos_dimer.close()</span><br><span class="line">print(&#x27;&#x27;&#x27;</span><br><span class="line">      DONE!</span><br><span class="line">      Output file is named as: POSCAR_dimer and can be used for dimer calculations.</span><br><span class="line">      Don&#x27;t forget to rename POSCAR_dimer to POSCAR before you run the dimer jobs.      </span><br><span class="line">      &#x27;&#x27;&#x27;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
 <p>需要注意的有以下几点：</p>
 <p>1） 前面介绍了，频率计算为了图快，我们固定了一些原子。脚本会读取一个<code>POSCAR_relax</code>,也就是没有固定这些原子的结构。用ASE读取，输出一下，保证POSCAR里面的结构干净，避免出错。</p>
 <p>2）脚本会读取最大的虚频，然后把它所对应的振动方向附到POSCAR_relax的后面，然后IDM的POSCAR就准备好了。</p>
 <p>3）输出为POSCAR_dimer， 计算的时候记得把它改成POSCAR。</p>
-<p>4）IDM任务的INCAR在脚本里面有说明，改下IBRION &#x3D; 44。 剩下的基本跟平时优化是一样的。</p>
+<p>4）IDM任务的INCAR在脚本里面有说明，改下IBRION = 44。 剩下的基本跟平时优化是一样的。</p>
 <p>5）直接在频率计算的目录里面运行：get_dimer.py 即可。</p>
-<p>IDM结合NEB的成功率很高，非常推荐。另外，计算出的结果极少出现多个虚频的情况。因此，这个方法也可以用来消虚频。差不多就这些了，剩下的就是多操作练习，熟能生巧的事情了。欢迎大家分享自己的经验，放到自己的网站，公众号等平台，帮助更多的人解决VASP计算相关的问题，有兴趣的也可以把自己的经验心得放到大师兄网站上，直接给我发邮件即可（<a href="mailto:&#x6c;&#113;&#99;&#97;&#x74;&#x61;&#x40;&#x67;&#109;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#109;">&#x6c;&#113;&#99;&#97;&#x74;&#x61;&#x40;&#x67;&#109;&#97;&#x69;&#108;&#46;&#99;&#x6f;&#109;</a>）。</p>
-<p><img src="/2022/06/22/A32/A30/qrcode.png"></p>
+<p>IDM结合NEB的成功率很高，非常推荐。另外，计算出的结果极少出现多个虚频的情况。因此，这个方法也可以用来消虚频。差不多就这些了，剩下的就是多操作练习，熟能生巧的事情了。欢迎大家分享自己的经验，放到自己的网站，公众号等平台，帮助更多的人解决VASP计算相关的问题，有兴趣的也可以把自己的经验心得放到大师兄网站上，直接给我发邮件即可（lqcata@gmail.com）。</p>
+<p><img src="/2022/06/22/A32/qrcode.png" alt=""></p>
 
     </div>
 
