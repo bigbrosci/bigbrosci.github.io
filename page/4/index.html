@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">127</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">163</span>
+        <span class="site-state-item-count">166</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,330 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/07/ex59/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/10/07/ex59/" class="post-title-link" itemprop="url">Ex59 吸附能的计算（四）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-10-07 02:06:48" itemprop="dateCreated datePublished" datetime="2018-10-07T02:06:48-04:00">2018-10-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/10/07/ex59/" class="post-meta-item leancloud_visitors" data-flag-title="Ex59 吸附能的计算（四）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/10/07/ex59/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/07/ex59/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>丑话说在前头，本节内容有点多，大家慢慢消化。掌握本节的核心思想，对于后面提高你的工作效率，节省时间有着很大的帮助。前面一节，我们在扩展练习中提到了扩胞后，原子坐标的后面T T T 和 F F F 修改的问题。因为扩展后原子坐标是按照单胞为顺序排列的，如果想要将表面的原子快速固定或者放开，那么我们就需要知道表面原子所在的行数。</p>
+<h2 id="方法一：找规律-sed命令"><a href="#方法一：找规律-sed命令" class="headerlink" title="方法一：找规律+sed命令"></a>方法一：找规律+sed命令</h2><p><img src="/2018/10/07/ex59/ex59-1.png" alt=""></p>
+<p>上图中，p(2x2)的POSCAR命名为POSCAR-2x2，最表层原子所在的行数为：13，17， 21， 25，次表层的原子所在的行数为： 12， 16， 20， 24。仔细分析下，你会发现，表层原子的行数为： 9 + 4<em>n ；次表层的行数为：8 + 4 </em> n，其中n = 1-4，4表示在扩完后的slab模型里面有4个(1x1)的单元。有了这个关系，我们就可以通过sed命令任意固定这两层的原子了, 命令如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in &#123;1..4&#125;; do sed -i &quot;$((8+4*$i)), $((9+4*$i))s/T T T/F F F/g&quot; POSCAR</span><br></pre></td></tr></table></figure>
+<p>或者：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in &#123;1..4&#125;; do sed -i &quot;$((8+4*$i)), $((9+4*$i))s/T/F/g&quot; POSCAR</span><br></pre></td></tr></table></figure>
+<p>效果如下图：通过sed命令快速将表层原子批量固定住。</p>
+<p><img src="/2018/10/07/ex59/ex59-2.png" alt=""></p>
+<p>我们还可以只放开最表层的原子，使用sed命令快速将最表层的原子批量放开！</p>
+<p>在前面结果的基础上可以使用命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for  i  in &#123;1..4&#125;; do sed -i &quot;$((9+4*$i))s/ F F F/ T T T/g&quot; POSCAR</span><br></pre></td></tr></table></figure>
+<p>或者：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for  i  in &#123;1..4&#125;; do sed -i &quot;$((9+4*$i))s/F/T/g&quot; POSCAR</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/07/ex59/ex59-3.png" alt=""></p>
+<p>Soooo Easy！！！再也不用挨行修改T T T 或者F F F 了。</p>
+<h2 id="方法二：分层处理-sed命令"><a href="#方法二：分层处理-sed命令" class="headerlink" title="方法二：分层处理+sed命令"></a>方法二：分层处理+sed命令</h2><p>什么，原来还有第二种方法？ 这种方法是本人常用的。前面我们提到，在p(2x2)的slab模型中，原子坐标是按照p(1x1)的单元排列的。既然我们想根据层数固定原子，那么我们可以先将原子按照层数来排列，这样就可以方便的选择同一层的原子了。</p>
+<p>那么该怎么将它们按照层数排列呢？ 这时候你应该想到，不同层之间的原子，它们的坐标在z方向是不同的。有了这个依据，我们就可以根据z方向坐标的大小来排列原子了。</p>
+<p>首先我们先用一个笨方法实现所预想的小目标。</p>
+<p><strong>第一步：</strong>将坐标复制到excel表格里面。本人用的是libre office(Linux下面的Microsoft)。不过功能大同小异，Windows用户按照做就可以了。</p>
+<p><strong>第二步：</strong>选中所复制的数据，然后根据图中的D列来排序。</p>
+<p><img src="/2018/10/07/ex59/ex59-4.png" alt=""></p>
+<p>排序完的结果, 如下图：</p>
+<p><img src="/2018/10/07/ex59/ex59-5.png" alt=""></p>
+<p>从图中，我们可以看出，原子根据在z方向上的坐标分成了4部分。</p>
+<p><strong>注意：</strong>这里我们所有原子都是Cu原子，因此可以全部选中然后直接排序。如果你的体系中有好几种不同的原子，你需要按照元素，逐一进行排序。 比如体系中有C H O，我们先将C原子按照Z方向坐标排序，然后再排H原子的，最后再排O原子的。要保持和POSCAR前面元素顺序一致。</p>
+<p>排序完成之后，将POSCAR中的坐标替换为Excel中的数据。</p>
+<p><img src="/2018/10/07/ex59/ex59-6.png" alt=""></p>
+<p>这样的话，我们的模型就搞定了。剩下的就是使用sed命令批量替换T T T和 F F F了</p>
+<p>但是，师兄等等，上图看起来坐标很乱啊，结构能用吗？ 放心，绝对可以用。</p>
+<p>如果不放心的话，可以用p4vasp打开一下，然后重新保存成POSCAR即可。最终我们的POSCAR如下图：</p>
+<p><img src="/2018/10/07/ex59/ex59-7.png" alt=""></p>
+<p><img src="/2018/10/07/ex59/ex59-8.png" alt=""></p>
+<p>从图中可以看出来，次表层的原子在18-21行，最表层的原子在22-25行。所以可以这样使用sed命令来快速实现表层原子的固定与弛豫。</p>
+<p><img src="/2018/10/07/ex59/ex59-9.png" alt=""></p>
+<p><img src="/2018/10/07/ex59/ex59-10.png" alt=""></p>
+<h2 id="方法三：-使用脚本分层"><a href="#方法三：-使用脚本分层" class="headerlink" title="方法三： 使用脚本分层"></a>方法三： 使用脚本分层</h2><p>师兄，这个问题竟然还可以使用脚本来解决？</p>
+<p>当然了，使用鼠标拖拖点点的事情，一般都可以用脚本来实现。脚本是用python写的，本人给它起了一个高大上的响亮名字：sortcar.py。（适用于python2.6以及以上的版本，低于2.6或者python3可能会出错。）</p>
+<p>由于p(2x2)的slab坐标前面已经用过了，下面我们用p(3x3)的slab来演示一下脚本的使用。</p>
+<p><img src="/2018/10/07/ex59/ex59-11.png" alt=""></p>
+<p>新鲜出炉的，等待被sort的p(3x3)slab的POSCAR。被sort过的POSCAR如下图：</p>
+<p><img src="/2018/10/07/ex59/ex59-12.png" alt=""></p>
+<p>使用sortcar.py 将坐标按照z方向大小排列。输出文件为XXX_sorted，其中 XXX为我们想要排列的POSCAR或者CONTCAR。如果你的VASP坐标结构文件名字为：BigBro，那么被sort之后，输出文件就是: BigBro_sorted。</p>
+<p>脚本这么神奇，内容如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> sys </span><br><span class="line"></span><br><span class="line">in_file = sys.argv[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">### READ input file ###</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_inputcar</span>(<span class="params">in_file</span>):</span></span><br><span class="line">    f = <span class="built_in">open</span>(in_file, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    lines = f.readlines()</span><br><span class="line">    f.close()</span><br><span class="line">    ele_name  = lines[<span class="number">5</span>].strip().split()</span><br><span class="line">    ele_num = [<span class="built_in">int</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> lines[<span class="number">6</span>].strip().split()]</span><br><span class="line">    dict_contcar =  &#123;ele_name[i]:ele_num[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(ele_name))&#125; </span><br><span class="line">    dict_contcar2 = defaultdict(<span class="built_in">list</span>)</span><br><span class="line">    <span class="keyword">for</span> element <span class="keyword">in</span> ele_name: </span><br><span class="line">        indice  = ele_name.index(element)</span><br><span class="line">        n_start = <span class="built_in">sum</span>(ele_num[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, indice+<span class="number">1</span>)) - dict_contcar.get(element) +<span class="number">1</span></span><br><span class="line">        n_end = <span class="built_in">sum</span>(ele_num[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, indice+<span class="number">1</span>)) +<span class="number">1</span></span><br><span class="line">        dict_contcar2[element].append(<span class="built_in">range</span>(n_start, n_end)) </span><br><span class="line">    <span class="keyword">return</span> lines, ele_name, ele_num, dict_contcar2, dict_contcar</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_elements</span>(<span class="params">ele</span>):</span></span><br><span class="line">    lines, ele_name, ele_num, dict_contcar2, dict_contar = read_inputcar(in_file)</span><br><span class="line">    coord_total = []</span><br><span class="line">    my_list = []</span><br><span class="line">    my_dict = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> dict_contcar2.get(ele)[<span class="number">0</span>]:</span><br><span class="line">        coord_list = lines[j+<span class="number">8</span>].strip().split()[<span class="number">0</span>:<span class="number">3</span>]</span><br><span class="line">        tf_list = lines[j+<span class="number">8</span>].strip().split()[<span class="number">3</span>:]</span><br><span class="line">        my_list.append(coord_list)</span><br><span class="line">        dict_key = <span class="string">&#x27;-&#x27;</span>.join(coord_list)</span><br><span class="line">        my_dict[dict_key] = tf_list</span><br><span class="line">       </span><br><span class="line">    data = np.array(my_list)</span><br><span class="line">    data=data[np.argsort(data[:,<span class="number">2</span>])]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> data:</span><br><span class="line">         coord = <span class="string">&#x27;  &#x27;</span>.join(k)</span><br><span class="line">         tf = <span class="string">&#x27;  &#x27;</span>.join(my_dict.get(<span class="string">&#x27;-&#x27;</span>.join(k)))</span><br><span class="line">         coord_total.append(coord + <span class="string">&#x27;  &#x27;</span> + tf )</span><br><span class="line">    <span class="keyword">return</span> coord_total</span><br><span class="line"></span><br><span class="line"><span class="comment">## Generate the New POSCAR file</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Get_and_Save_lines</span>(<span class="params">file_name, start_line, end_line</span>):</span></span><br><span class="line">    f = <span class="built_in">open</span>(file_name)</span><br><span class="line">    lines =  f.readlines()</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> lines[<span class="built_in">int</span>(start_line):<span class="built_in">int</span>(end_line)]:</span><br><span class="line">        file_out.write(line.rstrip()+<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">out_name = in_file + <span class="string">&#x27;_sorted&#x27;</span></span><br><span class="line">file_out = <span class="built_in">open</span>(out_name, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">Get_and_Save_lines(in_file, <span class="number">0</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">ele_name = read_inputcar(in_file)[<span class="number">1</span>]</span><br><span class="line">dict_contcar = read_inputcar(in_file)[-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> ele_name:</span><br><span class="line">    <span class="keyword">if</span> dict_contcar.get(i) &gt; <span class="number">1</span> :</span><br><span class="line">        file_out.write(<span class="string">&#x27;\n&#x27;</span>.join(get_elements(i)))</span><br><span class="line">    <span class="keyword">else</span>: </span><br><span class="line">        file_out.write(<span class="string">&#x27;\n %s \n&#x27;</span> %(<span class="string">&#x27;  &#x27;</span>.join(get_elements(i))))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>注意事项：</strong></p>
+<p>1） 这里我们用的是Cu(111)的例子，比较简答，脚本的威力展示不出来。<br>2） 如果你的体系有很多不同的原子，脚本首先会将同一种元素原子的坐标排列，然后依次类推。<br>3） 有些地方可能有些冗余。但本人一直在用，效果还不错。<br>4） 本人建议，只针对表面使用这个脚本。也就是吸附前的slab模型。如果你放了吸附物种，不建议使用，因为吸附物种间不同原子之间的连接顺序可能会被打乱。<br>5） 在放吸附物种之前，最好将表面先排序完，怎么做，前面三种方法任选。<br>6） 脚本的话已经上传，大家可以通过链接下载：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1X5xLRsvRmFfNE8IlKwvbFQ）">https://pan.baidu.com/s/1X5xLRsvRmFfNE8IlKwvbFQ）</a></p>
+<p>7）如果使用脚本出错的话，可能是因为你的python版本太低。这个脚本只适用于python2.6及以上的。Python3可能也不适用。出现错误，直接放弃，掌握了这个方面的思想就足够了。</p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本节讨论的内容与科研关系说大不大，说小也不小，主要是在解决工作效率和时间上。想象一下，如果你的slab中有很多原子（金属氧化物，硫化物等），而且还不是同一种的，你用前两种方法的时候，就得十分小心了，此时脚本的作用就显示出来了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/05/ex58/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/10/05/ex58/" class="post-title-link" itemprop="url">Ex58 吸附能的计算（三）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-10-05 15:30:16" itemprop="dateCreated datePublished" datetime="2018-10-05T15:30:16-04:00">2018-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/10/05/ex58/" class="post-meta-item leancloud_visitors" data-flag-title="Ex58 吸附能的计算（三）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/10/05/ex58/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/05/ex58/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面一节我们将Cu的slab表面扩展成p(2x2), 然后放了一个O原子在上面吸附。最后发现与p(1x1)表面上吸附相比，O原子的吸附能从+1.2 降低到0.2 eV. 说明覆盖度高的时候，O原子的吸附很差。吸附能受覆盖度的影响很大。</p>
+<p>那什么是覆盖度？ Surface coverage（θ）</p>
+<p>从字面上理解，就是表面被吸附物(原子或分子等)覆盖的程度。一个固定大小的表面，如果上面某一吸附物越多，那么说它的覆盖度也就越大。也可以理解为：该吸附物在表面上的浓度也就越大。在多相催化的过程中，吸附是第一步。而在催化剂表面上，其活性位点数量是有限的（N个），如果N1个活性位点被吸附物种占据了，那么此时的覆盖度：θ= N1/N。如果所有的活性位点都被占据了，那么覆盖度就是1。 这个相信学过物理化学，以及相关多相催化基础知识的都能理解。 如果不知道的，请自己查找相关参考书学习，主要是在Langmuir 吸附那一部分。</p>
+<hr>
+<p>在表面计算中，覆盖度我们通常使用原子数目的比来表示。首先，在p(2x2)的Cu(111)表面上，有4个Cu原子，我们可以认为活性位点是4个。当我们放一个O上去后，占据了一个Cu，那么此时的覆盖度是1/4。前面我们在p(1x1)的表面上放了一个O，可以认为是Monolayer的O吸附，也就是覆盖度为1。</p>
+<p>1）之所以用原子数来表示，而不用表面积。是因为吸附的物种往往不像O原子这么简单，比如甲醇，乙醇，等等。这些表面上吸附物种的面积很难算，将它们的面积除以表面的面积，可行性不大。</p>
+<p>2）师兄，如果我的吸附分子很大，比如苯环。 1个Cu原子上面放不下，那该怎么表示?</p>
+<hr>
+<p>首先你需要扩胞，如上一节所讲的，将表面扩大到能容得下苯环为止。</p>
+<p>1）比如我们将表面扩展成p(3x3)后才能放上去一个苯环，那么此时的覆盖度就是1/9。虽然数值很小，但对于苯环来说，Monolayer的吸附，按照这个定义，其覆盖度就是1/9。</p>
+<p>2） 如果我们知道一个苯环可以占据9个表面的原子，那么我们将这9个原子看做一个活性位点，那么覆盖度就是 1/1。第一个1指的是1个苯环，第二个1指的是1个活性位点（9个原子）。</p>
+<p>大家在计算的时候，一方面参考专业书，文献中的表示，另一方面根据自己的体系需要，只要将问题描述清楚就可以了。</p>
+<p>继续回到上一节留的另一个问题：扩胞时有什么需要注意的事项。</p>
+<p>1）扩胞的操作已经展示给大家了，相信这不再是什么难事了；</p>
+<p>扩胞后的结果见下图： </p>
+<p><img src="/2018/10/05/ex58/ex58-1.png" alt=""></p>
+<p>2）扩胞后计算，我们需要注意的主要是KPOINTS这个文件。前面p(1x1)-Cu(111)，我们用的K点是：13x13x1。那我们扩完胞后，晶格变大了，还能继续用$13\times13\times1$吗？</p>
+<p>答：可以用来计算。但结果不能用来和其他K点的进行比较。</p>
+<hr>
+<p>什么意思呢？</p>
+<p>这里大师兄想要表达的是：如果你想要对比两个计算结果，首先要保证它们在一个计算的等级上， 即两个计算K点的网格密度是一样的，或者差不多的。在Reciprocal space中，晶胞的长度为$2\pi/a$。然后我们将这个长度分割成k段。每一段长度为：$2\pi/ka$</p>
+<p>我们扩胞后，晶胞长度变为2a，则在Reciprocal Space中，晶胞的长度为$2\pi/2a$ =$\pi/a$。</p>
+<p>如果我们用之前的KPOINTS，那么就会将π/a分成k段，每段长：$\pi/a$， 由于分的更细，这会导致扩胞后K点的密度更大。</p>
+<p>为了保持和扩胞前的密度一致，我们需要将$\pi/a$分割成 k/2 段，这样每段长为$2\pi/ka$。</p>
+<hr>
+<p>因此当我们扩胞后，KPOINTS如果保持不变，会导致前后两个计算的K点密度不一致时，从而计算的精度也不一样，所以两个结果没有可比性。</p>
+<p>师兄，你说了这么多废话。那我们该怎么办呢？</p>
+<p>很简单，将K点数目减小就可以了。 前面p(1x1)我们使用的是$13\times13\times1$，那么扩胞成p(2x2)后，K点就需要相应的减小到$7\times7\times1$。更简单一点，回想我们前面说到的那个经验选择。<code>K * a</code> 的取值范围。</p>
+<p><a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html">https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html</a></p>
+<p><img src="/2018/10/05/ex58/ex58-2.png" alt=""></p>
+<p>我们只要保证所有计算中： K * a 的数值差不多就OK了。所以，当你看到这里，你就可以随便扩胞了，什么p(2x2),  p(3x3),  p(4x4)啦，扩胞后都知道该怎么选择K点并修改KPOINTS了。</p>
+<hr>
+<p>那对于其他输入文件呢？</p>
+<p>INCAR：</p>
+<p>此时，对于Cu体系来说，可以保持不变。但有些与原子数目相关的参数，你还是需要在INCAR里面修改，保持与新的POSCAR对应。比如： </p>
+<ul>
+<li><p>MAGMOM, 但如果你的体系是具有磁性，需要重新设置MAGMOM。</p>
+</li>
+<li><p>更复杂点的体系，如果你的体系是不仅有磁性，还是反铁磁，当你扩胞后，你还要给不同的原子设置磁矩的方向。</p>
+</li>
+</ul>
+<p>POTCAR： 保持不变</p>
+<p>提交任务的脚本： 扩胞后，由于体系变大， 计算会变慢，为了加快速度，我们可能会需要增加节点数目。</p>
+<hr>
+<p>计算步骤：</p>
+<p><strong>老实人的做法：</strong></p>
+<p>扩胞后，很多人问计算吸附能的步骤，不清楚该怎么样进行。</p>
+<p>第一步：优化扩胞后的Slab 模型： 因为扩抱前已经relax过了，所以这一步很快就会结束；得到新的slab能量。</p>
+<p>第二步：在第一步优化的基础上搭建吸附模型； 然后优化，得到slab+吸附物的能量。</p>
+<p>第三步：套公式，计算吸附能。</p>
+<p>老司机的做法</p>
+<p>当然了，如果你经验丰富，计算的够多了，可以尝试这样做：</p>
+<p>第一步：优化扩胞后的Slab 模型： 因为扩抱前已经relax过了，所以这一步很快就会结束；得到新的slab能量：</p>
+<p>同时：在扩胞后的slab模型上（没有优化）直接搭建吸附模型，然后优化，得到slab+吸附物的能量。</p>
+<p>第二步：套公式，计算吸附能。</p>
+<p>这两种做法，最后的结果应该是一样的，如果有差别，也是微乎其微，可以忽略不计。<strong>注意：</strong>在计算纯的slab能量时，表面应该是放开的。</p>
+<hr>
+<p>另一个很常见的问题是，slab的表面我应该放开还是固定呢？</p>
+<p>严格来说，slab的表层原子应该是弛豫的，也就是坐标后对应的是 T T T，这样更符合物理化学意义，因为催化剂表面的原子不可能会不动。厉害的时候，吸附物还会导致表面重构。所以你在阅读文献，会发现理论部分都会写：Top two layers 放开来模拟表面，底部的原子固定来模拟体相等等这样类似的话。</p>
+<p>但是，将表面原子放开后，会导致结构优化步数的增加，从而引起计算量的增加。如果你的模型很大，吸附结构很多，可以先从小模型，低K点出发，先固定住表面，算一遍吸附，大体有个感觉后，再一步一步增加计算的精度。</p>
+<p>如果体系太大了，可以尝试着固定表面来算吸附能，步骤如下：</p>
+<ul>
+<li>1）先优化slab模型，这一步表面原子是要放开的；</li>
+<li>2）固定表面原子，</li>
+<li>3）放吸附物种优化。</li>
+</ul>
+<p>目前计算能力基本上可以完全满足放开表面原子的计算。所以，大家不要纠结这个问题。表面的原子能放开，尽量放开。如果实在是不放心，那么就找一篇和你工作很相近，体系类似的计算文章，看看别人怎么设置的，照猫画虎就可以了。</p>
+<hr>
+<h2 id="参考阅读："><a href="#参考阅读：" class="headerlink" title="参考阅读："></a>参考阅读：</h2><p>Density Functional Theory：A Practical Introduction, <strong>Chapter 3</strong>：Nuts and bolts of DFT calculations</p>
+<p><img src="/2018/10/05/ex58/ex58-3.png" alt=""></p>
+<hr>
+<h2 id="扩展练习："><a href="#扩展练习：" class="headerlink" title="扩展练习："></a>扩展练习：</h2><p>另一个无关痛痒，但对后面工作效率会造成影响的问题就是：</p>
+<p><img src="/2018/10/05/ex58/ex58-4.png" alt=""></p>
+<p>当扩展完之后，你会看到，Cu原子的坐标，是按照每个单胞中的坐标来排列的。在p(2x2)中有4个p(1x1)的单胞，先列出来第一个(1x1)中4个原子的坐标，然后再列出来第二个(1x1)的，以此类推。但是，比如我们想仅仅放开表面的第一层原子（也就是纵坐标为6.26的所有原子），就得把纵坐标为4.189的原子挨个由T T T 改成 F F F （图中箭头所指的部分）。这样会很麻烦，还浪费很多时间。</p>
+<p>怎么解决这个问题，快速将表层，次表层原子固定或者放开呢 ? 看下一节的内容。</p>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3211,370 +3535,6 @@ E_{binding} =[ -9.85498627~eV – (-1.89237882~eV *2) ] / 2 = -3.035~eV</script>
 <hr>
 <p><strong>5</strong> <strong>总结：</strong></p>
 <p>学习完本节，大家对DOS积分的数学知识应该可以掌握了，后面不管用什么软件或者脚本，都是将这个积分的原理写成机器语言来执行。知道了原理和通过excel自己操作一遍之后，基本上DOS积分的东西就懂了。下一节，QQ群里的小书童给大家演示一下Origin的积分操作。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/08/ex39/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/02/08/ex39/" class="post-title-link" itemprop="url">Ex-39 DOS 计算(三)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-02-08 15:30:16" itemprop="dateCreated datePublished" datetime="2018-02-08T15:30:16-05:00">2018-02-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/02/08/ex39/" class="post-meta-item leancloud_visitors" data-flag-title="Ex-39 DOS 计算(三)" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/02/08/ex39/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/08/ex39/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>本节主要介绍如何使用p4vasp获取DOS数据。</p>
-<hr>
-<h2 id="1-计算实例："><a href="#1-计算实例：" class="headerlink" title="1 计算实例："></a><strong>1</strong> <strong>计算实例：</strong></h2><p>计算的体系是一个Ru的单胞，含有2个Ru原子。结构优化完毕后进行以下操作。</p>
-<p>1.1 <code>cp  CONTCAR  POSCAR</code></p>
-<p>1.2 INCAR的设置（一步计算）：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IBRION = -1</span><br><span class="line">NSW = 0</span><br><span class="line">ISMEAR = -5</span><br><span class="line">LORBIT = 11 </span><br></pre></td></tr></table></figure>
-<p>1.3 KPOINTS 采用: <code>21 21 21</code> （gamma centered：Ru为六方堆积结构！！！）</p>
-<p>1.4 提交任务等待结束。</p>
-<p>1.5 该计算的所有文件可以通过百度网盘下载： <a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1kVebDWz">http://pan.baidu.com/s/1kVebDWz</a> </p>
-<hr>
-<h2 id="2-DOS可视化："><a href="#2-DOS可视化：" class="headerlink" title="2 DOS可视化："></a><strong>2 DOS</strong>可视化：</h2><p>2.1 打开p4vasp</p>
-<p>2.2 点击左侧<code>open</code>，导入vasprun.xml文件；</p>
-<p><strong>注意：</strong>前面的2步，Linux系统下面直接输入命令 ：</p>
-<p><code>p4v &amp;</code>或者 <code>p4v vasprun.xm</code>即可。</p>
-<p>2.3 查看DOS：<strong>Electronic –&gt; DOS+bands</strong></p>
-<p><img src="/2018/02/08/ex39/ex39-1.png" alt=""></p>
-<p>效果如下如：</p>
-<p> <img src="/2018/02/08/ex39/ex39-2.png" alt=""></p>
-<hr>
-<p>2.4 获取d轨道的DOS: </p>
-<p>这里我们取d band作为例子，大家根据自己的需要选择：</p>
-<p><code>Electronic</code> –&gt; <code>Local DOS+bands control</code></p>
-<p> <img src="/2018/02/08/ex39/ex39-3.png" alt=""></p>
-<p> 点击后如下图： </p>
-<p>  <img src="/2018/02/08/ex39/ex39-4.png" alt=""></p>
-<p>注意：</p>
-<p>1） 这里我们填的是Ru，表示选择所有的Ru原子，具体到大家自己的计算中，</p>
-<p>换成自己感兴趣的原子即可，怎么选择，我们前面已经讲到过了。（通过左侧的show按钮，以及鼠标和空格选择）</p>
-<p>2） 这里我们没有考虑自旋，如果你的体系有自旋，可以选择<code>up</code>，<code>down</code>或者<code>both</code>。<code>up</code>和<code>down</code>的数据导出来的时候通过一个空行分割（后面会讲到）。</p>
-<p>3）选择感兴趣的轨道：</p>
-<p>如果计算中你设置的<code>LORBIT=10</code>，点击 <code>dxy</code>的时候，则其他的d轨道也会同时被选中，</p>
-<p>如果你设置的<code>LORBIT=11</code>，点击<code>dxy</code>时，则仅仅选择<code>dxy</code>，其他的d轨道不会选中。如下图： </p>
-<p>  <img src="/2018/02/08/ex39/ex39-5.png" alt=""></p>
-<p>如果看不明白：</p>
-<p>a）VASP官网查看 <code>LORBIT = 10</code> 和11 的含义；</p>
-<p>b）亲自动手操作一下就明白了。</p>
-<p>选择完毕后，点击 <code>Add New line</code>，效果如下：</p>
-<p>  <img src="/2018/02/08/ex39/ex39-6.png" alt=""></p>
-<p>图中增加了一条红色的曲线，为Ru的d轨道的DOS图， 如果你选择了s，点击Add New line，就会增加另外一条曲线。不想要某个曲线了，可以点击remove line，大家自己随意操作，直至熟练为止！！</p>
-<hr>
-<h2 id="3-后处理："><a href="#3-后处理：" class="headerlink" title="3 后处理："></a><strong>3</strong> <strong>后处理：</strong></h2><p>3.1  导出数据：</p>
-<p>p4vasp导出数据通过中间的一个按钮： （注意，这里不通过左上角的File按钮！），如下图：点击 <code>Graph</code> –&gt; <code>Export</code> </p>
-<p> <img src="/2018/02/08/ex39/ex39-7.png" alt=""></p>
-<p>弹出的窗口中，选择保存的目录和数据的文件名称 </p>
-<p> <img src="/2018/02/08/ex39/ex39-8.png" alt=""></p>
-<p>注意：</p>
-<p>1）choose 选择保存的目录；</p>
-<p>2）我们选择的D盘下的VASP目录；</p>
-<p>3）填上保存数据的文件名：</p>
-<p>a）文件名处 <strong>.dat</strong> 记得写上，要不然后面可能会导不出数据！</p>
-<p>b）为了保证导出数据，Export 多点几遍！！！</p>
-<p>c）去导出的目录里面查看一下，如有了数据的文件名，说明保存成功，没有的话，继续点Export.</p>
-<p> <img src="/2018/02/08/ex39/ex39-9.png" alt=""></p>
-<p>图中说明：导出数据成功。</p>
-<p> d）为了避免浪费时间，一定要保存成功后再关闭窗口，否则你还要重复一遍前面的步骤。 </p>
-<p>4） 保存成功后，点击OK，关闭窗口。</p>
-<p>3.2 查看数据：（Notepad++直接打开，无视<strong>.dat</strong>尾缀！）</p>
-<p> <img src="/2018/02/08/ex39/ex39-10.png" alt=""></p>
-<hr>
-<p><strong>问题1： 为什么在301行后面有一个空行？ （重点是301）</strong></p>
-<hr>
-<p>1) 这是因为DOS计算的点VASP默认是301个，该数目由NEDOS这个参数来确定。NEDOS决定了DOS曲线中间隔的点数，如果你想要自己的DOS曲线更加平滑，可以设置一个较大的NEDOS数值，比如：<code>NEDOS = 3000</code></p>
-<p>2) 如果你设置了<code>NEDOS = 500</code>， 那么会在500行以后出现一个空行。</p>
-<p>问题2：为什么会有一个空行？？？(<strong>一定要搞明白</strong>！！！)</p>
-<p>我们看一下前面DOS的图：</p>
-<p> <img src="/2018/02/08/ex39/ex39-11.png" alt=""> </p>
-<p>图中有2个DOS曲线，黑色的为空行前面的部分，红色为后面的部分。</p>
-<p>同样，如果DOS图中有N个曲线，则导出的数据中会有N-1个空行将它们分开。</p>
-<p>N个曲线的横坐标坐标（也就是能量）是完全一样的。知道了这一点，你就知道了自己想要的数据在哪里了！！！</p>
-<p>此外，如果有<strong>磁性</strong>的话，你要注意了，up和down也是通过空行分开的。</p>
-<hr>
-<p>3.3 作图：</p>
-<p>有了数据之后，就可以随心所欲地作图了。将数据导入excel或者origin作图，也可以使用其他小脚本，程序。这里我们使用Excel简单说下：</p>
-<p>  <img src="/2018/02/08/ex39/ex39-12.png" alt=""></p>
-<p>左侧为空行前面的数据，Ru总的DOS， DOS曲线1 （黑色的那个）</p>
-<p>右侧为空行后面的数据，Ru d轨道的DOS， DOS曲线2（红色的那个）</p>
-<p>作出来的图跟p4vasp的结果一样。图像就不美化了。关键是有了数据，并且知道数据里面空行前后代表的内容。</p>
-<p> <img src="/2018/02/08/ex39/ex39-13.png" alt=""></p>
-<hr>
-<h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a><strong>4</strong> <strong>扩展练习：</strong></h2><p>4.1 下载本节的练习，可以在自己的服务器上提交，也可以直接使用结果；</p>
-<p>4.2 通过p4vasp读取vasprun.xml文件，熟练进行本节的所有操作；</p>
-<p>4.3 不要偷懒！！！</p>
-<p><strong>5</strong> <strong>总结：</strong></p>
-<p>本节主要手把手交给大家如何用<code>p4vasp</code>这个软件查看<code>DOS</code>计算的结果。希望大家掌握这几点：</p>
-<ul>
-<li>1 会熟练使用改软件进行本节的操作；</li>
-<li>2 了解导出数据的格式（空行是怎么分割不同曲线的）；</li>
-<li>3 知道LORBIT = 10 和 11 的区别，以及在可视化操作中的不同；</li>
-<li><strong>4</strong> <strong>最关键的：要会分析DOS！！！</strong></li>
-</ul>
-<hr>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/07/ex38/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/02/07/ex38/" class="post-title-link" itemprop="url">Ex-38 DOS 计算(二)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-02-07 15:30:16" itemprop="dateCreated datePublished" datetime="2018-02-07T15:30:16-05:00">2018-02-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/02/07/ex38/" class="post-meta-item leancloud_visitors" data-flag-title="Ex-38 DOS 计算(二)" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/02/07/ex38/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/07/ex38/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>前面一节，我们留了一个问题：DOS为什么要算两步？</p>
-<p>答：可以一步直接算！也就是前面一节的问题是瞎问的。那为什么大家总是有2步计算的疑问呢？本节，我们就解释这个。</p>
-<h2 id="为什么算两步？"><a href="#为什么算两步？" class="headerlink" title="为什么算两步？"></a>为什么算两步？</h2><p>官网说了，算DOS有2个方法，一个是直接进行self-consistent计算（大家常说的自洽或者静态计算。）然后处理DOSCAR和vasprun.xml文件即可，如图：</p>
-<p><img src="/2018/02/07/ex38/ex38-5.png" alt=""></p>
-<p>我们看一下这么做的前提：</p>
-<p><img src="/2018/02/07/ex38/ex38-6.png" alt=""></p>
-<ul>
-<li><p>1） 由于高质量的DOS需要精细的K点，如果我们设置的K点很多，就会造成计算上的负担，前面我们讲过K点与计算时间的关系；而很久很久以前，计算能力并不如现在这样快，因此可以通过分步计算来解决这一问题。</p>
-</li>
-<li><p>2） 另外一个原因就设计到能带的计算了，这里我们摘抄一下网上的解释：<strong>由于在能带计算时k点是一些在倒空间高对称线上的点</strong>，不能进行自洽计算。参考网址：<a target="_blank" rel="noopener" href="https://http://blog.sciencenet.cn/blog-567091-675253.html/">https://http://blog.sciencenet.cn/blog-567091-675253.html/</a> 也就是计算能带的时候，自洽计算是必须的一步；</p>
-</li>
-<li><p>3） 即使增加K点的数目，电荷密度和有效势能的收敛依然很快，也就是K点的变化对电荷密度的收敛影响不大。</p>
-</li>
-</ul>
-<h3 id="分析："><a href="#分析：" class="headerlink" title="分析："></a>分析：</h3><ul>
-<li>能带计算我们暂不考虑，综合下1 和 3 ，<strong>在结构优化完成之后</strong>，我们可以这么算DOS：</li>
-</ul>
-<ul>
-<li><p>第一步，用小的K点算个单点，生成CHGCAR文件；</p>
-</li>
-<li><p>第二步，读取上一步的CHGCAR文件（ICHARG=11）。</p>
-</li>
-</ul>
-<p>这样做就避免了直接用高K点网格所导致的计算负担。对于DOS计算的两个步骤，归根结底是节约时间的问题。因此，算2步并不是必须的！！！如果够土够豪，直接用高密度的K点，一步计算，没毛病！ <strong>但是对于能带计算</strong>， <strong>则必须算</strong>2<strong>步</strong>。</p>
-<p>此外，VASP的说明书已经很古老了，以现在的计算能力，直接使用大K点一步计算，一般来说都可以承受的。所以，当你知道了为什么要算2步的时候，再去浏览网上的相关经验帖子，就很容易知道是怎么回事了。</p>
-<h2 id="LDOS-和-PDOS"><a href="#LDOS-和-PDOS" class="headerlink" title="LDOS 和 PDOS"></a>LDOS 和 PDOS</h2><p>LORBIT = 10 把态密度分解到每个原子以及原子的spd轨道上面，称为为局域态密度，Local DOS (LDOS)</p>
-<p>LORBIT =11 在10的基础上，还进一步分解到px，py，pz等轨道上，称为投影态密度（Projected DOS）或者分波态密度(Partial DOS)，即PDOS。 </p>
-<p>所以LORBIT = 11可以提供我们更多的信息。</p>
-<h2 id="WAVECAR"><a href="#WAVECAR" class="headerlink" title="WAVECAR"></a>WAVECAR</h2><p> 那么，WAVECAR读不读呢？大师兄的观点是：有则读，无则不读。对于WAVECAR的读取，我们需要了解ISTART这个参数：</p>
-<p><img src="/2018/02/07/ex38/ex38-7.png" alt=""></p>
-<ul>
-<li><p>如果前面计算中保存了<strong>WAVECAR</strong>，且ISTART没有设置，VASP默认是读取的。</p>
-</li>
-<li><p>如果没有<strong>WAVECAR</strong>，即使你设置了ISTART=1或者2，VASP找不到可以读取的WAVECAR，也不会报错，而是继续算。</p>
-</li>
-</ul>
-<p>那么怎么控制WAVECAR的输出呢？    </p>
-<ul>
-<li>1)通过设置LWAVE这个参数</li>
-</ul>
-<p><img src="/2018/02/07/ex38/ex38-8.png" alt=""></p>
-<ul>
-<li>2)读取WAVECAR可以极大地减少自洽的时间，但是VASP的WAVECAR非常大，上百M或者几G都是很常见的。一不留神存储空间就被占满了。所以，在读取WAVECAR的时候，一定要确定自己的存储空间。</li>
-<li>3)如果前面计算步骤中（优化的过程）保存了WAVCAR，那么后面DOS计算的时候（1步计算或者2步计算均可），都可以读取，这会加快计算速度。</li>
-</ul>
-<h2 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h2><p>4.1 阅读DOS和能带计算的VASP官方手册；</p>
-<p>4.2 了解DOSCAR的内容以及各行各列所代表的含义；</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p> 结构优化完毕后：</p>
-<p>一步计算DOS必须的参数：</p>
-<ul>
-<li>1 ISMEAR = -5</li>
-<li>2 LORBIT = 11</li>
-<li>3 高密度的K点</li>
-</ul>
-<p>两步计算DOS必须的参数:</p>
-<p>第一步：</p>
-<ul>
-<li><p>ISMEAR = -5</p>
-</li>
-<li><p>LCHARG = .TRUE.</p>
-</li>
-<li>稍微低密度的K点</li>
-</ul>
-<p>第二步：</p>
-<ul>
-<li><p>ISMEAR = -5</p>
-</li>
-<li><p>ICHARGE = 11</p>
-</li>
-<li>LORBIT = 11</li>
-<li>高密度的K点</li>
-</ul>
-<p>如果结构优化的时候，存了WAVECAR，计算DOS的时候可以读取WAVECAR，直接一步计算搞定。</p>
 
       
     </div>

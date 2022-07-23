@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">127</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">163</span>
+        <span class="site-state-item-count">166</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,370 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/08/ex39/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/02/08/ex39/" class="post-title-link" itemprop="url">Ex-39 DOS 计算(三)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-02-08 15:30:16" itemprop="dateCreated datePublished" datetime="2018-02-08T15:30:16-05:00">2018-02-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/02/08/ex39/" class="post-meta-item leancloud_visitors" data-flag-title="Ex-39 DOS 计算(三)" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/02/08/ex39/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/08/ex39/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>本节主要介绍如何使用p4vasp获取DOS数据。</p>
+<hr>
+<h2 id="1-计算实例："><a href="#1-计算实例：" class="headerlink" title="1 计算实例："></a><strong>1</strong> <strong>计算实例：</strong></h2><p>计算的体系是一个Ru的单胞，含有2个Ru原子。结构优化完毕后进行以下操作。</p>
+<p>1.1 <code>cp  CONTCAR  POSCAR</code></p>
+<p>1.2 INCAR的设置（一步计算）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">IBRION = -1</span><br><span class="line">NSW = 0</span><br><span class="line">ISMEAR = -5</span><br><span class="line">LORBIT = 11 </span><br></pre></td></tr></table></figure>
+<p>1.3 KPOINTS 采用: <code>21 21 21</code> （gamma centered：Ru为六方堆积结构！！！）</p>
+<p>1.4 提交任务等待结束。</p>
+<p>1.5 该计算的所有文件可以通过百度网盘下载： <a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1kVebDWz">http://pan.baidu.com/s/1kVebDWz</a> </p>
+<hr>
+<h2 id="2-DOS可视化："><a href="#2-DOS可视化：" class="headerlink" title="2 DOS可视化："></a><strong>2 DOS</strong>可视化：</h2><p>2.1 打开p4vasp</p>
+<p>2.2 点击左侧<code>open</code>，导入vasprun.xml文件；</p>
+<p><strong>注意：</strong>前面的2步，Linux系统下面直接输入命令 ：</p>
+<p><code>p4v &amp;</code>或者 <code>p4v vasprun.xm</code>即可。</p>
+<p>2.3 查看DOS：<strong>Electronic –&gt; DOS+bands</strong></p>
+<p><img src="/2018/02/08/ex39/ex39-1.png" alt=""></p>
+<p>效果如下如：</p>
+<p> <img src="/2018/02/08/ex39/ex39-2.png" alt=""></p>
+<hr>
+<p>2.4 获取d轨道的DOS: </p>
+<p>这里我们取d band作为例子，大家根据自己的需要选择：</p>
+<p><code>Electronic</code> –&gt; <code>Local DOS+bands control</code></p>
+<p> <img src="/2018/02/08/ex39/ex39-3.png" alt=""></p>
+<p> 点击后如下图： </p>
+<p>  <img src="/2018/02/08/ex39/ex39-4.png" alt=""></p>
+<p>注意：</p>
+<p>1） 这里我们填的是Ru，表示选择所有的Ru原子，具体到大家自己的计算中，</p>
+<p>换成自己感兴趣的原子即可，怎么选择，我们前面已经讲到过了。（通过左侧的show按钮，以及鼠标和空格选择）</p>
+<p>2） 这里我们没有考虑自旋，如果你的体系有自旋，可以选择<code>up</code>，<code>down</code>或者<code>both</code>。<code>up</code>和<code>down</code>的数据导出来的时候通过一个空行分割（后面会讲到）。</p>
+<p>3）选择感兴趣的轨道：</p>
+<p>如果计算中你设置的<code>LORBIT=10</code>，点击 <code>dxy</code>的时候，则其他的d轨道也会同时被选中，</p>
+<p>如果你设置的<code>LORBIT=11</code>，点击<code>dxy</code>时，则仅仅选择<code>dxy</code>，其他的d轨道不会选中。如下图： </p>
+<p>  <img src="/2018/02/08/ex39/ex39-5.png" alt=""></p>
+<p>如果看不明白：</p>
+<p>a）VASP官网查看 <code>LORBIT = 10</code> 和11 的含义；</p>
+<p>b）亲自动手操作一下就明白了。</p>
+<p>选择完毕后，点击 <code>Add New line</code>，效果如下：</p>
+<p>  <img src="/2018/02/08/ex39/ex39-6.png" alt=""></p>
+<p>图中增加了一条红色的曲线，为Ru的d轨道的DOS图， 如果你选择了s，点击Add New line，就会增加另外一条曲线。不想要某个曲线了，可以点击remove line，大家自己随意操作，直至熟练为止！！</p>
+<hr>
+<h2 id="3-后处理："><a href="#3-后处理：" class="headerlink" title="3 后处理："></a><strong>3</strong> <strong>后处理：</strong></h2><p>3.1  导出数据：</p>
+<p>p4vasp导出数据通过中间的一个按钮： （注意，这里不通过左上角的File按钮！），如下图：点击 <code>Graph</code> –&gt; <code>Export</code> </p>
+<p> <img src="/2018/02/08/ex39/ex39-7.png" alt=""></p>
+<p>弹出的窗口中，选择保存的目录和数据的文件名称 </p>
+<p> <img src="/2018/02/08/ex39/ex39-8.png" alt=""></p>
+<p>注意：</p>
+<p>1）choose 选择保存的目录；</p>
+<p>2）我们选择的D盘下的VASP目录；</p>
+<p>3）填上保存数据的文件名：</p>
+<p>a）文件名处 <strong>.dat</strong> 记得写上，要不然后面可能会导不出数据！</p>
+<p>b）为了保证导出数据，Export 多点几遍！！！</p>
+<p>c）去导出的目录里面查看一下，如有了数据的文件名，说明保存成功，没有的话，继续点Export.</p>
+<p> <img src="/2018/02/08/ex39/ex39-9.png" alt=""></p>
+<p>图中说明：导出数据成功。</p>
+<p> d）为了避免浪费时间，一定要保存成功后再关闭窗口，否则你还要重复一遍前面的步骤。 </p>
+<p>4） 保存成功后，点击OK，关闭窗口。</p>
+<p>3.2 查看数据：（Notepad++直接打开，无视<strong>.dat</strong>尾缀！）</p>
+<p> <img src="/2018/02/08/ex39/ex39-10.png" alt=""></p>
+<hr>
+<p><strong>问题1： 为什么在301行后面有一个空行？ （重点是301）</strong></p>
+<hr>
+<p>1) 这是因为DOS计算的点VASP默认是301个，该数目由NEDOS这个参数来确定。NEDOS决定了DOS曲线中间隔的点数，如果你想要自己的DOS曲线更加平滑，可以设置一个较大的NEDOS数值，比如：<code>NEDOS = 3000</code></p>
+<p>2) 如果你设置了<code>NEDOS = 500</code>， 那么会在500行以后出现一个空行。</p>
+<p>问题2：为什么会有一个空行？？？(<strong>一定要搞明白</strong>！！！)</p>
+<p>我们看一下前面DOS的图：</p>
+<p> <img src="/2018/02/08/ex39/ex39-11.png" alt=""> </p>
+<p>图中有2个DOS曲线，黑色的为空行前面的部分，红色为后面的部分。</p>
+<p>同样，如果DOS图中有N个曲线，则导出的数据中会有N-1个空行将它们分开。</p>
+<p>N个曲线的横坐标坐标（也就是能量）是完全一样的。知道了这一点，你就知道了自己想要的数据在哪里了！！！</p>
+<p>此外，如果有<strong>磁性</strong>的话，你要注意了，up和down也是通过空行分开的。</p>
+<hr>
+<p>3.3 作图：</p>
+<p>有了数据之后，就可以随心所欲地作图了。将数据导入excel或者origin作图，也可以使用其他小脚本，程序。这里我们使用Excel简单说下：</p>
+<p>  <img src="/2018/02/08/ex39/ex39-12.png" alt=""></p>
+<p>左侧为空行前面的数据，Ru总的DOS， DOS曲线1 （黑色的那个）</p>
+<p>右侧为空行后面的数据，Ru d轨道的DOS， DOS曲线2（红色的那个）</p>
+<p>作出来的图跟p4vasp的结果一样。图像就不美化了。关键是有了数据，并且知道数据里面空行前后代表的内容。</p>
+<p> <img src="/2018/02/08/ex39/ex39-13.png" alt=""></p>
+<hr>
+<h2 id="4-扩展练习："><a href="#4-扩展练习：" class="headerlink" title="4 扩展练习："></a><strong>4</strong> <strong>扩展练习：</strong></h2><p>4.1 下载本节的练习，可以在自己的服务器上提交，也可以直接使用结果；</p>
+<p>4.2 通过p4vasp读取vasprun.xml文件，熟练进行本节的所有操作；</p>
+<p>4.3 不要偷懒！！！</p>
+<p><strong>5</strong> <strong>总结：</strong></p>
+<p>本节主要手把手交给大家如何用<code>p4vasp</code>这个软件查看<code>DOS</code>计算的结果。希望大家掌握这几点：</p>
+<ul>
+<li>1 会熟练使用改软件进行本节的操作；</li>
+<li>2 了解导出数据的格式（空行是怎么分割不同曲线的）；</li>
+<li>3 知道LORBIT = 10 和 11 的区别，以及在可视化操作中的不同；</li>
+<li><strong>4</strong> <strong>最关键的：要会分析DOS！！！</strong></li>
+</ul>
+<hr>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/07/ex38/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/02/07/ex38/" class="post-title-link" itemprop="url">Ex-38 DOS 计算(二)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-02-07 15:30:16" itemprop="dateCreated datePublished" datetime="2018-02-07T15:30:16-05:00">2018-02-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/02/07/ex38/" class="post-meta-item leancloud_visitors" data-flag-title="Ex-38 DOS 计算(二)" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/02/07/ex38/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/07/ex38/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面一节，我们留了一个问题：DOS为什么要算两步？</p>
+<p>答：可以一步直接算！也就是前面一节的问题是瞎问的。那为什么大家总是有2步计算的疑问呢？本节，我们就解释这个。</p>
+<h2 id="为什么算两步？"><a href="#为什么算两步？" class="headerlink" title="为什么算两步？"></a>为什么算两步？</h2><p>官网说了，算DOS有2个方法，一个是直接进行self-consistent计算（大家常说的自洽或者静态计算。）然后处理DOSCAR和vasprun.xml文件即可，如图：</p>
+<p><img src="/2018/02/07/ex38/ex38-5.png" alt=""></p>
+<p>我们看一下这么做的前提：</p>
+<p><img src="/2018/02/07/ex38/ex38-6.png" alt=""></p>
+<ul>
+<li><p>1） 由于高质量的DOS需要精细的K点，如果我们设置的K点很多，就会造成计算上的负担，前面我们讲过K点与计算时间的关系；而很久很久以前，计算能力并不如现在这样快，因此可以通过分步计算来解决这一问题。</p>
+</li>
+<li><p>2） 另外一个原因就设计到能带的计算了，这里我们摘抄一下网上的解释：<strong>由于在能带计算时k点是一些在倒空间高对称线上的点</strong>，不能进行自洽计算。参考网址：<a target="_blank" rel="noopener" href="https://http://blog.sciencenet.cn/blog-567091-675253.html/">https://http://blog.sciencenet.cn/blog-567091-675253.html/</a> 也就是计算能带的时候，自洽计算是必须的一步；</p>
+</li>
+<li><p>3） 即使增加K点的数目，电荷密度和有效势能的收敛依然很快，也就是K点的变化对电荷密度的收敛影响不大。</p>
+</li>
+</ul>
+<h3 id="分析："><a href="#分析：" class="headerlink" title="分析："></a>分析：</h3><ul>
+<li>能带计算我们暂不考虑，综合下1 和 3 ，<strong>在结构优化完成之后</strong>，我们可以这么算DOS：</li>
+</ul>
+<ul>
+<li><p>第一步，用小的K点算个单点，生成CHGCAR文件；</p>
+</li>
+<li><p>第二步，读取上一步的CHGCAR文件（ICHARG=11）。</p>
+</li>
+</ul>
+<p>这样做就避免了直接用高K点网格所导致的计算负担。对于DOS计算的两个步骤，归根结底是节约时间的问题。因此，算2步并不是必须的！！！如果够土够豪，直接用高密度的K点，一步计算，没毛病！ <strong>但是对于能带计算</strong>， <strong>则必须算</strong>2<strong>步</strong>。</p>
+<p>此外，VASP的说明书已经很古老了，以现在的计算能力，直接使用大K点一步计算，一般来说都可以承受的。所以，当你知道了为什么要算2步的时候，再去浏览网上的相关经验帖子，就很容易知道是怎么回事了。</p>
+<h2 id="LDOS-和-PDOS"><a href="#LDOS-和-PDOS" class="headerlink" title="LDOS 和 PDOS"></a>LDOS 和 PDOS</h2><p>LORBIT = 10 把态密度分解到每个原子以及原子的spd轨道上面，称为为局域态密度，Local DOS (LDOS)</p>
+<p>LORBIT =11 在10的基础上，还进一步分解到px，py，pz等轨道上，称为投影态密度（Projected DOS）或者分波态密度(Partial DOS)，即PDOS。 </p>
+<p>所以LORBIT = 11可以提供我们更多的信息。</p>
+<h2 id="WAVECAR"><a href="#WAVECAR" class="headerlink" title="WAVECAR"></a>WAVECAR</h2><p> 那么，WAVECAR读不读呢？大师兄的观点是：有则读，无则不读。对于WAVECAR的读取，我们需要了解ISTART这个参数：</p>
+<p><img src="/2018/02/07/ex38/ex38-7.png" alt=""></p>
+<ul>
+<li><p>如果前面计算中保存了<strong>WAVECAR</strong>，且ISTART没有设置，VASP默认是读取的。</p>
+</li>
+<li><p>如果没有<strong>WAVECAR</strong>，即使你设置了ISTART=1或者2，VASP找不到可以读取的WAVECAR，也不会报错，而是继续算。</p>
+</li>
+</ul>
+<p>那么怎么控制WAVECAR的输出呢？    </p>
+<ul>
+<li>1)通过设置LWAVE这个参数</li>
+</ul>
+<p><img src="/2018/02/07/ex38/ex38-8.png" alt=""></p>
+<ul>
+<li>2)读取WAVECAR可以极大地减少自洽的时间，但是VASP的WAVECAR非常大，上百M或者几G都是很常见的。一不留神存储空间就被占满了。所以，在读取WAVECAR的时候，一定要确定自己的存储空间。</li>
+<li>3)如果前面计算步骤中（优化的过程）保存了WAVCAR，那么后面DOS计算的时候（1步计算或者2步计算均可），都可以读取，这会加快计算速度。</li>
+</ul>
+<h2 id="扩展阅读"><a href="#扩展阅读" class="headerlink" title="扩展阅读"></a>扩展阅读</h2><p>4.1 阅读DOS和能带计算的VASP官方手册；</p>
+<p>4.2 了解DOSCAR的内容以及各行各列所代表的含义；</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p> 结构优化完毕后：</p>
+<p>一步计算DOS必须的参数：</p>
+<ul>
+<li>1 ISMEAR = -5</li>
+<li>2 LORBIT = 11</li>
+<li>3 高密度的K点</li>
+</ul>
+<p>两步计算DOS必须的参数:</p>
+<p>第一步：</p>
+<ul>
+<li><p>ISMEAR = -5</p>
+</li>
+<li><p>LCHARG = .TRUE.</p>
+</li>
+<li>稍微低密度的K点</li>
+</ul>
+<p>第二步：</p>
+<ul>
+<li><p>ISMEAR = -5</p>
+</li>
+<li><p>ICHARGE = 11</p>
+</li>
+<li>LORBIT = 11</li>
+<li>高密度的K点</li>
+</ul>
+<p>如果结构优化的时候，存了WAVECAR，计算DOS的时候可以读取WAVECAR，直接一步计算搞定。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3638,384 +4002,6 @@ E{a(\textrm{ZPE})} &= E_{\textrm{ZPE}}(\textrm{TS}) – E_{\textrm{ZPE}}(\textrm
 <p>3 总结前面关于计算时间的影响因素</p>
 <hr>
 <h3 id="4-总结："><a href="#4-总结：" class="headerlink" title="4 总结："></a>4 总结：</h3><p>关于VASP计算时间的影响，我们暂且告一段落了，希望大家能在前面几节的学习中熟练掌握影响计算时间的这些因素，在实际的计算过程中合理把握，提高计算效率，节约机时。浪费的机时不仅仅属于你自己，也属于组里其他人的。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/10/ex18/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/12/10/ex18/" class="post-title-link" itemprop="url">Ex18 谁偷走的我的机时？（三）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-12-10 15:30:16" itemprop="dateCreated datePublished" datetime="2017-12-10T15:30:16-05:00">2017-12-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2017/12/10/ex18/" class="post-meta-item leancloud_visitors" data-flag-title="Ex18 谁偷走的我的机时？（三）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2017/12/10/ex18/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/10/ex18/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="KPOINTS对计算时间的影响"><a href="#KPOINTS对计算时间的影响" class="headerlink" title="KPOINTS对计算时间的影响"></a>KPOINTS对计算时间的影响</h3><hr>
-<p>继续前面的学习，本节讨论<code>KPOINTS</code>文件中K点的设置对计算时间的影响。本节图中的Linux命令不再详细介绍，大师兄默认大家已经基本掌握了其中的原理和窍门。VASP官网上还有其他的批量测试的脚本，大家现在也可以差不多能看懂了。比如Si计算的例子：<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/Fcc_Si">https://cms.mpi.univie.ac.at/wiki/index.php/Fcc_Si</a> </p>
-<hr>
-<h3 id="1-KPOINTS测试"><a href="#1-KPOINTS测试" class="headerlink" title="1 KPOINTS测试"></a>1 KPOINTS测试</h3><h4 id="1-1-准备测试模板"><a href="#1-1-准备测试模板" class="headerlink" title="1.1 准备测试模板"></a>1.1 准备测试模板</h4><p>新建文件夹: 3，将之前的文件夹0复制过来后重命名为 1。</p>
-<h4 id="1-2-批量制备测试文件："><a href="#1-2-批量制备测试文件：" class="headerlink" title="1.2 批量制备测试文件："></a>1.2 批量制备测试文件：</h4><p><img src="/2017/12/10/ex18/ex18-1.jpeg" alt=""></p>
-<p>命令： <code>for i in &#123;2..6&#125;; do cp 1 $i ; sed -i&quot;s/1 1 1/$i $i $i/g&quot; $i/KPOINTS ; done</code></p>
-<p>文件夹1 代表KPOINTS为<code>1 1 1</code> ,6 代表KPOINTS为 <code>6 6 6</code>  其他的类推。</p>
-<hr>
-<h4 id="1-3-批量提交任务："><a href="#1-3-批量提交任务：" class="headerlink" title="1.3 批量提交任务："></a>1.3 批量提交任务：</h4><p><img src="/2017/12/10/ex18/ex18-2.jpeg" alt=""></p>
-<p>备注：这里的qsuball 命令是把前面的批量命令放到 .bashrc 文件中了。不懂的请看Ex17的批量操作命令和Ex13中.bashrc文件中alias的使用方法。</p>
-<hr>
-<h3 id="2-测试结果分析"><a href="#2-测试结果分析" class="headerlink" title="2 测试结果分析"></a>2 测试结果分析</h3><h4 id="2-1-查看OUTCAR-中的K点信息"><a href="#2-1-查看OUTCAR-中的K点信息" class="headerlink" title="2.1 查看OUTCAR 中的K点信息"></a>2.1 查看OUTCAR 中的K点信息</h4><p><img src="/2017/12/10/ex18/ex18-3.jpeg" alt=""></p>
-<p>图中，我们找出可以通过grep 查询的字符：irreducible  </p>
-<hr>
-<h4 id="2-2-批量查看所有测试的K点信息："><a href="#2-2-批量查看所有测试的K点信息：" class="headerlink" title="2.2 批量查看所有测试的K点信息："></a>2.2 批量查看所有测试的K点信息：</h4><p><img src="/2017/12/10/ex18/ex18-4.jpeg" alt=""></p>
-<p><strong>命令 <code>grep irreducible 3/OUTCAR</code></strong></p>
-<p>从图中可以看出：</p>
-<p>1）K点<code>2 2 2</code> 和<code>3 3 3</code> 的计算中，生成的K点数目是一样的；类似地，<code>4 4 4</code> 和<code>5 5 5</code> 具有同样地K点数目；</p>
-<p>2）不难理解，相同的K点数目，其计算时间也是一样的；</p>
-<p>3）计算时间随K点数目的增加也增加了。</p>
-<hr>
-<p>师兄，为什么K点数目会存在奇数和偶数相同的关系？</p>
-<p>原因在于K点生成的方法。当KPOINTS为偶数的时候，K点都在布里渊区的内部，而为奇数的时候，部分K点处在布里渊区的边界上。引用参考书中的一个表格和一段话：第三章第56-57页：</p>
-<p><img src="/2017/12/10/ex18/ex18-5.jpeg" alt=""></p>
-<p><img src="/2017/12/10/ex18/ex18-6.jpeg" alt=""></p>
-<hr>
-<h4 id="2-3-不同K点对能量的影响："><a href="#2-3-不同K点对能量的影响：" class="headerlink" title="2.3 不同K点对能量的影响："></a>2.3 不同K点对能量的影响：</h4><p><img src="/2017/12/10/ex18/ex18-7.jpeg" alt=""><br>先不画图了，直接看能量吧：</p>
-<p>当K点为 <code>1 1 1</code> 和 <code>6 6 6</code> 的时候，O$_2$分子的能量差别为： 0.0015 eV。可以忽略不计。在这里，你可以清晰地知道：为什么算气相分子的时候 gamma点（1x1x1）足够了。</p>
-<p>对于其他slab或者体相材料的计算，K点怎么选择呢？我们看下面这一段话：<br><img src="/2017/12/10/ex18/ex18-8.jpeg" alt=""></p>
-<p>出处： <a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html">https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html</a></p>
-<hr>
-<p>再参考一下Quantumwise 网站的说明：<br><img src="/2017/12/10/ex18/ex18-9.jpeg" alt=""><br>出处：<a target="_blank" rel="noopener" href="http://quantumwise.com/forum/index.php?topic=2628.0">http://quantumwise.com/forum/index.php?topic=2628.0</a></p>
-<p>再次强调一下：浏览网站说明的时候，要养成这样的一种习惯，凡是看到Note这个单次，就要跟打了鸡血一般！前面的东西看不懂不要紧，Note后面跟的都是重点易出错的地方。</p>
-<hr>
-<p>以上只是经验参数的说明，给我们提供一个大体的指导。这个参数在使用中，要注意我们前面提到的奇数和偶数的情况。而具体到我们的计算中，需要用什么数值，我们需要认真地测试检查一下，而不能直接就用图中的经验参数。</p>
-<p>1）通过测试不同K点对体系能量的变化；（参考书中的例子）<br><img src="/2017/12/10/ex18/ex18-10.jpeg" alt=""></p>
-<hr>
-<p>2）查找参考文献的取值；</p>
-<hr>
-<p>3）此外，不同K点之间的数据不能混用。比如计算CO在一个 (3x3) Cu(111)表面上的吸附能：</p>
-<script type="math/tex; mode=display">
-E_{ads} = E_{CO + slab} – E_{slab} – E_{CO^{gas}}</script><p>等号后面的前两项，必须要用同一个K点下计算出来的能量，如果$E{CO+slab}$ 用<code>5x5x1</code> 的K点， E(slab) 采用 <code>3x3x1</code>的K点能量，得出的结果必然是错的。</p>
-<hr>
-<h3 id="2-4-来自VASP官方的提醒："><a href="#2-4-来自VASP官方的提醒：" class="headerlink" title="2.4 来自VASP官方的提醒："></a>2.4 来自VASP官方的提醒：</h3><p><img src="/2017/12/10/ex18/ex18-11.jpeg" alt=""></p>
-<p>出处： <a target="_blank" rel="noopener" href="https://www.vasp.at/vasp-workshop/slides/accuracy.pdf">https://www.vasp.at/vasp-workshop/slides/accuracy.pdf</a></p>
-<p>1）常见错误（一）： 体系中ENCUT的取值不统一；</p>
-<p>2）常见错误（二）：采用不同KPOINTS计算出来的结果。</p>
-<p>3）在关于Accuracy的这个pdf文件中，最后一行大家要谨记：TEST，TEST，TEST ….</p>
-<hr>
-<h3 id="3-扩展练习："><a href="#3-扩展练习：" class="headerlink" title="3 扩展练习："></a>3 扩展练习：</h3><p>1 下载大师兄分享的压缩文件： 本节中所有的pdf文件和链接；大师兄QQ群文件下载，或者百度网盘：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1eSCGWeA">http://pan.baidu.com/s/1eSCGWeA</a></p>
-<p>2 阅读参考书中第三章的内容，掌握K点的基本概念和一些选取的注意事项；</p>
-<p>3 浏览本节中所有的网址。</p>
-<hr>
-<h3 id="4-总结："><a href="#4-总结：" class="headerlink" title="4 总结："></a>4 总结：</h3><p>1 K点数目越多，计算越准确，需要的时间也会相应地越多，大家要把握好准确度和时间的关系；</p>
-<p>2 K点的确定，需要经验和测试相结合，经验为辅，测试为主。</p>
-<hr>
-<h2 id="5-补充："><a href="#5-补充：" class="headerlink" title="5 补充："></a>5 补充：</h2><p> VASP的新版本中，可以直接在INCAR中设置K点。也就是说，没有KPOINTS文件也可以正常计算，但这可能只适用于简单的K点情况，能带结算等需要制定K点路径的计算，我们还是需要KPOINTS文件的。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/12/09/ex17/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/12/09/ex17/" class="post-title-link" itemprop="url">Ex17 谁偷走的我的机时？（二）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2017-12-09 15:30:16" itemprop="dateCreated datePublished" datetime="2017-12-09T15:30:16-05:00">2017-12-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2017/12/09/ex17/" class="post-meta-item leancloud_visitors" data-flag-title="Ex17 谁偷走的我的机时？（二）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2017/12/09/ex17/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/09/ex17/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>这一节和后面几节，我们会复习一下前面学到的Linux批量操作知识，然后对一些影响计算时间的参数进行测试。 本节主要考虑<code>ENCUT</code>的影响。前面我们一直在说<code>EDIFF</code>和<code>EDIFFG</code>对计算时间的影响。为了给大家一个感性的认识，现在我们用O$_2$分子的计算作为测试例子，将结果展示出来。这两个参数主要是在计算精度上影响计算时间，很容易想到，精度越高，收敛的越慢，需要的时间对应的也会更长。</p>
-<hr>
-<h3 id="1-调节EDIFF和EDIFFG"><a href="#1-调节EDIFF和EDIFFG" class="headerlink" title="1 调节EDIFF和EDIFFG"></a>1 调节EDIFF和EDIFFG</h3><p><img src="/2017/12/09/ex17/ex17-1.jpeg" alt=""></p>
-<p>左侧为之前计算的INCAR，右侧为提高精度后的INCAR。O$_2$的初始距离设置的为1.207$\AA$。提交计算，等待任务结束。前面我们知道VASP计算完成后，OUTCAR最后输出的是计算时间，内存等信息。我们现在查看一下：文件夹 0 对应的是之前的O$_2$计算，文件夹1 中是提高精度后的计算。</p>
-<p><img src="/2017/12/09/ex17/ex17-2.jpeg" alt=""></p>
-<p><strong>注意：</strong>grep User OUTCAR 后得出的结果被空格分成了4部分，时间信息在第4部分里面。User（1） time（2） （sec：）（3） 44.20 （4）</p>
-<hr>
-<p>讲解：</p>
-<p>1.1）通过<code>tail OUTCAR</code> 这个命令，可以找到用grep命令查看时间的关键词：User 或者 Elapsed，这里我们采用User 后面的时间作为参考；</p>
-<p>1.2）右下方黄色图框中的时间表面：提高了精度后，计算时间从44秒增加到78秒。</p>
-<p>1.3）我们看一下，改变精度后体系的能量变化：</p>
-<p><img src="/2017/12/09/ex17/ex17-3.jpeg" alt=""></p>
-<p>从-9.8609降低到-9.8611，变化大小为： -0.0002 eV。 这么小的能量变化，我们可以认为忽略不计。</p>
-<p>在这里，我们要认真思考收敛标准对于我们计算体系能量的影响，选取一个合适的标准而又不会浪费太多的机时。一般来说，结构优化的时候，<code>EDIFF=1E-5</code>, <code>EDIFFG =-0.01</code>至 <code>-0.03</code> 都是被认可的。</p>
-<hr>
-<h3 id="2-ENCUT-测试："><a href="#2-ENCUT-测试：" class="headerlink" title="2 ENCUT 测试："></a>2 ENCUT 测试：</h3><h4 id="2-1-制备ENCUT测试模板"><a href="#2-1-制备ENCUT测试模板" class="headerlink" title="2.1 制备ENCUT测试模板"></a>2.1 制备ENCUT测试模板</h4><p><img src="/2017/12/09/ex17/ex17-4.jpeg" alt=""></p>
-<p>解释：  </p>
-<p>2.1.1）新建测试目录 2 ，进入后，将前面的文件夹0复制过来，文件夹名为 400</p>
-<p>2.1.2）使用sed命令，在INCAR中最后一行加入ENCUT参数，值设置为400</p>
-<hr>
-<h4 id="2-2-快速制作测试任务"><a href="#2-2-快速制作测试任务" class="headerlink" title="2.2 快速制作测试任务"></a>2.2 快速制作测试任务</h4><p><img src="/2017/12/09/ex17/ex17-5.jpeg" alt=""></p>
-<p>图中的命令行为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in &#123;1..8&#125;; do cp 400 $((400+$i*50)); sed -i &quot;s/400/$((400+$i*50))/g&quot;  $((400+$i*50))/INCAR ; done</span><br></pre></td></tr></table></figure>
-<p>复习前面学到的linux操作：</p>
-<p>2.2.1）明白<code>&#123;1..8&#125;</code> 是怎么回事；</p>
-<p>2.2.2） <code>$i</code> 变量的调用；</p>
-<p>2.2.3）新学：<code>$((加减乘除))</code>，注意数学运算用2个括号 括起来；</p>
-<p>2.2.4）sed 命令进行文本中某一项的替换；</p>
-<p>2.2.5）运行完毕后，会获得一系列<code>ENCUT</code>值的文件夹，且每个里面INCAR已经对应地设置完毕。</p>
-<hr>
-<h4 id="2-3-批量提交任务"><a href="#2-3-批量提交任务" class="headerlink" title="2.3 批量提交任务"></a>2.3 批量提交任务</h4><p><img src="/2017/12/09/ex17/ex17-6.jpeg" alt=""><br>命令：<br><code>for i in *; do cd $i ; qsub sub4; cd $OLDPWD; done</code></p>
-<p>讲解：</p>
-<p>2.3.1）do后面执行的是，进入for循环中的文件夹，然后提交任务，（大师兄提交任务的命令是 qsub sub4， qsub 是命令，sub4是脚本名），任务提交后，返回原来的目录下（<code>cd $OLDPWD</code>），然后再进入下一个for循环中的文件夹，重复之前的操作，直至遍历所有for循环的变量文件夹；</p>
-<p>2.3.2）图中的Single是任务的说明，这个在提交任务的脚本里面自己随意设置：<br><img src="/2017/12/09/ex17/ex17-7.jpeg" alt=""></p>
-<hr>
-<h4 id="2-4-批量查看结果的命令："><a href="#2-4-批量查看结果的命令：" class="headerlink" title="2.4 批量查看结果的命令："></a>2.4 批量查看结果的命令：</h4><p><img src="/2017/12/09/ex17/ex17-8.jpeg" alt=""></p>
-<p>此处需要注意 * 的用法</p>
-<p>我们只需要图中方框标出来的信息，其他的结果可以直接扔掉。为简化输出结果，这里大师兄用了另外一个强大的命令： awk</p>
-<p><code>for i in *0; do echo -e  $i &quot;\t&quot; $(grep User $i/OUTCAR | awk &#39;&#123;print $4&#125;&#39;); done</code></p>
-<p>2.4.1）  学会echo 命令：</p>
-<p>2.4.2）  echo –e 后面加上”\t”后（双引号），可以直接输出 tab，方便导入excel；</p>
-<p>2.4.3）  本例中，awk 后面用<code>&#123;&#125;</code>将打印的内容括起来；</p>
-<p>2.4.4）  <code>print $4</code> 意思是输出前面结果的第4项；</p>
-<p>2.4.5）  awk命令极其强大，强烈建议大家尝试着去网上查找资料，主动去学习；</p>
-<p>2.4.6）将结果复制到excel里面作图。</p>
-<h4 id="2-5-计算时间随着ENCUT增加的变化曲线"><a href="#2-5-计算时间随着ENCUT增加的变化曲线" class="headerlink" title="2.5 计算时间随着ENCUT增加的变化曲线"></a>2.5 计算时间随着ENCUT增加的变化曲线</h4><p><img src="/2017/12/09/ex17/ex17-10.jpeg" alt=""></p>
-<p>从图中可以看出，<strong>计算时间随着ENCUT的增加也相应地增加了</strong>。因此，在保证计算准确度和ENCUT的值的选取，你要学会合理取值，加快自己的计算速度。此外，图表的比较形象直观，大家在今后的学习中，多多思考将自己的数据转化为图表的形式！可以很好的表达自己的计算结果。</p>
-<p>设想一下，同学A和B把同样的数据结果给老师看，A单纯把数据列到表格里面，B做成了上图的形式，老师会喜欢谁？此外，我们也可以通过写一个简单的python脚本来实现作图的功能。</p>
-<hr>
-<h4 id="2-6-作图的-Python-脚本："><a href="#2-6-作图的-Python-脚本：" class="headerlink" title="2.6 作图的 Python 脚本："></a>2.6 作图的 Python 脚本：</h4><h5 id="2-6-1-获取数据，并保存成文件"><a href="#2-6-1-获取数据，并保存成文件" class="headerlink" title="2.6.1 获取数据，并保存成文件"></a>2.6.1 获取数据，并保存成文件</h5><p><img src="/2017/12/09/ex17/ex17-11.jpeg" alt=""></p>
-<p>注意echo $i 后面的逗号，输出的文件 data.dat 中，逗号用于将两列数据分开。</p>
-<p>2.6.1.1）图中圈出来的部分中， &gt; 代表将前面命令的输出保存到 data.dat 文件中；</p>
-<p>2.6.1.2） data.dat 后缀可以随便写，<code>data.txt</code>， <code>data.out</code>, <code>data.export</code>, 也可以不写：<code>data</code> 。 因为输出后的都是文本格式，直接可以编辑打开。</p>
-<p>2.6.1.3） 查看一下保存的数据结果</p>
-<p><img src="/2017/12/09/ex17/ex17-12.jpeg" alt=""></p>
-<h5 id="2-6-2-作图-脚本，-名为-plt-py"><a href="#2-6-2-作图-脚本，-名为-plt-py" class="headerlink" title="2.6.2 作图 脚本， 名为 plt.py"></a>2.6.2 作图 脚本， 名为 plt.py</h5><p>vim打开后，内容如下图：</p>
-<p><img src="/2017/12/09/ex17/ex17-13.jpeg" alt=""></p>
-<p>python程序学习参考书：<strong> learn python the hard way</strong>（免费），网上还有很多学习资料，这里就不介绍了。python读取data.dat 文件，根据 delimiter 后面的参数（此处为逗号）将数据分成若干列。</p>
-<hr>
-<h5 id="2-6-3-运行脚本：（python-plt-py）"><a href="#2-6-3-运行脚本：（python-plt-py）" class="headerlink" title="2.6.3 运行脚本：（python plt.py）"></a>2.6.3 运行脚本：（python plt.py）</h5><p><img src="/2017/12/09/ex17/ex17-14.jpeg" alt=""></p>
-<h4 id="2-7-体系的能量随ENCUT的变化："><a href="#2-7-体系的能量随ENCUT的变化：" class="headerlink" title="2.7 体系的能量随ENCUT的变化："></a>2.7 体系的能量随ENCUT的变化：</h4><p><img src="/2017/12/09/ex17/ex17-15.jpeg" alt=""></p>
-<p>获取图上结果的命令行：</p>
-<p><code>for i in *0; do echo -e  $i &quot;\t&quot; $(grep User $i/OUTCAR | awk&#39;&#123;print $4&#125;&#39;) &quot;\t&quot; $(grep &#39; without&#39; $i/OUTCAR | tail -n 1 | awk &#39;&#123;print $4&#125;&#39;); done</code></p>
-<p>作图过程如下：</p>
-<h5 id="2-7-1-生成数据："><a href="#2-7-1-生成数据：" class="headerlink" title="2.7.1 生成数据："></a>2.7.1 生成数据：</h5><p><img src="/2017/12/09/ex17/ex17-16.jpeg" alt=""></p>
-<p>前面的命令中， “\t” 改为 逗号，  done 后面 加上 &gt; data.dat， 重新运行一遍。 </p>
-<h5 id="2-7-2-修改脚本如下："><a href="#2-7-2-修改脚本如下：" class="headerlink" title="2.7.2 修改脚本如下："></a>2.7.2 修改脚本如下：</h5><p><img src="/2017/12/09/ex17/ex17-17.jpeg" alt=""></p>
-<p>增加了 一列（z）</p>
-<hr>
-<p>2.7.3 选择合适的画图区间：</p>
-<p><img src="/2017/12/09/ex17/ex17-18.jpeg" alt=""></p>
-<p>图中蓝色的O$_2$分子的能量随ENCUT值增加的变化，为一直线！</p>
-<hr>
-<p>大师兄问：结果对不对？</p>
-<p>答：结果是对的，但不具有任何的合理性。</p>
-<p>因为它不能体现出能量变化的趋势：因为 y 轴的取值范围太大了，而我们能量的变化又太小。这也是很多人在做模拟的时候容易犯的错误，看到一个直线，或者平滑的曲线，就如同哥伦布发现了新大陆一番。其实则不然，很多时候，真相往往被我们的粗糙的观测范围给掩盖了。</p>
-<p>这个称之为作图骗人的一个Trick！很多人在发文章的时候将这一技巧运用的如火纯情。所以，当你看文献的时候，如果发现别人的结果也是一条直线或者平滑曲线，第一直觉是去看坐标轴的范围，而不是感觉别人的工作是多么地牛逼。</p>
-<p>重新作图，这次只用ENCUT和O$_2$分子的能量，如下图：</p>
-<p><img src="/2017/12/09/ex17/ex17-19.jpeg" alt=""></p>
-<p>能量一直在降低， 结果对不对呢？对的，但变化却被过度放大了！</p>
-<hr>
-<p>很多新手看到这个图以为能量降低的很快，感觉自己的计算不收敛，因此还要继续往下做或者测试。其实则不然，在这里，我们还是需要主要 y 轴的取值范围。图中整个y轴的变化为0.016 eV。每两个点之间的变化仅仅为0.002 eV。这个变化我们也是可以接受的，虽然图中感觉下降的很厉害的样子。</p>
-<p>上面两个图中，走了两个极端，一个极大，一个极小。所以，在我们处理数据时，一定要仔细观察坐标轴的取值范围。</p>
-<hr>
-<h4 id="2-8-小结一下："><a href="#2-8-小结一下：" class="headerlink" title="2.8 小结一下："></a>2.8 小结一下：</h4><p>但从数据上可以看出来，O$_2$分子的能量随着ENCUT值的增加还是会有些少许的波动。比如，从400到800 eV，能量降低了0.01 eV。大师兄，那我们该取哪个ENCUT值呢？</p>
-<p>首先，我们要明确几个要点：</p>
-<p>2.8.1）ENCUT值越大，计算的越精确，花费的时间也就越多；</p>
-<p>2.8.2）ENCUT的取值仅仅通过一个例子的测试来确定，这是不对的；</p>
-<ul>
-<li>A)   在VASP的计算中，单个结构的能量所具有的意义不大，也就是说相对能量最重要！</li>
-<li>B)   为什么A）中说相对能量最重要：这是因为：没有对比，就没有伤害！设想一下，你把一个O$_2$的能量算的再精确或者能量再低，而不去使用它，它也就是个数字而已，不具有任何的物理化学意义。</li>
-<li>C)  B)中要表达的意思是，算出来的数值必须要应用到我们的物理化学概念中，也就是物理化学的概念体现在这些能量的使用过程中，也就是相对能量里面：比如，O$_2$的结合能， O$_2$的吸附能；某一化学反应的能量，反应能垒，表面能，功函数等等，无一不是多个能量的数学运算所的出来的。</li>
-<li>D)   O$_2$的结合能示例：</li>
-</ul>
-<p>公式： EB = E(O$_2$) –2E(O)</p>
-<p>O$_2$的结合能随着ENCUT值增加的变化情况：</p>
-<p><img src="/2017/12/09/ex17/ex17-20.jpeg" alt=""></p>
-<p>第一、二、三、四列分别为ENCUT，O原子能量，O$_2$分子能量和O$_2$分子中O的结合能。从图中，我们可以分析出来，ENCUT在450 eV时，O$_2$的结合能和ENCUT为800 eV的时候差别很小，因此我们可以选取450 eV进行计算。</p>
-<p>注： O原子不同ENCUT的单点能，自己根据前面的过程，补充计算。</p>
-<hr>
-<p>2.8.3）ENCUT的取值与体系中所有的元素有关；</p>
-<ul>
-<li>A）体系中含有不同元素的时候，查看这些元素POTCAR中的ENMAX值，找出最大的那个；</li>
-<li>B）ENCUT的最小值为所有元素中ENMAX的最大值！</li>
-<li>C）也就是说，找到最大的ENMAX（max）， ENCUT值大于等于ENMAX（max）。</li>
-</ul>
-<p><img src="/2017/12/09/ex17/ex17-21.jpeg" alt=""></p>
-<p>示例图中，<br>potcar.sh 为生成POTCAR的脚本，可在本书的附录中获取。ENCUT 的取值至少为 400 eV。</p>
-<hr>
-<p>2.8.4） ENCUT的值，也要查阅相关的参考文献进行确定。你的计算体系大家都用400 eV，你也可以设置该值或者稍微高一些。ENCUT很多人在刚开始做计算的时候，都会测试一个数值。如果不想测试，查找参考文献其实是一个很好的办法。</p>
-<hr>
-<h3 id="3-扩展练习："><a href="#3-扩展练习：" class="headerlink" title="3 扩展练习："></a>3 扩展练习：</h3><p>3.1 复习前面学到的批量操作方式；</p>
-<p>3.2 熟练运用前面的操作，并理解命令的工作原理；</p>
-<p>3.3 改变KPOINTS的大小，查看计算时间，能量的变化；</p>
-<h3 id="4-总结："><a href="#4-总结：" class="headerlink" title="4 总结："></a>4 总结：</h3><p>1 EDIFF和EDIFFG对计算的影响通过实例强调了一次；</p>
-<p>2 ENCUT 测试的操作流程；</p>
-<p>3 ENCUT对计算时间和能量的影响结果分析；</p>
-<p>4 通过excel 和python作图的两个方法；</p>
-<p>5 能量和计算时间随ENCUT的变化；</p>
-<p>6 看图时坐标轴的区间范围要注意；</p>
-<p>7 总结ENCUT取值的一些注意事项。</p>
 
       
     </div>

@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">127</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">163</span>
+        <span class="site-state-item-count">166</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,281 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2019/12/22/ex84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/12/22/ex84/" class="post-title-link" itemprop="url">Ex84 计算模型的注意事项</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-12-22 15:30:16" itemprop="dateCreated datePublished" datetime="2019-12-22T15:30:16-05:00">2019-12-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2019/12/22/ex84/" class="post-meta-item leancloud_visitors" data-flag-title="Ex84 计算模型的注意事项" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/12/22/ex84/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/22/ex84/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>上一节我们简单介绍了一下搬砖的原则性问题。这一节，我们主要分析下搬什么砖的问题。继续采用甲醇在金属表面上分解的这个例子。物化书中我们学过表面反应的基本步骤： 1）反应物分子的吸附；2）表面反应； 3） 产物脱附。</p>
+<p>甲醇分解反应第一步是先从气相吸附到催化剂金属表面。 对于这一步， 我们自然需要从甲醇的气相分子出发，研究甲醇分子在表面上的吸附结构。其中涉及到一些基本的计算细节：</p>
+<p>1） 如何优化气相分子的结构，计算频率呢？</p>
+<p>2）如何优化体相结构，切面，优化，计算表面相关性质：比如表面能、功函数等。</p>
+<p>这些我们前面也已经讲过了，所以直接跳过。</p>
+<p>这里还有一个问题在于，你去用什么表面去模拟催化剂？ 比如说Cu，可以有(111), (110), (100), (211)….等各种不同的指数面，你选哪个来算？为什么选这个来算？这涉及到：我们的研究对象是什么？通过研究这一对象，我们要解释什么？期望获得什么样的结果？对于催化反应来说，我们的研究对象有2个：催化剂和它所催化的反应。</p>
+<p>如何获得催化剂的合理模型就是一个至关重要的问题了。一般来说，有下面几个供大家参考的办法：</p>
+<p>1）选稳定的表面，也就是表面能低的那个，对于纳米颗粒来说，尺寸如果够大，那么表面能低的表面原子在所有暴露的表面原子中的比例会高，那么可以近似用这个面来模拟催化剂的情况；那么尺寸多大才算足够大呢？</p>
+<p>我们可以尝试着从两个极端来进行思考：我们的催化剂如果是金属的话，如果采用一个单金属原子作为催化剂模型，可以想象吸附能肯定很大。当原子慢慢堆积成团簇，团簇再慢慢长到无穷大的时候，吸附能也随之发生变化。我们取无穷大时（最稳定的表面）的吸附能（E0）作为参考，看看金属团簇多大尺寸的时候，吸附能跟E0接近。那么该尺寸以及更大的纳米颗粒就可以用无穷大的催化剂模型来模拟，也就是最稳定的表面。一般来说，纳米颗粒的直径大于2nm（胆儿肥的）的时候，可以用最稳定的表面来模拟催化剂。保守些，直径大约3nm的时候可以放心地去用，不会有什么问题。</p>
+<p>下面推荐一本书： Fundamental Concepts in Heterogeneous Catalysis 。书中第21页， 作者用O在Pt(111)表面的吸附能作为参考，测试了不同纳米颗粒尺寸时的吸附能，发现直径在2nm的时候，已经非常接近了。前面说的那个2nm，也是从这里来的。如果你想问我这本书从哪里可以下载，可以关注公众号：BigBroScience，然后回复：ex84 。</p>
+<p><img src="/2019/12/22/ex84/ex84-1.png" alt=""></p>
+<p>2）对于前面的一番说法， 也会有人说，催化剂的活性位不一定在平坦的表面上，边边角角，台阶上可能更容易发生反应。如果你单纯把工作聚集在最稳定的表面上，肯定会遗漏些什么？这也是很多审稿人喜欢折腾我们这些小白鼠的地方。一个金属有很多不同的指数面，单纯考虑最稳定的是一个保险折中的办法。因为不管你的体系搞的再复杂，跟真实情况相比，模型终究是简单的。我们只是尽自己可能去尝试着理解，解释实验的现象，描述下体系的性质，以及进行一些比较简单直接的预测。但是，如果你要深究这些，兴趣也恰好落在在这一块，那么可以对体系的各个相关结构进行一个全面的计算，分析不同表面结构，性质，反应活性有什么不同。在这个全面的计算体系中，</p>
+<p>除了各种台阶面，最稳定的表面你还是要算的，这样才能有个对比。原则上说，只要你力气足够，资源充足，可以选任何你想要的表面来计算；但问题是你总会有吐的时候，如果想多算几个面的时候，要留意下面的几点：</p>
+<p>注意-1：开放的表面在计算表面能，slab优化或者吸附的时候，层数的影响会很大，这个前期的测试工作要做好；</p>
+<p>注意-2：生存法则：</p>
+<p>A）灌水第一条：同一个反应， 这个指数面算一下发一篇文章，换个面再发篇文章，再换个面继续发文章….</p>
+<p>B）灌水第二条：同一个面： 算一个反应发一篇文章，换个反应算一下再发一篇文章，再换反应；</p>
+<p>C）灌水第三条：反应，表面和反应交替，排列组合式发文章。</p>
+<p>3）还有一种情况，就是我们手上有实验数据，想模拟一下实验的结果。这个时候，就可以参考下催化剂的表征结果，有针对性地选取催化剂的模型，使其尽可能地去描述催化剂的结构。</p>
+<p>注意的有以下几点：</p>
+<p>A) 如果做实验的人找你帮忙算个东西，能推掉就推掉，别在上头浪费自己的功夫，顶死也就是个共同一作，国内基本不认可，做无用功；如果刚开始推不掉，就看看他的实验表征结果，一般般的表征以模型搭不出来为由直接拒掉；好的模型是成功的重要因素。前面我们说了，模型再复杂也是简单的。再考虑到实验表征的结果不确定性，你有很大的几率是跟实验上对不上的，到头还是白忙活。很多人会拿工作要冲子刊，杰克斯，俺狗娃为由诱惑你上船，要掂掂自己的分量，别头脑发热用屁股做决定。</p>
+<p>B) 对于做实验的人来说，99%会低估计算的复杂性，总以为鼠标点点就OK的事情，其中也不乏一些所谓的大牛们。话虽然难听，却也是大实话：不要瞎几把评论自己不懂的领域。真想找人算一下，要找个靠谱的合作伙伴，找到不靠谱的瞎算，投文章更会给整个工作拉分。</p>
+<p>4）最后一个及其重要的就是，认真进行文献调研。看看前人都是怎么选取的，为什么这样选？根据什么依据来选？最终确定自己的计算模型。</p>
+<p>关于模型的一些就先到这儿， 本篇的工作主要是重复一遍前人已经算烂的反应，然后在此基础上，分析BEP和TSS线性关系。就直接拿各个金属最稳定的表面来计算了。那么， 什么是BEP线性关系？ 这里的BEP的全称是：Bell–Evans–Polanyi principle. 指的是对于同一类型的N个反应，这些反应的能垒和反应热之间存在的一个线性关系: $E_a$= $\alpha \Delta E$ + $\beta$ 。更详细点的介绍，参考维基百科搜索：Bell–Evans–Polanyi principle。起初这个关系是基于均相反应来说的。在2000年的时候，Neurock将这个关系引入多相催化体系，发现表面反应也存在这一关系。随后，经过了Norskov等人的继续研究，相关的文章就越来越多了。有兴趣的可以通过下面的几篇经典文献开始接触，然后再逐渐深入：J. Catal. 191, 301 (2000)，  J. Catal. 197, 229 (2001)， J. Chem. Phys. 114, 8244 (2001)</p>
+<p>BEP关系有啥用呢？主要有两点:</p>
+<p>关键的一点就是用来节约机时：过渡态不是一个稳定的结构，它的优化需要的计算时间比直接优化反应物种的要多得多。插8个点，也就是8倍的单个优化。再加上计算还经常容易失败。因此我们可以通过BEP关系，跳过TS的优化，直接预测反应的能垒，从而达到节约机时和生命的作用。这个方法简单粗暴，与直接进行反应路径扫描相比，在时间成本上具有压倒性的优势，但精度和准确度上就会稍逊一筹。</p>
+<p>另外一点是来预测反应的能垒，这个其实和上面的有些重复，但角度不同。比如一个复杂的催化体系，基元反应数目成千上万，我们挨个算过渡态显然不可行。但是中间体的数目明显少的多，那么我们通过中间体获取反应热之后，通过BEP关系得到反应能垒，也就有了动力学的一些基本数据，从此出发，可以做一些机器学习以及微观反应动力学的模拟工作。从而跨越理论计算的原子分子尺度来到达一个更为宏观的尺寸和时间的尺度，也就是所谓的多尺度模拟。</p>
+<p>继续前面的分析，如果中间体的数目也很多，算都算不完，那该怎么办？这个也可以通过一些线性组合，数据分析的方法来进行预测。比如通过Group Additivity的方法，可以将对分子中不同group的能量的求和来获得。具体的内容在后面其他章节再慢慢进行介绍。由于篇幅关系，本节（ex84的上半部分）主要是让大家对自己的研究对象有一个明确的认识，为什么研究它？为什么不研究别的？下半部分介绍中间体计算的一些注意事项。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2019/10/15/S06/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/10/15/S06/" class="post-title-link" itemprop="url">高阶弹性常数计算的一点建议</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-10-15 19:30:16" itemprop="dateCreated datePublished" datetime="2019-10-15T19:30:16-04:00">2019-10-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:29:58" itemprop="dateModified" datetime="2021-12-27T22:29:58-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Share/" itemprop="url" rel="index"><span itemprop="name">Share</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2019/10/15/S06/" class="post-meta-item leancloud_visitors" data-flag-title="高阶弹性常数计算的一点建议" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/10/15/S06/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/15/S06/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在线弹性理论中，体系被施加一个无穷小的应变，从而体系应变后的能量可以以小应变为自变量泰勒展开，并忽略二阶导以上的高阶项。通过对不同特定的独立的应变模式求解能量应变方程或者应力应变方程，我们可以获得材料所有的二阶弹性常数（SOECs）。SOECs反映了体系的简谐弹性特征。通过SOECs，一方面我们可以获得体系的基于Vogit-Reuss-Hill平均的多晶力学性能，包括杨氏模量，剪切模量，体积模量，泊松比和维氏硬度等，以及在此基础之上的各向异性系数等等特征；另一方面，我们也可以通过SOECs获得单晶力学性能在空间中的具体分布，并将其用图的模式直观的表示出来。</p>
+<p><img src="/2019/10/15/S06/share06/share061.png" alt=""></p>
+<p>图中我们展示了某种金属的杨氏模量和剪切模量（每个面的平均值）的空间分布图，感兴趣的读者可以猜猜这是哪种布拉维晶型的金属。</p>
+<p>在实际负载下，材料承受的往往是有限形变，这时候材料的非简谐弹性将称为不可忽视的因素。很多实验数据有去测量体系的三阶弹性常数（TOECs），甚至四阶弹性常数（FOECs）。注意到TOECs和FOECs相对比SOECs在实验中更加受到实验精度的影响，具体的测量非常困难。如果我们能在理论上对其进行预测，将变得非常有意义。实际上已经有若干文献进行了相关研究，笔者也抱着好奇的态度尝试进行了TOECs和FOECs的计算。原理上来说相对简单，我们只需要将能量对应变进行泰勒展开，将阶次保留到四次，即可同时获得SOECs，TOECs和FOECs。</p>
+<p><img src="/2019/10/15/S06/share06/share062.png" alt=""></p>
+<p>将所有的应变η设为同一个数值，我们就可以用一个包含四次，三次和二次项的多项式来拟合计算的数据，获得包含各个弹性常数的多元一次方程组。求解这个这个方程组即可获得所有的弹性常数。</p>
+<p>不过实际操作起来并没有这么简单。即使是最简单的立方体系，其TOECs也达到了6个，而FOECs更是达到了11个。对于更低对称性的体系，其计算量更是一个天文数字（开玩笑的，天文倒不至于，很大就是了）。一种避让的方法就是，我们可以用应力对应变进行展开，这样相对需要的独立应变数少一些。笔者使用Au作为测试体系，根据文献对体系施加了11种独立应变，如下图。</p>
+<p><img src="/2019/10/15/S06/share06/share063.png" alt=""></p>
+<p>感兴趣的童鞋可以直接阅读文末给的参考文献。笔者通过测试发现，首先，体系的应变量必须足够大。笔者一开始犯上了计算SOECs的习惯，使用的很小的应变，计算结果简直南辕北辙。后来将应变加到15%后，获得的TOECs相对理想。细想也是，应变很小时，体系还处于线弹性阶段，这时候的非谐弹性非常微弱，极容易被数值误差干扰。将应变加大到非谐区后，数值就非常稳定了。同时，尽管我们使用了大应变条件，但是实际上高阶弹性常数的具体数值依旧会对数值精度的波动非常敏感。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Au/GPa</th>
+<th>C111</th>
+<th>C112</th>
+<th>C123</th>
+<th>C144</th>
+<th>C155</th>
+<th>C456</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>exp</td>
+<td>-1730</td>
+<td>-922</td>
+<td>-233</td>
+<td>-13</td>
+<td>-648</td>
+<td>-12</td>
+</tr>
+<tr>
+<td>mine</td>
+<td>-1207</td>
+<td>-847</td>
+<td>-275</td>
+<td>7</td>
+<td>-616</td>
+<td>62</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>同文献一样，笔者使用了非常高精度的k点半径和截断能。随着精度的提高，结果趋于较好的收敛。笔者在此展示了笔者自己算的TOECs与实验的比较，两者相对来说还是比较接近的（相对实验的误差与文献差不多）。总的来说，如果有小伙伴需要计算材料的TOECs或者FOECs，笔者建议一定要对应变，k点，截断能三者都要做仔细地收敛测试。</p>
+<p>Wang,Hao, and Mo Li. “Ab initio calculations of second-, third-, andfourth-order elastic constants for single crystals.” <em>PhysicalReview B</em> 79.22 (2009): 224102.</p>
+<p>本文经ponychen授权发布，版权属于ponychen。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2531,264 +2806,6 @@
 <p>ii）使用ASE 和 p4vasp 批量打开所有的IMAGES中的CONTCAR，挨个查看。</p>
 <h3 id="小节"><a href="#小节" class="headerlink" title="小节"></a>小节</h3><p>本节，我们主要是在前面计算的基础上，把gamma点的输出结果备份了一下，在此基础上，增加K点（提高精度）继续优化。最近瞎忙了很多事情，让很多人等急了，给大家拜个晚年，祝大伙猪年都学会麻溜滴算过渡态。</p>
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/12/15/A12/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/12/15/A12/" class="post-title-link" itemprop="url">A12 通过job-ID快速进入计算目录</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-12-15 15:30:16" itemprop="dateCreated datePublished" datetime="2018-12-15T15:30:16-05:00">2018-12-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW%E9%99%84%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW附录</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/12/15/A12/" class="post-meta-item leancloud_visitors" data-flag-title="A12 通过job-ID快速进入计算目录" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/12/15/A12/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/15/A12/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>通过job-ID快速进入计算目录，可以有效地避免狂输cd命令，提高我们的计算效率。本节我们通过在国科智算超算中心的演示，介绍一个Slurm任务管理系统，保存任务ID，计算目录，并快速根据ID进入计算目录的方法。</p>
-<h2 id="核心思想："><a href="#核心思想：" class="headerlink" title="核心思想："></a>核心思想：</h2><p>有很多种方法可以实现：通过Job-ID进入计算目录的办法。这里只介绍本节的思路。</p>
-<ul>
-<li>通过<code>squeue</code> 命令获取用户所有的任务的ID；</li>
-<li>通过<code>scontrol</code> 命令获取所有ID对应的计算目录</li>
-<li>将计算ID，以及对应的目录保存到一个<code>txt</code>文件中。</li>
-<li>通过在<code>~/.bashrc</code>中使用scource命令，激活<code>bash</code>脚本中进入目录的操作。</li>
-</ul>
-<p>之所以将计算目录保存到<code>txt</code>文件中，是因为如果计算已经完成的话，则不可以通过<code>scontrol</code>命令来获取目录，这时候，我们就可以在<code>txt</code>文件中查找相应的信息。</p>
-<h2 id="准备流程"><a href="#准备流程" class="headerlink" title="准备流程"></a>准备流程</h2><p>按照流程操作，每一步都很重要，漏掉的话，可能会导致功能无法实现。</p>
-<p>1 下载脚本：</p>
-<ul>
-<li>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1FEHdOecGvShbspfn9B7fIw">https://pan.baidu.com/s/1FEHdOecGvShbspfn9B7fIw</a>  提取码：dmd9 </li>
-<li>国科智算QQ群文件：608307988 （申请试用）</li>
-<li>大师兄QQ群文件：217821116</li>
-</ul>
-<p>将<code>ent.sh</code> 和<code>job_check.py</code>复制到<code>~/bin</code> 目录下，赋予可执行权限。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gkzshpc101@login02:~/bin$ chmod  u+x ent.sh</span><br><span class="line">gkzshpc101@login02:~/bin$ chmod  u+x job_check.py</span><br></pre></td></tr></table></figure>
-<p>2 在bin目录下创建一个：<code>job-check</code>的目录，以及在该目录中创建一个空的<code>job_list.txt</code>文件，用来存储我们的任务信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gkzshpc101@login02:~/bin$ mkdir job_check &amp;&amp; touch job_check/job_list.txt</span><br></pre></td></tr></table></figure>
-<p>3 修改<code>job_check.py</code>脚本中</p>
-<p>1）13行中的账户信息，<code>gkzshpc101</code>改成你自己的账户</p>
-<p>2） 32行中的那个目录信息，改成下面目录输出的。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gkzshpc101@login02:~/bin$ <span class="built_in">cd</span> job_check </span><br><span class="line">gkzshpc101@login02:~/bin/job_check$ <span class="built_in">pwd</span></span><br><span class="line">/public1/home/gkzshpc101/bin/job_check</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">This script is used to</span></span><br><span class="line"><span class="string">1) record the job_ID and directories</span></span><br><span class="line"><span class="string">2) print the job path from the job_ID</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">from</span> subprocess <span class="keyword">import</span> Popen, PIPE</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_id</span>():</span></span><br><span class="line">    list_j = [] <span class="comment"># list for the job_ID</span></span><br><span class="line">    process = Popen([<span class="string">&#x27;squeue&#x27;</span>, <span class="string">&#x27;-lu&#x27;</span>,  <span class="string">&#x27;gkzshpc101&#x27;</span>], stdout=PIPE, stderr=PIPE)</span><br><span class="line">    stdout, stderr = process.communicate()</span><br><span class="line">    list_out =  stdout.split(<span class="string">&#x27;\n&#x27;</span>)[<span class="number">2</span>:]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(list_out)-<span class="number">1</span>):</span><br><span class="line">        list_j.append(list_out[i].split()[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">return</span> list_j</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_dir</span>(<span class="params">job_id</span>):</span></span><br><span class="line">    job_dir = <span class="literal">None</span></span><br><span class="line">    command = <span class="string">&#x27;scontrol show job &#x27;</span> + job_id</span><br><span class="line">    process1 = Popen(command, shell = <span class="literal">True</span>,  stdout=PIPE, stderr=PIPE)</span><br><span class="line">    stdout1, stderr1 = process1.communicate()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> stdout1.split(<span class="string">&#x27;\n&#x27;</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;WorkDir&#x27;</span> <span class="keyword">in</span> i:</span><br><span class="line">            <span class="comment">#job_dir.append(i.split(&#x27;=&#x27;)[1])</span></span><br><span class="line">            job_dir = i.split(<span class="string">&#x27;=&#x27;</span>)[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> job_dir</span><br><span class="line"></span><br><span class="line">id_dict = &#123;&#125;</span><br><span class="line"><span class="keyword">with</span>  <span class="built_in">open</span>(<span class="string">&#x27;/public1/home/gkzshpc101/bin/job_check/job_list.txt&#x27;</span>, <span class="string">&#x27;a+&#x27;</span>) <span class="keyword">as</span> file_in:</span><br><span class="line">    lines = file_in.readlines()</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> lines:</span><br><span class="line">        key = line.split(<span class="string">&#x27;:&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">        value = line.split(<span class="string">&#x27;:&#x27;</span>)[<span class="number">1</span>]</span><br><span class="line">        id_dict[key] = value</span><br><span class="line"></span><br><span class="line">    list_j = get_id()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> list_j:</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> id_dict.keys():</span><br><span class="line">            id_dict[i] = get_dir(i)</span><br><span class="line">            file_in.write(i + <span class="string">&#x27;:&#x27;</span> + get_dir(i) + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">job_id = sys.argv[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> id_dict.keys():</span><br><span class="line">    <span class="keyword">if</span> job_id <span class="keyword">in</span> i:</span><br><span class="line">        <span class="built_in">print</span>(id_dict.get(i).strip())</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line">pwd_work=$(job_check.py <span class="variable">$1</span>)</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$pwd_work</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$pwd_work</span></span><br></pre></td></tr></table></figure>
-<p>4 修改<code>~/.bashrc</code>文件，添加下面这一行：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias ent=&#x27;source ~/bin/ent.sh &#x27;</span><br></pre></td></tr></table></figure>
-<p>source 一下<code>~/.bashrc</code>文件： <code>. ~/.bashrc</code></p>
-<h2 id="运行实例："><a href="#运行实例：" class="headerlink" title="运行实例："></a>运行实例：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">gkzshpc101@login02:~/test_ncore/test1/14$ ls</span><br><span class="line">INCAR  KPOINTS POSCAR  POTCAR vasp.sh</span><br><span class="line">gkzshpc101@login02:~/test_ncore/test1/14$ sbatch  vasp.sh</span><br><span class="line">Submitted batch job 14999</span><br><span class="line">gkzshpc101@login02:~/test_ncore/test1/14$ squeue</span><br><span class="line">             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)</span><br><span class="line">             14999 operation     vasp gkzshpc1  R       0:02      1 c0077</span><br><span class="line">gkzshpc101@login02:~/test_ncore/test1/14$ <span class="built_in">cd</span> </span><br><span class="line">gkzshpc101@login02:~$ ent 999</span><br><span class="line">/public1/home/gkzshpc101/test_ncore/test1/14</span><br><span class="line">gkzshpc101@login02:~/test_ncore/test1/14$ ls</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  INCAR  KPOINTS  OSZICAR  OUTCAR  PCDAT  POSCAR  POTCAR  REPORT  vasp.out  vasprun.xml  vasp.sh  WAVECAR  XDATCAR</span><br><span class="line">gkzshpc101@login02:~/test_ncore/test1/14$</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/12/08/A11/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/12/08/A11/" class="post-title-link" itemprop="url">国科智算提交VASP任务</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-12-08 15:30:16" itemprop="dateCreated datePublished" datetime="2018-12-08T15:30:16-05:00">2018-12-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW%E9%99%84%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW附录</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/12/08/A11/" class="post-meta-item leancloud_visitors" data-flag-title="国科智算提交VASP任务" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/12/08/A11/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/08/A11/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="国科智算提交VASP任务"><a href="#国科智算提交VASP任务" class="headerlink" title="国科智算提交VASP任务"></a>国科智算提交VASP任务</h1><p>今天QQ群里，有人问怎么在国科智算的超算中心提交VASP的任务。本着一言不合就写教程的态度，这一节我们就看下VASP的任务是怎么提交的。提交任务的脚本见群文件：<code>vasp_qiangli.sh</code>。下载后重命名成<code>vasp.sh</code>即可。想试用的，购买机时的可以加QQ群：608307988咨询一下。</p>
-<h2 id="Slurm"><a href="#Slurm" class="headerlink" title="Slurm"></a>Slurm</h2><p>国科智算上系统采用的是<code>slurm</code> 任务调度工具。<strong>Simple Linux Utility for Resource Management</strong>，它是一个用于<code>Linux</code>和 <code>Unix</code> 内核系统的免费、开源的任务调度工具，被世界范围内的超级计算机和计算机群广泛采用。它提供了三个关键功能。第一，为用户分配一定时间的专享或非专享的资源(计算机节点)，以供用户执行工作。第二，它提供了一个框架，用于启动、执行、监测在节点上运行着的任务(通常是并行的任务，例如<code>MPI</code>，第三，为任务队列合理地分配资源。 大约60％的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/TOP500">500强</a>超级计算机上都运行着<code>Slurm</code>，包括2016年前世界上最快的计算机<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%A4%A9%E6%B2%B3%E4%BA%8C%E5%8F%B7">天河-2</a>。 以上是来自<a target="_blank" rel="noopener" href="https://www.wikipedia.org">维基百科</a>的解释，具体的大家可以浏览<code>Slurm</code> 的官网：<a target="_blank" rel="noopener" href="https://slurm.schedmd.com/">Slurm Workload Manager</a></p>
-<h2 id="Sbatch"><a href="#Sbatch" class="headerlink" title="Sbatch"></a>Sbatch</h2><p>在这个调度系统中，提交任务时我们需要用到命令： <code>sbatch</code>  : <a target="_blank" rel="noopener" href="https://slurm.schedmd.com/sbatch.html">https://slurm.schedmd.com/sbatch.html</a> </p>
-<p><code>sbatch</code> 命令后面要跟一堆的参数，比如计算时间，节点数，邮箱，队列，调用的环境变量，任务名称等等。但这些信息通过命令直接输入又有些麻烦，所以我们把它们放到一个<code>脚本</code>里面，免得每次都重新输入一大长串的内容。而这个脚本，也就是我们本节内容的主角： <code>vasp.sh</code>。</p>
-<p>首先，我们浏览<code>sbatch</code>的详细参数： <a target="_blank" rel="noopener" href="https://slurm.schedmd.com/sbatch.html">https://slurm.schedmd.com/sbatch.html</a> </p>
-<p>然后根据这些参数，我们就可以创建一个<code>vasp.sh</code>脚本了。</p>
-<h2 id="vasp-sh"><a href="#vasp-sh" class="headerlink" title="vasp.sh"></a>vasp.sh</h2><p>下面就是<code>vasp.sh</code> 的主要内容：有2种写法，这两种写法也可以混着用，不影响。主要还是要参考<code>sbatch</code>的使用说明，需要什么就按照格式填写相应的内容。</p>
-<p><strong>写法（一）</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH -J BigBro              ## Job Name</span></span><br><span class="line"><span class="comment">#SBATCH -o %j.out              ## standard output </span></span><br><span class="line"><span class="comment">#SBATCH -e %j.err              ## standard error</span></span><br><span class="line"><span class="comment">#SBATCH -p operation           ## Partition</span></span><br><span class="line"><span class="comment">#SBATCH -N 1                   ## Number of nodes</span></span><br><span class="line"><span class="comment">#SBATCH --ntasks-per-node=28   ## Each node has 28 tasks</span></span><br><span class="line"><span class="comment">#SBATCH -t 02-23:57:25         ## time for your job: 2 d，23 h ，57 min and 23 s</span></span><br><span class="line"></span><br><span class="line">module load mpi/intelmpi/2017.4.239</span><br><span class="line">mpirun /public/software/apps/vasp/544/vasp.5.4.4/bin/vasp_std</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p> <strong>写法（二）</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH --job-name=BigBro      ## Job Name</span></span><br><span class="line"><span class="comment">#SBATCH --output=%j.out        ## standard output </span></span><br><span class="line"><span class="comment">#SBATCH --error=%j.err         ## standard error</span></span><br><span class="line"><span class="comment">#SBATCH --partition=operation  ## Partition</span></span><br><span class="line"><span class="comment">#SBATCH --nodes=1              ## Number of nodes</span></span><br><span class="line"><span class="comment">#SBATCH --ntasks-per-node=28   ## Each node has 28 tasks</span></span><br><span class="line"><span class="comment">#SBATCH --time=02-23:57:25     ## time for your job: 2 d，23 h ，57 min and 23 s</span></span><br><span class="line"></span><br><span class="line">module load mpi/intelmpi/2017.4.239</span><br><span class="line">mpirun /public/software/apps/vasp/544/vasp.5.4.4/bin/vasp_std</span><br></pre></td></tr></table></figure>
-<p>上面每一行的含义，大师兄都注释出来了。</p>
-<p>从第二行往下一次为：</p>
-<ul>
-<li>任务的名字，</li>
-<li><code>VASP</code>的标准输出，</li>
-<li>错误输出，</li>
-<li>任务运行的分区，</li>
-<li>使用的节点，</li>
-<li>每个节点的的<code>tasks</code>数目。这个<code>tasks</code>可以理解为每个节点的核数，国科智算的新机器每个节点是28个核。</li>
-<li>以及你的计算所用的时间。</li>
-</ul>
-<p>最后两行为：我们调用的环境变量以及运行<code>vasp</code>程序。</p>
-<p>需要注意的是，脚本里面的内容比如<code>-N</code>（修改任务所需的节点数目）、<code>-J</code>（修改任务的名字）这些我们频繁更换的，可以从脚本里面拿出来，在命令中运行。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sbtach -N 2 -J test vasp.sh </span><br></pre></td></tr></table></figure>
-<p>本人自己的计算，一般28个核就够，任务名字也懒得修改。就把<code>-N</code>,<code>-J</code>写到vasp.sh中了。大家根据自己的任务特点自动修改就行了。下面我们具体演示一下。</p>
-<h2 id="实例操作1："><a href="#实例操作1：" class="headerlink" title="实例操作1："></a>实例操作1：</h2><p>我们要在<code>operation</code>分区，运行一个<code>VASP</code>的单点计算，任务名称为：<code>single</code>， 使用2个节点，限制时间为2个小时；那么脚本的修改以及任务提交如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ </span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ ls</span><br><span class="line">INCAR  KPOINTS  POSCAR  POTCAR  vasp.sh</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ cat vasp.sh </span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH -J single </span></span><br><span class="line"><span class="comment">#SBATCH -o out.%j</span></span><br><span class="line"><span class="comment">#SBATCH -e err.%j</span></span><br><span class="line"><span class="comment">#SBATCH -p operation </span></span><br><span class="line"><span class="comment">#SBATCH -N 2</span></span><br><span class="line"><span class="comment">#SBATCH --ntasks-per-node=28</span></span><br><span class="line"><span class="comment">#SBATCH -t 02:00:25</span></span><br><span class="line"></span><br><span class="line">module load mpi/intelmpi/2017.4.239</span><br><span class="line">mpirun /public/software/apps/vasp/544/vasp.5.4.4/bin/vasp_std</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ sbatch  vasp.sh </span><br><span class="line">Submitted batch job 35525</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ squeue </span><br><span class="line">             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)</span><br><span class="line">             35525 operation   single gkzshpc1  R       0:09      2 c[0032-0033]</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ ls</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  err.35525  IBZKPT  INCAR  KPOINTS  OSZICAR  out.35525  OUTCAR  PCDAT  POSCAR  POTCAR  REPORT  vasprun.xml  vasp.sh  WAVECAR  XDATCAR</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="实例操作2："><a href="#实例操作2：" class="headerlink" title="实例操作2："></a>实例操作2：</h2><p>我们在<code>Operation</code>分区，运行一个<code>VASP</code>的<code>CI-NEB</code>的过渡态计算任务，任务名称为：<code>NEB</code>，使用4个节点，限制时间为12个小时；那么脚本的修改以及任务提交如下：插了7个点，用112个核算，16个核算一个点。下面有点长，文字描述就到此结束，自己慢慢看，希望对大家有所帮助。<strong>注意：</strong>脚本里面，我们换成编译了<code>VTST</code>的<code>vasp 5.4.1</code>版本。</p>
-<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ ls</span><br><span class="line"><span class="number">00</span>  <span class="number">01</span>  <span class="number">02</span>  <span class="number">03</span>  <span class="number">04</span>  <span class="number">05</span>  <span class="number">06</span>  <span class="number">07</span>  <span class="number">08</span>  FS  INCAR  IS  KPOINTS  POTCAR  vasp.sh</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ cat vasp.sh </span><br><span class="line">#<span class="comment">!/bin/bash</span></span><br><span class="line">#SBATCH -J NEB </span><br><span class="line">#SBATCH -o <span class="keyword">out</span>.%j</span><br><span class="line">#SBATCH -e err.%j</span><br><span class="line">#SBATCH -p operation </span><br><span class="line">#SBATCH -N <span class="number">4</span></span><br><span class="line">#SBATCH --ntasks-per-node=<span class="number">28</span></span><br><span class="line">#SBATCH -t <span class="number">12</span>:<span class="number">00</span>:<span class="number">25</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> load mpi/intelmpi/<span class="number">2017.4</span><span class="number">.239</span></span><br><span class="line">mpirun /<span class="keyword">public</span>/software/apps/vasp/<span class="number">541_neb</span>/vasp<span class="number">.5</span><span class="number">.4</span><span class="number">.1</span>/bin/vasp_std</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ </span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ sbatch  vasp.sh </span><br><span class="line">Submitted batch job <span class="number">35526</span></span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ squeue </span><br><span class="line">             JOBID PARTITION     <span class="keyword">NAME</span>     USER ST       TIME  NODES NODELIST(REASON)</span><br><span class="line">             <span class="number">35526</span> operation      NEB gkzshpc1  R       <span class="number">0</span>:<span class="number">07</span>      <span class="number">4</span> c[<span class="number">0056</span>-<span class="number">0057</span>,<span class="number">0060</span>-<span class="number">0061</span>]</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ ls</span><br><span class="line"><span class="number">00</span>  <span class="number">01</span>  <span class="number">02</span>  <span class="number">03</span>  <span class="number">04</span>  <span class="number">05</span>  <span class="number">06</span>  <span class="number">07</span>  <span class="number">08</span>  err<span class="number">.35526</span>  FS  INCAR  IS  KPOINTS  <span class="keyword">out</span><span class="number">.35526</span>  POTCAR  vasprun.xml  vasp.sh</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ ls *</span><br><span class="line">err<span class="number">.35526</span>  FS  INCAR  IS  KPOINTS  <span class="keyword">out</span><span class="number">.35526</span>  POTCAR  vasprun.xml  vasp.sh</span><br><span class="line"></span><br><span class="line"><span class="number">00</span>:</span><br><span class="line">POSCAR</span><br><span class="line"></span><br><span class="line"><span class="number">01</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">02</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">03</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">04</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">05</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">06</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">07</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">08</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ </span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ head -n <span class="number">10</span> <span class="keyword">out</span><span class="number">.35526</span> </span><br><span class="line"> running on  <span class="number">112</span> total cores</span><br><span class="line"> each image running on   <span class="number">16</span> cores</span><br><span class="line"> distrk:  each k-point on   <span class="number">16</span> cores,    <span class="number">1</span> groups</span><br><span class="line"> distr:  one band on    <span class="number">1</span> cores,   <span class="number">16</span> groups</span><br><span class="line"> vasp<span class="number">.5</span><span class="number">.4</span><span class="number">.1</span> <span class="number">05</span>Feb16 (build May <span class="number">24</span> <span class="number">2018</span> <span class="number">19</span>:<span class="number">36</span>:<span class="number">47</span>) <span class="keyword">complex</span>    </span><br></pre></td></tr></table></figure>
       
     </div>
 

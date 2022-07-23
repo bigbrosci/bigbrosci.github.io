@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-count">127</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">163</span>
+        <span class="site-state-item-count">166</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,264 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/12/15/A12/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/12/15/A12/" class="post-title-link" itemprop="url">A12 通过job-ID快速进入计算目录</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-12-15 15:30:16" itemprop="dateCreated datePublished" datetime="2018-12-15T15:30:16-05:00">2018-12-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW%E9%99%84%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW附录</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/12/15/A12/" class="post-meta-item leancloud_visitors" data-flag-title="A12 通过job-ID快速进入计算目录" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/12/15/A12/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/15/A12/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>通过job-ID快速进入计算目录，可以有效地避免狂输cd命令，提高我们的计算效率。本节我们通过在国科智算超算中心的演示，介绍一个Slurm任务管理系统，保存任务ID，计算目录，并快速根据ID进入计算目录的方法。</p>
+<h2 id="核心思想："><a href="#核心思想：" class="headerlink" title="核心思想："></a>核心思想：</h2><p>有很多种方法可以实现：通过Job-ID进入计算目录的办法。这里只介绍本节的思路。</p>
+<ul>
+<li>通过<code>squeue</code> 命令获取用户所有的任务的ID；</li>
+<li>通过<code>scontrol</code> 命令获取所有ID对应的计算目录</li>
+<li>将计算ID，以及对应的目录保存到一个<code>txt</code>文件中。</li>
+<li>通过在<code>~/.bashrc</code>中使用scource命令，激活<code>bash</code>脚本中进入目录的操作。</li>
+</ul>
+<p>之所以将计算目录保存到<code>txt</code>文件中，是因为如果计算已经完成的话，则不可以通过<code>scontrol</code>命令来获取目录，这时候，我们就可以在<code>txt</code>文件中查找相应的信息。</p>
+<h2 id="准备流程"><a href="#准备流程" class="headerlink" title="准备流程"></a>准备流程</h2><p>按照流程操作，每一步都很重要，漏掉的话，可能会导致功能无法实现。</p>
+<p>1 下载脚本：</p>
+<ul>
+<li>链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1FEHdOecGvShbspfn9B7fIw">https://pan.baidu.com/s/1FEHdOecGvShbspfn9B7fIw</a>  提取码：dmd9 </li>
+<li>国科智算QQ群文件：608307988 （申请试用）</li>
+<li>大师兄QQ群文件：217821116</li>
+</ul>
+<p>将<code>ent.sh</code> 和<code>job_check.py</code>复制到<code>~/bin</code> 目录下，赋予可执行权限。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gkzshpc101@login02:~/bin$ chmod  u+x ent.sh</span><br><span class="line">gkzshpc101@login02:~/bin$ chmod  u+x job_check.py</span><br></pre></td></tr></table></figure>
+<p>2 在bin目录下创建一个：<code>job-check</code>的目录，以及在该目录中创建一个空的<code>job_list.txt</code>文件，用来存储我们的任务信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gkzshpc101@login02:~/bin$ mkdir job_check &amp;&amp; touch job_check/job_list.txt</span><br></pre></td></tr></table></figure>
+<p>3 修改<code>job_check.py</code>脚本中</p>
+<p>1）13行中的账户信息，<code>gkzshpc101</code>改成你自己的账户</p>
+<p>2） 32行中的那个目录信息，改成下面目录输出的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gkzshpc101@login02:~/bin$ <span class="built_in">cd</span> job_check </span><br><span class="line">gkzshpc101@login02:~/bin/job_check$ <span class="built_in">pwd</span></span><br><span class="line">/public1/home/gkzshpc101/bin/job_check</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">This script is used to</span></span><br><span class="line"><span class="string">1) record the job_ID and directories</span></span><br><span class="line"><span class="string">2) print the job path from the job_ID</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">from</span> subprocess <span class="keyword">import</span> Popen, PIPE</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_id</span>():</span></span><br><span class="line">    list_j = [] <span class="comment"># list for the job_ID</span></span><br><span class="line">    process = Popen([<span class="string">&#x27;squeue&#x27;</span>, <span class="string">&#x27;-lu&#x27;</span>,  <span class="string">&#x27;gkzshpc101&#x27;</span>], stdout=PIPE, stderr=PIPE)</span><br><span class="line">    stdout, stderr = process.communicate()</span><br><span class="line">    list_out =  stdout.split(<span class="string">&#x27;\n&#x27;</span>)[<span class="number">2</span>:]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(list_out)-<span class="number">1</span>):</span><br><span class="line">        list_j.append(list_out[i].split()[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">return</span> list_j</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_dir</span>(<span class="params">job_id</span>):</span></span><br><span class="line">    job_dir = <span class="literal">None</span></span><br><span class="line">    command = <span class="string">&#x27;scontrol show job &#x27;</span> + job_id</span><br><span class="line">    process1 = Popen(command, shell = <span class="literal">True</span>,  stdout=PIPE, stderr=PIPE)</span><br><span class="line">    stdout1, stderr1 = process1.communicate()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> stdout1.split(<span class="string">&#x27;\n&#x27;</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;WorkDir&#x27;</span> <span class="keyword">in</span> i:</span><br><span class="line">            <span class="comment">#job_dir.append(i.split(&#x27;=&#x27;)[1])</span></span><br><span class="line">            job_dir = i.split(<span class="string">&#x27;=&#x27;</span>)[<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">return</span> job_dir</span><br><span class="line"></span><br><span class="line">id_dict = &#123;&#125;</span><br><span class="line"><span class="keyword">with</span>  <span class="built_in">open</span>(<span class="string">&#x27;/public1/home/gkzshpc101/bin/job_check/job_list.txt&#x27;</span>, <span class="string">&#x27;a+&#x27;</span>) <span class="keyword">as</span> file_in:</span><br><span class="line">    lines = file_in.readlines()</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> lines:</span><br><span class="line">        key = line.split(<span class="string">&#x27;:&#x27;</span>)[<span class="number">0</span>]</span><br><span class="line">        value = line.split(<span class="string">&#x27;:&#x27;</span>)[<span class="number">1</span>]</span><br><span class="line">        id_dict[key] = value</span><br><span class="line"></span><br><span class="line">    list_j = get_id()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> list_j:</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> id_dict.keys():</span><br><span class="line">            id_dict[i] = get_dir(i)</span><br><span class="line">            file_in.write(i + <span class="string">&#x27;:&#x27;</span> + get_dir(i) + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">job_id = sys.argv[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> id_dict.keys():</span><br><span class="line">    <span class="keyword">if</span> job_id <span class="keyword">in</span> i:</span><br><span class="line">        <span class="built_in">print</span>(id_dict.get(i).strip())</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line">pwd_work=$(job_check.py <span class="variable">$1</span>)</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$pwd_work</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$pwd_work</span></span><br></pre></td></tr></table></figure>
+<p>4 修改<code>~/.bashrc</code>文件，添加下面这一行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias ent=&#x27;source ~/bin/ent.sh &#x27;</span><br></pre></td></tr></table></figure>
+<p>source 一下<code>~/.bashrc</code>文件： <code>. ~/.bashrc</code></p>
+<h2 id="运行实例："><a href="#运行实例：" class="headerlink" title="运行实例："></a>运行实例：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">gkzshpc101@login02:~/test_ncore/test1/14$ ls</span><br><span class="line">INCAR  KPOINTS POSCAR  POTCAR vasp.sh</span><br><span class="line">gkzshpc101@login02:~/test_ncore/test1/14$ sbatch  vasp.sh</span><br><span class="line">Submitted batch job 14999</span><br><span class="line">gkzshpc101@login02:~/test_ncore/test1/14$ squeue</span><br><span class="line">             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)</span><br><span class="line">             14999 operation     vasp gkzshpc1  R       0:02      1 c0077</span><br><span class="line">gkzshpc101@login02:~/test_ncore/test1/14$ <span class="built_in">cd</span> </span><br><span class="line">gkzshpc101@login02:~$ ent 999</span><br><span class="line">/public1/home/gkzshpc101/test_ncore/test1/14</span><br><span class="line">gkzshpc101@login02:~/test_ncore/test1/14$ ls</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  INCAR  KPOINTS  OSZICAR  OUTCAR  PCDAT  POSCAR  POTCAR  REPORT  vasp.out  vasprun.xml  vasp.sh  WAVECAR  XDATCAR</span><br><span class="line">gkzshpc101@login02:~/test_ncore/test1/14$</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/12/08/A11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/12/08/A11/" class="post-title-link" itemprop="url">国科智算提交VASP任务</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-12-08 15:30:16" itemprop="dateCreated datePublished" datetime="2018-12-08T15:30:16-05:00">2018-12-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW%E9%99%84%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW附录</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/12/08/A11/" class="post-meta-item leancloud_visitors" data-flag-title="国科智算提交VASP任务" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/12/08/A11/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/08/A11/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="国科智算提交VASP任务"><a href="#国科智算提交VASP任务" class="headerlink" title="国科智算提交VASP任务"></a>国科智算提交VASP任务</h1><p>今天QQ群里，有人问怎么在国科智算的超算中心提交VASP的任务。本着一言不合就写教程的态度，这一节我们就看下VASP的任务是怎么提交的。提交任务的脚本见群文件：<code>vasp_qiangli.sh</code>。下载后重命名成<code>vasp.sh</code>即可。想试用的，购买机时的可以加QQ群：608307988咨询一下。</p>
+<h2 id="Slurm"><a href="#Slurm" class="headerlink" title="Slurm"></a>Slurm</h2><p>国科智算上系统采用的是<code>slurm</code> 任务调度工具。<strong>Simple Linux Utility for Resource Management</strong>，它是一个用于<code>Linux</code>和 <code>Unix</code> 内核系统的免费、开源的任务调度工具，被世界范围内的超级计算机和计算机群广泛采用。它提供了三个关键功能。第一，为用户分配一定时间的专享或非专享的资源(计算机节点)，以供用户执行工作。第二，它提供了一个框架，用于启动、执行、监测在节点上运行着的任务(通常是并行的任务，例如<code>MPI</code>，第三，为任务队列合理地分配资源。 大约60％的<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/TOP500">500强</a>超级计算机上都运行着<code>Slurm</code>，包括2016年前世界上最快的计算机<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%A4%A9%E6%B2%B3%E4%BA%8C%E5%8F%B7">天河-2</a>。 以上是来自<a target="_blank" rel="noopener" href="https://www.wikipedia.org">维基百科</a>的解释，具体的大家可以浏览<code>Slurm</code> 的官网：<a target="_blank" rel="noopener" href="https://slurm.schedmd.com/">Slurm Workload Manager</a></p>
+<h2 id="Sbatch"><a href="#Sbatch" class="headerlink" title="Sbatch"></a>Sbatch</h2><p>在这个调度系统中，提交任务时我们需要用到命令： <code>sbatch</code>  : <a target="_blank" rel="noopener" href="https://slurm.schedmd.com/sbatch.html">https://slurm.schedmd.com/sbatch.html</a> </p>
+<p><code>sbatch</code> 命令后面要跟一堆的参数，比如计算时间，节点数，邮箱，队列，调用的环境变量，任务名称等等。但这些信息通过命令直接输入又有些麻烦，所以我们把它们放到一个<code>脚本</code>里面，免得每次都重新输入一大长串的内容。而这个脚本，也就是我们本节内容的主角： <code>vasp.sh</code>。</p>
+<p>首先，我们浏览<code>sbatch</code>的详细参数： <a target="_blank" rel="noopener" href="https://slurm.schedmd.com/sbatch.html">https://slurm.schedmd.com/sbatch.html</a> </p>
+<p>然后根据这些参数，我们就可以创建一个<code>vasp.sh</code>脚本了。</p>
+<h2 id="vasp-sh"><a href="#vasp-sh" class="headerlink" title="vasp.sh"></a>vasp.sh</h2><p>下面就是<code>vasp.sh</code> 的主要内容：有2种写法，这两种写法也可以混着用，不影响。主要还是要参考<code>sbatch</code>的使用说明，需要什么就按照格式填写相应的内容。</p>
+<p><strong>写法（一）</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH -J BigBro              ## Job Name</span></span><br><span class="line"><span class="comment">#SBATCH -o %j.out              ## standard output </span></span><br><span class="line"><span class="comment">#SBATCH -e %j.err              ## standard error</span></span><br><span class="line"><span class="comment">#SBATCH -p operation           ## Partition</span></span><br><span class="line"><span class="comment">#SBATCH -N 1                   ## Number of nodes</span></span><br><span class="line"><span class="comment">#SBATCH --ntasks-per-node=28   ## Each node has 28 tasks</span></span><br><span class="line"><span class="comment">#SBATCH -t 02-23:57:25         ## time for your job: 2 d，23 h ，57 min and 23 s</span></span><br><span class="line"></span><br><span class="line">module load mpi/intelmpi/2017.4.239</span><br><span class="line">mpirun /public/software/apps/vasp/544/vasp.5.4.4/bin/vasp_std</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p> <strong>写法（二）</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH --job-name=BigBro      ## Job Name</span></span><br><span class="line"><span class="comment">#SBATCH --output=%j.out        ## standard output </span></span><br><span class="line"><span class="comment">#SBATCH --error=%j.err         ## standard error</span></span><br><span class="line"><span class="comment">#SBATCH --partition=operation  ## Partition</span></span><br><span class="line"><span class="comment">#SBATCH --nodes=1              ## Number of nodes</span></span><br><span class="line"><span class="comment">#SBATCH --ntasks-per-node=28   ## Each node has 28 tasks</span></span><br><span class="line"><span class="comment">#SBATCH --time=02-23:57:25     ## time for your job: 2 d，23 h ，57 min and 23 s</span></span><br><span class="line"></span><br><span class="line">module load mpi/intelmpi/2017.4.239</span><br><span class="line">mpirun /public/software/apps/vasp/544/vasp.5.4.4/bin/vasp_std</span><br></pre></td></tr></table></figure>
+<p>上面每一行的含义，大师兄都注释出来了。</p>
+<p>从第二行往下一次为：</p>
+<ul>
+<li>任务的名字，</li>
+<li><code>VASP</code>的标准输出，</li>
+<li>错误输出，</li>
+<li>任务运行的分区，</li>
+<li>使用的节点，</li>
+<li>每个节点的的<code>tasks</code>数目。这个<code>tasks</code>可以理解为每个节点的核数，国科智算的新机器每个节点是28个核。</li>
+<li>以及你的计算所用的时间。</li>
+</ul>
+<p>最后两行为：我们调用的环境变量以及运行<code>vasp</code>程序。</p>
+<p>需要注意的是，脚本里面的内容比如<code>-N</code>（修改任务所需的节点数目）、<code>-J</code>（修改任务的名字）这些我们频繁更换的，可以从脚本里面拿出来，在命令中运行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sbtach -N 2 -J test vasp.sh </span><br></pre></td></tr></table></figure>
+<p>本人自己的计算，一般28个核就够，任务名字也懒得修改。就把<code>-N</code>,<code>-J</code>写到vasp.sh中了。大家根据自己的任务特点自动修改就行了。下面我们具体演示一下。</p>
+<h2 id="实例操作1："><a href="#实例操作1：" class="headerlink" title="实例操作1："></a>实例操作1：</h2><p>我们要在<code>operation</code>分区，运行一个<code>VASP</code>的单点计算，任务名称为：<code>single</code>， 使用2个节点，限制时间为2个小时；那么脚本的修改以及任务提交如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ </span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ ls</span><br><span class="line">INCAR  KPOINTS  POSCAR  POTCAR  vasp.sh</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ cat vasp.sh </span><br><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"><span class="comment">#SBATCH -J single </span></span><br><span class="line"><span class="comment">#SBATCH -o out.%j</span></span><br><span class="line"><span class="comment">#SBATCH -e err.%j</span></span><br><span class="line"><span class="comment">#SBATCH -p operation </span></span><br><span class="line"><span class="comment">#SBATCH -N 2</span></span><br><span class="line"><span class="comment">#SBATCH --ntasks-per-node=28</span></span><br><span class="line"><span class="comment">#SBATCH -t 02:00:25</span></span><br><span class="line"></span><br><span class="line">module load mpi/intelmpi/2017.4.239</span><br><span class="line">mpirun /public/software/apps/vasp/544/vasp.5.4.4/bin/vasp_std</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ sbatch  vasp.sh </span><br><span class="line">Submitted batch job 35525</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ squeue </span><br><span class="line">             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)</span><br><span class="line">             35525 operation   single gkzshpc1  R       0:09      2 c[0032-0033]</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ ls</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  err.35525  IBZKPT  INCAR  KPOINTS  OSZICAR  out.35525  OUTCAR  PCDAT  POSCAR  POTCAR  REPORT  vasprun.xml  vasp.sh  WAVECAR  XDATCAR</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_single$ </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="实例操作2："><a href="#实例操作2：" class="headerlink" title="实例操作2："></a>实例操作2：</h2><p>我们在<code>Operation</code>分区，运行一个<code>VASP</code>的<code>CI-NEB</code>的过渡态计算任务，任务名称为：<code>NEB</code>，使用4个节点，限制时间为12个小时；那么脚本的修改以及任务提交如下：插了7个点，用112个核算，16个核算一个点。下面有点长，文字描述就到此结束，自己慢慢看，希望对大家有所帮助。<strong>注意：</strong>脚本里面，我们换成编译了<code>VTST</code>的<code>vasp 5.4.1</code>版本。</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ ls</span><br><span class="line"><span class="number">00</span>  <span class="number">01</span>  <span class="number">02</span>  <span class="number">03</span>  <span class="number">04</span>  <span class="number">05</span>  <span class="number">06</span>  <span class="number">07</span>  <span class="number">08</span>  FS  INCAR  IS  KPOINTS  POTCAR  vasp.sh</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ cat vasp.sh </span><br><span class="line">#<span class="comment">!/bin/bash</span></span><br><span class="line">#SBATCH -J NEB </span><br><span class="line">#SBATCH -o <span class="keyword">out</span>.%j</span><br><span class="line">#SBATCH -e err.%j</span><br><span class="line">#SBATCH -p operation </span><br><span class="line">#SBATCH -N <span class="number">4</span></span><br><span class="line">#SBATCH --ntasks-per-node=<span class="number">28</span></span><br><span class="line">#SBATCH -t <span class="number">12</span>:<span class="number">00</span>:<span class="number">25</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">module</span> load mpi/intelmpi/<span class="number">2017.4</span><span class="number">.239</span></span><br><span class="line">mpirun /<span class="keyword">public</span>/software/apps/vasp/<span class="number">541_neb</span>/vasp<span class="number">.5</span><span class="number">.4</span><span class="number">.1</span>/bin/vasp_std</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ </span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ sbatch  vasp.sh </span><br><span class="line">Submitted batch job <span class="number">35526</span></span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ squeue </span><br><span class="line">             JOBID PARTITION     <span class="keyword">NAME</span>     USER ST       TIME  NODES NODELIST(REASON)</span><br><span class="line">             <span class="number">35526</span> operation      NEB gkzshpc1  R       <span class="number">0</span>:<span class="number">07</span>      <span class="number">4</span> c[<span class="number">0056</span>-<span class="number">0057</span>,<span class="number">0060</span>-<span class="number">0061</span>]</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ ls</span><br><span class="line"><span class="number">00</span>  <span class="number">01</span>  <span class="number">02</span>  <span class="number">03</span>  <span class="number">04</span>  <span class="number">05</span>  <span class="number">06</span>  <span class="number">07</span>  <span class="number">08</span>  err<span class="number">.35526</span>  FS  INCAR  IS  KPOINTS  <span class="keyword">out</span><span class="number">.35526</span>  POTCAR  vasprun.xml  vasp.sh</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ ls *</span><br><span class="line">err<span class="number">.35526</span>  FS  INCAR  IS  KPOINTS  <span class="keyword">out</span><span class="number">.35526</span>  POTCAR  vasprun.xml  vasp.sh</span><br><span class="line"></span><br><span class="line"><span class="number">00</span>:</span><br><span class="line">POSCAR</span><br><span class="line"></span><br><span class="line"><span class="number">01</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">02</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">03</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">04</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">05</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">06</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">07</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">08</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ </span><br><span class="line">gkzshpc101@login02:~/ex-A11/test_neb$ head -n <span class="number">10</span> <span class="keyword">out</span><span class="number">.35526</span> </span><br><span class="line"> running on  <span class="number">112</span> total cores</span><br><span class="line"> each image running on   <span class="number">16</span> cores</span><br><span class="line"> distrk:  each k-point on   <span class="number">16</span> cores,    <span class="number">1</span> groups</span><br><span class="line"> distr:  one band on    <span class="number">1</span> cores,   <span class="number">16</span> groups</span><br><span class="line"> vasp<span class="number">.5</span><span class="number">.4</span><span class="number">.1</span> <span class="number">05</span>Feb16 (build May <span class="number">24</span> <span class="number">2018</span> <span class="number">19</span>:<span class="number">36</span>:<span class="number">47</span>) <span class="keyword">complex</span>    </span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -3149,330 +3407,6 @@ E_{ads}(CO) = E_{slab+CO} - E_{slab} - E_{CO^{gas}}</script><p>前面我们还�
 <p><strong>注意：</strong></p>
 <p>保存结构的时候，可以自己建对应的文件夹，在文件夹里面将结构保存成POSCAR，也可以保存成类似<code>POSCAR-Fcc</code>， <code>POSCAR-Hcp</code>， <code>POSCAR-Top</code>这一种的名字，计算的时候，将它们重新命名为<code>POSCAR</code>就行了。</p>
 <h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本节，大师兄主要给大家介绍了如何在表面上，使用<code>p4vasp</code>平移原子来搭建不同的吸附位点模型。使用p4vasp搭结构非常方便简单，也会加深你对模型结构的理解，另一方面，使用这一种操作的话准确性更高，搭建出来的模型比自己手动放原子要合理很多。所以强烈推荐大家使用<code>p4vasp</code>。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/07/ex59/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/10/07/ex59/" class="post-title-link" itemprop="url">Ex59 吸附能的计算（四）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-10-07 02:06:48" itemprop="dateCreated datePublished" datetime="2018-10-07T02:06:48-04:00">2018-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/10/07/ex59/" class="post-meta-item leancloud_visitors" data-flag-title="Ex59 吸附能的计算（四）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/10/07/ex59/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/07/ex59/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>丑话说在前头，本节内容有点多，大家慢慢消化。掌握本节的核心思想，对于后面提高你的工作效率，节省时间有着很大的帮助。前面一节，我们在扩展练习中提到了扩胞后，原子坐标的后面T T T 和 F F F 修改的问题。因为扩展后原子坐标是按照单胞为顺序排列的，如果想要将表面的原子快速固定或者放开，那么我们就需要知道表面原子所在的行数。</p>
-<h2 id="方法一：找规律-sed命令"><a href="#方法一：找规律-sed命令" class="headerlink" title="方法一：找规律+sed命令"></a>方法一：找规律+sed命令</h2><p><img src="/2018/10/07/ex59/ex59-1.png" alt=""></p>
-<p>上图中，p(2x2)的POSCAR命名为POSCAR-2x2，最表层原子所在的行数为：13，17， 21， 25，次表层的原子所在的行数为： 12， 16， 20， 24。仔细分析下，你会发现，表层原子的行数为： 9 + 4<em>n ；次表层的行数为：8 + 4 </em> n，其中n = 1-4，4表示在扩完后的slab模型里面有4个(1x1)的单元。有了这个关系，我们就可以通过sed命令任意固定这两层的原子了, 命令如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in &#123;1..4&#125;; do sed -i &quot;$((8+4*$i)), $((9+4*$i))s/T T T/F F F/g&quot; POSCAR</span><br></pre></td></tr></table></figure>
-<p>或者：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in &#123;1..4&#125;; do sed -i &quot;$((8+4*$i)), $((9+4*$i))s/T/F/g&quot; POSCAR</span><br></pre></td></tr></table></figure>
-<p>效果如下图：通过sed命令快速将表层原子批量固定住。</p>
-<p><img src="/2018/10/07/ex59/ex59-2.png" alt=""></p>
-<p>我们还可以只放开最表层的原子，使用sed命令快速将最表层的原子批量放开！</p>
-<p>在前面结果的基础上可以使用命令：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for  i  in &#123;1..4&#125;; do sed -i &quot;$((9+4*$i))s/ F F F/ T T T/g&quot; POSCAR</span><br></pre></td></tr></table></figure>
-<p>或者：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for  i  in &#123;1..4&#125;; do sed -i &quot;$((9+4*$i))s/F/T/g&quot; POSCAR</span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/07/ex59/ex59-3.png" alt=""></p>
-<p>Soooo Easy！！！再也不用挨行修改T T T 或者F F F 了。</p>
-<h2 id="方法二：分层处理-sed命令"><a href="#方法二：分层处理-sed命令" class="headerlink" title="方法二：分层处理+sed命令"></a>方法二：分层处理+sed命令</h2><p>什么，原来还有第二种方法？ 这种方法是本人常用的。前面我们提到，在p(2x2)的slab模型中，原子坐标是按照p(1x1)的单元排列的。既然我们想根据层数固定原子，那么我们可以先将原子按照层数来排列，这样就可以方便的选择同一层的原子了。</p>
-<p>那么该怎么将它们按照层数排列呢？ 这时候你应该想到，不同层之间的原子，它们的坐标在z方向是不同的。有了这个依据，我们就可以根据z方向坐标的大小来排列原子了。</p>
-<p>首先我们先用一个笨方法实现所预想的小目标。</p>
-<p><strong>第一步：</strong>将坐标复制到excel表格里面。本人用的是libre office(Linux下面的Microsoft)。不过功能大同小异，Windows用户按照做就可以了。</p>
-<p><strong>第二步：</strong>选中所复制的数据，然后根据图中的D列来排序。</p>
-<p><img src="/2018/10/07/ex59/ex59-4.png" alt=""></p>
-<p>排序完的结果, 如下图：</p>
-<p><img src="/2018/10/07/ex59/ex59-5.png" alt=""></p>
-<p>从图中，我们可以看出，原子根据在z方向上的坐标分成了4部分。</p>
-<p><strong>注意：</strong>这里我们所有原子都是Cu原子，因此可以全部选中然后直接排序。如果你的体系中有好几种不同的原子，你需要按照元素，逐一进行排序。 比如体系中有C H O，我们先将C原子按照Z方向坐标排序，然后再排H原子的，最后再排O原子的。要保持和POSCAR前面元素顺序一致。</p>
-<p>排序完成之后，将POSCAR中的坐标替换为Excel中的数据。</p>
-<p><img src="/2018/10/07/ex59/ex59-6.png" alt=""></p>
-<p>这样的话，我们的模型就搞定了。剩下的就是使用sed命令批量替换T T T和 F F F了</p>
-<p>但是，师兄等等，上图看起来坐标很乱啊，结构能用吗？ 放心，绝对可以用。</p>
-<p>如果不放心的话，可以用p4vasp打开一下，然后重新保存成POSCAR即可。最终我们的POSCAR如下图：</p>
-<p><img src="/2018/10/07/ex59/ex59-7.png" alt=""></p>
-<p><img src="/2018/10/07/ex59/ex59-8.png" alt=""></p>
-<p>从图中可以看出来，次表层的原子在18-21行，最表层的原子在22-25行。所以可以这样使用sed命令来快速实现表层原子的固定与弛豫。</p>
-<p><img src="/2018/10/07/ex59/ex59-9.png" alt=""></p>
-<p><img src="/2018/10/07/ex59/ex59-10.png" alt=""></p>
-<h2 id="方法三：-使用脚本分层"><a href="#方法三：-使用脚本分层" class="headerlink" title="方法三： 使用脚本分层"></a>方法三： 使用脚本分层</h2><p>师兄，这个问题竟然还可以使用脚本来解决？</p>
-<p>当然了，使用鼠标拖拖点点的事情，一般都可以用脚本来实现。脚本是用python写的，本人给它起了一个高大上的响亮名字：sortcar.py。（适用于python2.6以及以上的版本，低于2.6或者python3可能会出错。）</p>
-<p>由于p(2x2)的slab坐标前面已经用过了，下面我们用p(3x3)的slab来演示一下脚本的使用。</p>
-<p><img src="/2018/10/07/ex59/ex59-11.png" alt=""></p>
-<p>新鲜出炉的，等待被sort的p(3x3)slab的POSCAR。被sort过的POSCAR如下图：</p>
-<p><img src="/2018/10/07/ex59/ex59-12.png" alt=""></p>
-<p>使用sortcar.py 将坐标按照z方向大小排列。输出文件为XXX_sorted，其中 XXX为我们想要排列的POSCAR或者CONTCAR。如果你的VASP坐标结构文件名字为：BigBro，那么被sort之后，输出文件就是: BigBro_sorted。</p>
-<p>脚本这么神奇，内容如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python </span></span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> sys </span><br><span class="line"></span><br><span class="line">in_file = sys.argv[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">### READ input file ###</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_inputcar</span>(<span class="params">in_file</span>):</span></span><br><span class="line">    f = <span class="built_in">open</span>(in_file, <span class="string">&#x27;r&#x27;</span>)</span><br><span class="line">    lines = f.readlines()</span><br><span class="line">    f.close()</span><br><span class="line">    ele_name  = lines[<span class="number">5</span>].strip().split()</span><br><span class="line">    ele_num = [<span class="built_in">int</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> lines[<span class="number">6</span>].strip().split()]</span><br><span class="line">    dict_contcar =  &#123;ele_name[i]:ele_num[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(ele_name))&#125; </span><br><span class="line">    dict_contcar2 = defaultdict(<span class="built_in">list</span>)</span><br><span class="line">    <span class="keyword">for</span> element <span class="keyword">in</span> ele_name: </span><br><span class="line">        indice  = ele_name.index(element)</span><br><span class="line">        n_start = <span class="built_in">sum</span>(ele_num[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, indice+<span class="number">1</span>)) - dict_contcar.get(element) +<span class="number">1</span></span><br><span class="line">        n_end = <span class="built_in">sum</span>(ele_num[i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, indice+<span class="number">1</span>)) +<span class="number">1</span></span><br><span class="line">        dict_contcar2[element].append(<span class="built_in">range</span>(n_start, n_end)) </span><br><span class="line">    <span class="keyword">return</span> lines, ele_name, ele_num, dict_contcar2, dict_contcar</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_elements</span>(<span class="params">ele</span>):</span></span><br><span class="line">    lines, ele_name, ele_num, dict_contcar2, dict_contar = read_inputcar(in_file)</span><br><span class="line">    coord_total = []</span><br><span class="line">    my_list = []</span><br><span class="line">    my_dict = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> dict_contcar2.get(ele)[<span class="number">0</span>]:</span><br><span class="line">        coord_list = lines[j+<span class="number">8</span>].strip().split()[<span class="number">0</span>:<span class="number">3</span>]</span><br><span class="line">        tf_list = lines[j+<span class="number">8</span>].strip().split()[<span class="number">3</span>:]</span><br><span class="line">        my_list.append(coord_list)</span><br><span class="line">        dict_key = <span class="string">&#x27;-&#x27;</span>.join(coord_list)</span><br><span class="line">        my_dict[dict_key] = tf_list</span><br><span class="line">       </span><br><span class="line">    data = np.array(my_list)</span><br><span class="line">    data=data[np.argsort(data[:,<span class="number">2</span>])]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> data:</span><br><span class="line">         coord = <span class="string">&#x27;  &#x27;</span>.join(k)</span><br><span class="line">         tf = <span class="string">&#x27;  &#x27;</span>.join(my_dict.get(<span class="string">&#x27;-&#x27;</span>.join(k)))</span><br><span class="line">         coord_total.append(coord + <span class="string">&#x27;  &#x27;</span> + tf )</span><br><span class="line">    <span class="keyword">return</span> coord_total</span><br><span class="line"></span><br><span class="line"><span class="comment">## Generate the New POSCAR file</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Get_and_Save_lines</span>(<span class="params">file_name, start_line, end_line</span>):</span></span><br><span class="line">    f = <span class="built_in">open</span>(file_name)</span><br><span class="line">    lines =  f.readlines()</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> lines[<span class="built_in">int</span>(start_line):<span class="built_in">int</span>(end_line)]:</span><br><span class="line">        file_out.write(line.rstrip()+<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line"></span><br><span class="line">out_name = in_file + <span class="string">&#x27;_sorted&#x27;</span></span><br><span class="line">file_out = <span class="built_in">open</span>(out_name, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line">Get_and_Save_lines(in_file, <span class="number">0</span>, <span class="number">9</span>)</span><br><span class="line"></span><br><span class="line">ele_name = read_inputcar(in_file)[<span class="number">1</span>]</span><br><span class="line">dict_contcar = read_inputcar(in_file)[-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> ele_name:</span><br><span class="line">    <span class="keyword">if</span> dict_contcar.get(i) &gt; <span class="number">1</span> :</span><br><span class="line">        file_out.write(<span class="string">&#x27;\n&#x27;</span>.join(get_elements(i)))</span><br><span class="line">    <span class="keyword">else</span>: </span><br><span class="line">        file_out.write(<span class="string">&#x27;\n %s \n&#x27;</span> %(<span class="string">&#x27;  &#x27;</span>.join(get_elements(i))))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><strong>注意事项：</strong></p>
-<p>1） 这里我们用的是Cu(111)的例子，比较简答，脚本的威力展示不出来。<br>2） 如果你的体系有很多不同的原子，脚本首先会将同一种元素原子的坐标排列，然后依次类推。<br>3） 有些地方可能有些冗余。但本人一直在用，效果还不错。<br>4） 本人建议，只针对表面使用这个脚本。也就是吸附前的slab模型。如果你放了吸附物种，不建议使用，因为吸附物种间不同原子之间的连接顺序可能会被打乱。<br>5） 在放吸附物种之前，最好将表面先排序完，怎么做，前面三种方法任选。<br>6） 脚本的话已经上传，大家可以通过链接下载：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1X5xLRsvRmFfNE8IlKwvbFQ）">https://pan.baidu.com/s/1X5xLRsvRmFfNE8IlKwvbFQ）</a></p>
-<p>7）如果使用脚本出错的话，可能是因为你的python版本太低。这个脚本只适用于python2.6及以上的。Python3可能也不适用。出现错误，直接放弃，掌握了这个方面的思想就足够了。</p>
-<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本节讨论的内容与科研关系说大不大，说小也不小，主要是在解决工作效率和时间上。想象一下，如果你的slab中有很多原子（金属氧化物，硫化物等），而且还不是同一种的，你用前两种方法的时候，就得十分小心了，此时脚本的作用就显示出来了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/05/ex58/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/10/05/ex58/" class="post-title-link" itemprop="url">Ex58 吸附能的计算（三）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-10-05 15:30:16" itemprop="dateCreated datePublished" datetime="2018-10-05T15:30:16-04:00">2018-10-05</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/10/05/ex58/" class="post-meta-item leancloud_visitors" data-flag-title="Ex58 吸附能的计算（三）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/10/05/ex58/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/05/ex58/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>前面一节我们将Cu的slab表面扩展成p(2x2), 然后放了一个O原子在上面吸附。最后发现与p(1x1)表面上吸附相比，O原子的吸附能从+1.2 降低到0.2 eV. 说明覆盖度高的时候，O原子的吸附很差。吸附能受覆盖度的影响很大。</p>
-<p>那什么是覆盖度？ Surface coverage（θ）</p>
-<p>从字面上理解，就是表面被吸附物(原子或分子等)覆盖的程度。一个固定大小的表面，如果上面某一吸附物越多，那么说它的覆盖度也就越大。也可以理解为：该吸附物在表面上的浓度也就越大。在多相催化的过程中，吸附是第一步。而在催化剂表面上，其活性位点数量是有限的（N个），如果N1个活性位点被吸附物种占据了，那么此时的覆盖度：θ= N1/N。如果所有的活性位点都被占据了，那么覆盖度就是1。 这个相信学过物理化学，以及相关多相催化基础知识的都能理解。 如果不知道的，请自己查找相关参考书学习，主要是在Langmuir 吸附那一部分。</p>
-<hr>
-<p>在表面计算中，覆盖度我们通常使用原子数目的比来表示。首先，在p(2x2)的Cu(111)表面上，有4个Cu原子，我们可以认为活性位点是4个。当我们放一个O上去后，占据了一个Cu，那么此时的覆盖度是1/4。前面我们在p(1x1)的表面上放了一个O，可以认为是Monolayer的O吸附，也就是覆盖度为1。</p>
-<p>1）之所以用原子数来表示，而不用表面积。是因为吸附的物种往往不像O原子这么简单，比如甲醇，乙醇，等等。这些表面上吸附物种的面积很难算，将它们的面积除以表面的面积，可行性不大。</p>
-<p>2）师兄，如果我的吸附分子很大，比如苯环。 1个Cu原子上面放不下，那该怎么表示?</p>
-<hr>
-<p>首先你需要扩胞，如上一节所讲的，将表面扩大到能容得下苯环为止。</p>
-<p>1）比如我们将表面扩展成p(3x3)后才能放上去一个苯环，那么此时的覆盖度就是1/9。虽然数值很小，但对于苯环来说，Monolayer的吸附，按照这个定义，其覆盖度就是1/9。</p>
-<p>2） 如果我们知道一个苯环可以占据9个表面的原子，那么我们将这9个原子看做一个活性位点，那么覆盖度就是 1/1。第一个1指的是1个苯环，第二个1指的是1个活性位点（9个原子）。</p>
-<p>大家在计算的时候，一方面参考专业书，文献中的表示，另一方面根据自己的体系需要，只要将问题描述清楚就可以了。</p>
-<p>继续回到上一节留的另一个问题：扩胞时有什么需要注意的事项。</p>
-<p>1）扩胞的操作已经展示给大家了，相信这不再是什么难事了；</p>
-<p>扩胞后的结果见下图： </p>
-<p><img src="/2018/10/05/ex58/ex58-1.png" alt=""></p>
-<p>2）扩胞后计算，我们需要注意的主要是KPOINTS这个文件。前面p(1x1)-Cu(111)，我们用的K点是：13x13x1。那我们扩完胞后，晶格变大了，还能继续用$13\times13\times1$吗？</p>
-<p>答：可以用来计算。但结果不能用来和其他K点的进行比较。</p>
-<hr>
-<p>什么意思呢？</p>
-<p>这里大师兄想要表达的是：如果你想要对比两个计算结果，首先要保证它们在一个计算的等级上， 即两个计算K点的网格密度是一样的，或者差不多的。在Reciprocal space中，晶胞的长度为$2\pi/a$。然后我们将这个长度分割成k段。每一段长度为：$2\pi/ka$</p>
-<p>我们扩胞后，晶胞长度变为2a，则在Reciprocal Space中，晶胞的长度为$2\pi/2a$ =$\pi/a$。</p>
-<p>如果我们用之前的KPOINTS，那么就会将π/a分成k段，每段长：$\pi/a$， 由于分的更细，这会导致扩胞后K点的密度更大。</p>
-<p>为了保持和扩胞前的密度一致，我们需要将$\pi/a$分割成 k/2 段，这样每段长为$2\pi/ka$。</p>
-<hr>
-<p>因此当我们扩胞后，KPOINTS如果保持不变，会导致前后两个计算的K点密度不一致时，从而计算的精度也不一样，所以两个结果没有可比性。</p>
-<p>师兄，你说了这么多废话。那我们该怎么办呢？</p>
-<p>很简单，将K点数目减小就可以了。 前面p(1x1)我们使用的是$13\times13\times1$，那么扩胞成p(2x2)后，K点就需要相应的减小到$7\times7\times1$。更简单一点，回想我们前面说到的那个经验选择。<code>K * a</code> 的取值范围。</p>
-<p><a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html">https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html</a></p>
-<p><img src="/2018/10/05/ex58/ex58-2.png" alt=""></p>
-<p>我们只要保证所有计算中： K * a 的数值差不多就OK了。所以，当你看到这里，你就可以随便扩胞了，什么p(2x2),  p(3x3),  p(4x4)啦，扩胞后都知道该怎么选择K点并修改KPOINTS了。</p>
-<hr>
-<p>那对于其他输入文件呢？</p>
-<p>INCAR：</p>
-<p>此时，对于Cu体系来说，可以保持不变。但有些与原子数目相关的参数，你还是需要在INCAR里面修改，保持与新的POSCAR对应。比如： </p>
-<ul>
-<li><p>MAGMOM, 但如果你的体系是具有磁性，需要重新设置MAGMOM。</p>
-</li>
-<li><p>更复杂点的体系，如果你的体系是不仅有磁性，还是反铁磁，当你扩胞后，你还要给不同的原子设置磁矩的方向。</p>
-</li>
-</ul>
-<p>POTCAR： 保持不变</p>
-<p>提交任务的脚本： 扩胞后，由于体系变大， 计算会变慢，为了加快速度，我们可能会需要增加节点数目。</p>
-<hr>
-<p>计算步骤：</p>
-<p><strong>老实人的做法：</strong></p>
-<p>扩胞后，很多人问计算吸附能的步骤，不清楚该怎么样进行。</p>
-<p>第一步：优化扩胞后的Slab 模型： 因为扩抱前已经relax过了，所以这一步很快就会结束；得到新的slab能量。</p>
-<p>第二步：在第一步优化的基础上搭建吸附模型； 然后优化，得到slab+吸附物的能量。</p>
-<p>第三步：套公式，计算吸附能。</p>
-<p>老司机的做法</p>
-<p>当然了，如果你经验丰富，计算的够多了，可以尝试这样做：</p>
-<p>第一步：优化扩胞后的Slab 模型： 因为扩抱前已经relax过了，所以这一步很快就会结束；得到新的slab能量：</p>
-<p>同时：在扩胞后的slab模型上（没有优化）直接搭建吸附模型，然后优化，得到slab+吸附物的能量。</p>
-<p>第二步：套公式，计算吸附能。</p>
-<p>这两种做法，最后的结果应该是一样的，如果有差别，也是微乎其微，可以忽略不计。<strong>注意：</strong>在计算纯的slab能量时，表面应该是放开的。</p>
-<hr>
-<p>另一个很常见的问题是，slab的表面我应该放开还是固定呢？</p>
-<p>严格来说，slab的表层原子应该是弛豫的，也就是坐标后对应的是 T T T，这样更符合物理化学意义，因为催化剂表面的原子不可能会不动。厉害的时候，吸附物还会导致表面重构。所以你在阅读文献，会发现理论部分都会写：Top two layers 放开来模拟表面，底部的原子固定来模拟体相等等这样类似的话。</p>
-<p>但是，将表面原子放开后，会导致结构优化步数的增加，从而引起计算量的增加。如果你的模型很大，吸附结构很多，可以先从小模型，低K点出发，先固定住表面，算一遍吸附，大体有个感觉后，再一步一步增加计算的精度。</p>
-<p>如果体系太大了，可以尝试着固定表面来算吸附能，步骤如下：</p>
-<ul>
-<li>1）先优化slab模型，这一步表面原子是要放开的；</li>
-<li>2）固定表面原子，</li>
-<li>3）放吸附物种优化。</li>
-</ul>
-<p>目前计算能力基本上可以完全满足放开表面原子的计算。所以，大家不要纠结这个问题。表面的原子能放开，尽量放开。如果实在是不放心，那么就找一篇和你工作很相近，体系类似的计算文章，看看别人怎么设置的，照猫画虎就可以了。</p>
-<hr>
-<h2 id="参考阅读："><a href="#参考阅读：" class="headerlink" title="参考阅读："></a>参考阅读：</h2><p>Density Functional Theory：A Practical Introduction, <strong>Chapter 3</strong>：Nuts and bolts of DFT calculations</p>
-<p><img src="/2018/10/05/ex58/ex58-3.png" alt=""></p>
-<hr>
-<h2 id="扩展练习："><a href="#扩展练习：" class="headerlink" title="扩展练习："></a>扩展练习：</h2><p>另一个无关痛痒，但对后面工作效率会造成影响的问题就是：</p>
-<p><img src="/2018/10/05/ex58/ex58-4.png" alt=""></p>
-<p>当扩展完之后，你会看到，Cu原子的坐标，是按照每个单胞中的坐标来排列的。在p(2x2)中有4个p(1x1)的单胞，先列出来第一个(1x1)中4个原子的坐标，然后再列出来第二个(1x1)的，以此类推。但是，比如我们想仅仅放开表面的第一层原子（也就是纵坐标为6.26的所有原子），就得把纵坐标为4.189的原子挨个由T T T 改成 F F F （图中箭头所指的部分）。这样会很麻烦，还浪费很多时间。</p>
-<p>怎么解决这个问题，快速将表层，次表层原子固定或者放开呢 ? 看下一节的内容。</p>
-<hr>
 
       
     </div>
