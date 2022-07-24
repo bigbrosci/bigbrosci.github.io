@@ -9675,19 +9675,19 @@ E_{ads} &= E_{slab+H_2O} – E_{slab} – E_{H_2O^{gas}} \\
       </tags>
   </entry>
   <entry>
-    <title>利用matminer和pymatgen获取material project结构</title>
-    <url>/2022/06/22/A33/</url>
+    <title>A33 利用matminer和pymatgen获取material project结构</title>
+    <url>/2022/06/23/A33/</url>
     <content><![CDATA[<h1 id="首先导入模块"><a href="#首先导入模块" class="headerlink" title="首先导入模块"></a>首先导入模块</h1><p>from matminer.data_retrieval.retrieve_MP import MPDataRetrieval</p>
 <h1 id="实例化-MPDataRetrieval-这个类"><a href="#实例化-MPDataRetrieval-这个类" class="headerlink" title="实例化 MPDataRetrieval 这个类"></a>实例化 MPDataRetrieval 这个类</h1><p>mpdr &#x3D; MPDataRetrieval(api_key&#x3D;’qIAww9QnUnXQJO41’)   # 自行查阅自己的api_key</p>
 <h1 id="在实例化-MPDataRetrieval-时需要输入用户在-Material-Project-网站的“”-API-Key"><a href="#在实例化-MPDataRetrieval-时需要输入用户在-Material-Project-网站的“”-API-Key" class="headerlink" title="在实例化 MPDataRetrieval 时需要输入用户在 Material Project 网站的“” API Key."></a>在实例化 MPDataRetrieval 时需要输入用户在 Material Project 网站的“” API Key.</h1><p>df &#x3D; mpdr.get_dataframe(criteria&#x3D;{“nelements”: 1,<br>                                  “elements”: {“$in”: [“Cu”]}},<br>                        properties&#x3D;[‘pretty_formula’,’cif’])<br>print(“There are {} entries on MP with 2 element”.format(df[‘pretty_formula’].count())) # 计算有多少材料<br>#请自行关注 df[‘density’].count() 语句，获取Cu金属的各种结构</p>
 <h1 id="导入pymatgen-ext-matproj下的MPRester模块"><a href="#导入pymatgen-ext-matproj下的MPRester模块" class="headerlink" title="导入pymatgen.ext.matproj下的MPRester模块"></a>导入pymatgen.ext.matproj下的MPRester模块</h1><p>from pymatgen.ext.matproj import MPRester</p>
-<h1 id="实例化-MPRester-这个类"><a href="#实例化-MPRester-这个类" class="headerlink" title="实例化 MPRester 这个类"></a>实例化 MPRester 这个类</h1><p>mpr &#x3D; MPRester(api_key&#x3D;”qIAww9QnUnXQJO41”)  # 自行查阅自己的api_key</p>
+<h1 id="实例化-MPRester-这个类"><a href="#实例化-MPRester-这个类" class="headerlink" title="实例化 MPRester 这个类"></a>实例化 MPRester 这个类</h1><p>mpr &#x3D; MPRester(api_key&#x3D;”XXX”)  # 自行查阅自己的api_key，替换XXX。</p>
 <h1 id="获取Cu金属某一结构文件"><a href="#获取Cu金属某一结构文件" class="headerlink" title="获取Cu金属某一结构文件"></a>获取Cu金属某一结构文件</h1><p>data_structure&#x3D;mpr.get_structure_by_material_id(‘mp-1009018’)</p>
 <h1 id="利用pymatgen-io-cif下的CifWriter模块导出Cu-cif文件"><a href="#利用pymatgen-io-cif下的CifWriter模块导出Cu-cif文件" class="headerlink" title="利用pymatgen.io.cif下的CifWriter模块导出Cu.cif文件"></a>利用pymatgen.io.cif下的CifWriter模块导出Cu.cif文件</h1><p>from pymatgen.io.cif import CifWriter<br>w &#x3D; CifWriter(data_structure)<br>w.write_file(‘Cu.cif’)</p>
-<p><img src="/2022/06/22/A33/A32/qrcode.png"></p>
+<p><img src="/2022/06/23/A33/qr_a33.jpeg"></p>
 ]]></content>
       <categories>
-        <category>LVASPTHW</category>
+        <category>pymatgen</category>
       </categories>
       <tags>
         <tag>matminer</tag>

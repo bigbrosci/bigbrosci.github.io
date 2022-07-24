@@ -161,7 +161,7 @@
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -1179,6 +1179,114 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2022/06/23/A33/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/06/23/A33/" class="post-title-link" itemprop="url">A33 利用matminer和pymatgen获取material project结构</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-23 15:30:16" itemprop="dateCreated datePublished" datetime="2022-06-23T15:30:16-04:00">2022-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-24 12:22:59" itemprop="dateModified" datetime="2022-07-24T12:22:59-04:00">2022-07-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/pymatgen/" itemprop="url" rel="index"><span itemprop="name">pymatgen</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/06/23/A33/" class="post-meta-item leancloud_visitors" data-flag-title="A33 利用matminer和pymatgen获取material project结构" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/06/23/A33/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/06/23/A33/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="首先导入模块"><a href="#首先导入模块" class="headerlink" title="首先导入模块"></a>首先导入模块</h1><p>from matminer.data_retrieval.retrieve_MP import MPDataRetrieval</p>
+<h1 id="实例化-MPDataRetrieval-这个类"><a href="#实例化-MPDataRetrieval-这个类" class="headerlink" title="实例化 MPDataRetrieval 这个类"></a>实例化 MPDataRetrieval 这个类</h1><p>mpdr &#x3D; MPDataRetrieval(api_key&#x3D;’qIAww9QnUnXQJO41’)   # 自行查阅自己的api_key</p>
+<h1 id="在实例化-MPDataRetrieval-时需要输入用户在-Material-Project-网站的“”-API-Key"><a href="#在实例化-MPDataRetrieval-时需要输入用户在-Material-Project-网站的“”-API-Key" class="headerlink" title="在实例化 MPDataRetrieval 时需要输入用户在 Material Project 网站的“” API Key."></a>在实例化 MPDataRetrieval 时需要输入用户在 Material Project 网站的“” API Key.</h1><p>df &#x3D; mpdr.get_dataframe(criteria&#x3D;{“nelements”: 1,<br>                                  “elements”: {“$in”: [“Cu”]}},<br>                        properties&#x3D;[‘pretty_formula’,’cif’])<br>print(“There are {} entries on MP with 2 element”.format(df[‘pretty_formula’].count())) # 计算有多少材料<br>#请自行关注 df[‘density’].count() 语句，获取Cu金属的各种结构</p>
+<h1 id="导入pymatgen-ext-matproj下的MPRester模块"><a href="#导入pymatgen-ext-matproj下的MPRester模块" class="headerlink" title="导入pymatgen.ext.matproj下的MPRester模块"></a>导入pymatgen.ext.matproj下的MPRester模块</h1><p>from pymatgen.ext.matproj import MPRester</p>
+<h1 id="实例化-MPRester-这个类"><a href="#实例化-MPRester-这个类" class="headerlink" title="实例化 MPRester 这个类"></a>实例化 MPRester 这个类</h1><p>mpr &#x3D; MPRester(api_key&#x3D;”XXX”)  # 自行查阅自己的api_key，替换XXX。</p>
+<h1 id="获取Cu金属某一结构文件"><a href="#获取Cu金属某一结构文件" class="headerlink" title="获取Cu金属某一结构文件"></a>获取Cu金属某一结构文件</h1><p>data_structure&#x3D;mpr.get_structure_by_material_id(‘mp-1009018’)</p>
+<h1 id="利用pymatgen-io-cif下的CifWriter模块导出Cu-cif文件"><a href="#利用pymatgen-io-cif下的CifWriter模块导出Cu-cif文件" class="headerlink" title="利用pymatgen.io.cif下的CifWriter模块导出Cu.cif文件"></a>利用pymatgen.io.cif下的CifWriter模块导出Cu.cif文件</h1><p>from pymatgen.io.cif import CifWriter<br>w &#x3D; CifWriter(data_structure)<br>w.write_file(‘Cu.cif’)</p>
+<p><img src="/2022/06/23/A33/qr_a33.jpeg"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2022/06/22/A32/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1283,114 +1391,6 @@
 <p>5）直接在频率计算的目录里面运行：get_dimer.py 即可。</p>
 <p>IDM结合NEB的成功率很高，非常推荐。另外，计算出的结果极少出现多个虚频的情况。因此，这个方法也可以用来消虚频。差不多就这些了，剩下的就是多操作练习，熟能生巧的事情了。欢迎大家分享自己的经验，放到自己的网站，公众号等平台，帮助更多的人解决VASP计算相关的问题，有兴趣的也可以把自己的经验心得放到大师兄网站上，直接给我发邮件即可（lqcata@gmail.com）。</p>
 <p><img src="/2022/06/22/A32/qrcode.png" alt=""></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2022/06/22/A33/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/06/22/A33/" class="post-title-link" itemprop="url">利用matminer和pymatgen获取material project结构</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-06-22 15:30:16" itemprop="dateCreated datePublished" datetime="2022-06-22T15:30:16-04:00">2022-06-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-12 23:33:29" itemprop="dateModified" datetime="2022-07-12T23:33:29-04:00">2022-07-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2022/06/22/A33/" class="post-meta-item leancloud_visitors" data-flag-title="利用matminer和pymatgen获取material project结构" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2022/06/22/A33/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/06/22/A33/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="首先导入模块"><a href="#首先导入模块" class="headerlink" title="首先导入模块"></a>首先导入模块</h1><p>from matminer.data_retrieval.retrieve_MP import MPDataRetrieval</p>
-<h1 id="实例化-MPDataRetrieval-这个类"><a href="#实例化-MPDataRetrieval-这个类" class="headerlink" title="实例化 MPDataRetrieval 这个类"></a>实例化 MPDataRetrieval 这个类</h1><p>mpdr &#x3D; MPDataRetrieval(api_key&#x3D;’qIAww9QnUnXQJO41’)   # 自行查阅自己的api_key</p>
-<h1 id="在实例化-MPDataRetrieval-时需要输入用户在-Material-Project-网站的“”-API-Key"><a href="#在实例化-MPDataRetrieval-时需要输入用户在-Material-Project-网站的“”-API-Key" class="headerlink" title="在实例化 MPDataRetrieval 时需要输入用户在 Material Project 网站的“” API Key."></a>在实例化 MPDataRetrieval 时需要输入用户在 Material Project 网站的“” API Key.</h1><p>df &#x3D; mpdr.get_dataframe(criteria&#x3D;{“nelements”: 1,<br>                                  “elements”: {“$in”: [“Cu”]}},<br>                        properties&#x3D;[‘pretty_formula’,’cif’])<br>print(“There are {} entries on MP with 2 element”.format(df[‘pretty_formula’].count())) # 计算有多少材料<br>#请自行关注 df[‘density’].count() 语句，获取Cu金属的各种结构</p>
-<h1 id="导入pymatgen-ext-matproj下的MPRester模块"><a href="#导入pymatgen-ext-matproj下的MPRester模块" class="headerlink" title="导入pymatgen.ext.matproj下的MPRester模块"></a>导入pymatgen.ext.matproj下的MPRester模块</h1><p>from pymatgen.ext.matproj import MPRester</p>
-<h1 id="实例化-MPRester-这个类"><a href="#实例化-MPRester-这个类" class="headerlink" title="实例化 MPRester 这个类"></a>实例化 MPRester 这个类</h1><p>mpr &#x3D; MPRester(api_key&#x3D;”qIAww9QnUnXQJO41”)  # 自行查阅自己的api_key</p>
-<h1 id="获取Cu金属某一结构文件"><a href="#获取Cu金属某一结构文件" class="headerlink" title="获取Cu金属某一结构文件"></a>获取Cu金属某一结构文件</h1><p>data_structure&#x3D;mpr.get_structure_by_material_id(‘mp-1009018’)</p>
-<h1 id="利用pymatgen-io-cif下的CifWriter模块导出Cu-cif文件"><a href="#利用pymatgen-io-cif下的CifWriter模块导出Cu-cif文件" class="headerlink" title="利用pymatgen.io.cif下的CifWriter模块导出Cu.cif文件"></a>利用pymatgen.io.cif下的CifWriter模块导出Cu.cif文件</h1><p>from pymatgen.io.cif import CifWriter<br>w &#x3D; CifWriter(data_structure)<br>w.write_file(‘Cu.cif’)</p>
-<p><img src="/2022/06/22/A33/A32/qrcode.png"></p>
 
       
     </div>
