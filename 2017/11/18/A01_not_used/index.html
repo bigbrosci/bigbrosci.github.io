@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="本教程主要讲述的是如何在Ubuntu16.04操作系统上连接国科智算超算。分3部分：  1）前期准备；  2）连接和挂载超算中心；  3）数据传输测试。  在使用本教程前，首先确认已经收到了超算管理员分配的秘钥。通过Vim或者其他文本编辑工具，可以查看一下这个秘钥。超算中心好比是一个宝藏，这个宝藏的大门上有把锁，而开启这把锁的钥匙，就是管理员给我们的秘钥。 前期准备下面的工作，一步一步来，相信99">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过Ubuntu连接国科智算的方法">
+<meta property="og:url" content="http://www.bigbrosci.com/2017/11/18/A01_not_used/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="本教程主要讲述的是如何在Ubuntu16.04操作系统上连接国科智算超算。分3部分：  1）前期准备；  2）连接和挂载超算中心；  3）数据传输测试。  在使用本教程前，首先确认已经收到了超算管理员分配的秘钥。通过Vim或者其他文本编辑工具，可以查看一下这个秘钥。超算中心好比是一个宝藏，这个宝藏的大门上有把锁，而开启这把锁的钥匙，就是管理员给我们的秘钥。 前期准备下面的工作，一步一步来，相信99">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-11-18T20:30:16.000Z">
+<meta property="article:modified_time" content="2022-07-24T13:21:15.692Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta property="article:tag" content="Ubuntu">
+<meta property="article:tag" content="超算中心">
+<meta property="article:tag" content="sshfs">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2017/11/18/A01_not_used/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/11/18/A01_not_used/","path":"2017/11/18/A01_not_used/","title":"通过Ubuntu连接国科智算的方法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>通过Ubuntu连接国科智算的方法 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">前期准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E8%B6%85%E7%AE%97%E4%B8%AD%E5%BF%83"><span class="nav-number">2.</span> <span class="nav-text">连接超算中心</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E6%B5%8B%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text">数据传输测试</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">168</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/11/18/A01_not_used/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          通过Ubuntu连接国科智算的方法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-11-18 15:30:16" itemprop="dateCreated datePublished" datetime="2017-11-18T15:30:16-05:00">2017-11-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-24 09:21:15" itemprop="dateModified" datetime="2022-07-24T09:21:15-04:00">2022-07-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW%E9%99%84%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW附录</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/11/18/A01_not_used/" class="post-meta-item leancloud_visitors" data-flag-title="通过Ubuntu连接国科智算的方法" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/11/18/A01_not_used/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/11/18/A01_not_used/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本教程主要讲述的是如何在Ubuntu16.04操作系统上连接国科智算超算。分3部分：</p>
+<ul>
+<li>1）前期准备； </li>
+<li>2）连接和挂载超算中心； </li>
+<li>3）数据传输测试。</li>
+</ul>
+<p>在使用本教程前，首先确认已经收到了超算管理员分配的秘钥。通过Vim或者其他文本编辑工具，可以查看一下这个秘钥。超算中心好比是一个宝藏，这个宝藏的大门上有把锁，而开启这把锁的钥匙，就是管理员给我们的秘钥。</p>
+<h3 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h3><p>下面的工作，一步一步来，相信99.99% 的人都可以顺利完成。</p>
+<ul>
+<li>为了方便理解，本人将管理员给的秘钥重新命名了一下。将下面的999改成管理员给你的那个数字。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ cp  ~/Desktop/id_rsa_gkzshpc999.gkzshpc999  .ssh/my_key</span><br></pre></td></tr></table></figure>
+<p>经过上面的一步，管理员给的秘钥就被我们命名成：my_key了。这好比是我们在钥匙上贴了个标签，开门的时候直接找这个标签对应的钥匙就可以了。</p>
+<p>如果你的Ubuntu系统下没有 .ssh 文件夹，可以自己先建一个，然后再运行上面的命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ mkdir .ssh</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>安装sshfs </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ sudo apt-get install sshfs </span><br><span class="line">[sudo] password <span class="keyword">for</span> qli: </span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建挂载国科智算的文件目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ mkdir gkzs</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开~/.bashrc文件，并添加下面的两行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> gkzs=<span class="string">&#x27;ssh -i /home/qli/.ssh/my_key  gkzshpc999@59.49.37.9 -p 9236&#x27;</span></span><br><span class="line"><span class="built_in">alias</span> mgkzs=<span class="string">&#x27;sshfs -o IdentityFile=/home/qli/.ssh/my_key  -p 9236 gkzshpc999@59.49.37.9:  /home/qli/gkzs&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>上面我们的两行alias后面的内容主要为：</p>
+<ul>
+<li>我们的手（ssh）拿着钥匙（-i /home/qli/.ssh/my_key） 打开大门 （gkzshpc999@59.49.37.9 -p 9236）</li>
+<li>我们的手（sshfs）拿着钥匙 （-o IdentityFile=/home/qli/.ssh/my_key） 打开大门 （-p 9236 gkzshpc999@59.49.37.9）后，并将宝藏运回家（/home/qli/gkzs） </li>
+</ul>
+</li>
+<li><p>source 一下 ~/.bashrc 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ . ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="连接超算中心"><a href="#连接超算中心" class="headerlink" title="连接超算中心"></a>连接超算中心</h3><p>上面的工作完成之后，剩下的就是命令操作的事情了：</p>
+<ul>
+<li><p>连接超算中心：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ ls</span><br><span class="line">Desktop  Documents  Downloads  gkzs  lvliang  Music  Pictures  Public  SCVPN  teklahome  Templates  Videos</span><br><span class="line">qli@bigbro:~$ gkzs</span><br><span class="line">Last login: Thu Nov 22 05:07:16 2018 from 80.29.50.15</span><br><span class="line">[gkzshpc999@login02 ~]$ ls</span><br><span class="line">perl5</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开新的一个Terminal，我们挂载超算中心到我们的电脑上面，以便传输数据。</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ ls</span><br><span class="line">Desktop  Documents  Downloads  gkzs  lvliang  Music  Pictures  Public  SCVPN  teklahome  Templates  Videos</span><br><span class="line">qli@bigbro:~$ ls gkzs/</span><br><span class="line"> </span><br><span class="line">qli@bigbro:~$ mgksz</span><br><span class="line">qli@bigbro:~$ ls gkzs/</span><br><span class="line">perl5</span><br></pre></td></tr></table></figure>
+<h3 id="数据传输测试"><a href="#数据传输测试" class="headerlink" title="数据传输测试"></a>数据传输测试</h3><ul>
+<li><p>在连接到服务器的界面：我们创建一个文件：mount_test。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[gkzshpc999@login02 ~]$ <span class="built_in">echo</span>  <span class="string">&#x27;I love BigBro&#x27;</span> &gt;  mount_test</span><br><span class="line">[gkzshpc999@login02 ~]$ ls</span><br><span class="line">mount_test  perl5</span><br><span class="line">[gkzshpc999@login02 ~]$ cat mount_test </span><br><span class="line">I love BigBro</span><br><span class="line">[gkzshpc999@login02 ~]$ </span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>在挂载的目录下查看：目录下多出来了刚刚创建的 mount_test文件。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~$ <span class="built_in">cd</span>  gkzs/</span><br><span class="line">qli@bigbro:~/gkzs$ ls</span><br><span class="line">mount_test  perl5</span><br><span class="line">qli@bigbro:~/gkzs$ cat mount_test </span><br><span class="line">I love BigBro</span><br><span class="line">qli@bigbro:~/gkzs$ </span><br><span class="line">qli@bigbro:~/gkzs$ cp ~/Desktop/CONTCAR  .</span><br><span class="line">qli@bigbro:~/gkzs$ ls</span><br><span class="line">CONTCAR  mount_test  perl5</span><br><span class="line">qli@bigbro:~/gkzs$ </span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>上面的最后操作中，我们从桌面上复制了一个CONTCAR到挂载的目录下，然后查看下服务器的终端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[gkzshpc999@login02 ~]$ ls</span><br><span class="line">CONTCAR  mount_test  perl5</span><br><span class="line">[gkzshpc999@login02 ~]$ head -n 5 CONTCAR  </span><br><span class="line">Ru\(0\0\1)                              </span><br><span class="line">   1.00000000000000     </span><br><span class="line">     8.1377999784000004    0.0000000000000000    0.0000000000000000</span><br><span class="line">     4.0688999892000002    7.0475415119999996    0.0000000000000000</span><br><span class="line">     0.0000000000000000    0.0000000000000000   21.5631999968999999</span><br><span class="line">[gkzshpc999@login02 ~]$ </span><br></pre></td></tr></table></figure>
+<p>完成了上面的操作，下面你就可以将自己电脑上准备的一些计算文件或者文件夹通过命令复制到超算中心，然后就可以提交任务了。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Ubuntu/" rel="tag"># Ubuntu</a>
+              <a href="/tags/%E8%B6%85%E7%AE%97%E4%B8%AD%E5%BF%83/" rel="tag"># 超算中心</a>
+              <a href="/tags/sshfs/" rel="tag"># sshfs</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/10/30/ex08/" rel="prev" title="Ex08 氧原子能量的正确计算">
+                  <i class="fa fa-chevron-left"></i> Ex08 氧原子能量的正确计算
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/11/18/A01/" rel="next" title="通过Ubuntu连接服务器的方法">
+                  通过Ubuntu连接服务器的方法 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

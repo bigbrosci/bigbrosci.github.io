@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">166</span>
+        <span class="site-state-item-count">168</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,898 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/10/29/ex07/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2017/10/29/ex07/" class="post-title-link" itemprop="url">Ex07 VASP的输出文件（三）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-10-29 18:30:16" itemprop="dateCreated datePublished" datetime="2017-10-29T18:30:16-04:00">2017-10-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/10/29/ex07/" class="post-meta-item leancloud_visitors" data-flag-title="Ex07 VASP的输出文件（三）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/10/29/ex07/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/10/29/ex07/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><code>CONTCAR</code>、<code>OSZICAR</code>我们已经大体了解了一下，这一节我们我们学习VASP的另一个极其重要的输出文件：<code>OUTCAR</code>。前面我们介绍到<code>OSZICAR</code>中包含了体系结构优化，电子结构迭代收敛的简单信息。<code>OUTCAR</code>中也包含这些信息，而且比<code>OSZICAR</code>的内容更加详细。此外，计算的参数设置（<code>INCAR</code>中有的，以及默认的），K点的设置，赝势的基本信息，<code>VASP</code>的版本，体系的几何结构以及电子性质相关的内容，计算的时间等，也都包含在<code>OUTCAR</code>中。所以说，<code>OUTCAR</code>是关于我们当前计算的一个非常全面的，多方位的信息汇总。</p>
+<p>信息太多，VASP官网也没有对<code>OUTCAR</code>一个很详细地描述，大部分都是穿插在INCAR的计算参数中介绍的。这是因为（本人自己瞎猜的）：</p>
+<ul>
+<li><code>VASP</code>可以计算的性质很多，每一个特定的任务都有其对应的输出内容，这就导致了<code>OUTCAR</code>的复杂多样性，比如说优化结构、频率、声子谱，能带、<code>DOS</code>等计算等，这些都会有特定的输出，需要用户根据自己的计算内容去学习；</li>
+<li>另外一个原因就是里面的条目太多了，每一项单独解释都需要花费大量的时间。</li>
+</ul>
+<p>信息多，就会容易让人眼花缭乱，不知所措。本节，我们就理一理思路，揭开<code>OUTCAR</code>神秘的面纱，让大家心里不至于那么恐慌。之前我们说过，<code>VASP</code>有很多输出文件，日常用的也就那么几个，有些估计等你文章发表了都不一定能用上。这也同样适用于<code>OUTCAR</code>中的信息，虽然多，但大部分基本用不到。</p>
+<p>首先要告诉大家的是，<code>VASP</code>各个输出部分之间用很长的横杠分割（——————————-），当你看到横杠的时候，就知道要进入结果的下一个部分内容了。举个<code>OUTCAR开头</code>的例子。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> vasp.5.4.4.18Apr17-6-g9f103f2a35 (build Sep 22 2017 10:53:27) complex</span><br><span class="line"></span><br><span class="line"> executed on             LinuxIFC date 2018.11.12  03:58:57</span><br><span class="line"> running on   24 total cores</span><br><span class="line"> distrk:  each k-point on   24 cores，    1 groups</span><br><span class="line"> distr:  one band on NCORES_PER_BAND=   1 cores，   24 groups</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+<p><code>VASP</code>的版本信息，在多少个核上运行。所以，如果你不知道，自己的任务是VASP哪个版本计算的，也不知道如何去<code>VASP</code>的安装目录查找版本信息，可以运行一下，然后在<code>OUTCAR</code>的开头去找。可以看到，后跟着一堆<code>-</code>，说明要进入下一部分内容（计算体系，参数）的描述了。分别是：<code>POTCAR</code>，<code>POSCAR</code>，<code>KPOINTS</code>，以及<code>INCAR</code>的信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"> -----------------------------------------------------------------------------</span><br><span class="line">|                                                                             |</span><br><span class="line">|           W    W    AA    RRRRR   N    N  II  N    N   GGGG   !!!           |</span><br><span class="line">|           W    W   A  A   R    R  NN   N  II  NN   N  G    G  !!!           |</span><br><span class="line">|           W    W  A    A  R    R  N N  N  II  N N  N  G       !!!           |</span><br><span class="line">|           W WW W  AAAAAA  RRRRR   N  N N  II  N  N N  G  GGG   !            |</span><br><span class="line">|           WW  WW  A    A  R   R   N   NN  II  N   NN  G    G                |</span><br><span class="line">|           W    W  A    A  R    R  N    N  II  N    N   GGGG   !!!           |</span><br><span class="line">|                                                                             |</span><br><span class="line">|      For optimal performance we recommend to set                            |</span><br><span class="line">|        NCORE= 4 - approx SQRT( number of cores)                             |</span><br><span class="line">|      NCORE specifies how many cores store one orbital (NPAR=cpu/NCORE).     |</span><br><span class="line">|      This setting can  greatly improve the performance of VASP for DFT.     |</span><br><span class="line">|      The default，   NCORE=1            might be grossly inefficient         |</span><br><span class="line">|      on modern multi-core architectures or massively parallel machines.     |</span><br><span class="line">|      Do your own testing !!!!                                               |</span><br><span class="line">|      Unfortunately you need to use the default for GW and RPA calculations. |</span><br><span class="line">|      (for HF NCORE is supported but not extensively tested yet)             |</span><br><span class="line">|                                                                             |</span><br><span class="line"> -----------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"> POTCAR:    PAW_PBE O 08Apr2002</span><br><span class="line">   VRHFIN =O: s2p4</span><br><span class="line">   LEXCH  = PE</span><br><span class="line">   EATOM  =   432.3788 eV，   31.7789 Ry</span><br><span class="line"></span><br><span class="line">   TITEL  = PAW_PBE O 08Apr2002</span><br><span class="line">   LULTRA =        F    use ultrasoft PP ?</span><br><span class="line">   IUNSCR =        1    unscreen: 0-lin 1-nonlin 2-no</span><br><span class="line">   RPACOR =    1.200    partial core radius</span><br><span class="line">   POMASS =   16.000; ZVAL   =    6.000    mass and valenz</span><br><span class="line">   RCORE  =    1.520    outmost cutoff radius</span><br><span class="line">   RWIGS  =    1.550; RWIGS  =    0.820    wigner-seitz radius (au A)</span><br><span class="line">   ENMAX  =  400.000; ENMIN  =  300.000 eV</span><br><span class="line">   ICORE  =        2    local potential</span><br><span class="line">   LCOR   =        T    correct aug charges</span><br><span class="line">   LPAW   =        T    paw PP</span><br><span class="line">   EAUG   =  605.392</span><br><span class="line">   DEXC   =    0.000</span><br><span class="line">   RMAX   =    1.553    core radius for proj-oper</span><br><span class="line">   RAUG   =    1.300    factor for augmentation sphere</span><br><span class="line">   RDEP   =    1.550    radius for radial grids</span><br><span class="line">   RDEPT  =    1.329    core radius for aug-charge</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>基本上每次运行的时候，（即使你的输入是正确的），<code>VASP</code>都会输出一个大大的<code>WARNING</code>来吓唬你，不用担心，无视即可。但如果你的计算失败了，这个警告信息<strong>或许</strong>（个人感觉基本没用）对你排查错误可能会有所帮助。 <code>WARNING</code>下面是<code>POTCAR</code>的基本信息，如果你想通过<code>OUTCAR</code>查看<code>POTCAR中</code>的元素时，可以使用下面的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grep POTCAR OUTCAR</span><br><span class="line">grep TIT OUTCAR</span><br><span class="line">grep ENMAX OUTCAR</span><br><span class="line">grep ZVAL OUTCAR # </span><br></pre></td></tr></table></figure>
+<p><code>ZVAL</code>是该<code>POTCAR</code>中对应元素的价电子，这里氧原子含有6个外层价电子。你可以自行对比下<code>POTCAR</code>中的内容。再往下，就是<code>POSCAR</code>的内容：坐标格式，原子位置，以及晶胞的形状大小。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> ion  position               nearest neighbor table</span><br><span class="line">   1  0.000  0.000  0.000-</span><br><span class="line"></span><br><span class="line">  LATTYP: Found a simple cubic cell.</span><br><span class="line"> ALAT       =     8.0000000000</span><br><span class="line"></span><br><span class="line">  Lattice vectors:</span><br><span class="line"></span><br><span class="line"> A1 = (   8.0000000000，   0.0000000000，   0.0000000000)</span><br><span class="line"> A2 = (   0.0000000000，   8.0000000000，   0.0000000000)</span><br><span class="line"> A3 = (   0.0000000000，   0.0000000000，   8.0000000000)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Analysis of symmetry for initial positions (statically):</span><br><span class="line">=====================================================================</span><br><span class="line"> Subroutine PRICEL returns:</span><br><span class="line"> Original cell was already a primitive cell.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> Routine SETGRP: Setting up the symmetry group for a</span><br><span class="line"> simple cubic supercell.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> Subroutine GETGRP returns: Found 48 space group operations</span><br><span class="line"> (whereof 48 operations were pure point group operations)</span><br><span class="line"> out of a pool of 48 trial point group operations.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">The static configuration has the point symmetry O_h .</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Analysis of symmetry for dynamics (positions and initial velocities):</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>体系的对称性以及点群操作相关的信息，在这里我们的体系是立方体，为<code>O_h</code>的点群，有48个对称操作。群论的知识大师兄早已原封不动地还给老师了，在这里就不再详细介绍了…</p>
+<p>K点信息：想查看K点个数：<code>grep irreducible OUTCAR</code>  或者 <code>grep irre OUTCAR</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> Subroutine IBZKPT returns following result:</span><br><span class="line"> ===========================================</span><br><span class="line"></span><br><span class="line"> Found      1 irreducible k-points:</span><br><span class="line"></span><br><span class="line"> Following reciprocal coordinates:</span><br><span class="line">            Coordinates               Weight</span><br><span class="line">  0.000000  0.000000  0.000000      1.000000</span><br><span class="line"></span><br><span class="line"> Following cartesian coordinates:</span><br><span class="line">            Coordinates               Weight</span><br><span class="line">  0.000000  0.000000  0.000000      1.000000</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------------------------------</span><br></pre></td></tr></table></figure>
+<p><strong>下一部分就是<code>INCAR</code>的参数：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">SYSTEM =  O atom</span><br><span class="line">POSCAR =  O atom in a box</span><br><span class="line"></span><br><span class="line">Startparameter for this run:</span><br><span class="line">  NWRITE =      2    write-flag &amp; timer</span><br><span class="line">  PREC   = normal    normal or accurate (medium， high low for compatibility)</span><br><span class="line">  ISTART =      0    job   : 0-new  1-cont  2-samecut</span><br><span class="line">  ICHARG =      2    charge: 1-file 2-atom 10-const</span><br><span class="line">  ISPIN  =      1    spin polarized calculation?</span><br><span class="line">  LNONCOLLINEAR =      F non collinear calculations</span><br><span class="line">  LSORBIT =      F    spin-orbit coupling</span><br><span class="line">  INIWAV =      1    electr: 0-lowe 1-rand  2-diag</span><br><span class="line">  LASPH  =      F    aspherical Exc in radial PAW</span><br><span class="line">  METAGGA=      F    non-selfconsistent MetaGGA calc.</span><br><span class="line"></span><br><span class="line">Electronic Relaxation 1</span><br><span class="line">  ENCUT  =  400.0 eV  29.40 Ry    5.42 a.u.  13.05 13.05 13.05*2*pi/ulx，y，z</span><br><span class="line">  ENINI  =  400.0     initial cutoff</span><br><span class="line">  ENAUG  =  605.4 eV  augmentation charge cutoff</span><br><span class="line">  NELM   =     60;   NELMIN=  2; NELMDL= -5     # of ELM steps</span><br><span class="line">  EDIFF  = 0.1E-03   stopping-criterion for ELM</span><br><span class="line">  LREAL  =      F    real-space projection</span><br><span class="line">  NLSPLINE    = F    spline interpolate recip. space projectors</span><br><span class="line">  LCOMPAT=      F    compatible to vasp.4.4</span><br><span class="line">  GGA_COMPAT  = T    GGA compatible to vasp.4.4-vasp.4.6</span><br><span class="line">  LMAXPAW     = -100 max onsite density</span><br><span class="line">  LMAXMIX     =    2 max onsite mixed and CHGCAR</span><br><span class="line">  VOSKOWN=      0    Vosko Wilk Nusair interpolation</span><br><span class="line">  ROPT   =    0.00000</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>计算参数详情（默认的参数值以及代表的意义也列出来了，这个地方大家仔细看下， 一些不常见的参数，<code>VASP</code>会自动采用默认值。上面给我们的启示就是：不懂就不要写，默认就可，很多默认的参数也没必要在<code>INCAR</code>里面再额外写一遍！<strong>强调一下</strong>，不知道的参数，不要瞎往<code>INCAR</code>里面放！新手的话经常会加一些乱七八糟的参数，导致计算错误。）</p>
+<p>在统计完任务的基本输入后，<code>VASP</code>会总结一下本计算的文字描述，任务类型，体系大小，K点数目，计算所需的内存等信息。然后开始进入正式的计算部分：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> Static calculation</span><br><span class="line"> charge density and potential will be updated during run</span><br><span class="line"> non-spin polarized calculation</span><br><span class="line"> Variant of blocked Davidson</span><br><span class="line"> Davidson routine will perform the subspace rotation</span><br><span class="line"> perform sub-space diagonalisation</span><br><span class="line">    after iterative eigenvector-optimisation</span><br><span class="line"> modified Broyden-mixing scheme， WC =      100.0</span><br><span class="line"> initial mixing is a Kerker type mixing with AMIX =  0.4000 and BMIX =      1.0000</span><br><span class="line"> Hartree-type preconditioning will be used</span><br><span class="line"> using additional bands           21</span><br><span class="line"> reciprocal scheme for non local part</span><br><span class="line"> use partial core corrections</span><br><span class="line"> calculate Harris-corrections to forces</span><br><span class="line">   (improved forces if not selfconsistent)</span><br><span class="line"> use gradient corrections</span><br><span class="line"> use of overlap-Matrix (Vanderbilt PP)</span><br><span class="line"> Gauss-broadening in eV      SIGMA  =   0.01</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  energy-cutoff  :      400.00</span><br><span class="line">  volume of cell :      512.00</span><br><span class="line">      direct lattice vectors                 reciprocal lattice vectors</span><br><span class="line">     8.000000000  0.000000000  0.000000000     0.125000000  0.000000000  0.000000000</span><br><span class="line">     0.000000000  8.000000000  0.000000000     0.000000000  0.125000000  0.000000000</span><br><span class="line">     0.000000000  0.000000000  8.000000000     0.000000000  0.000000000  0.125000000</span><br><span class="line"></span><br><span class="line">  length of vectors</span><br><span class="line">     8.000000000  8.000000000  8.000000000     0.125000000  0.125000000  0.125000000</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> k-points in units of 2pi/SCALE and weight: K-POINTS</span><br><span class="line">   0.00000000  0.00000000  0.00000000       1.000</span><br><span class="line"></span><br><span class="line"> k-points in reciprocal lattice and weights: K-POINTS</span><br><span class="line">   0.00000000  0.00000000  0.00000000       1.000</span><br><span class="line"></span><br><span class="line"> position of ions in fractional coordinates (direct lattice)</span><br><span class="line">   0.00000000  0.00000000  0.00000000</span><br><span class="line"></span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line"></span><br><span class="line"> total amount of memory used by VASP MPI-rank0    35846. kBytes</span><br><span class="line">=======================================================================</span><br><span class="line"></span><br><span class="line">   base      :      30000. kBytes</span><br><span class="line">   nonl-proj :        746. kBytes</span><br><span class="line">   fftplans  :       1114. kBytes</span><br><span class="line">   grid      :       3834. kBytes</span><br><span class="line">   one-center:          3. kBytes</span><br><span class="line">   wavefun   :        149. kBytes</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>对于O原子的计算来说，就是一个离子步内，电子步的迭代。这里我们只展示一个电子步的迭代信息即可，剩下的格式是一样的。大家在自己查看的时候注意能量在不同迭代步数中的变化。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">--------------------------------------- Iteration      1(   1)  ---------------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    POTLOK:  cpu time    0.0240: real time    0.0324</span><br><span class="line">    SETDIJ:  cpu time    0.0030: real time    0.0040</span><br><span class="line">     EDDAV:  cpu time    0.0320: real time    0.0397</span><br><span class="line">       DOS:  cpu time    0.0020: real time    0.0020</span><br><span class="line">    --------------------------------------------</span><br><span class="line">      LOOP:  cpu time    0.0610: real time    0.0781</span><br><span class="line"></span><br><span class="line"> eigenvalue-minimisations  :    48</span><br><span class="line"> total energy-change (2. order) : 0.3249700E+02  (-0.1026971E+03)</span><br><span class="line"> number of electron       6.0000000 magnetization</span><br><span class="line"> augmentation part        6.0000000 magnetization</span><br><span class="line"></span><br><span class="line"> Free energy of the ion-electron system (eV)</span><br><span class="line">  ---------------------------------------------------</span><br><span class="line">  alpha Z        PSCENC =         0.27139542</span><br><span class="line">  Ewald energy   TEWEN  =       -91.92708002</span><br><span class="line">  -Hartree energ DENC   =      -281.84385743</span><br><span class="line">  -exchange      EXHF   =         0.00000000</span><br><span class="line">  -V(xc)+E(xc)   XCENC  =        26.06853627</span><br><span class="line">  PAW double counting   =       346.54947689     -348.34814756</span><br><span class="line">  entropy T*S    EENTRO =        -0.00000000</span><br><span class="line">  eigenvalues    EBANDS =       -50.53652309</span><br><span class="line">  atomic energy  EATOM  =       432.26319604</span><br><span class="line">  Solvation  Ediel_sol  =         0.00000000</span><br><span class="line">  ---------------------------------------------------</span><br><span class="line">  free energy    TOTEN  =        32.49699652 eV</span><br><span class="line"></span><br><span class="line">  energy without entropy =       32.49699652  energy(sigma-&gt;0) =       32.49699652</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>每一电子步完成后，输出结果同时在<code>OSZICAR</code>中更新一行。</p>
+<p>其中各项的具体含义：</p>
+<p>alpha Z and the Ewald energy define the electrostatic  interaction of the ions in a compensating electron gas. The alpha Z component deals with the divergent parts (G=0). The following parts are the Hartree and exchange correlation energy as defined in the Kohn-Sham Hamiltonian. The entropy part stems from the smearing (using the free energy as variational parameter， electronic entropy)， EBANDS from Kohn-Sham eigenvalues， and EATOM is the reference energy for the potential (which is defined in the POTCAR file). </p>
+<p>（摘自：<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/vasp-forum/viewtopic.php?t=273）">https://cms.mpi.univie.ac.at/vasp-forum/viewtopic.php?t=273）</a></p>
+<p>迭代结束，输出主要的结果：费米能级以及能带信息。</p>
+<p><code>Band 1</code> 对应的是2个 2s 电子，</p>
+<p><code>Band 2-4</code> 对应的是4个2p电子。固体物理中，费米能级对应的是最高电子占据轨道的能量，也就是<code>HOMO</code>，大家可以对比下<code>band 2-4</code>的能量和费米能级的能量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> average (electrostatic) potential at core</span><br><span class="line">  the test charge radii are     0.7215</span><br><span class="line">  (the norm of the test charge is              1.0000)</span><br><span class="line">       1 -83.5438</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> E-fermi :  -8.9011     XC(G=0):  -0.8049     alpha+bet : -0.1463</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> k-point     1 :       0.0000    0.0000    0.0000</span><br><span class="line">  band No.  band energies     occupation</span><br><span class="line">      1     -23.8440      2.00000</span><br><span class="line">      2      -8.9041      1.33333</span><br><span class="line">      3      -8.9041      1.33333</span><br><span class="line">      4      -8.9041      1.33333</span><br><span class="line">      5      -0.4682      0.00000</span><br><span class="line">      6       1.8628      0.00000</span><br><span class="line">      7       1.8628      0.00000</span><br><span class="line">      8       1.8628      0.00000</span><br><span class="line">      9       1.9954      0.00000</span><br><span class="line">     10       2.0322      0.00000</span><br><span class="line">     11       2.0322      0.00000</span><br><span class="line">     12       4.0245      0.00000</span><br><span class="line">     13       4.0245      0.00000</span><br><span class="line">     14       4.0245      0.00000</span><br><span class="line">     15       4.1983      0.00000</span><br><span class="line">     16       4.1983      0.00000</span><br><span class="line">     17       4.1983      0.00000</span><br><span class="line">     18       4.4039      0.00000</span><br><span class="line">     19       4.4039      0.00000</span><br><span class="line">     20       4.4555      0.00000</span><br><span class="line">     21       4.4555      0.00000</span><br><span class="line">     22       4.4555      0.00000</span><br><span class="line">     23       4.7550      0.00000</span><br><span class="line">     24       6.4902      0.00000</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>费米能级的获取：<code>grep E-fermi OUTCAR</code></p>
+<p>各个方向力的大小，体系的坐标（和<code>CONTCAR</code>是一样的），以及体系的能量。下面第一行的意思是达到了我们设置的收敛标准，迭代停止了。（后面我们会详细介绍收敛相关的事项，大家先有个印象。）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">------------------------ aborting loop because EDIFF is reached ----------------------------------------</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line"></span><br><span class="line">  FORCE on cell =-STRESS in cart. coord.  units (eV):</span><br><span class="line">  Direction    XX          YY          ZZ          XY          YZ          ZX</span><br><span class="line">  --------------------------------------------------------------------------------------</span><br><span class="line">  Alpha Z     0.27140     0.27140     0.27140</span><br><span class="line">  Ewald     -30.64236   -30.64236   -30.64236     0.00000     0.00000     0.00000</span><br><span class="line">  Hartree    93.90340    93.90340    93.90340    -0.00000    -0.00000    -0.00000</span><br><span class="line">  E(xc)     -27.94710   -27.94710   -27.94710     0.00000     0.00000     0.00000</span><br><span class="line">  Local    -147.84573  -147.84573  -147.84573     0.00000    -0.00000     0.00000</span><br><span class="line">  n-local   -20.54959   -20.54959   -20.54959    -0.00000    -0.00000    -0.00000</span><br><span class="line">  augment     5.55385     5.55385     5.55385    -0.00000     0.00000    -0.00000</span><br><span class="line">  Kinetic   126.51138   126.51138   126.51138     0.00000     0.00000     0.00000</span><br><span class="line">  Fock        0.00000     0.00000     0.00000     0.00000     0.00000     0.00000</span><br><span class="line">  -------------------------------------------------------------------------------------</span><br><span class="line">  Total      -0.74475    -0.74475    -0.74475     0.00000    -0.00000     0.00000</span><br><span class="line">  in kB      -2.33051    -2.33051    -2.33051     0.00000    -0.00000     0.00000</span><br><span class="line">  external pressure =       -2.33 kB  Pullay stress =        0.00 kB</span><br><span class="line"></span><br><span class="line"> VOLUME and BASIS-vectors are now :</span><br><span class="line"> -----------------------------------------------------------------------------</span><br><span class="line">  energy-cutoff  :      400.00</span><br><span class="line">  volume of cell :      512.00</span><br><span class="line">      direct lattice vectors                 reciprocal lattice vectors</span><br><span class="line">     8.000000000  0.000000000  0.000000000     0.125000000  0.000000000  0.000000000</span><br><span class="line">     0.000000000  8.000000000  0.000000000     0.000000000  0.125000000  0.000000000</span><br><span class="line">     0.000000000  0.000000000  8.000000000     0.000000000  0.000000000  0.125000000</span><br><span class="line"></span><br><span class="line">  length of vectors</span><br><span class="line">     8.000000000  8.000000000  8.000000000     0.125000000  0.125000000  0.125000000</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  FREE ENERGIE OF THE ION-ELECTRON SYSTEM (eV)</span><br><span class="line">  ---------------------------------------------------</span><br><span class="line">  free  energy   TOTEN  =        -0.02147084 eV</span><br><span class="line"></span><br><span class="line">  energy  without entropy=       -0.00604461  energy(sigma-&gt;0) =       -0.01375772</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>上面的能能量有好几个，很多人不知道该用哪一个。前面我们讲解<code>OSZICAR</code>的时候，告诉大家要使用E0后面的那个数值，那么在<code>OUTCAR</code>中与<code>E0</code>对应（相同）的是<code>energy(sigma-&gt;0) =</code> 后面的那个。所以，在今后的学习中，我们不要再提问使用OUTCAR中的哪个能量的问题了。提取能量的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">grep  without OUTCAR | tail -n 1</span><br><span class="line">grep &#x27;  without&#x27; OUTCAR | tail -n 1  # 本人常用的是这个</span><br><span class="line">grep sigma OUTCAR | tail -n 1 </span><br></pre></td></tr></table></figure>
+<p>之所以用<code>tail -n 1</code>是为了保证我们取的是最后一步的能量。O原子肯定就一步，但以后优化结构的时候，就有很多步了。这里有一点需要注意的是：前面出现了一个<code>entropy</code>，也就是熵。但这个<code>Entropy</code>是采用<code>ISMEAR</code>方法而导致的，与物理化学中的熵这个概念不一样，如果你要计算熵，则需要通过计算频率，然后通过公式求解。看不懂不要紧：记住这里的<code>Entropy</code>不是物化书中的就OK。</p>
+<p>再往下是实际计算的内存和时间等信息，看到下面，说明计算正常结束了。 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">--------------------------------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> writing wavefunctions</span><br><span class="line">     LOOP+:  cpu time    2.0037: real time    2.1098</span><br><span class="line">    4ORBIT:  cpu time    0.0000: real time    0.0000</span><br><span class="line"></span><br><span class="line"> total amount of memory used by VASP MPI-rank0    35846. kBytes</span><br><span class="line">=======================================================================</span><br><span class="line"></span><br><span class="line">   base      :      30000. kBytes</span><br><span class="line">   nonl-proj :        746. kBytes</span><br><span class="line">   fftplans  :       1114. kBytes</span><br><span class="line">   grid      :       3834. kBytes</span><br><span class="line">   one-center:          3. kBytes</span><br><span class="line">   wavefun   :        149. kBytes</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> General timing and accounting informations for this job:</span><br><span class="line"> ========================================================</span><br><span class="line"></span><br><span class="line">                  Total CPU time used (sec):        5.492</span><br><span class="line">                            User time (sec):        1.991</span><br><span class="line">                          System time (sec):        3.501</span><br><span class="line">                         Elapsed time (sec):        5.931</span><br><span class="line"></span><br><span class="line">                   Maximum memory used (kb):      104300.</span><br><span class="line">                   Average memory used (kb):           0.</span><br><span class="line"></span><br><span class="line">                          Minor page faults:         8571</span><br><span class="line">                          Major page faults:            0</span><br><span class="line">                 Voluntary context switches:         3090</span><br></pre></td></tr></table></figure>
+<p>分析完前面的内容，大家会发现：具体到里面各项的含义以及各个细节上，还有很多值得讨论的地方，比如群论，薛定谔方程求解过程，<code>POTCAR</code>的相关信息等。对于新手来说，看完本节，能大体浏览下来，知道各个部分包含什么内容就很不错了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本练习中，带领大家粗略浏览了一遍<code>OUTCAR</code>各部分的信息。大家在浏览的时候时刻要思考：</p>
+<ul>
+<li>这部分包含的什么内容，具有什么物理或者化学意义？  </li>
+<li>怎么用<code>grep 关键词</code>获取有用的信息等。 </li>
+<li>怎么获取体系的能量；知道用众多能量中的哪一个。</li>
+<li>如何将<code>OUTCAR</code>的内容与计算的输入和输出文件关联起来。</li>
+<li>由于计算内容的多样性，对于<code>OUTCAR</code>的详细解释，需要很多的时间和精力去完成补充。一次性解释清楚是不可能的事情，所以在后续的计算过程中，我们还会结合具体的例子进行讲解。</li>
+</ul>
+<p> 一般来说，等你计算上手之后，<code>OUTCAR</code>里面的很多内容，可能等课题结束或者毕业了，都不会用到。更进一步说，你可能都不需要打开<code>OUTCAR</code>了。因此，完全不用担心里面的很多内容不理解。但，这不是我们偷懒的理由，如果你想把<code>VASP</code>学好，学精，这些都需要自己下功夫去琢磨，理解。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/10/27/ex06/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2017/10/27/ex06/" class="post-title-link" itemprop="url">Ex06 VASP的输出文件（一）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-10-27 15:30:16" itemprop="dateCreated datePublished" datetime="2017-10-27T15:30:16-04:00">2017-10-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 23:27:22" itemprop="dateModified" datetime="2021-12-27T23:27:22-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/10/27/ex06/" class="post-meta-item leancloud_visitors" data-flag-title="Ex06 VASP的输出文件（一）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/10/27/ex06/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/10/27/ex06/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>上一节，我们在天河II号顺利提交了VASP的计算，并看到了一堆的输出文件。我们就从简单的开始，一步一步给大家介绍VASP的输出文件，以及里面的细节部分。由于大家还处在一个刚刚接触VASP的阶段。我们先根据目前的计算，挑容易的，重要的进行介绍。最简单的非<code>CONTCAR</code>莫属了。</p>
+<h3 id="CONTCAR-和-POSCAR的区别"><a href="#CONTCAR-和-POSCAR的区别" class="headerlink" title="CONTCAR 和 POSCAR的区别"></a><code>CONTCAR</code> 和 <code>POSCAR</code>的区别</h3><p>在VASP的输入文件中，我们用<code>POSCAR</code>来存储模型的结构信息。当我们使用VASP优化完成之后，就会得到一个新的结构，而<code>CONTCAR</code>就是用来存储新结构的文件。当然啦，我们这里只有一个O原子，不存在优化这一说法，但VASP只要算上了，就会有CONTCAR出现，不优化的的结果就是：<code>CONTCAR</code>和<code>POSCAR</code>的结构是一模一样的。但<code>CONTCAR</code>和<code>POSCAR</code>里面的内容可以一样，也可以不一样。在这里，大师兄把自己的个人经验都写在里面，新手看不懂的话不要紧，先记住这里有<code>CONTCAR</code>的相关注意信息，以后用的时候过来直接看即可。如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ cat -n POSCAR </span><br><span class="line">     1	O atom <span class="keyword">in</span> a box </span><br><span class="line">     2	1.0            </span><br><span class="line">     3	8.0 0.0 0.0   </span><br><span class="line">     4	0.0 8.0 0.0  </span><br><span class="line">     5	0.0 0.0 8.0 </span><br><span class="line">     6	O          </span><br><span class="line">     7	1         </span><br><span class="line">     8	Cartesian</span><br><span class="line">     9	0 0 0           <span class="comment">#</span></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ cat -n CONTCAR </span><br><span class="line">     1	O atom <span class="keyword">in</span> a box                         </span><br><span class="line">     2	   1.00000000000000     </span><br><span class="line">     3	     8.0000000000000000    0.0000000000000000    0.0000000000000000</span><br><span class="line">     4	     0.0000000000000000    8.0000000000000000    0.0000000000000000</span><br><span class="line">     5	     0.0000000000000000    0.0000000000000000    8.0000000000000000</span><br><span class="line">     6	   O </span><br><span class="line">     7	     1</span><br><span class="line">     8	Direct</span><br><span class="line">     9	  0.0000000000000000  0.0000000000000000  0.0000000000000000</span><br><span class="line">    10	 </span><br><span class="line">    11	  0.00000000E+00  0.00000000E+00  0.00000000E+00</span><br></pre></td></tr></table></figure>
+<p>对于当前的这个例子来说，主要的不同点在于：</p>
+<ul>
+<li>坐标的小数点位数。对比<code>POSCAR</code>和<code>CONTCAR</code>中：第1-5、9行的内容。</li>
+<li>缩进部分：<ul>
+<li><code>POSCAR</code>中，我们每一行都是顶格写的。</li>
+<li><code>CONTCAR</code>中，从第二行开始，每一行的开头部分都是以空格开始的。此时，就必须要给大家强调一点：<code>CONTCAR</code>中开头的是空格，不是tab。第3-5行，你别看前面都空了那么多，都是一个个的空格，而不是tab。</li>
+<li>这个一定要死死记住：<code>CONTCAR</code>或者<code>POSCAR</code>中，每一行中只有空格可以用来分割不同的内容或者开头，绝对不要用tab。否则你任务出错，花很多天都不一定能检查出来这个原因。</li>
+</ul>
+</li>
+<li>体系的坐标系也发生了变化： 第8行。<code>POSCAR</code>中，我们使用的是笛卡尔坐标系，也就是<strong>Cartesian</strong>或者任何以大写的<code>C</code>，小写的<code>c</code>开头。但<code>CONTCAR</code>中则变成了分数坐标系，也就是<strong>Direct</strong>。 这个给我们的启示就是：<ul>
+<li>如果想把体系从<strong>Cartesian</strong>转化为<strong>Direct</strong>，我们可以算一个单点。（单点的意思不明白，不要紧，后面我们会介绍）</li>
+<li>我们的<code>POSCAR</code>可以使用<strong>Cartesian</strong>， 也可以使用<strong>Direct</strong>，这个看大家自己的习惯。本人喜欢用<strong>Cartesian</strong>，看起来更加直观一些。</li>
+<li>由于我们的<code>O</code>原子在坐标系的原点（0,0,0）的位置，所以<strong>Direct</strong>和<strong>Cartesian</strong>看不出来区别。</li>
+</ul>
+</li>
+<li>在<code>CONTCAR</code>中，还多了一行内容（第11行），这一行主要描述的是体系中原子在xyz三个方向移动相关的信息。因为我们体系只有一个原子，所以也就只多了一行。<ul>
+<li>以后当你在优化结构的时候，体系中有多少原子，就会多出多少行出来，但全部都是0。</li>
+<li>如果你跑的是分子动力学，那么这些行中就不是0了，代表的是分子移动的速度</li>
+<li>如果你用<code>dimer</code>方法算过渡态的时候，那么这些行中是与过渡态结构相关的振动方式。</li>
+<li>总结下：如果你不跑分子动力学，不用<code>dimer</code>方法算过渡态， 那么多出来的这些行都会是0，是可有可无的，对计算无任何影响。看着不爽，直接删掉即可。</li>
+</ul>
+</li>
+</ul>
+<h3 id="CONTCAR-的作用"><a href="#CONTCAR-的作用" class="headerlink" title="CONTCAR 的作用"></a><code>CONTCAR</code> 的作用</h3><p>这里新手暂时不要求，大师兄可能会将其移到其他的章节，只需要记住本书里面有<code>CONTCAR</code>的用法，以后再找下即可。通过上面的学习，我们知道，<code>CONTCAR</code>和<code>POSCAR</code>一样，就是用来保存优化结构的。可能有些地方与我们自己手动写的<code>POSCAR</code>有些不同（比如每行开始的空格），但只要你不用tab，这都是无关痛痒的事情。下面我们介绍一下<code>CONTCAR</code>的2个用法。</p>
+<p>1） 计算完成之后，<code>CONTCAR</code>中是最后一步优化的结果。我们可以通过一些可视化的软件打开<code>CONTCAR</code>，检查计算的对不对。这个也是大家以后做计算最基本的工作。</p>
+<p>2） 如果你的计算半路由于各种各样的原因给停掉了，服务器不稳定，断电，自己手欠误删任务或者将计算的文件夹位置移动了，都会导致计算失败。这个时候，我们就需要<strong>续算</strong>，<code>CONTCAR</code>的作用就展示出来了。续算又分为三种情况：</p>
+<p>A）第一个离子步没有算完，任务就挂掉了。这种情况，<code>CONTCAR</code>是不会更新的，我们再次用原来的输入文件提交一次就行了。</p>
+<p>B）我们的计算已经完成了大于或者等于1的离子步，但小于INCAR中设置的NSW的数值。这个时候CONTCAR的内容已经是离任务死掉最近的结构了。我们只需要将其复制成POSCAR，然后再次提交任务即可。具体操作如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mv POSCAR POSCAR_0</span><br><span class="line">mv OUTCAR OUTCAR_0</span><br><span class="line">cp CONTCAR POSCAR </span><br></pre></td></tr></table></figure>
+<p>师兄，你不是说只把CONTCAR复制成POSCAR就可以了吗？ 为什么前面还多了一个<code>mv</code>的命令?</p>
+<p>在这里，大师兄要教给你做计算一个超级重要的原则：<strong>时时刻刻都要努力提高或者保证计算可重复性。</strong></p>
+<p>因为我们的任务是从之前的<code>POSCAR</code>（标记为A）开始的，中途断掉了，直接把<code>CONTCAR</code>（标记为C_A）复制成<code>POSCAR</code>（标记为B）的话，我们就会损失掉前面优化的过程。相当于我们直接搭建了这个B这个结构进行优化计算。而实际上，我们后面的计算的性质是续算，而不是从头直接计算。虽然结果大部分情况都是一样的。所以在将<code>CONTCAR</code>复制成<code>POSCAR</code>计算之前，我们要尽可能把任务停掉前的计算过程保存记录下来。这就类似于写实验记录本，我们要从开始搭建设备到开展反应一系列的详细信息都记录在上面。而不能从半路直接跳着写。这也是很多人在做计算的时候，任务死掉后续算所忽略的一个很严肃的问题。</p>
+<p>下面是大师兄本人在续算的时候所用到的一个保存前面计算的小脚本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line">mv POSCAR POSCAR-$1</span><br><span class="line">mv OUTCAR OUTCAR-$1</span><br><span class="line">mv OSZICAR OSZICAR-$1</span><br><span class="line">mv vasprun.xml vasprun.xml-$1</span><br><span class="line">mv CONTCAR POSCAR</span><br></pre></td></tr></table></figure>
+<p>通过这个脚本，我们扩展到第三种情况。</p>
+<p>C）我们的计算达到的<code>INCAR</code>中所设置的<code>NSW</code>的数值。比如设置的<code>NSW = 1000</code>，实际上跑了<code>1000</code>步，任务停下来了，也就是所谓的结构优化没有收敛。这种情况我们需要做的又有2个步骤：</p>
+<p>I）首先，要检查<code>CONTCAR</code>中的结构是不是正确的，如果结构跑乱了，体系中原子乱飞，有很大可能会导致不收敛的情况。如果是结构乱了，我们就要找原因去解决。主要还是在以下三个方向下功夫：</p>
+<ul>
+<li>初始结构是否合理</li>
+<li><code>POSCAR</code>中的元素顺序与<code>POTCAR</code>中的是不是一致</li>
+<li>是不是用的<code>gamma</code>点，然后把体系放开了。</li>
+</ul>
+<p>II）如果前面检查的结构没问题，这种情况，可能是因为你设置的NSW值太小导致的，或者体系是在是太难收敛，比如过渡态优化的情况。那么我们就需要继续算了。此时，为了保证计算的可重复性，我们必须要将上一步的计算保存记录下来。比如下面，大师兄本人的一个过渡态的优化：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">qli@tekla2:~/test$ ls</span><br><span class="line">CONTCAR    DOSCAR    EIGENVAL  INCAR    OSZICAR    OSZICAR-2  OUTCAR    OUTCAR-2  PCDAT   POSCAR-1  POSCAR-3  REPORT  sub16  vasprun.xml</span><br><span class="line">CONTCAR-1  DOSCAR-1  IBZKPT    KPOINTS  OSZICAR-1  OSZICAR-3  OUTCAR-1  OUTCAR-3  POSCAR  POSCAR-2  POTCAR    sub12   sub28</span><br><span class="line">qli@tekla2:~/test$ grep NSW INCAR</span><br><span class="line">NSW = 800</span><br><span class="line">qli@tekla2:~/test$ tail OSZICAR -n 3 </span><br><span class="line">RMM:   8    -0.339073663363E+03    0.17227E-04   -0.45367E-05  3703   0.126E-02    0.104E-02</span><br><span class="line">RMM:   9    -0.339073663179E+03    0.18447E-06   -0.78164E-06  2696   0.541E-03</span><br><span class="line"> 800 F= -.34272018E+03 E0= -.34270858E+03  d E =0.159932E-02</span><br><span class="line">qli@tekla2:~/test$ ls</span><br><span class="line">CONTCAR    DOSCAR    EIGENVAL  INCAR    OSZICAR    OSZICAR-2  OUTCAR    OUTCAR-2  PCDAT   POSCAR-1  POSCAR-3  REPORT  sub16  vasprun.xml</span><br><span class="line">CONTCAR-1  DOSCAR-1  IBZKPT    KPOINTS  OSZICAR-1  OSZICAR-3  OUTCAR-1  OUTCAR-3  POSCAR  POSCAR-2  POTCAR    sub12   sub28</span><br><span class="line">qli@tekla2:~/test$ save_calculations.sh 4</span><br><span class="line">qli@tekla2:~/$ ls</span><br><span class="line">CONTCAR-1  DOSCAR-1  IBZKPT  KPOINTS    OSZICAR-2  OSZICAR-4  OUTCAR-2  OUTCAR-4  POSCAR    POSCAR-2  POSCAR-4  REPORT  sub16  vasprun.xml-4</span><br><span class="line">DOSCAR     EIGENVAL  INCAR   OSZICAR-1  OSZICAR-3  OUTCAR-1   OUTCAR-3  PCDAT     POSCAR-1  POSCAR-3  POTCAR    sub12   sub28</span><br><span class="line">qli@tekla2:~/test$ vi INCAR</span><br><span class="line">qli@tekla2:~/ru_chbr/ads/high_coverage_br/1Br/ch3br/ts_c-br/test$ qsub sub12</span><br><span class="line">Your job 215093 (&quot;freq-4B2&quot;) has been submitted</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>详解：</strong></p>
+<ul>
+<li>前面的脚本名字为： <code>save_calculations.sh</code></li>
+<li>在使用这个脚本前，大师兄已经算过3次了，每次都跑到了800步，没有收敛，而第四次依然没有收敛，就需要用脚本将当前第四次的计算记录下来下来；</li>
+<li>脚本使用方法：<code>save_calculation.sh  N</code>  N为第几次算，这里用了4，然后就会得到相应的<code>POSCAR-4</code>， <code>OSZICAR-4</code>， <code>OUTCAR-4</code>等文件，记录第四次计算的细节；</li>
+<li>保存之后，我们就可以提交任务继续苦苦等待了。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>到这里，CONTCAR的基本介绍以及作用差不多就讲完了。新手们看到后可能会很困惑，因为里面很多内容是大师兄临时加进去给有经验的人写的。只要记住一句话就完成本节的学习任务：CONTCAR的作用跟POSCAR一样，存储的是模型被优化过的结构信息。</p>
+<p>上一节，我们学习了<code>CONTCAR</code>的一些基本内容。本着从简到易，从最常用到最不常用的原则，这一节，我们学习VASP的另外一个简单，但又很重要的的输出文件：<code>OSZICAR</code>。 </p>
+<p>首先，推荐一个QE学习的视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av36194036">https://www.bilibili.com/video/av36194036</a> （用良心带人入坑）</p>
+<h3 id="OSZICAR-的含义"><a href="#OSZICAR-的含义" class="headerlink" title="OSZICAR 的含义"></a><code>OSZICAR</code> 的含义</h3><p>师兄，<code>OSZICAR</code>是什么的缩写？为什么起这么一个名字？</p>
+<p>不好意思，这个我真不知道。也没有认真去考证过。目前只能告诉大家先把这个名字记住。</p>
+<h3 id="什么是优化？"><a href="#什么是优化？" class="headerlink" title="什么是优化？"></a>什么是优化？</h3><p>在介绍<code>OSZICAR</code>的内容和功能之前，有必要先给大家澄清一个计算中常见的词：优化。</p>
+<p>计算一个体系，我们有<code>2</code>个优化过程：</p>
+<ul>
+<li>电子结构的优化： 可以理解为对某一固定的几何结构，迭代求解薛定谔方程来获得体系能量极小值的一个过程。这个迭代过程，每一次迭代求解都可以认为是电子结构的一个优化。（通常被大伙称为：电子步）</li>
+<li>几何结构的优化：可以理解为在电子结构优化的结果上，获取原子的受力情况，然后根据受力情况，调节原子的位置，再进行电子结构优化，获取新的受力情况，然后再调节原子位置，一直重复这样的过程，直至找到体系势能面上一个极小值的过程。（通常被大伙称为：离子步）</li>
+</ul>
+<p>思考一下，我们的<code>O</code>原子，我们只可能对它进行电子结构的优化，因为它的几何结构不会发生变化。</p>
+<h3 id="OSZICAR是干什么的？"><a href="#OSZICAR是干什么的？" class="headerlink" title="OSZICAR是干什么的？"></a><code>OSZICAR</code>是干什么的？</h3><p>当VASP迭代求解<code>O</code>原子电子结构的时候，整个过程就会记录在OSZICAR中。下面我们就看一下VASP官网对<code>OSZICAR</code>的解释说明：<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/OSZICAR">https://cms.mpi.univie.ac.at/wiki/index.php/OSZICAR</a></p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Information about convergence speed and about the current step is written to stdout and to the **OSZICAR** <span class="keyword">file</span>. Always keep a copy of the **OSZICAR** <span class="keyword">file</span>, it might give important information.</span><br></pre></td></tr></table></figure>
+<p>也就是说：<code>OSZICAR</code>是用来记录优化过程一些信息的文件。这里的优化过程既包括电子结构，又包括几何结构。</p>
+<h3 id="OSZICAR长什么样子？"><a href="#OSZICAR长什么样子？" class="headerlink" title="OSZICAR长什么样子？"></a><code>OSZICAR</code>长什么样子？</h3><p>在Linux的终端中，使用Vim打开<code>OSZICAR</code>，你会得到类似下面的信息：</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">       N       E                     dE             d eps       ncg     rms          rms（c）</span><br><span class="line">DAV:   <span class="number">1</span>     <span class="number">0.324969965196E+02</span>    <span class="number">0.32497E+02</span>   -<span class="number">0.10270E+03</span>    <span class="number">48</span>   <span class="number">0.977E+01</span></span><br><span class="line">DAV:   <span class="number">2</span>     <span class="number">0.501749892771E+00</span>   -<span class="number">0.31995E+02</span>   -<span class="number">0.31995E+02</span>    <span class="number">72</span>   <span class="number">0.202E+01</span></span><br><span class="line">DAV:   <span class="number">3</span>    -<span class="number">0.182605770767E-01</span>   -<span class="number">0.52001E+00</span>   -<span class="number">0.50521E+00</span>    <span class="number">48</span>   <span class="number">0.521E+00</span></span><br><span class="line">DAV:   <span class="number">4</span>    -<span class="number">0.203547758465E-01</span>   -<span class="number">0.20942E-02</span>   -<span class="number">0.20860E-02</span>    <span class="number">96</span>   <span class="number">0.333E-01</span></span><br><span class="line">DAV:   <span class="number">5</span>    -<span class="number">0.203547873947E-01</span>   -<span class="number">0.11548E-07</span>   -<span class="number">0.11210E-07</span>    <span class="number">48</span>   <span class="number">0.844E-04</span>    <span class="number">0.307E-01</span></span><br><span class="line">DAV:   <span class="number">6</span>    -<span class="number">0.213726161828E-01</span>   -<span class="number">0.10178E-02</span>   -<span class="number">0.17884E-03</span>    <span class="number">48</span>   <span class="number">0.111E-01</span>    <span class="number">0.155E-01</span></span><br><span class="line">DAV:   <span class="number">7</span>    -<span class="number">0.214708381542E-01</span>   -<span class="number">0.98222E-04</span>   -<span class="number">0.23522E-04</span>    <span class="number">48</span>   <span class="number">0.459E-02</span></span><br><span class="line">   <span class="number">1</span> F= -<span class="number">.21470838E-01</span> E0= -<span class="number">.13757722E-01</span>  d E =-<span class="number">.154262E-01</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>第一行中各项的含义：（没汉语解释的，大师兄也翻译不出来）</p>
+<p>1） <code>N</code> 代表电子结构的迭代步数，通常被大家称为电子步。</p>
+<p>2） <code>E</code> 代表当前电子步的体系能量;</p>
+<p>3） <code>dE</code>当前电子步和上一步体系能量的差值;</p>
+<p>4） <code>d eps</code> the change in the band structure energy; </p>
+<p>5）<code>ncg</code> the number of evaluations of the Hamiltonian acting onto a wavefunction; </p>
+<p>6） <code>rms</code>  the norm of the residuum of the trialwavefunctions （i.e. their approximate error）</p>
+<p>7） <code>rms (c)</code> the difference between input and output charge density.</p>
+</li>
+<li><p>第二行中<code>DAV</code>的含义：</p>
+<p>1） <code>Blocked Davidson algorithm</code>的缩写。看不懂不要紧，简单点：就是一个电子迭代求解的自洽算法。在对电子结构迭代求解的过程，前人们发展出了很多不同的算法。就好比是，从北京到南京，有很多种出行选择一样，可以坐火车，汽车，乘飞机，也可以步行，骑马，骑驴，骑自行车，等等。每一种出行方式都是一种算法。大家可以根据自己的情况，选择适合自己的出行方式。所以，对自己的研究方向，也需要找一个适合自己体系的合适的算法。</p>
+<p>2） 除了<code>DAV</code>，今后你还会看到<code>RMM</code> （residual minimization scheme） 和 <code>CG</code> （conjugate-gradient algorithm）等等。选择不同的算法，第二行以及后面显示的也会有所区别。这点大家掌握即可。具体到每个算法怎么回事，当你计算算起来了，有余力，慢慢开始学习量化基础知识的时候再仔细琢磨。</p>
+<p>3） 前面我们说了，要找一个适合自己体系的算法，是选<code>DAV</code>，<code>RMM</code>还是<code>CG</code>，亦或是其他的呢？ 这个可以在<code>INCAR</code>中通过参数<code>ALGO</code>设置，参考链接： <a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/ALGO">https://cms.mpi.univie.ac.at/wiki/index.php/ALGO</a> 。一般来说，使用<code>ALGO = Fast</code>可以满足大部分的需求。可以理解为北京到南京出行，大家最常用的火车。</p>
+<p>4） 师兄：这个氧原子的计算中，我们没有在<code>INCAR</code>中设置<code>DAV</code>这个算法相关的参数啊，为什么<code>OSZICAR</code>中还会出现<code>DAV</code>呢？</p>
+<p>原因在于：同很多软件一样，<code>VASP</code>也有很多<code>默认的参数</code>，这就避免了当你不设置某个参数的时候进行不下去的尴尬局面，当然，有些相关的参数，你不设置的时候VASP也会罢工，这个我们以后再说。此时的计算，对于电子结构收敛的算法来说，默认的是<code>DAV</code>这个方法，也就是INCAR中： <code>ALGO = N</code>。</p>
+<p>5）划重点：</p>
+<p>我们知道<code>VASP</code>的<code>INCAR</code>设置中，有很多相应的参数。而新手恰恰在学习的过程中，由于不能在短时间了解这些参数的具体含义，使用方法，从而导致了不知道怎么去选择的情况。而就是在这种情况下，选择了胡搞。也就是<code>INCAR</code>中参数，认识的写上去，不认识的也写上去。这也恰恰是新手在计算过程中容易出错的一个主要原因。前面我们说了<code>VASP</code>有很多默认的参数，而新手在学习的时候，不能图快，要一步一个脚印地走。看见一个参数，就好好琢磨琢磨，争取理解透了，或者知道这个参数大体上怎么回事。如果你不认识的参数，千万不要写上去，使用默认的就可以。</p>
+</li>
+<li><p>最后一行：</p>
+<p>1） <code>F</code>前面的 1 代表几何结构优化的次数（也称为离子步的步数），本练习只有1步。</p>
+<p>2） <code>F =</code> 是体系的总能量, 与<code>OUTCAR</code>中 <code>free energy  TOTEN</code> 后面的值相等；（<code>OUTCAR</code>还没讲，暂且记住）</p>
+<p>3） <code>E0</code> 后面的能量对应<code>OUTCAR</code>中 <code>energy (sigma-&gt;0)</code>后面的能量（下图到数第一行）。</p>
+</li>
+</ul>
+<h3 id="OSZICAR-的作用"><a href="#OSZICAR-的作用" class="headerlink" title="OSZICAR 的作用"></a><code>OSZICAR</code> 的作用</h3><p>Always keep a copy of the <strong>OSZICAR</strong> file, it might give important information. 官网既然这么说，这表明OSZICAR确实很重要，重要在哪里呢？ </p>
+<ul>
+<li><p>整个体系的优化过程都记录下来了。（当然后面我们要讲的<code>OUTCAR</code>也以更加详细的方式将优化过程记下来了）但<code>OSZICAR</code>可以更加直观地观测我们体系优化过程中能量的变化过程。</p>
+</li>
+<li><p>通过<code>OSZICAR</code>获取体系的能量，也就是<code>E0</code>后面的那一项。<strong>很多人在使用<code>VASP</code>的时候，不知道该选择哪个能量</strong>，这里大师兄就告诉你：选择<code>E0</code>后面的即可。不管你有什么疑问，不管别人怎么跟你争论，都不要管，先老老实实记住：我们选<code>E0</code>后面的这个能量。随着你的学习，很多疑问自己就解开了。命令使用方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ grep E0 OSZICAR  </span><br><span class="line">   1 F= -.21470838E-01 E0= -.13757722E-01  d E =-.154262E-01</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>后面的学习中，我们会经常讲解<code>OSZICAR</code>相关的内容，由于时间的原因，也主要是因为新手才刚刚接触计算，就不做过多的解释。</p>
+</li>
+</ul>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>这一节，我们需要了解和学习的内容主要有以下几个方面：</p>
+<p>1） <code>VASP</code>计算中的优化：几何和电子结构优化大体有个了解</p>
+<p>2）<code>OSZICAR</code>中各项的含义，争取多理解几个；</p>
+<p>3）<code>DAV</code>对应的<code>INCAR</code>中<code>ALGO</code>是怎么设置的；一般来说<code>ALGO=FAST</code>可以满足大部分人的计算需求；</p>
+<p>4）知道<code>VASP</code>有默认的参数，自己不要画蛇填足。保持<code>INCAR</code>干净整洁，不知道的，模糊不清的参数坚决不往<code>INCAR</code>里面写。</p>
+<p>5）知道怎么从<code>OSZICAR</code>中获取体系的能量。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/10/26/ex05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2017/10/26/ex05/" class="post-title-link" itemprop="url">Ex05 VASP任务的提交</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-10-26 15:30:16" itemprop="dateCreated datePublished" datetime="2017-10-26T15:30:16-04:00">2017-10-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/10/26/ex05/" class="post-meta-item leancloud_visitors" data-flag-title="Ex05 VASP任务的提交" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/10/26/ex05/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/10/26/ex05/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面我们已经准备好了VASP的四个输入文件，学习了一系列的批量操作，那么该如何让vasp 算起来呢？每个课题组都会有自己不同的任务提交系统，大家可以向自己的师兄师姐学习提交任务的方法。此外，超算中心也是大家经常接触到的，本节通过吕梁超算中心资源（天河二号）的计算平台，介绍下具体的提交方法，任务的查看等基本操作。</p>
+<h3 id="任务提交"><a href="#任务提交" class="headerlink" title="任务提交"></a>任务提交</h3><p>首先通过下面的命令，浏览一下具体的提交流程：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ ls</span><br><span class="line">ex01  ex02  ex03  ex04</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ cp ex03/0.01 ex05</span><br><span class="line">cp: omitting directory `ex03/0.01&#x27;</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ cp ex03/0.01 ex05 -r </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ cd ex05/</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ ls</span><br><span class="line">INCAR  KPOINTS  POSCAR  POTCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ cp ~/bin/job_check/job_sub  .</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ cat job_sub </span><br><span class="line">#!/bin/bash</span><br><span class="line">export LD_LIBRARY_PATH=/THFS/opt/intel/composer_xe_2013_sp1.3.174/mkl/lib/intel64:$LD_LIBRARY_PATH</span><br><span class="line">yhrun -p gsc -n 24 /THFS/opt/vasp/5.4.4/vasp.5.4.4/bin/vasp_std </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ yhbatch -p gsc -N 1 -J test job_sub </span><br><span class="line">Submitted batch job 983800</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>解释：</p>
+<ul>
+<li><p>提交任务的脚本，为~/bin/job_check目录下的job_sub文件。 脚本名字大家随便起，目录可以随便放，只要用的时候能保证找到即可。</p>
+<ul>
+<li>脚本里面指定了一些库的位置</li>
+<li>使用的队列：这里是gsc，具体以自己购买的为准</li>
+<li>-n 24 是指定每个节点的核数</li>
+</ul>
+</li>
+<li><p>提交任务的命令为： </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yhbatch -p gsc -N 1 -J test job_sub </span><br></pre></td></tr></table></figure>
+<p>这里大家需要修改的主要有下面几个地方：</p>
+<ul>
+<li>gsc 是你计算的队列，这个在购买机时的时候，超算管理员会告诉你用哪个队列；对应的写上就可；</li>
+<li>-N 后面的1是我们所用节点的个数，一个节点24个核（脚本里面已经指定了）</li>
+<li>test是计算的任务名字，这个大家随便起；以第一眼能通过这个名字能辨别出是什么任务为佳；</li>
+<li>job_sub就是脚本名，如果你把job_sub改成bigbro了，那么上面的命令行中，job_sub就需要改成bigbro了。</li>
+</ul>
+</li>
+<li><p>网上也有很多实用的教程，大家可以多多浏览，比如： <a target="_blank" rel="noopener" href="https://github.com/JiangLiNSCC/TH2-demos/wiki/%E5%A4%A9%E6%B2%B3%E4%BA%8C%E5%8F%B7%E7%AE%80%E6%98%8E%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C">天河二号简明使用手册</a>；也可以在超算的使用QQ群中交流，比如：国防科大吕梁超算中心QQ群：<strong>204521798</strong>。</p>
+</li>
+</ul>
+<h3 id="任务查看"><a href="#任务查看" class="headerlink" title="任务查看"></a>任务查看</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ ls</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  INCAR  job_sub  KPOINTS  OSZICAR  OUTCAR  PCDAT  POSCAR  POTCAR  REPORT  slurm-983800.out  vasprun.xml  WAVECAR  XDATCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ yhq</span><br><span class="line">             JOBID    PARTITION                       NAME             USER ST       TIME  NODES NODELIST(REASON)</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ tail OUTCAR</span><br><span class="line">                            User time (sec):        1.991</span><br><span class="line">                          System time (sec):        3.501</span><br><span class="line">                         Elapsed time (sec):        5.931</span><br><span class="line"></span><br><span class="line">                   Maximum memory used (kb):      104300.</span><br><span class="line">                   Average memory used (kb):           0.</span><br><span class="line"></span><br><span class="line">                          Minor page faults:         8571</span><br><span class="line">                          Major page faults:            0</span><br><span class="line">                 Voluntary context switches:         3090</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>在上面的操作中，我们使用ls命令，发现目录下多了一堆文件出来，这说明任务运行了。前面已经给大家提了个醒，这些文件大部分都没用，所以不用被它们所吓倒，我们后面会一一解释。</p>
+</li>
+<li><p>由于只有一个O原子，任务很快就算完了。所以使用yhq这个命令查看运行状态时，也就得不到结果了。</p>
+</li>
+<li><p>判断一个任务是否算完，通过一个tail命令就可以完成。如果你发现和上面命令类似的结果，就说明任务算完了。</p>
+</li>
+<li><p>这里tail的命令用来输出某个文件最后的几行，如果想输出文件最前面的几行（通过-n 来实现），可以使用head文件，简单的操作实例如下，自己百度学习下其他相关的用法，熟练掌握。大师兄就不再啰嗦了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ tail -n 5 OUTCAR</span><br><span class="line">                   Average memory used (kb):           0.</span><br><span class="line"></span><br><span class="line">                          Minor page faults:         8571</span><br><span class="line">                          Major page faults:            0</span><br><span class="line">                 Voluntary context switches:         3090</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ head -n 6 OUTCAR</span><br><span class="line"> vasp.5.4.4.18Apr17-6-g9f103f2a35 (build Sep 22 2017 10:53:27) complex</span><br><span class="line"></span><br><span class="line"> executed on             LinuxIFC date 2018.11.12  03:58:57</span><br><span class="line"> running on   24 total cores</span><br><span class="line"> distrk:  each k-point on   24 cores,    1 groups</span><br><span class="line"> distr:  one band on NCORES_PER_BAND=   1 cores,   24 groups</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$ tail -n 5 OUTCAR | head -n 2</span><br><span class="line">                   Average memory used (kb):           0.</span><br><span class="line"></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex05$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>本节我们通过超算中心简单展示了VASP任务的提交过程，本节需要掌握的内容主要有：</p>
+<ul>
+<li>会提交任务；</li>
+<li>会查看任务；</li>
+<li>知道VASP任务结束后，怎么通过tail命令判断。</li>
+<li>学会使用：tail 和 head 这2个命令。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/10/24/ex04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2017/10/24/ex04/" class="post-title-link" itemprop="url">Ex04 做计算常用的批量处理方法（五）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-10-24 15:30:16" itemprop="dateCreated datePublished" datetime="2017-10-24T15:30:16-04:00">2017-10-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 23:28:54" itemprop="dateModified" datetime="2021-12-27T23:28:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/10/24/ex04/" class="post-meta-item leancloud_visitors" data-flag-title="Ex04 做计算常用的批量处理方法（五）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/10/24/ex04/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/10/24/ex04/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面2节，我们学习了使用sed命令结合for循环，来对INCAR进行批量操作。同样，我们也可以对KPOINTS文件进行类似的批处理操作。本节，我们借对KPOINTS文件的操作，一方面，学习几个小窍门，另一方面回顾上一节的学习内容以及KPOINTS文件。</p>
+<h4 id="KPOINTS文件"><a href="#KPOINTS文件" class="headerlink" title="KPOINTS文件"></a>KPOINTS文件</h4><p>前面我们学习到，KPOINTS文件只有简单的几行，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">K-POINTS  </span><br><span class="line">0  </span><br><span class="line">Gamma</span><br><span class="line">1 1 1</span><br><span class="line">0 0 0 </span><br></pre></td></tr></table></figure>
+<p>目前，对于大家来说，需要掌握的有以下点：</p>
+<ul>
+<li><p>会自己闭着眼把这几行写出来；</p>
+</li>
+<li><p>第三行的gamma代表的是gamma centered的意思；</p>
+</li>
+<li>第四行中的1 1 1 俗称gamma点。很多时候，在QQ群里面提问题，别人说用gamma点算一下，指的就是1 1 1；</li>
+<li><p>除了使用gamma点，我们还可以使用其他的数值，比如2 2 2，3 3 3， 1 2 3 等，数值越大，计算量也就越大。具体的要根据你自己的体系以及组里的计算能力来确定，这个我们后面会介绍；</p>
+</li>
+<li><p>对于气体分子或者原子的计算来说，也就是把它们放到一个格子的体系，使用gamma点就足够了。</p>
+</li>
+</ul>
+<p>本节，我们主要对KPOINTS的文件的第四行进行批量操作，将1 1 1改成 2 2 2， 3 3 3 等。首先浏览下面的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ ls</span><br><span class="line">ex01  ex02  ex03</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ mkdir ex04 &amp;&amp; cd ex04</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do cp ../ex03/0.01/ $&#123;i&#125;$&#123;i&#125;$&#123;i&#125; -r ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls </span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 333/KPOINTS  -n </span><br><span class="line">     1	K-POINTS  </span><br><span class="line">     2	 0  </span><br><span class="line">     3	Gamma</span><br><span class="line">     4	1 1 1</span><br><span class="line">     5	0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do sed -i &#x27;4s/1 1 1/$i $i $i/g&#x27; $i/KPOINTS ; done </span><br><span class="line">sed: can&#x27;t read 1/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 2/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 3/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 4/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 5/KPOINTS: No such file or directory</span><br><span class="line">sed: can&#x27;t read 6/KPOINTS: No such file or directory</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 333/KPOINTS  -n </span><br><span class="line">     1	K-POINTS  </span><br><span class="line">     2	 0  </span><br><span class="line">     3	Gamma</span><br><span class="line">     4	1 1 1</span><br><span class="line">     5	0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do sed -i &#x27;4s/1 1 1/$i $i $i/g&#x27; $&#123;i&#125;$&#123;i&#125;$&#123;i&#125;/KPOINTS ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 333/KPOINTS  -n </span><br><span class="line">     1	K-POINTS  </span><br><span class="line">     2	 0  </span><br><span class="line">     3	Gamma</span><br><span class="line">     4	$i $i $i</span><br><span class="line">     5	0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
+<p><strong>详解：</strong></p>
+<ul>
+<li><p>第三行：我们使用了 mkdir  ex04 &amp;&amp; cd ex04 这个命令。 &amp;&amp; 的作用是将两个命令连起来运行，如果&amp;&amp;前面的命令运行成功，则继续后面的命令。这里我们先运行了mkdir ex04的命令，然后通过cd进入新建的ex04这个文件夹目录下。但如果前面的命令运行不成功，我们还想运行第二个命令，那么可以用 ||这个将两个命令联系起来。百度自己搜索：&amp;&amp;  和 ||的使用，多多练习，可以提高你敲命令的工作效率。</p>
+</li>
+<li><p>我们使用for循环，将ex03中的0.01文件夹复制成111， 222， 333等。这里我们在调用for 循环中的变量i的时候，使用的是${i}。为什么要加花括号呢？ 这是为了避免$i和后面的连在一起，从而导致调用失败。比如下面的命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do echo $iA; done </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do echo $&#123;i&#125;A; done </span><br><span class="line">1A</span><br><span class="line">2A</span><br><span class="line">3A</span><br><span class="line">4A</span><br><span class="line">5A</span><br><span class="line">6A</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>后面的命令中，我们得到了这样的错误：sed: can’t read 1/KPOINTS: No such file or directory。原因是我们的问价夹中有3个数字，我们需要调用$i三次，但写$i/KPOINTS就会引用一次，导致sed的命令对象不正确。</p>
+</li>
+<li>改正之后，我们发现INCAR中的1 1 1 全部被替换成$i $i $i了。这里是大师兄故意犯了的错误：将双引号变成了单引号。到现在，单引号和双引号的区别，相信大家在练习完之后能大体知道个所以然了。</li>
+</ul>
+<p>上面的练习中，我们没有成功将 1 1 1改成文件夹对应的数字，那么改怎么做呢？ 有下面2个方法：</p>
+<p><strong>方法1：</strong> 将ex04的文件夹全部删掉，然后从新来过，如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls </span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ rm * -fr</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do cp ../ex03/0.01/ $&#123;i&#125;$&#123;i&#125;$&#123;i&#125; -r ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls </span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125;; do sed -i &quot;4s/1 1 1/$i $i $i/g&quot; $&#123;i&#125;$&#123;i&#125;$&#123;i&#125;/KPOINTS ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 333/KPOINTS  -n </span><br><span class="line">     1	K-POINTS  </span><br><span class="line">     2	 0  </span><br><span class="line">     3	Gamma</span><br><span class="line">     4	3 3 3</span><br><span class="line">     5	0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
+<p><strong>方法2：</strong>将错就错，在错误的基础上，把$i $i $i 批量替换成文件夹对应的数字：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls</span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 222/KPOINTS  </span><br><span class="line">K-POINTS  </span><br><span class="line"> 0  </span><br><span class="line">Gamma</span><br><span class="line">$i $i $i</span><br><span class="line">0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ for i in &#123;1..6&#125; ; do sed -i &quot;s/\$i \$i \$i/$i $i $i/g&quot; $i$i$i/KPOINTS ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cat 222/KPOINTS  </span><br><span class="line">K-POINTS  </span><br><span class="line"> 0  </span><br><span class="line">Gamma</span><br><span class="line">2 2 2</span><br><span class="line">0 0 0 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>这里我们没有用${i}，而是直接$i$i$i连在一起用了。说明这个时候，花括号有或者没有，对命令行影响不大。</p>
+</li>
+<li><p>sed 操作的难点在于区别$i是调用的参数还是要被替换的字符上。例子中我们用一个反斜杠 \ 将$i转义成字符，进而避免将其按照变量来处理。说白了，就是让$ 这个符号变成一个纯文字符号，而不再发挥调用变量的作用。这一部分的知识，大家自行百度搜索：Linux 转义符 进行学习。</p>
+</li>
+</ul>
+<p>再举个例子：如果被替换的内容中含有 /  , 直接输入则会被认为是分隔符,因此我们需要将其作为分隔符的作用去掉。怎么做呢? 输入\/ (一个反斜杠加单斜杠,中间没有空格),这样的话 / 就会被当成字符来处理啦! 大家好好琢磨下面的这个命令，我们要把big/bro中的/替换为\。如果你能理解了，转义符就基本入门了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ echo big/bro </span><br><span class="line">big/bro</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ echo big/bro | sed &#x27;s/\//\\/g&#x27;</span><br><span class="line">big\bro</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br></pre></td></tr></table></figure>
+<ul>
+<li>这里我们用了一个|，中文名字叫管道符，它的作用是将前面命令的输出结果传递给后面的命令，用作操作对象。百度自行搜索：Linux 管道符</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在本节的操作中，我们可以学到很多知识，私以为对于一个新手来说，这一节的内容难度有些大，需要认真操作，思考，查阅相关的资料。简单总结一下，本节需要掌握的内容有：</p>
+<ul>
+<li><p>&amp;&amp;，||  和 | 的用法 </p>
+</li>
+<li><p>${i} 中什么时候用花括号，什么时候不用</p>
+</li>
+<li><p>sed 中的单引号，双引号的区别;</p>
+</li>
+<li><p>转义符在字符处理中的作用。</p>
+</li>
+<li><p>如何避免命令出错，以及出错后改怎么改正。</p>
+</li>
+</ul>
+<p>前面的四点都是死死的基本Linux操作，而最后一点则是考验大家智商的时候。做计算，肯定避免不了会敲错命令，犯各种各样的错误。在避免出错方面，我们要认真掌握命令操作的关键点以及总结前面错误的经验；在错误的改正方面，我们要多多动脑子，及时想办法补救。众多补救的办法中，提前将操作的对象进行备份是最为有效的。比如，在前面例子中，由于在ex03中有备份的文件，即使在ex04目录犯错后，我们大不了全部删除，重新再来一遍。所以，在大家没有进行计算前，先提个醒：<strong>一定要时刻牢记备份自己的文件</strong>。</p>
+<p>$\require{mediawiki-texvc}$</p>
+<p>前面我们对INCAR，KPOINTS进行了批量操作，这一节，我们介绍对输入文件进行批量操作的最后一部分：POSCAR。 在这里，大师兄需要指出的是，批量操作的方式有很多种，大家千万不要仅仅局限在本书的例子里面，自己主动去思考这些命令的运行方式，将其运行的范围扩展，最后才能做到随心所欲，达到无招胜有招的境界。如果只跟着大师兄的教程去练习而不主动思考的话，时间长了思维就会被限制了。</p>
+<p>此外，大师兄给的例子是都可以正确执行的，虽然易错的地方已经指出来了，但更希望大家主动去尝试自己理解不清楚的参数，主动去犯错，得到错误的结果时，印象会更加深刻些。有句古话说的好:纸上学来终觉浅，绝知此事要躬行。所以，行动是很有必要的。大家在此基础上多加尝试，尽可能多的犯错误，知道什么样的输入对应什么样的错误。</p>
+<h3 id="POSCAR-批处理练习"><a href="#POSCAR-批处理练习" class="headerlink" title="POSCAR 批处理练习:"></a>POSCAR 批处理练习:</h3><p>前面我们将O原子放到了一个8$\times$ 8$\times$8 $\AA{^3}$ 的格子里。现在我们要创建不同大小的正方形格子，每个格子边长分别为8,10,12,14,16$\AA$。重复下面的操作，完成POSCAR的批量练习，并思考这些命令是怎么工作的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ mkdir poscar</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cd poscar/</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ for i in $(seq 8 2 16); do cp -r ../../ex03/0.01 $&#123;i&#125;$&#123;i&#125;$&#123;i&#125; ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ ls </span><br><span class="line">101010  121212  141414  161616  888</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ cat -n 888/POSCAR </span><br><span class="line">     1	O atom in a box </span><br><span class="line">     2	1.0            </span><br><span class="line">     3	8.0 0.0 0.0   </span><br><span class="line">     4	0.0 8.0 0.0  </span><br><span class="line">     5	0.0 0.0 8.0 </span><br><span class="line">     6	O          </span><br><span class="line">     7	1         </span><br><span class="line">     8	Cartesian</span><br><span class="line">     9	0 0 0           #</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ for i in $(seq 8 2 16); do sed -i &quot;3,5s/8/$i/g&quot; $&#123;i&#125;$&#123;i&#125;$&#123;i&#125;/POSCAR ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ cat -n 888/POSCAR      </span><br><span class="line">1	O atom in a box </span><br><span class="line">     2	1.0            </span><br><span class="line">     3	8.0 0.0 0.0   </span><br><span class="line">     4	0.0 8.0 0.0  </span><br><span class="line">     5	0.0 0.0 8.0 </span><br><span class="line">     6	O          </span><br><span class="line">     7	1         </span><br><span class="line">     8	Cartesian</span><br><span class="line">     9	0 0 0           #</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/poscar$ cat -n 101010/POSCAR </span><br><span class="line">     1	O atom in a box </span><br><span class="line">     2	1.0            </span><br><span class="line">     3	10.0 0.0 0.0   </span><br><span class="line">     4	0.0 10.0 0.0  </span><br><span class="line">     5	0.0 0.0 10.0 </span><br><span class="line">     6	O          </span><br><span class="line">     7	1         </span><br><span class="line">     8	Cartesian</span><br><span class="line">     9	0 0 0           #</span><br></pre></td></tr></table></figure>
+<p><strong>命令详解:</strong></p>
+<ul>
+<li><p>seq 命令用来打印一系列的数字， 在这个例子中 seq 8 2 16 获取8到16之间的数字，间隔为2; 其中， 8  2 16 三个数字间需要用空格分开；看到这里你会想到之前我们使用的花括号 {}，对的，如果间隔是1的话， {1..9} 和 seq 1 1 9 以及 seq 1 9 是一样的; seq 1 9 中省略的是 seq 1 1 9 中间的 1，  因为它是默认值。但是这里我们数字的间隔是2，使用花括号则不能实现我们的目的。</p>
+</li>
+<li><p>for 循环的精髓:  for i in  $(seq 8 2 16);  </p>
+<p>提醒1)：for循环这部分结束后，要跟一个是分号，不是冒号!!!</p>
+<p>提醒2): $ 和 后面的括号之间没有空格!!! </p>
+<p>大家可以主动把分号改成冒号或者在$后面加个空格，看看会出什么错。</p>
+<p>在这里，调用seq 8 2 16这个命令的输出，我们用 到了$()  这个组合。它的作用是: 调用一个命令或者函数的输出，进而转化为for循环的对象集合。for i in $(seq 8 2 6) 等于for i in 8 10 12 14 16 。 </p>
+</li>
+<li><p>此外，你还会见到一些人使用 ` ` 这个符号(反单引号);  `seq 8 2 16`  的效果等于 $(seq 8 2 16)。所以，当你见到 ` ` 时，不要害怕，因为你知道里面是在调用一个命令或者函数，和 $() 效果是一样的。Linux下面有很多奇奇怪怪的字符，当你知道他们的意思时就见怪不怪了。</p>
+</li>
+<li><p>sed 命令，这里我们使用了 sed –i “3,5s/8/$i/g”  </p>
+<p>3,5s 的意思是：选择第三行到第五行中所有的8；然后将它们替换成$i； </p>
+</li>
+</ul>
+<p>有很多筒子不知道怎么一次性选择三行中的内容，便运行了这和循环命令三次:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed –i “3s/8.0/$i/g”</span><br><span class="line">sed –i “4s/8.0/$i/g”</span><br><span class="line">sed –i “5s/8.0/$i/g”</span><br></pre></td></tr></table></figure>
+<p>效果是一样的，但3,5s这样更简洁，优美。希望大家可以认真学习sed的使用，达到炉火纯青的地步。后面我们也会在计算过程中继续介绍sed是如何发挥作用的。</p>
+<p><strong>为什么说这是 for 循环的精髓呢?</strong></p>
+<p>从for循环的语法上看，有两个主要部分：</p>
+<p>1）第一个是选取对象，也就是for i in XXX 语句中的 XXX 部分;</p>
+<p>2）另一个是去执行的动作， do YYY ; </p>
+<p>对于do YYY 我们根据自己的要求或者要现实的目的，把命令填到YYY这一块就可以了。但是，对于前面的集合选取，这就需要大家脑洞大开了。最简单的是根据自己的任务要求选取合适的范围直接输入，比如 for i in 1 2 3 4 5 ;</p>
+<p>再复杂些，我们使用一个函数，命令或者更高级的命令操作来得到所需范围，如本例中 for i in $(seq 8 2 16)。这个随着计算的进行，你的体会也就越来越深刻。</p>
+<p>当我们准备计算输入文件，查看计算亦或者整理计算结果时，首先要对这些文件或者文件夹进行选择，即把需要处理的对象放在一起。为了保证for循环变量范围的高效选择，养成一个良好的计算习惯非常重要：那就是保持计算在不同目录下的一致性；也就是目录要规范，文件系统有序而整齐，根据不同的计算等级或者类型进行创建。如果文件夹一个套一个，随意创建，毫无规则可言，那么在用for循环的时候，工作效率就会大大地打折扣。</p>
+<p> 在这里教给大家另外一个linux 命令：tree 来查看当前目录下的文件夹级别信息，用以给for循环提供合适的变量; (tree 和 tree -d， 尝试下有什么不同)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ ls</span><br><span class="line">kpoints  poscar</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ tree -d </span><br><span class="line">.</span><br><span class="line">├── kpoints</span><br><span class="line">│   ├── 111</span><br><span class="line">│   ├── 222</span><br><span class="line">│   ├── 333</span><br><span class="line">│   ├── 444</span><br><span class="line">│   ├── 555</span><br><span class="line">│   └── 666</span><br><span class="line">└── poscar</span><br><span class="line">    ├── 101010</span><br><span class="line">    ├── 121212</span><br><span class="line">    ├── 141414</span><br><span class="line">    ├── 161616</span><br><span class="line">    └── 888</span><br><span class="line"></span><br><span class="line">13 directories</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04$ cd kpoints/</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/kpoints$ ls</span><br><span class="line">111  222  333  444  555  666</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/kpoints$ tree  </span><br><span class="line">.</span><br><span class="line">├── 111</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">├── 222</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">├── 333</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">├── 444</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">├── 555</span><br><span class="line">│   ├── INCAR</span><br><span class="line">│   ├── KPOINTS</span><br><span class="line">│   ├── POSCAR</span><br><span class="line">│   └── POTCAR</span><br><span class="line">└── 666</span><br><span class="line">    ├── INCAR</span><br><span class="line">    ├── KPOINTS</span><br><span class="line">    ├── POSCAR</span><br><span class="line">    └── POTCAR</span><br><span class="line"></span><br><span class="line">6 directories, 24 files</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex04/kpoints$ </span><br></pre></td></tr></table></figure>
+<p>上面例子给出了一个非常清晰的文件目录结构。如果你在服务器上运行，发现下面的错误。且自己没有root权限安装tree这个命令，那么自动跳过这个练习或者在自己电脑的Linux系统上进行操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> tree</span><br><span class="line">-bash: tree: command not found</span><br></pre></td></tr></table></figure>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>本节我们学习了:</p>
+<p>1) seq 命令获取数字序列的方法;</p>
+<p>2) 使用 $() 将括号里面命令的输出转为for循环变量的方法;</p>
+<p>3) sed 一次性选择多行的方法。</p>
+<p>4) 保持文件系统有序而整齐，提高for 循环处理任务的效率。</p>
+<p>前面这几节没有直接进入计算部分，是因为我们的一句古话：工欲善其事必先利其器。进行理论计算，学会最基本的相关操作知识非常重要。从前面这几节的学习，你会发现：懂得使用一个命令，可以节省很多时间; 但如果你懂得如何进一步发挥这个命令的作用，那么它会更加节省你的时间。省下来的时间你可以去看书，运动，谈恋爱…等等。想想都是很美好的事情。记得本人刚读博士的时候，组里的一个博后给我说：如果你想偷懒，那么就必须多动脑! 大家可以在运行完命令后，仔细体会下这句话的思想。而大家主动学习怎么去偷懒是最重要的。当然基本的命令操作只是科研中的一个小利器而已，真正的利器在于你扎实的理论化学基本功。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2017/10/22/ex03/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2017/10/22/ex03/" class="post-title-link" itemprop="url">Ex03 做计算常用的批量处理方法（三）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-10-22 15:30:16" itemprop="dateCreated datePublished" datetime="2017-10-22T15:30:16-04:00">2017-10-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 23:26:52" itemprop="dateModified" datetime="2021-12-27T23:26:52-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/10/22/ex03/" class="post-meta-item leancloud_visitors" data-flag-title="Ex03 做计算常用的批量处理方法（三）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2017/10/22/ex03/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/10/22/ex03/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面练习中我们在0.01的文件夹基础上，通过一个命令，复制得到了从0.02到0.09的文件夹。但是， 所有文件夹中的输入文件都是一样的，我们还需要把INCAR中的SIGMA参数值 SIGMA = 0.01 改成与文件夹对应的数值。 首先我们可以逐个进行编辑，但太浪费时间，这也不是大师兄的风格。Ex03练习分为2小节：</p>
+<ul>
+<li>新命令 sed 的学习</li>
+<li>for + sed 组合</li>
+</ul>
+<p>最终我们会结合for循环和sed命令，来学会批量处理输入文本的另一个方法。<strong>还是要强调一下：</strong>大家要主动，多去网上找资料，并系统性的学习linux下面的基本命令。光指望着本书中的这么一点，是很难提高的。</p>
+<h3 id="复习上一节的功课"><a href="#复习上一节的功课" class="headerlink" title="复习上一节的功课"></a>复习上一节的功课</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ ls</span><br><span class="line">ex01  ex02</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ mkdir ex03 </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ cp ex02/0.01 ex03 -r </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW$ cd ex03/0.01/</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  </span><br><span class="line">SYSTEM = O atom </span><br><span class="line">ISMEAR = 0       </span><br><span class="line">SIGMA = 0.01      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  -n </span><br><span class="line">     1	SYSTEM = O atom </span><br><span class="line">     2	ISMEAR = 0       </span><br><span class="line">     3	SIGMA = 0.01      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>上面的操作依次为：</p>
+<ul>
+<li><p>新建ex03文件夹</p>
+</li>
+<li><p>将ex02中的0.01 复制到ex03中</p>
+</li>
+<li>进入ex03/0.01的目录中</li>
+<li>使用cat 查看0.01中INCAR的内容</li>
+<li>使用cat -n 查看INCAR中的内容，该选项在输出中给每一行标出了行数，方便我们查看。</li>
+</ul>
+<p><strong>注意:</strong> </p>
+<p>1）Linux 下面的命令都有很多的选项，用以丰富我们的不同需求，比如上面的 cat -n，可以使用 man cat 这个命令查看 cat 的其他选项。使用这个命令后，如果想退出，敲 q 键即可;</p>
+<p>2）另外，我们也可以使用 cat –help 来查看，效果与man cat 一样。</p>
+<p><strong>sed 命令修改INCAR</strong></p>
+<p>前面我们提到，可以使用vim打开INCAR然后修改SIGMA的参数。除了vim当然还有文本编辑器等其他的工具。但这些工具都有个缺点，就是得把文件打开后才能修改。下面我们使用sed命令，不打开文本，直接对里面的内容进行替换操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ sed &#x27;3s/0.01/0.02/g&#x27; INCAR </span><br><span class="line">SYSTEM = O atom </span><br><span class="line">ISMEAR = 0       </span><br><span class="line">SIGMA = 0.02      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  </span><br><span class="line">SYSTEM = O atom </span><br><span class="line">ISMEAR = 0       </span><br><span class="line">SIGMA = 0.01      </span><br></pre></td></tr></table></figure>
+<p><strong>精解：</strong></p>
+<p>1)     单引号中是我们的操作， 3s 表示的是选择第三行，因为我们知道 0.01 在第三行中出现，s 是substitute 的缩写<br>2)    3s 后面跟一个斜杠 /  用来和后面被替换的内容分开，这里0.01 表示选择第三行的0.01;</p>
+<p>3)    0.01后面再用一个斜杠，将其和替换后的数字分开(0.01  0.02  0.03 等)，表示将0.01替换为斜杠后面的内容;</p>
+<p>4)    再加一个斜杠，后面的g 代表 global ，意思是全部替换。</p>
+<p>5)    输入完毕后，我们选择要执行该命令的对象(要替换的文件)，也就是当前目录下INCAR 文件。</p>
+<p>6)     命令的意思就是：我们用sed命令，将INCAR中的第三行的0.01全部替换成0.02。</p>
+<p>从上面实例中最后的cat INCAR命令结果不难发现，实际上我们并没有将INCAR文件中的0.01替换成0.02。也就是说这个命令只是输出了替换后的结果，但没有更新INCAR文件。那怎么样才可以更新INCAR文件呢？ 我们可以这样做：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ sed &#x27;3s/0.01/0.02/g&#x27; INCAR &gt; INCAR_new</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR_new </span><br><span class="line">SYSTEM = O atom </span><br><span class="line">ISMEAR = 0       </span><br><span class="line">SIGMA = 0.02      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ mv INCAR_new  INCAR </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  </span><br><span class="line">SYSTEM = O atom </span><br><span class="line">ISMEAR = 0       </span><br><span class="line">SIGMA = 0.02      </span><br></pre></td></tr></table></figure>
+<p>箭头（&gt;）的意思是：我们将命令的输出存到一个新的文件INCAR_new中，</p>
+<p>通过mv命令之前的INCAR替换掉。</p>
+<p>但，这样做也太麻烦了，更简单一点，如下：</p>
+<p>前面例子的INCAR中SIGMA的值已经不是0.01了，我们先从ex02/0.01中复制一个过来。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cp ../../ex02/0.01/INCAR  .</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  -n </span><br><span class="line">     1	SYSTEM = O atom </span><br><span class="line">     2	ISMEAR = 0       </span><br><span class="line">     3	SIGMA = 0.01      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ sed -i &#x27;3s/0.01/0.02/g&#x27; INCAR </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  -n </span><br><span class="line">     1	SYSTEM = O atom </span><br><span class="line">     2	ISMEAR = 0       </span><br><span class="line">     3	SIGMA = 0.02      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>详解：</strong></p>
+<p>sed –i 是sed 的命令和其附加选项， -i 表示直接对源文件进行编辑，也就是说编辑之后源文件被新文件替换掉。因此，使用这个参数的时候要小心，小心，再小心。要格外小心！！！</p>
+<ul>
+<li>最保险的做法就是运行前，先对操作的对象进行备份：如下：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cp INCAR  INCAR_back</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ sed -i &#x27;3s/0.01/0.02/g&#x27; INCAR </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ ls</span><br><span class="line">INCAR  INCAR_back  KPOINTS  POSCAR  POTCAR</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其次是，先不加 -i 运行下sed命令，确保输出的是正确结果后，然后再加上 -i 运行.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cp INCAR_back  INCAR </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ sed &#x27;3s/0.01/0.02/g&#x27; INCAR</span><br><span class="line">SYSTEM = O atom </span><br><span class="line">ISMEAR = 0       </span><br><span class="line">SIGMA = 0.02      </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ sed -i &#x27;3s/0.01/0.02/g&#x27; INCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03/0.01$ cat INCAR  -n </span><br><span class="line">     1	SYSTEM = O atom </span><br><span class="line">     2	ISMEAR = 0       </span><br><span class="line">     3	SIGMA = 0.02    </span><br></pre></td></tr></table></figure>
+<p><strong>小结:</strong></p>
+<p>sed 是一个非常强大的命令，对于做计算的我们来说，熟练正确地使用sed可以极大的提高我们的工作效率，大家务必硬着头皮掌握这个命令。这个网站列举了一些基本的用法：</p>
+<p><strong><a target="_blank" rel="noopener" href="http://man.linuxde.net/sed">http://man.linuxde.net/sed</a></strong> </p>
+<p>大家参照着进行练习，也可以百度里面搜索一些其他的 sed 使用技巧，如果你有认为很好的sed 技巧，也可以发邮件分享给大师兄（lqcata@gmail.com）。</p>
+<p>本节我们学习2个批量操作：</p>
+<ul>
+<li>通过sed单个命令进行批量操作</li>
+<li>以及sed + for循环的批量操作</li>
+</ul>
+<p>1  sed 批量将0.01到0.09中所有INCAR中的0.01替换成0.05。到现在为止，相信大家都可以看懂下面的命令操作。就不再啰嗦解释了。有一点需要注意的是grep 命令中的星号，检查输入输出的时候用*非常方便。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ ls</span><br><span class="line">0.01</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ for i in &#123;2..9&#125;; do cp 0.01 0.0$i -r ; done </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ ls </span><br><span class="line">0.01  0.02  0.03  0.04  0.05  0.06  0.07  0.08  0.09</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ grep SIGMA */INCAR</span><br><span class="line">0.01/INCAR:SIGMA = 0.01</span><br><span class="line">0.02/INCAR:SIGMA = 0.01</span><br><span class="line">0.03/INCAR:SIGMA = 0.01</span><br><span class="line">0.04/INCAR:SIGMA = 0.01</span><br><span class="line">0.05/INCAR:SIGMA = 0.01</span><br><span class="line">0.06/INCAR:SIGMA = 0.01</span><br><span class="line">0.07/INCAR:SIGMA = 0.01</span><br><span class="line">0.08/INCAR:SIGMA = 0.01</span><br><span class="line">0.09/INCAR:SIGMA = 0.01</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ sed -i &#x27;3s/0.01/0.05/g&#x27; */INCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ grep SIGMA */INCAR</span><br><span class="line">0.01/INCAR:SIGMA = 0.05</span><br><span class="line">0.02/INCAR:SIGMA = 0.05</span><br><span class="line">0.03/INCAR:SIGMA = 0.05</span><br><span class="line">0.04/INCAR:SIGMA = 0.05</span><br><span class="line">0.05/INCAR:SIGMA = 0.05</span><br><span class="line">0.06/INCAR:SIGMA = 0.05</span><br><span class="line">0.07/INCAR:SIGMA = 0.05</span><br><span class="line">0.08/INCAR:SIGMA = 0.05</span><br><span class="line">0.09/INCAR:SIGMA = 0.05</span><br></pre></td></tr></table></figure>
+<p>2 for 循环结合sed </p>
+<p>前面我们使用sed命令，将文件夹中所有的0.01替换成了0.05。但我们的目标是，每个文件夹中的SIGMA值与文件夹相同。既然我们知道了sed可以对单个文件进行操作，那么我们也可以结合for循环，来实现一个批量操作的目的。命令如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ ls</span><br><span class="line">0.01  0.02  0.03  0.04  0.05  0.06  0.07  0.08  0.09</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ for i in *; do sed -i &quot;3s/0.05/$i/g&quot; $i/INCAR ; done  </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ grep SIGMA */INCAR</span><br><span class="line">0.01/INCAR:SIGMA = 0.01</span><br><span class="line">0.02/INCAR:SIGMA = 0.02</span><br><span class="line">0.03/INCAR:SIGMA = 0.03</span><br><span class="line">0.04/INCAR:SIGMA = 0.04</span><br><span class="line">0.05/INCAR:SIGMA = 0.05</span><br><span class="line">0.06/INCAR:SIGMA = 0.06</span><br><span class="line">0.07/INCAR:SIGMA = 0.07</span><br><span class="line">0.08/INCAR:SIGMA = 0.08</span><br><span class="line">0.09/INCAR:SIGMA = 0.09</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong></p>
+<ul>
+<li>这里我们用的是双引号 “ “ ，sed 命令中你会见到大部分都用单引号 ‘ ‘ 。但如果这里使用单引号，则所有的 0.01 都会被替换成 $i (单引号中的$i 是纯字符)，因为单引号中的所有内容都会被当做字符来处理，也就是里面是什么就输出什么。使用双引号，则可以读取变量 $i 的值，下面的例子大家一看就知道怎么回事了:</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ abc=bigbro</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ echo abc</span><br><span class="line">abc</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ echo &#x27;$abc&#x27;</span><br><span class="line">$abc</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ echo $abc</span><br><span class="line">bigbro</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex03$ echo &quot;$abc&quot;</span><br><span class="line">bigbro</span><br></pre></td></tr></table></figure>
+<p>这里单引号中的内容被原封不动地打印出来了。而双引号的话，则可以顺利地把变量调用起来。</p>
+<ul>
+<li>for i in <em>;  这里的 </em> 指的是当前目录下所有的文件以及文件夹，本例中没有文件，只有从0.01， 0.02， 0.03 到 0.09 的文件夹；所以： for i in  *  =   for i in 0.01  0.02 0.03  0.04  0.05 0.06  0.07  0.08 0.09</li>
+</ul>
+<p>1.5.2 使用sed 命令将INCAR中的 0.05 (所有文件夹中的都是0.05)替换成文件夹的数字;  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -i &quot;3s/0.05/$i/g&quot; $i/INCAR </span><br></pre></td></tr></table></figure>
+<p>当$i的值为0.01的时候，我们就把0.01/INCAR中的0.05替换为0.01；为0.02的时候，就把0.02/INCAR中的0.05替换为0.02，依次类推，直至for循环完成。</p>
+<p>1.6 该命令瞬间运行完成，我们使用grep SIGMA 来查看下这些文件夹中的INCAR参数 ，圆满完成任务!</p>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在ex03的练习中，我们并不着急去提交任务，反正已经走了计算的路，以后提交任务的机会还多着呢，也不差这一两天的学习时间。先从简单到复杂些，逐渐掌握Linux的一节操作命令，对以后的学习帮助很大。</p>
+<p>1) 学会 man command 或者 command –help 查看命令的具体参数;</p>
+<p>2) 大量使用sed 命令进行操作练习;</p>
+<p>3) 知道 * 在for循环中代表的含义</p>
+<p>3) 熟知单引号和双引号的使用，以及区别</p>
+<p>4) 主动搜索相关的Linux命令的相关知识，积极操练。</p>
+<p>5) 学会从单一操作，通过for循环转化成批量操作的思路。</p>
+<ul>
+<li>for i in XXX; do YYY; done </li>
+<li>XXX就是我们要操作的范围或者对象</li>
+<li>YYY就是单一的一个操作。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -472,7 +1364,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2017/10/14/ex01/" class="post-title-link" itemprop="url">Ex1 VASP基本输入文件的准备（一）</a>
+          <a href="/2017/10/14/ex01/" class="post-title-link" itemprop="url">Ex01 VASP基本输入文件的准备（壹）</a>
         </h2>
 
         <div class="post-meta-container">
@@ -490,7 +1382,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 23:26:07" itemprop="dateModified" datetime="2021-12-27T23:26:07-05:00">2021-12-27</time>
+      <time title="修改时间：2022-07-24 09:44:02" itemprop="dateModified" datetime="2022-07-24T09:44:02-04:00">2022-07-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -503,7 +1395,7 @@
     </span>
 
   
-    <span id="/2017/10/14/ex01/" class="post-meta-item leancloud_visitors" data-flag-title="Ex1 VASP基本输入文件的准备（一）" title="阅读次数">
+    <span id="/2017/10/14/ex01/" class="post-meta-item leancloud_visitors" data-flag-title="Ex01 VASP基本输入文件的准备（壹）" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -533,29 +1425,28 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>基本的输入文件，指的是VASP计算必不可少的输入文件，对新手来说先记住这四个：INCAR，KPOINTS，POSCAR，POTCAR。这几个不懂，不要紧，后面我们会结合例子，慢慢介绍这几个文件的准备工作。</p>
+          <p>基本的输入文件，指的是VASP计算必不可少的输入文件，对新手来说先记住这四个文件的名字：INCAR，KPOINTS，POSCAR，POTCAR。具体是干嘛用的？不懂的话不要紧，后面我们会结合例子，慢慢介绍这几个文件的准备工作。</p>
 <h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>准备输入文件， 脑子里要有下面几个概念:</p>
 <ul>
-<li><p>Rubbish in，Rubbish out!  程序只负责算，对错由你决定!</p>
+<li><p>Rubbish in，Rubbish out!  程序只负责算，对错由你决定！错误主要有3类：</p>
+<ul>
+<li>模型错误：也就是建模这一块出错了，主要对应的是POSCAR；</li>
+<li>计算参数：INCAR，KPOINTS，POTCAR</li>
+<li>提交任务的脚本或者命令出错。</li>
+</ul>
 </li>
 <li><p>遇到不懂的参数： (思考 + 看官网)！ (思考 + 看官网)！ (思考 + 看官网)！</p>
 </li>
-<li><ul>
-<li>重要的话说三遍，不要去看网上那些乱七八糟的说明书。如果英语不好，那么这是一个锻炼你阅读能力的好机会。通过查阅官网解决问题，可以保证你的血统纯正，进而提高你的杀伤力。</li>
-</ul>
-</li>
-<li><p>所有的输入文件都只是文本而已。这句话的意思是：所有的输入文件都可以通过文本编辑器打开，比如：</p>
-</li>
+<li>重要的话说三遍，尽量不要去看网上那些乱七八糟的教程。如果英语不好，那么这是一个锻炼你阅读能力的好机会。通过查阅官网解决问题，可以保证你的血统纯正，进而提高你的杀伤力。</li>
+<li>所有的输入文件都只是文本而已。这句话的意思是：所有的输入文件都可以通过文本编辑器打开，比如：</li>
 <li><ul>
 <li>Linux下面可以用Vim</li>
 <li>Windows下用Notepad++</li>
 <li>杜绝使用Windows自带的文本编辑器：记事本，写字板。</li>
 </ul>
 </li>
-<li><p>所有的输入文本没有尾缀，Windows用户可能习惯了带各种各样尾缀的文件，但是vasp里面的输入文件，没有尾缀且都是文本。 比如你使用Notepad++这个文本编辑器写了一个输入文件，直接并保存成 INCAR就可以了。如果不小心保存成了 INCAR.txt，那么直接将尾缀.txt删除即可。</p>
-</li>
-<li><p>再次强调:对于Windows用户，本书中指的文本编辑器是:Notepad++。免费的软件，大家自己下载并安装。 请不要用写字板，记事本等编辑VASP的输入文件。如果你不听话，还是喜欢用它们，那么:</p>
-<ul>
+<li>所有的输入文本没有尾缀，Windows用户可能习惯了带各种各样尾缀的文件，但是vasp里面的输入文件，没有尾缀且都是文本。 比如你使用Notepad++这个文本编辑器写了一个输入文件，直接并保存成 INCAR就可以了。如果不小心保存成了 INCAR.txt，那么直接将尾缀.txt删除即可。</li>
+<li>再次强调:对于Windows用户，本书中指的文本编辑器是:Notepad++。免费的软件，大家自己下载并安装。 请不要用写字板，记事本等编辑VASP的输入文件。如果你不听话，还是喜欢用它们，那么:<ul>
 <li>出错，自己负责，有时候你会死的很惨，折腾很久可能都找不到哪里出错了；</li>
 <li>出错，自己检查有没有在提交任务前运行：dos2linux 这个命令转换下格式</li>
 </ul>
@@ -563,16 +1454,16 @@
 <li>一步一步按照本书的练习进行操作，有问题，先记下来，如果后面没有得到解答，去<strong>《序言》</strong>找联系方式咨询大师兄。</li>
 </ul>
 <h3 id="VASP输入和输出文件"><a href="#VASP输入和输出文件" class="headerlink" title="VASP输入和输出文件"></a>VASP输入和输出文件</h3><ul>
-<li><p>有了上面的概念，我们就可以准备输入文件了。下面是官网列出VASP的输入和输出文件，in 代表输入，out代表输出。先声明一下:大家不要被下面这么多文件吓傻了，脑子里有个印象就行，很多文件可能穷奇你一生的计算都用不到，而且你以后会花很多时间在删这些乱七八糟的文件上面。所以，大家先简单过目一下即可:</p>
+<li><p>有了上面的概念，我们就可以准备输入文件了。下面是官网列出VASP的输入和输出文件，in 代表输入，out代表输出。先声明一下：大家不要被下面这么多文件吓傻了，脑子里有个印象就行，很多文件可能穷奇你一生的计算都用不到，而且你以后会花很多时间在删这些乱七八糟的文件上面。对于新手的话，大家先简单过目一下即可。可以理解为，从未开过车的你，一下子钻到车里，首先要做的就是熟悉车内部的环境，具体什么功能、怎么回事，后面慢慢摸索。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">INCAR      in    **</span><br><span class="line">STOPCAR    in</span><br><span class="line">stout      out</span><br><span class="line">POTCAR     in     **</span><br><span class="line">KPOINTS    in     **</span><br><span class="line">IBZKPT     out</span><br><span class="line">POSCAR     in     **</span><br><span class="line">CONTCAR    out</span><br><span class="line">CHGCAR     in/out</span><br><span class="line">CHG        out</span><br><span class="line">WAVECAR    in/out</span><br><span class="line">TMPCAR     in/out</span><br><span class="line">EIGENVAL   out</span><br><span class="line">DOSCAR     out</span><br><span class="line">PROCAR     out</span><br><span class="line">OSZICAR    out</span><br><span class="line">PCDAT      out</span><br><span class="line">XDATCAR    out</span><br><span class="line">LOCPOT     out</span><br><span class="line">ELFCAR     out</span><br><span class="line">PROOUT     out</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>对于VASP计算来说，前面这一大堆中的 INCAR ， KPOINTS， POSCAR 和POTCAR 是必不可少的输入文件，必须有!</p>
-</li>
-<li><ul>
+<ul>
 <li>INCAR 告诉VASP算什么，怎么算。</li>
-<li>KPOINTS 包含计算的K点信息(K点是什么，这个问题很抽象，脑子里先记住，计算的时候必须有这个东西)。</li>
+<li>KPOINTS 包含计算的K点信息（K点是什么，这个问题很抽象，脑子里先记住，计算的时候必须有这个东西）。</li>
 <li>POSCAR是计算模型结构的文字描述，也就是各个原子在xyz方向的坐标信息。</li>
 <li>POTCAR对应的是计算过程中每个原子的平面波基组，描述体系中对应的原子核和电子的相关信息。</li>
+<li>提交任务的脚本或者命令，需要你自己准备，没有在列表里面。</li>
 </ul>
 </li>
 </ul>
@@ -583,7 +1474,7 @@
 <ul>
 <li><p>INCAR 中有很多参数，改变参数来控制计算细节，从而得到我们期望的结果。所以，记住：Rubbish in， Rubbish out。自己算什么，心里要有数。</p>
 </li>
-<li><p>网上很多人发INCAR的教程，列了一堆参数进去，甚至长达两页，有些连默认值也放在里面了，恨不得把所有参数全部放进去。不过，请记住：那些令人眼花缭乱的只是唬人装逼用的，在实际计算中会严重拖你的后腿。 </p>
+<li><p>网上很多人发INCAR的教程，列了一堆参数进去，甚至长达两页，有些连默认值也放在里面了，恨不得把所有参数全部放进去。不过，请记住：那些令人眼花缭乱的只是唬人装逼用的，在实际计算中会严重拖你的后腿，占了那么多行，修改起来也费劲。</p>
 </li>
 <li><p>熟知各个参数的数值意义，以及在不同计算任务中的设置至关重要。</p>
 </li>
@@ -596,26 +1487,26 @@
 </ul>
 </li>
 </ul>
-<h3 id="INCAR-的输入工作"><a href="#INCAR-的输入工作" class="headerlink" title="INCAR 的输入工作"></a>INCAR 的输入工作</h3><p>打开编辑器，把下面几行挨个输入进去: </p>
+<h3 id="INCAR-的输入工作"><a href="#INCAR-的输入工作" class="headerlink" title="INCAR 的输入工作"></a>INCAR 的输入工作</h3><p>打开编辑器，把下面几行挨个输入进去: （#以及后面的就不要输入了）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SYSTEM = O atom       # 氧元素符号，不是零!</span><br><span class="line">ISMEAR = 0            # 是零，不是氧元素符号，对于分子或者原子，用0.</span><br><span class="line">SIGMA = 0.01          # 对于分子或者原子，用0.01</span><br></pre></td></tr></table></figure>
 <p><strong>INCAR的注意事项：</strong></p>
 <ul>
-<li><strong>#</strong>后面写的是汉语，是给大家展示用的，大家在写的时候，最好不要把汉语写进去，有可能会出错！</li>
-<li><p><strong>#</strong>号后面的内容对计算不会造成影响，可以不用输入；</p>
+<li><strong>#</strong>后面写的是汉语，是给大家展示用的。 大家在写INCAR的时候，最好不要把汉语写进去，有可能会出错！</li>
+<li><p><strong>#</strong>号后面的内容对计算不会造成影响，主要作为注释用，解释这个参数干嘛用的，可以不用输入；</p>
 </li>
 <li><p>每个参数后面跟着等号 <strong>=</strong> ， </p>
 </li>
-<li><p>等号（<strong>=</strong>）前后可以有空格，也可以没有。ISMEAR=0 和 ISMEAR = 0 是一样的，</p>
+<li><p>等号（<strong>=</strong>）前后可以有空格，也可以没有。<code>ISMEAR=0</code> 和 <code>ISMEAR = 0</code> 是一样的，</p>
 </li>
 <li><p>写INCAR的时候，<strong>不要使用 tab</strong>，用空格替换tab；</p>
 </li>
-<li><p>官网有些旧的文件可能用的不是 # 号，而是 !。 大家记住: ! 可能会出错。</p>
+<li><p>官网有些旧的文件可能用的不是 # 号，而是 !， ! 可能会出错。最好的办法就是记住参数是干嘛用的，# 和 ！ 都不写。</p>
 </li>
 </ul>
-<h3 id="INCAR的详解"><a href="#INCAR的详解" class="headerlink" title="INCAR的详解"></a>INCAR的详解</h3><h4 id="SYSTEM"><a href="#SYSTEM" class="headerlink" title="SYSTEM"></a>SYSTEM</h4><p>SYSTEM 后面是该计算的说明。你的这个任务算的是什么，目的是什么，体系是什么？等等，这写都可以<strong>随便</strong>写在里面。随便的意思就是可以任意写：</p>
+<h3 id="INCAR的详解"><a href="#INCAR的详解" class="headerlink" title="INCAR的详解"></a>INCAR的详解</h3><h4 id="SYSTEM"><a href="#SYSTEM" class="headerlink" title="SYSTEM"></a>SYSTEM</h4><p>SYSTEM 后面是该计算的说明。你的这个任务算的是什么，目的是什么，体系是什么？等等，这些都可以<strong>随便</strong>写在里面，<strong>随便</strong>的意思就是可以任意写。</p>
 <ul>
 <li>SYSTEM = O atom 和 SYSTEM = I LOVE BigBro  和 SYSTEM = VASP， 除了多出几个字符外，对计算没有什么影响。</li>
-<li>不建议大家在这一行里写一堆乱七八糟的东西。</li>
+<li>情诗，骂人的话也可以写在 = 后面。但不建议大家在这一行里写一堆乱七八糟的东西，另外还是得避免把中文写在这里；</li>
 <li>当然，这一行有或者没有，对计算结果不会有任何影响，看着不爽也可以直接删除。</li>
 </ul>
 <h4 id="ISMEAR"><a href="#ISMEAR" class="headerlink" title="ISMEAR"></a>ISMEAR</h4><p>ISMEAR这一项，目前需要记住的是：</p>
@@ -626,12 +1517,12 @@
 <p>下面是VASP官网的一些解释，新手暂时看不懂不要紧，把需要记住的这两条死死记住就可以了。</p>
 <ul>
 <li>对于半导体和绝缘体体系，ISMEAR的值取绝对不能大于0， 一般用0；</li>
-<li>对所有体系，如果想获取更加精确能量的时候用-5：但使用-5的时候，K点数目小于3则程序会罢工；</li>
+<li>对所有体系，如果想获取更加精确能量的时候用-5，但这时候如果K点数目小于3，程序则会罢工；</li>
 <li>K 点少，半导体或者绝缘体，那么只能用 ISMEAR = 0；</li>
 <li>在DOS能带计算中，使用ISMEAR= -5 用于获取精确的信息。 </li>
-<li>对于金属来说，ISMEAR的取值一般为0，1；</li>
+<li>对于金属来说，ISMEAR的取值一般为&gt;=0 的数值（0,1,2）；</li>
 <li>保守地说，ISMEAR = 0 (Gaussian Smearing) 可以满足大部分的体系（金属，导体，半导体，分子）；</li>
-<li>如果不知道怎么取ISMEAR，1）直接用0；2）测试不同的值对计算的影响。</li>
+<li>如果不知道怎么取ISMEAR，直接用0是一个很保险的做法。也可以测试不同的值对计算的影响，但是新手的话，即使测试完了，也不知道根据什么去判断对结果的影响。</li>
 </ul>
 <h4 id="SIGMA"><a href="#SIGMA" class="headerlink" title="SIGMA:"></a>SIGMA:</h4><p>SIGMA的取值和ISMEAR息息相关，也就是和ISMEAR这个参数同时出现，设定。下面是一些基本的介绍：</p>
 <ul>
@@ -646,17 +1537,26 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep &#x27;entropy T&#x27;  OUTCAR </span><br></pre></td></tr></table></figure>
 <p><strong>注意1：</strong>这里有两个单引号，不要输入的时候漏掉。</p>
 <p>用这个命令，得出的能量除以体系中原子的数目（也就是平均到每个原子上），然后再和 0.001 eV 比较。如果小于，SIGMA取值OK，如果大于，再换个小点的数值进行测试。</p>
-<p><strong>注意2：</strong>这里的说的entropy，是因为ISMEAR展宽这个计算方法引入的，跟我们物理化学书里面的entropy完全是两码事。后面我们会介绍如何通过频率分析计算物理化学里面的Entropy。</p>
+<p><strong>注意2：</strong>这里的说的entropy，是因为ISMEAR展宽这个计算方法引入的，跟我们物理化学书里面的entropy完全是两码事。后面我们会介绍如何通过频率分析计算物理化学里面的Entropy。千万别把这个数值当成频率所对应的entropy。</p>
 <h3 id="INCAR的保存"><a href="#INCAR的保存" class="headerlink" title="INCAR的保存"></a>INCAR的保存</h3><p>输入完上面的几行，我们就可以保存INCAR文件了。这里需要注意的是：INCAR后面没有尾缀，<strong>所以：INCAR.txt是错误的。</strong>为避免这个问题：</p>
 <ul>
-<li>Notepad++ 保存的时候，文件名为: INCAR，保存类型选择 Alltypes (<em>.</em>)。</li>
-<li>用Vim的筒子们直接将前面的内容保存成INCAR即可。</li>
+<li><p>Notepad++ 保存的时候，文件名为: INCAR，保存类型选择 Alltypes (<em>.</em>)。</p>
+</li>
+<li><p>用Vim的筒子们直接将前面的内容保存成INCAR即可。</p>
+</li>
+<li><p>将INCAR.txt 通过<code>mv</code>命令重命名为INCAR。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv INCAR.txt INCAR -f</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>前面说了很多，对新手，可能会犯晕。不过不用担心，<strong>只要记住关键三点，我们就圆满完成本节的任务</strong>：</p>
 <ul>
-<li>INCAR是纯文本没有尾缀; </li>
-<li>算原子或者分子时：ISMEAR = 0， SIGMA = 0.01</li>
-<li>Windows用户请使用Notepad++作为文本编辑器，不要使用自带的记事本或者写字板</li>
+<li><p>INCAR是纯文本没有尾缀; </p>
+</li>
+<li><p>算原子或者分子时：ISMEAR = 0， SIGMA = 0.01</p>
+</li>
+<li><p>Windows用户请使用Notepad++作为文本编辑器，不要使用自带的记事本或者写字板，如果使用了，计算前务必要通过<code>dos2unix</code>转换一下格式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dos2unix INCAR </span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>上一节，我们学习了INCAR的简单准备工作。这一节，我们学习另外一个输入文件的写法：<strong><em>KPOINTS</em></strong></p>
 <h3 id="简单说明-1"><a href="#简单说明-1" class="headerlink" title="简单说明"></a>简单说明</h3><p>KPOINTS文件在计算中的作用，一方面决定了计算的精度，同时也影响计算所需要的时间。精度高，时间长，精度低，时间短。所以：合理设置KPOINTS文件，可以保证我们使用最少的时间，来获取准确可靠的结果。</p>
@@ -698,7 +1598,6 @@
 </li>
 <li>前面看不懂，没事。<strong>记住这一点，本节就圆满完成任务</strong>：气体分子，原子计算的时候，使用gamma点即可。</li>
 </ul>
-<p>$\require{mediawiki-texvc}$</p>
 <p>这一节，我们学习VASP计算中模型的文件：<strong><em>POSCAR</em></strong></p>
 <h3 id="简单说明-2"><a href="#简单说明-2" class="headerlink" title="简单说明"></a>简单说明</h3><p>POSCAR 里面包含了你要进行计算的模型结构信息。也就是你要研究的对象。POSCAR有自己固定的格式，每一行都有特定的含义，认真掌握这些，对于搭建模型非常有帮助。对于本节的例子：O原子的计算中，我们要把O原子放到一个格子里面，格子大小为：8 $\times$ 8 $\times$ 8 $\AA{^3}$。那么POSCAR应该这样写。</p>
 <h4 id="POSCAR的输入"><a href="#POSCAR的输入" class="headerlink" title="POSCAR的输入"></a>POSCAR的输入</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">O atom in a box </span><br><span class="line">1.0             # universal scaling parameters </span><br><span class="line">8.0 0.0 0.0     # lattice vector a(1) </span><br><span class="line">0.0 8.0 0.0     # lattice vector a(2)  </span><br><span class="line">0.0 0.0 8.0     # lattice vector a(3)  </span><br><span class="line">O               # O element， not zero</span><br><span class="line">1               # number of atoms </span><br><span class="line">Cartesian       # positions in cartesian coordinates </span><br><span class="line">0 0 0           #</span><br></pre></td></tr></table></figure>

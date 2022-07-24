@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">166</span>
+        <span class="site-state-item-count">168</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,580 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/11/ex63/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/10/11/ex63/" class="post-title-link" itemprop="url">Ex63 吸附能的计算（八）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-10-11 02:06:48" itemprop="dateCreated datePublished" datetime="2018-10-11T02:06:48-04:00">2018-10-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/10/11/ex63/" class="post-meta-item leancloud_visitors" data-flag-title="Ex63 吸附能的计算（八）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/10/11/ex63/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/11/ex63/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>在进行本文的内容之前，大家先玩个人尽皆知的小游戏：</p>
+<h2 id="找不同"><a href="#找不同" class="headerlink" title="找不同"></a>找不同</h2><p><strong>（一）</strong>找出下面两幅图中不同的部分。</p>
+<p><img src="/2018/10/11/ex63/ex63-1.jpeg" alt=""></p>
+<p>相信这个大家很快都能找出来，找不出来的话，不建议继续浏览下面的部分。</p>
+<p>（二）下面两个截图中，找出不同的部分</p>
+<p><img src="/2018/10/11/ex63/ex63-2.png" alt=""> </p>
+<p><img src="/2018/10/11/ex63/ex63-3.png" alt=""></p>
+<p>（三）下面两个截图中，找出不同的部分</p>
+<p><img src="/2018/10/11/ex63/ex63-4.png" alt="">  <img src="/2018/10/11/ex63/ex63-5.png" alt=""></p>
+<p>聪明美丽能干活泼善良可爱宇宙超级无敌的你会发现： </p>
+<p>在找不同2中，两个图中内容的区别在于：  POSCAR 的第6行<br>在找不同3中，两个图中内容的区别在于：  POTCAR 的第二个元素</p>
+<p>当你发现了这些不同之处，就应该差不多明白了，这是2个计算任务文件，一个是C原子在Cu(111), 另一个是O原子在Cu(111)上的计算。</p>
+<p>仔细分析不同的地方，你就应该想到: 既然我们有了O吸附相关的计算文件，那么就可以在此模板基础上，快速编辑C的吸附模型，然后进行计算。</p>
+<p>在进行下面的快速编辑模型的内容，先给大家介绍一个Linux下面常用的比较不同的命令：diff。简单操作如下，更高级的大家自由去百度学习，并加以发挥拓展。 </p>
+<p><img src="/2018/10/11/ex63/ex63-6.png" alt=""></p>
+<h2 id="批量搭结构"><a href="#批量搭结构" class="headerlink" title="批量搭结构"></a>批量搭结构</h2><p>快速准备C原子在Cu(111)上吸附的计算文件：</p>
+<p>1）<code>INCAR</code> 保持一样<br>2）<code>KPOINTS</code> 保持一样<br>3）<code>POSCAR</code>: 将 O 直接替换成C就OK了。<br>i）直接编辑，无数种编辑器任你选。不过 Windows下一定要记得编辑完后运行下: <code>dos2unix</code><br>ii）使用sed命令： <code>sed -i &#39;6s/O/C/g&#39; POSCAR</code></p>
+<p>4）<code>POTCAR</code>: </p>
+<p>i) 使用前面我们介绍的脚本：potcar.sh， 脚本运行例子如下图：（去本书的附录章节里面找脚本）</p>
+<p><a href="https://www.bigbrosci.com/2017/12/21/A05/">https://www.bigbrosci.com/2017/12/21/A05/</a></p>
+<p><img src="/2018/10/11/ex63/ex63-7.png" alt=""></p>
+<p>直接输入脚本名，后面跟你想要的元素名。</p>
+<p>看下本人在天河II号服务器上的设置。</p>
+<p>1） potcar.sh 在本人账号的： <code>~/bin</code> 目录下<br>2） VASP所有的POTCAR文件在： <code>~/bin/pot</code> 目录下<br>3） pot目录下，每个元素的文件夹中有2两个文件：<code>POTCAR</code> 和 <code>PSCTR</code> （PSCTR这个我也不知道有什么用。）<br>4）新手，没有经验，不会用超算的，不会Linux的，可以效仿下：</p>
+<p><img src="/2018/10/11/ex63/ex63-8.png" alt=""></p>
+<p>脚本下载后，将POTCAR所在的目录替换成你的： path=”你的目录”。<br>怎么知道目录呢？ 使用上图中的pwd 这个命令。</p>
+<p><img src="/2018/10/11/ex63/ex63-9.png" alt=""></p>
+<p>ii) 我很多时候都懒得去看POSCAR中的元素以及顺序，便打算根据POSCAR中的内容生成对应的POTCAR，于是便写了一个脚本：<code>pospot.sh</code>。使用方法如下： </p>
+<p><img src="/2018/10/11/ex63/ex63-10.png" alt=""></p>
+<p>上图运行了这个脚本两次：<br>1） 第一次运行的时候，目录下没有POTCAR，于是脚本直接生成新的<br>2） 第二次运行的时候，目录下有了一个POTCAR，于是脚本将POTCAR中的元素顺序读出来，然后删掉旧的POTCAR，重复1）的操作，生成新的POTCAR。（大师兄本人的扯淡逻辑，大家可以忽略，脚本文章末尾下载直接使用即可。）<br>3） 注意：这个脚本读取的仅仅是以 元素 命名文件夹中的POTCAR。什么意思呢？ 举个例子：Cu的POTCAR有：Cu，Cu_GW, Cu_pv，Cu_sv_GW这四种。脚本读取的仅仅是Cu中的POTCAR。如果你想用<code>Cu_pv</code>，那么请使用： <code>potcar.sh Cu_pv C H O</code>这个命令。<br>4） 脚本内容如下：大家可以自己手动敲一遍，找找感觉。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash  </span></span><br><span class="line"><span class="comment"># show old POTCAR </span></span><br><span class="line"><span class="keyword">if</span> [ -e POTCAR ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;old POTCAR containes....&#x27;</span></span><br><span class="line">  grep TIT POTCAR| awk <span class="string">&#x27;&#123;print $4&#125;&#x27;</span> | xargs</span><br><span class="line"><span class="comment"># Remove old POTCAR  </span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Removing OLD POTCAR.....&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line">  rm POTCAR -f</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># generate new POTCAR </span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Generating NEW POTCAR...&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line">potcar.sh $(sed -n 6p POSCAR)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Done&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># compare elements in new POTCAR and POSCAR</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;NEW POTCAR containes....&#x27;</span></span><br><span class="line">grep TIT POTCAR| awk <span class="string">&#x27;&#123;print $4&#125;&#x27;</span> | xargs</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Elements in POSCAR&quot;</span> </span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line">sed -n 6p POSCAR</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>5）提交任务的脚本保持一样</p>
+<p>前面所说的都是一些具体的做法，用化学的思维来说，应该叫基元反应。当你掌握了这些具体的做法后，可以通过批处理的方式将它们集成起来。本人的做法如下：</p>
+<p>1）批量编辑POSCAR：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed  -i  &#x27;6s/O/C/g&#x27; */POSCAR </span><br></pre></td></tr></table></figure>
+<p><img src="/2018/10/11/ex63/ex63-12.png" alt=""></p>
+<p>i） 将O原子的计算直接复制成C原子的<br>ii）使用sed 批量编辑POSCAR中的元素行。</p>
+<p>2）完成前面的一步，直接批量提交任务： 提交任务的时候，脚本自动根据POSCAR生成对应的POTCAR.</p>
+<p><img src="/2018/10/11/ex63/ex63-13.png" alt=""><br><img src="/2018/10/11/ex63/ex63-14.png" alt=""></p>
+<p>我是怎么做的呢？</p>
+<p>在<code>~/.bashrc</code> 文件中 将<code>pospot.sh</code> 写到 <code>qsuball</code>里面了。大家可以看下我的<code>~/bashrc</code>文件：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">alias q=&#x27;yhqueue&#x27;</span><br><span class="line">alias qsuball=&#x27;for i in * ; do cd $i ; pospot.sh &amp;&amp; qsub ; cd $OLDPWD; done&#x27;</span><br><span class="line">alias qdel=&#x27;yhcancel&#x27;</span><br><span class="line">alias fenergy=&#x27;grep &quot;  without&quot; OUTCAR&#x27;</span><br><span class="line">alias ..=&#x27;cd ..&#x27;</span><br><span class="line">alias ...=&#x27;cd ../..&#x27;</span><br><span class="line">alias ....=&#x27;cd ../../..&#x27;</span><br><span class="line">alias gl=&#x27;grep LOOP OUTCAR&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="批量删除任务"><a href="#批量删除任务" class="headerlink" title="批量删除任务"></a>批量删除任务</h2><p>前面批量提交了任务，但这些任务已经算起来了，但这些结果对我没有用出，纯属浪费机时，所以我要杀死它们。这里介绍给大家一个简单的批量删除任务的命令： {..} 操作如下：</p>
+<p><img src="/2018/10/11/ex63/ex63-16.png" alt=""></p>
+<p><code>qdel</code> 就是天河II号中的<code>yhcancel</code>命令，本人根据自己的习惯，修改了一下<code>alias</code>中的内容（见前面<code>~/bashrc</code>文件的内容）</p>
+<p>如果你的任务不是连续的，也可以使用这个命令， 只要把第一个和最后一个任务的ID号写在花括号里两个点<code>..</code>的两端即可。非常简单，暴力和直接。</p>
+<p>中间如果有些任务不是你的，即使你想杀死也没有权限，系统会报错，直接忽视即可。</p>
+<h2 id="找不同-1"><a href="#找不同-1" class="headerlink" title="找不同"></a>找不同</h2><p>前面我们弄完了C原子的计算任务，下面我们再玩一次找不同的游戏</p>
+<p>找不同4：下面2个截图中找出不同的地方：</p>
+<p><img src="/2018/10/11/ex63/ex63-17.png" alt="">  <img src="/2018/10/11/ex63/ex63-18.png" alt=""></p>
+<p>师兄，这个题很简单，你要算H原子的吸附。跟前面的操作是一样的。</p>
+<p><strong>但是</strong>，请看最后一行。</p>
+<p>仔细的你会发现，这个题跟前面的有些不一样，原因在于最底部的坐标也稍微变化了一下，从<code>7.935</code>变成 <code>7.635</code>了。 这是为什么呢？<br>原因在于和C，O原子比起来，H原子很小，它在表面上吸附的时候，会更贴近表面。因此我们把z方向的坐标稍微修改了一下： 减小了 0.3 A。这样做的话可以保证我们的初始结构更<strong>具有合理的物理化学意义</strong>，从而加快计算的收敛，节约时间。大家在搭建模型的时候，结构合理是必须要考虑的，也是脑子里要时刻思考的事情。</p>
+<p>通过<code>sed</code>命令批量操作在H原子的吸附上，只能完成一半的任务，也就是把元素行中的C或者O改成H。而另一半的任务：坐标的修改，则需要大家自己手动操作一下（记得在<code>Cartesian</code>坐标下修改，如果你脑子转的很快，可以迅速将<code>Direct</code>转化为<code>Cartesian</code>的话，也可以直接编辑<code>Direct</code>坐标）。</p>
+<h2 id="扩展练习："><a href="#扩展练习：" class="headerlink" title="扩展练习："></a>扩展练习：</h2><p>1） 完成本节的所有操作；<br>2） 计算C,H，O在Cu(111)表面上，不同位点上的吸附；<br>3） 思考脚本的运行原理；<br>4） 思考如何通过：（找不同 + 写脚本）来节省自己的体力；<br>5） 思考自己平时常见的人工错误，并尝试用脚本来解决或者避免。</p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本文的题目是闭着眼算，不是让你真正闭着眼去提交任务，而是不通过可视化的界面进行结构的批量搭建，输入文件的批量处理以及提交任务。希望大家在搭结构的时候，多一些思考，少一些操作，在搭建合理结构的路上突飞猛进。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/10/ex62/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/10/10/ex62/" class="post-title-link" itemprop="url">Ex62 吸附能的计算（七）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-10-10 02:06:48" itemprop="dateCreated datePublished" datetime="2018-10-10T02:06:48-04:00">2018-10-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/10/10/ex62/" class="post-meta-item leancloud_visitors" data-flag-title="Ex62 吸附能的计算（七）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/10/10/ex62/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/10/ex62/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面我们得到了不同吸附位点上吸附能的顺序，但结构是什么样子的呢？我们优化完的结果对不对？这还是一个问题。因此我们需要查看一下优化完的结果。</p>
+<h2 id="1-获取（下载）CONTCAR"><a href="#1-获取（下载）CONTCAR" class="headerlink" title="1  获取（下载）CONTCAR"></a>1  获取（下载）CONTCAR</h2><p>没有结构，我们看个屁啊？所以第一步就是把超算中心的计算结果下载到自己的电脑里面。这里我们说获取或者下载CONTCAR，而不是OUTCAR等其他VASP的输入文件，原因在于本人这边网速传输太慢了。所以我的策略是能量等信息在服务器里面直接获取，结构的话只下载CONTCAR。如果网速允许的话，可以把所有的计算结果下载到自己电脑里面，这样查看更加方便。</p>
+<p><img src="/2018/10/10/ex62/ex62-1.png" alt=""></p>
+<p><img src="/2018/10/10/ex62/ex62-2.png" alt=""></p>
+<p>上图中，我们先挂载超算中心到本地电脑上，然后将计算目录下的CONTCAR复制到本地桌面上。（ccall 这个命令）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in * ; do if [ -e $i/CONTCAR ]; then mkdir ~/Desktop/$i; cp $i/CONTCAR ~/Desktop/$i ; fi; done</span><br></pre></td></tr></table></figure>
+<p>备注：<br>由于本人这边传输很慢，即使挂载了超算中心到本地电脑上，访问内容的时候，后台依然有数据传输。所以先下载再查看。</p>
+<h2 id="2-使用ASE查看结构："><a href="#2-使用ASE查看结构：" class="headerlink" title="2 使用ASE查看结构："></a>2 使用ASE查看结构：</h2><p>ASE 是Atomic Simulation Environment的简称，下载安装见：<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/">https://wiki.fysik.dtu.dk/ase/</a>  本人只会在Linux下面使用，Windows用户自行解决。解决不了，我也没有办法。如果Linux用户解决不了，那么使用后面的第二种方法：p4vasp查看结构。</p>
+<p>如果你的网速很给力，可以直接通过自己电脑进入超算中心的目录，进行下面的操作。</p>
+<p><img src="/2018/10/10/ex62/ex62-3.png" alt=""></p>
+<p>这个软件的<strong>优点</strong>就是： 我们可以一次性打开当前目录下，所有计算的CONTCAR， 从而避免了使用软件挨个导入结构查看。无形中会减少我们很多的工作量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ase-gui  */CONTCAR </span><br></pre></td></tr></table></figure>
+<h2 id="3-使用p4vasp-查看结构"><a href="#3-使用p4vasp-查看结构" class="headerlink" title="3 使用p4vasp 查看结构"></a>3 使用p4vasp 查看结构</h2><p>Ubuntu下面唯一推荐的软件：下面图片拍的不是很好，大家凑活着看吧。</p>
+<p><img src="/2018/10/10/ex62/ex62-4.png" alt=""></p>
+<p>这里，p4vasp和前面说的ASE一样，也可以一个命令打开所有的计算结果。</p>
+<p><img src="/2018/10/10/ex62/ex62-5.png" alt=""></p>
+<p>作为<code>p4vasp</code>的忠实粉丝，这也是本人唯一推荐的<code>Ubuntu</code>系统下查看，搭建结构的软件。</p>
+<ul>
+<li>i）使用p4vasp可以非常容易地进行原子替换，平移，旋转等基本操作。</li>
+<li>ii）可以查看VASP的结算结果，DOS，能带，优化过程等等。</li>
+<li>iii）Windows 系统下p4vasp的功能有些弱，除了不能批量打开文件外（可能是本人不会用），其他的和Ubuntu差不多。</li>
+<li>iv）这个软件也有很多其他细微不尽人意的地方，但不影响我们的正常使用。</li>
+<li>如果你刚开始接触这个软件，认真用鼠标各个地方点点操作一下，查看各个功能按钮的作用。</li>
+<li>此外，VASP官网的<code>ppt</code>教程中也有一些零星的<code>p4vasp</code>操作教程，大家可以参考一下。</li>
+</ul>
+<h2 id="4-其他软件："><a href="#4-其他软件：" class="headerlink" title="4 其他软件："></a>4 其他软件：</h2><p>当然了， 不论在linux还是Windows下面，都有很多查看结构的软件，比如：<code>Jmol</code>，<code>Xcrysden</code>，<code>Molden</code>， <code>VESTA</code>， <code>Material Studio</code>等等。这里就不再详细介绍了，主要原因是本人不太会使用这些软件操作。目前大家需要做的就是根据自己的喜好，掌握一个软件：学会查看结构，键长，键角等信息即可。切记不可贪多，等一个软件掌握好了之后，有余力的话再去学习另一个的操作。</p>
+<h2 id="5-扩展练习："><a href="#5-扩展练习：" class="headerlink" title="5 扩展练习："></a>5 扩展练习：</h2><p>1） 自己优化O在Cu(111)表面上不同位点的吸附，计算吸附能<br>2） 选择一款自己喜欢的软件，查看不同的吸附结构。<br>3） 思考其他单原子在其他金属表面上的吸附，该如何计算？<br>4） 思考原子在表面上，为什么不同吸附位点的吸附能不一样？</p>
+<h2 id="6-总结："><a href="#6-总结：" class="headerlink" title="6 总结："></a>6 总结：</h2><p>本节没有什么技术难度，全靠自己亲自手动操作，使用一个软件并不是一蹴而就的过程，大家先把基本的简单操作掌握了，后面再逐渐提高自己的其他技能。此外，本节学习完之后，单原子在表面上的吸附对大家来说应该不是什么困难的事情了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/09/ex61/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/10/09/ex61/" class="post-title-link" itemprop="url">Ex61 吸附能的计算（六）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-10-09 02:06:48" itemprop="dateCreated datePublished" datetime="2018-10-09T02:06:48-04:00">2018-10-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/10/09/ex61/" class="post-meta-item leancloud_visitors" data-flag-title="Ex61 吸附能的计算（六）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/10/09/ex61/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/09/ex61/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面一节我们搭建好了p(3x3)-Cu(111)表面上不同吸附位点的O原子吸附模型。（fcc, hcp, top以及bri）也就是我们有了4个<code>POSCAR</code>。下面我们计算O原子在不同位点上的吸附能。根据吸附能的公式，我们还要有Cu(111) slab的能量。总共5个计算。O$_2$的前面已经算了，这里就不重复了。</p>
+<p>强调一下吸附能的定义：就是物种吸附到表面上所放出的能量，放出能量意味着吸附能是负值。很多人把这个过程颠倒了，然后来定义吸附能，这是错误的！虽然数值一样，但表示的物理意义完全不一样。颠倒过来是脱附，而不是吸附！！！而基本概念搞不清楚，最直接的后果就是给审稿人留下一个坏印象，增加拒稿的几率。当然，基本概念正确也会被拒稿，概念搞错了文章也有可能会接收。</p>
+<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作:"></a>1 准备工作:</h2><p><code>INCAR</code>：和前面p(1x1)的计算一样<br><code>KPOINTS</code>：根据前面我们经常提到的经验规则：k*a=30 </p>
+<p>链接：<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html">https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html</a><br><code>POSCAR</code>：已经准备好<br><code>POTCAR</code>: 根据POSCAR生成对应的POTCAR，脚本见本书的附录章节。<br>提交任务的脚本或者命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">A rule of thumb for choosing the initial k-point sampling is, that the product, ka, between the number of k-points, k, in any direction, and the length of the basis vector in this direction, a, should be:</span><br><span class="line"></span><br><span class="line">    ka ~ 30 Å, for d band metals</span><br><span class="line">    ka ~ 25 Å, for simple metals</span><br><span class="line">    ka ~ 20 Å, for semiconductors</span><br><span class="line">    ka ~ 15 Å, for insulators</span><br><span class="line"></span><br><span class="line">Remember that convergence in this parameter should always be checked.</span><br></pre></td></tr></table></figure>
+<h2 id="2-天河II号提交任务"><a href="#2-天河II号提交任务" class="headerlink" title="2 天河II号提交任务"></a>2 天河II号提交任务</h2><p>前面我们已经讲解了如何在天河2号上提交任务，Learn VASP 系列的前面几节也介绍了一些相关的批量操作知识。下面简单通过实例操作展示下批量提交任务的一个流程。</p>
+<p><img src="/2018/10/09/ex61/ex61-1.png" alt=""></p>
+<p>其中<code>qsuball</code>是本人在<code>~/.bashrc</code>文件中，给批量提交任务的命令行随便起的一个名字，详见前面关于alias的使用介绍。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias qsuball=&#x27;for i in *; do cd $i ; qsub ; cd $OLDPWD; done&#x27;</span><br></pre></td></tr></table></figure>
+<p><code>qsub</code> 是我们在超算中心提交单个任务的脚本，内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line">rm job_sub </span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;#!/bin/bash&#x27;</span> &gt;&gt; job_sub</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export LD_LIBRARY_PATH=/THFS/opt/intel/composer_xe_2013_sp1.3.174/mkl/lib/intel64:$LD_LIBRARY_PATH&#x27;</span> &gt;&gt; job_sub </span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;yhrun -p gsc -n 24 /THFS/opt/vasp/5.4.4/vasp.5.4.4/bin/vasp_std &#x27;</span> &gt;&gt; job_sub </span><br><span class="line">yhbatch -p gsc -N 1 -J <span class="built_in">test</span> job_sub </span><br></pre></td></tr></table></figure>
+<p>将上面内容复制到一个文件里面，将文件命名为<code>qsub</code>，然后走一遍下面的2个步骤。<br>1）<code>chmod u+x qsub</code> (赋予可执行权限)<br>2)  <code>mv  qsub  ~/bin</code>  （放到 ~/bin 文件夹下）</p>
+<h2 id="3-查看结果"><a href="#3-查看结果" class="headerlink" title="3 查看结果"></a>3 查看结果</h2><p>等待任务排队，计算，结束。一个任务结束后，我们需要做的肯定就是检查结果了。那么改怎么样检查结果呢？这里列举出本人常用的几个方法和步骤。</p>
+<h3 id="1）查看OSZICAR"><a href="#1）查看OSZICAR" class="headerlink" title="1）查看OSZICAR"></a>1）查看OSZICAR</h3><p>i)  在查看<code>OSZICAR</code>之前，我们回顾下前面的INCAR。</p>
+<p><img src="/2018/10/09/ex61/ex61-2.png" alt=""> </p>
+<p>这里我们设置了<code>NSW = 500</code>,也就是允许本计算最大的离子步数。</p>
+<p>ii） 再看下<code>OSZICAR</code>的末尾部分， 命令： <code>tail  OSZICAR</code></p>
+<p><img src="/2018/10/09/ex61/ex61-3.png" alt=""></p>
+<p>从这里可以看出来，经过25个离子步，我们的计算就已经停止了，说明收敛了。</p>
+<h2 id="2）-查看OUTCAR"><a href="#2）-查看OUTCAR" class="headerlink" title="2） 查看OUTCAR"></a>2） 查看OUTCAR</h2><p><img src="/2018/10/09/ex61/ex61-4.png" alt=""></p>
+<p>对于VASP的所有计算来说，只要你看到这样的结果，说明你的任务已经算完了。这里你要记住：算完和收敛不是一回事。比如你设置的<code>NSW = 500</code>， VASP优化了<code>500</code>步没有收敛的话，会自动停止，也会出现上图的结果。</p>
+<p><strong>怎么查看收敛呢？</strong> </p>
+<p>i) 可以对比计算的离子步和我们设置的离子步。如果实际计算得了离子步小于<code>INCAR</code>中的，任务就收敛了。这也是前面查看<code>OSZICAR</code>的目的。<br>ii）可以通过<code>OUTCAR</code>里面的关键词： <code>reached</code></p>
+<p><img src="/2018/10/09/ex61/ex61-5.png" alt=""></p>
+<p>如果你看到最后面的： <code>Stopping structural energy minimisation</code>  这就表明你的优化任务已经完成。<br>而事实上，的确有很多人把这句话误认为是计算出错了，然后在群里面求助，本人实在是想不通。</p>
+<h2 id="4-删除VASP乱七八糟的输出文件"><a href="#4-删除VASP乱七八糟的输出文件" class="headerlink" title="4 删除VASP乱七八糟的输出文件"></a>4 删除VASP乱七八糟的输出文件</h2><p><img src="/2018/10/09/ex61/ex61-6.png" alt=""></p>
+<p>计算完成之后，VASP会出现很多平时我们用不到的文件，<code>CHG</code> <code>CHGCAR</code> <code>WAVECAR</code> 这三个占用的空间很大，容易把应胖撑爆。</p>
+<p>由于计算目录下的存储空间有限，本人计算的时候，一般都默认VASP不写入这些文件。</p>
+<p>此外，在表面结构优化的时候，<code>EIGENCAL, IBZKPT, REPORT,DOSCAR``以及超算中心与任务相关的输出文件：slurm-XXX</code> 文件，一般来说正常计算结束后，我们也不需要。</p>
+<p>因此，本人写了一个小脚本，用来删除这些乱七八糟的文件。脚本运行效果如上，脚本内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"><span class="keyword">for</span>  i  <span class="keyword">in</span> $(find . -name INCAR); <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">cd</span> $(dirname <span class="variable">$i</span>)</span><br><span class="line">    rm CHG  CHGCAR  job_sub  PCDAT REPORT  slurm-*.out  WAVECAR  XDATCAR -f</span><br><span class="line">    <span class="built_in">cd</span> <span class="variable">$OLDPWD</span>;</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<p>大家可以针对自己的计算任务，修改<code>rm XXX</code> 哪一行中的文件名。</p>
+<p><img src="/2018/10/09/ex61/ex61-7.png" alt=""></p>
+<p>上图中还运行了一个脚本（ta.sh），就是提取当前目录下，所有计算结果的能量。也是本人临时写的。有兴趣的可以自己照着写一遍，然后运行下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash </span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *; <span class="keyword">do</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="variable">$i</span>/OUTCAR ]; <span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> -e  <span class="variable">$i</span> <span class="string">&quot;\t&quot;</span> $(grep <span class="string">&#x27;  without&#x27;</span> <span class="variable">$i</span>/OUTCAR |tail -n 1 | awk <span class="string">&#x27;&#123;print $7&#125;&#x27;</span>) </span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+<h2 id="5-获取能量，计算吸附能"><a href="#5-获取能量，计算吸附能" class="headerlink" title="5 获取能量，计算吸附能"></a>5 获取能量，计算吸附能</h2><p>有了上面的数据，我们就可以进行吸附能的计算，如下图：</p>
+<p><img src="/2018/10/09/ex61/ex61-8.png" alt=""></p>
+<p>一般来说，使用eV作为单位，精确到小数点后面2位即可。整理下表格：</p>
+<p><img src="/2018/10/09/ex61/ex61-9.png" alt=""></p>
+<p>从上图我们可以看出来，这四个位点的吸附能强弱顺序为： fcc ≈ hcp &gt; bridge &gt; top</p>
+<h2 id="6-扩展练习"><a href="#6-扩展练习" class="headerlink" title="6  扩展练习"></a>6  扩展练习</h2><p>1） 学会如何判断计算正常结束，并且优化达到收敛的标准了？<br>2） 总结并思考不同位点的吸附能的计算。<br>3） 学会判断稳定的吸附位点。<br>4） 思考下计算结束之后，除了我们讲的这些，还有那些需要检查的？<br>5） 本节的三个脚本：<br>i)   qsub （天河II号提交任务）<br>ii） rmvasp.sh (删除乱七八糟文件)<br>iii）ta.sh (获取当前目录下，所有计算任务的能量)</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/08/ex60/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/10/08/ex60/" class="post-title-link" itemprop="url">Ex60 吸附能的计算（五）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-10-08 02:06:48" itemprop="dateCreated datePublished" datetime="2018-10-08T02:06:48-04:00">2018-10-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/10/08/ex60/" class="post-meta-item leancloud_visitors" data-flag-title="Ex60 吸附能的计算（五）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/10/08/ex60/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/08/ex60/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面我们发现将p(1x1)-Cu(111)的表面扩展成p(2x2)后，由于O的覆盖度降低了，O原子的吸附能能+1.2 eV降低到 0.2 eV作用，说明O原子更加容易吸附在表面上了。当你仔细观察p(2x2)的表面，你会发现，表面上不仅仅有Cu原子的上方可以放O原子，还有其他的位点。如下图：</p>
+<p><img src="/2018/10/08/ex60/ex60-1.png" alt=""></p>
+<p>如果我们想分析下不同位点对吸附能的影响，首先我们需要搭建模型，然后重复O原子的吸附优化步骤。本节主要简单介绍一下如何快速搭建不同的吸附位点模型。</p>
+<h2 id="1-不同表面位点："><a href="#1-不同表面位点：" class="headerlink" title="1 不同表面位点："></a>1 不同表面位点：</h2><p>观察不同位点的结构特征，在面心立方金属的(111)表面上有4种不同的位点:</p>
+<p>1) Top位，前面已经花了很多时间介绍了，本节就不再啰嗦<br>2) Bridge位：从名字大家就可以推断这个位点的吸附为两个Top原子的中间。<br>3) Fcc位和Hcp位：这两个吸附位点都是在三个原子的中心，为hollow位。</p>
+<p>那么这两个位点怎么区分呢？ </p>
+<p>如果表面的Hollow位正下方（即第二层，图中黄色的）有原子，为Hcp位，在第三层的话（图中红色的），则这个hollow为Fcc位。<br>由于Fcc位点的原子在第三层，离表面最远（far），大家把英文单词的far 和 Fcc位的第一个字母关联起来即可。远的那个就是Fcc，近的是Hcp。<br>注意： Fcc 和 Hcp 分别是 face centered cubic 和  hexagonal close-packed 的缩写。</p>
+<h2 id="2-不同位点的吸附模型"><a href="#2-不同位点的吸附模型" class="headerlink" title="2 不同位点的吸附模型"></a>2 不同位点的吸附模型</h2><p>怎么搭建Bridge和Fcc，以及Hcp位的吸附模型？</p>
+<p>1) Bridge位: </p>
+<p>这个位点在两个原子的中心。设两个原子的坐标分别为（x1，y1， z1）和（x2， y2， z2），它们中心得坐标为： （x1+x2）/ 2， （y1+y2）/ 2， （z1+z2）/ 2。在这里，z1和z2 是相等的。所以我们可以通过两个原子的坐标，计算一下中心的坐标，然后按照之前O原子搭建的步骤，添加O原子的Bridge位的坐标即可。<br>2) Fcc位和Hcp</p>
+<ul>
+<li><p>这两个位点就更容易了，前面我们知道它们正下方分别为第三层和第二层的原子。那么我们在这两层随便取个原子，x和y 方向的坐标就确定了。</p>
+</li>
+<li><p>关于z方向的坐标，大家可以想象一下，如果O原子从Top位移到Bridge，Fcc和Hcp，由于和O成键的原子多了，也就是O和表面结合地更强了，那么它在z方向的坐标肯定比在Top位上要小。所以在这三个构型的z坐标，我们可以在Top位O的基础上稍微调小一点。那么小多少呢？ 一般来说0.1-0.2Å就可以了。</p>
+</li>
+</ul>
+<h2 id="3-使用p4vasp搭结构"><a href="#3-使用p4vasp搭结构" class="headerlink" title="3 使用p4vasp搭结构"></a>3 使用p4vasp搭结构</h2><p>前面介绍的方法是直接修改POSCAR来搭建模型，对于O原子的吸附这种简单的模型，大家都还可以胜任，但如果体系复杂了，比如一个苯环，乙醇分子等等，这样我们的计算坐标的工作量就有点大了。此时，p4vasp的优势就开始慢慢显示出来了。</p>
+<h3 id="3-1-从Top到Bri"><a href="#3-1-从Top到Bri" class="headerlink" title="3.1 从Top到Bri"></a>3.1 从Top到Bri</h3><p>1） 首先，我们要有一个O原子在Top位上的吸附结构<br>2） 然后选择Top位的原子和相邻的那个原子，（p4vasp选中的结构看起来不是很清楚，见黄圈标出来的那两个）</p>
+<p><img src="/2018/10/08/ex60/ex60-2.png" alt=""></p>
+<p>3） 选则 Edit –&gt; Move Atoms 后会弹出这样的界面：</p>
+<p><img src="/2018/10/08/ex60/ex60-3.png" alt=""></p>
+<p>按照图中的1 2 3依次点击， 你便会获得一个<code>Vector</code>。也就是从5到7号原子的一个向量。</p>
+<p>但我们如果按照这个向量平移O原子的话，只会把它从5号原子移动到7号原子上，而不是Bridge的位点。 </p>
+<p>前面我们说了，Bridge的坐标就是这两个原子连线的中心。所以，我们把Vector减小一半就可以了。</p>
+<p><img src="/2018/10/08/ex60/ex60-4.png" alt=""></p>
+<p>修改完Vector之后，我们便可以移动O原子了。</p>
+<p><strong>这里注意</strong></p>
+<p>要把前面选中的5 和 7 号原子换成 O，要不然你移动的是 5和7 号原子而不是O。最后点move，效果如下：</p>
+<p><img src="/2018/10/08/ex60/ex60-5.png" alt=""></p>
+<p>这样我们便获得了Bridge的吸附结构。</p>
+<p>前面提到，我们在搭建Bridge结构的时候，O原子的坐标可以比Top位的稍微低一些，这个操作怎么实现呢？<br>1） 首先选中氧原子，<br>2） 在Vector那一行修改移动的位置即可。如下图：</p>
+<p><img src="/2018/10/08/ex60/ex60-6.png" alt=""></p>
+<p>点击move ，保存POSCAR即可。</p>
+<h3 id="3-2-从Bridge-到-Hcp："><a href="#3-2-从Bridge-到-Hcp：" class="headerlink" title="3.2 从Bridge 到 Hcp："></a>3.2 从Bridge 到 Hcp：</h3><p>1） 选中O原子和Hcp位下面的Cu原子，并获取Vector</p>
+<p><img src="/2018/10/08/ex60/ex60-7.png" alt=""></p>
+<p>2） 修改Vector在z方向的大小。</p>
+<p><img src="/2018/10/08/ex60/ex60-8.png" alt=""></p>
+<p>点击 Move，效果如下：</p>
+<p><img src="/2018/10/08/ex60/ex60-9.png" alt=""></p>
+<p>保存成Hcp对应的POSCAR即可。</p>
+<h3 id="3-3-从Hcp到Fcc"><a href="#3-3-从Hcp到Fcc" class="headerlink" title="3.3 从Hcp到Fcc"></a>3.3 从Hcp到Fcc</h3><p>1）选中O原子和Fcc的一个原子，获取Vector：</p>
+<p><img src="/2018/10/08/ex60/ex60-10.png" alt=""></p>
+<p>2）修改Vector在z方向的大小，由于Fcc和Hcp的吸附很接近，直接平移即可，也就是z方向大小为0</p>
+<p><img src="/2018/10/08/ex60/ex60-11.png" alt=""></p>
+<p>点击move，最终的Fcc结构，如下图，保存POSCAR。</p>
+<p><img src="/2018/10/08/ex60/ex60-12.png" alt=""></p>
+<p><strong>注意：</strong></p>
+<p>保存结构的时候，可以自己建对应的文件夹，在文件夹里面将结构保存成POSCAR，也可以保存成类似<code>POSCAR-Fcc</code>， <code>POSCAR-Hcp</code>， <code>POSCAR-Top</code>这一种的名字，计算的时候，将它们重新命名为<code>POSCAR</code>就行了。</p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本节，大师兄主要给大家介绍了如何在表面上，使用<code>p4vasp</code>平移原子来搭建不同的吸附位点模型。使用p4vasp搭结构非常方便简单，也会加深你对模型结构的理解，另一方面，使用这一种操作的话准确性更高，搭建出来的模型比自己手动放原子要合理很多。所以强烈推荐大家使用<code>p4vasp</code>。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2960,581 +3534,6 @@ E_{binding} =[ -9.85498627~eV – (-1.89237882~eV *2) ] / 2 = -3.035~eV</script>
 <h2 id="5-提交任务"><a href="#5-提交任务" class="headerlink" title="5 提交任务"></a>5 提交任务</h2><p>计算结束后，查看OUTCAR，OSZICAR的最后几行检查下是不是正常结束。</p>
 <h2 id="6-扩展练习"><a href="#6-扩展练习" class="headerlink" title="6 扩展练习"></a>6 扩展练习</h2><p>6.1 掌握本节提到的固定原子的三种做法：文本编辑器，p4vasp,  sed， 当然啦，更可以直接使用Vim 这个强大的工具来执行<br>6.2 查看结构优化相关的这几个参数，复习下它们的VASP官网说明。<br>6.3 运行本文的例子，然后将EDIFFG设置成 -0.02或者-0.001进行测试，查看与-0.01的区别。<br>6.4 VASP官网查找表面能计算的案例，结合本节以及前面的学习，尝试算一下Cu(111)面的表面能。</p>
 <h2 id="7-总结"><a href="#7-总结" class="headerlink" title="7 总结"></a>7 总结</h2><p>截止到本节为止，Slab模型的优化，你已经可以初步掌握了。请务必跟着节奏认真练习。后面我们会继续学习Slab模型的优化，现在感觉陌生没上手的也不用担心。认真总结一下，我们如何从Bulk模型，然后一步一步操作到Slab模型优化的。每一步中都有哪些该注意的细节。这些都掌握了，就可以大大提高你计算的成功率，进而节省时间和精力。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/08/26/ex43/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/08/26/ex43/" class="post-title-link" itemprop="url">Ex43 p(1x1) Cu(111)的单点计算</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-08-26 02:06:48" itemprop="dateCreated datePublished" datetime="2018-08-26T02:06:48-04:00">2018-08-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/08/26/ex43/" class="post-meta-item leancloud_visitors" data-flag-title="Ex43 p(1x1) Cu(111)的单点计算" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/08/26/ex43/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/08/26/ex43/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>上一节的内容主要简单介绍了一下Slab模型，具体的大家去看推荐的参考书！计算部分我们做了以下几个方面的操作：</p>
-<ul>
-<li>Cu的Bulk计算，获取了稳定体相结构，晶胞参数；</li>
-<li>将结果导入Material Studio， 并切(111)面</li>
-<li>将切出来的Cu(111) 面转换成POSCAR格式。</li>
-</ul>
-<p>因此，VASP的四个输入文件，我们已经有了POSCAR和POTCAR，下面我们复习下POSCAR，INCAR和KPOINTS的准备工作， 然后进行单点计算。</p>
-<h2 id="1-搭建slab模型"><a href="#1-搭建slab模型" class="headerlink" title="1  搭建slab模型"></a>1  搭建slab模型</h2><p>Cu(111) slab 模型（POSCAR）的制作流程（复习一下）。<strong>注意：</strong>前面我们用的是Conventional cell，下面用的是Primitive Cell。 一般来说用<code>Conventional cell</code>， FCC的金属可以用<code>Primitive Cell</code> 但对于其他体系，通过<code>Primitive Cell</code>切出来表面模型有问题。</p>
-<p>A）Bulk计算结束后，将CONTCAR用VESTA转换为cif文件，然后MS导入。<br>B）Build→Symmetry→primitive cell<br>C）Build→surfaces→cleave surface<br><img src="/2018/08/26/ex43/ex43-1.jpeg" alt=""><br>D）Build→Crystals→Build Vaccum Slab 真空层选择15Å<br><img src="/2018/08/26/ex43/ex43-2.jpeg" alt=""><br>E）导出为cif，通过VESTA转化为POSCAR格式，如下：<br><img src="/2018/08/26/ex43/ex43-3.jpeg" alt=""></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Cu\(1\1\1)</span><br><span class="line">1.0</span><br><span class="line">        2.5717000961         0.0000000000         0.0000000000</span><br><span class="line">       -1.2858500481         2.2271576142         0.0000000000</span><br><span class="line">        0.0000000000         0.0000000000        21.2994003296</span><br><span class="line">   Cu</span><br><span class="line">    4</span><br><span class="line">Direct</span><br><span class="line">     0.000000000         0.000000000         0.000000000</span><br><span class="line">     0.333330005         0.666670024         0.098590001</span><br><span class="line">     0.000000000         0.000000000         0.295760006</span><br><span class="line">     0.666670024         0.333330005         0.197170004</span><br></pre></td></tr></table></figure>
-<p>前面的操作，我们生成 <code>p(1x1)</code> 的Cu(111)面，p是<code>Primitive</code>的简称，如果你不了解p(1x1)， 去学习一下<code>Wood  Notation</code>。当然，在此基础上，你也可以将p(1x1) 在晶胞a 和b方向上扩展，生成<code>p(2x2)</code>，<code>p(3x3)</code>， <code>p(2x1)</code>等不同大小的Cu(111)表面。本节，我们就用p(1x1)做为例子。</p>
-<h2 id="2-KPOINTS"><a href="#2-KPOINTS" class="headerlink" title="2  KPOINTS"></a>2  KPOINTS</h2><p><code>POSCAR</code>中，slab在平面方向上a 和 b 的大小为2.5717 Å，根据前面的经验规则，我们可以在两个方向上K点取值为：$13\times13$，z 方向上取值为1，最终KPOINTS如下图，脚本使用命令为：<code>kpoints.sh 13 13 1</code> （不知道脚本的请往前翻）</p>
-<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">qli@bigbro:~/test/cu$  kpoints.sh <span class="number">13</span> <span class="number">13</span> <span class="number">1</span> </span><br><span class="line">qli@bigbro:~/test/cu$  cat KPOINTS</span><br><span class="line">K-POINTS</span><br><span class="line"> <span class="number">0</span></span><br><span class="line"><span class="built_in">Gamma</span></span><br><span class="line">  <span class="number">13</span> <span class="number">13</span> <span class="number">1</span></span><br><span class="line">  <span class="number">0</span> <span class="number">0</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
-<p>为什么在z方向上只用1个K点？查找参考书（DFT：A Practical Introduction， Page 88）的说明：<br>If the vacuum region is large enough， the electron density tails off to zero a short distance from the edge of the slab. It turns out that this means that accurate results are possible using just one k point in the b3 direction.</p>
-<h2 id="3-INCAR"><a href="#3-INCAR" class="headerlink" title="3  INCAR"></a>3  INCAR</h2><p>在贴出来INCAR之前，大家首先回顾一下单点计算需要注意的几个方面：<br>1）<code>System = Cu(111)</code> 可有可无<br>2）Cu 是金属，可以使用<code>ISMEAR = 1;SIGMA = 0.1</code><br>3）<code>ALGO = FAST</code> 或者使用默认值<br>4）纯净的Cu(111)体系中，Cu没有磁性，ISPIN 不用设置<br>注意：CuO中Cu具有磁性，如果你算的是Cu的氧化物，就需要考虑ISPIN了<br>5）单点计算：<code>NSW = 0</code> 也可以不设置，因为默认值就是0<br>6）截断能： <code>ENCUT = 450</code> 很多人喜欢测试这个参数，450直接用是一个很好的选择<br>7）<code>EDIFF = 1E-5</code> 电子步的收敛标准<br>8）偶极矫正：<code>LDIPOL = .TRUE. ; IDIPOL = 3</code> Slab模型一般都需要加上这个参数<br>9）控制OUTCAR和其他文件的输出：<code>NWRITE = 0 ; LWAVE  = .FALSE.;LCHARG = .FALSE.</code><br>10）也可以加上<code>NCORE</code>这个参数来加快计算步骤。一般来说，不同的机子大家需要自己测试下NCORE参数对计算的影响，个人经验：如果你的机器一个节点有12个核，设置<code>NCORE = 6</code>； 一个节点有24核，设置<code>NCORE = 12</code>。也就是节点中核数的一半。由于这个计算很快，本操作就不考虑了。最终INCAR 如下:</p>
-<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">System = Cu111</span><br><span class="line"></span><br><span class="line">ISMEAR = <span class="number">1</span></span><br><span class="line">SIGMA = <span class="number">0.1</span></span><br><span class="line">ALGO = FAST</span><br><span class="line">ENCUT = <span class="number">450</span></span><br><span class="line">EDIFF = <span class="number">1E-5</span></span><br><span class="line"></span><br><span class="line">LDIPOL = .TRUE.</span><br><span class="line">IDIPOL = <span class="number">3</span></span><br><span class="line"></span><br><span class="line">NWRITE = <span class="number">0</span></span><br><span class="line">LWAVE = .FALSE.</span><br><span class="line">LCHARG = .FALSE.</span><br></pre></td></tr></table></figure>
-<h2 id="4-准备任务脚本，提交任务"><a href="#4-准备任务脚本，提交任务" class="headerlink" title="4 准备任务脚本，提交任务"></a>4 准备任务脚本，提交任务</h2><p>计算完成后， <code>grep &#39;  without&#39; OUTCAR</code>  （without前面有2个空格）或者<code>grep E0 OSZICAR | tail-n 1</code>，得到单点能为：<code>-13.96918440 eV</code></p>
-<h2 id="5-扩展练习"><a href="#5-扩展练习" class="headerlink" title="5   扩展练习"></a>5   扩展练习</h2><p>5.1 计算的例子下载链接：链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1cHY-9g2Iswl5zV9bijBG7Q">https://pan.baidu.com/s/1cHY-9g2Iswl5zV9bijBG7Q</a> 提取码: ctxc<br>5.2 重复本节所有的练习<br>5.3 VASP官网查找本节中不了解的参数，然后学习<br>5.4 思考一下：我们得到的单点能量可以干吗用？</p>
-<h2 id="6-总结："><a href="#6-总结：" class="headerlink" title="6 总结："></a>6 总结：</h2><p>刚刚步入slab的计算，我们速度稍微慢一些，本节只讲单点计算，希望大家能够跟上步骤，亲自进行操作练习，如果出错了，请认真改正，直至得到和上传的结果一样为止。再次强调，大家平时一定要多浏览VASP官网，请把VASP手册下载放到桌面上，没事的时候就翻一翻。不要去网上找一些乱七八糟的教程，拿过来就直接照着练，官网才是最正宗的。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/08/25/ex42/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/08/25/ex42/" class="post-title-link" itemprop="url">Ex42 slab模型</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-08-25 02:06:48" itemprop="dateCreated datePublished" datetime="2018-08-25T02:06:48-04:00">2018-08-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/08/25/ex42/" class="post-meta-item leancloud_visitors" data-flag-title="Ex42 slab模型" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/08/25/ex42/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/08/25/ex42/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>前面我们学习了Bulk计算的一些基本的计算，拟合以及优化晶格常数，DOS计算。在材料计算方面，还有能带，声子谱的计算等等，但由于本人方向不在这一块（主要是做表面反应机理研究的），就不能详细给大家解释了。如果有同学在这方面很擅长，可以把自己的计算心得写进本书，将不胜感激。说到表面反应的机理研究，我们首先要做的就是搭建模型。先理一下思路：</p>
-<p>1）计算Bulk的结构，获取稳定的晶格常数<br>2）在此基础上，搭建Slab模型。</p>
-<h2 id="1-什么是Slab-模型？"><a href="#1-什么是Slab-模型？" class="headerlink" title="1 什么是Slab 模型？"></a>1 什么是Slab 模型？</h2><p>这个问题，我们看一下参考书的第四章：Density Functional Theory: A Practical Introduction （注意：本书有中文版的，本人强烈不建议！请静下心来看原版的，也恳请不要在群里求中文的pdf版本！）<br><img src="/2018/08/25/ex42/ex42-2.jpeg" alt=""><br>多相催化中，反应发生在催化剂表面上，也就是气（液）固两相的交界处。为了模拟固体的表面，我们需要一个在二维方向上具有周期性的结构来模拟固体的表面，第三维方向则不具有周期性，用来模拟气相或者液相。但是，更常用的则是在第三维方向上加上周期性，周期性的结构之间用一个什么都没有的空间（free space）来分割，也就是真空层。在这里我们需要注意的是要避免第三维方向上两个周期性结构的相互影响，也就是一个周期的电子密度沿着真空层方向要趋于零，这样才不会对相邻的结构产生影响。此时，我们需要做的就是：</p>
-<p>1）增大真空层的厚度，厚度要适中，太小肯定不行，太大也不合适。想一想我们前面讲到的影响计算速度的一个因素，真空层太厚，也就意味着我们的模型尺寸变大，从而导致计算变慢。一般来说，对于表面反应的计算，15$\AA$的真空层厚度足够了。但是，对于功函数这一类对真空层敏感的计算来说，我们需要注意。</p>
-<p>2）VASP中还需要加入：<code>LDIPOL = .TRUE.</code>和<code>IDIPOL = 3</code>(3指的是在z方向上)这两个参数来消除上下不对称的slab表面导致的偶极矩影响。<a target="_blank" rel="noopener" href="https://cms.mpi.univie.ac.at/wiki/index.php/LDIPOL">https://cms.mpi.univie.ac.at/wiki/index.php/LDIPOL</a><br><img src="/2018/08/25/ex42/ex42-3.jpeg" alt=""><br>对于表面结构，有以下几个需要注意的:<br>1）xy 方向上表面的大小;<br>A）这个影响表面吸附物种的覆盖度;<br>B）影响体系的尺寸大小和计算时间;<br>C）不同的大小需要选取对应的K点；回想一下我们前面提到的经验规则。</p>
-<p>2）不同的晶面，(111)， (100)，(110);<br>A) 这取决于你研究的方向;<br>B) 不同晶面的表面能;<br>C) 不同晶面的表面结构，反应活性等。</p>
-<p>3）表面结构的层数<br>A）层数多了，原子变多，体系在 z 方向的尺寸增加，也会影响计算速度；<br>B）计算中需要弛豫的层数；<br>C）不同层数对你要计算的性质会产生影响，比如表面能；<br>D）不同晶面需要的层数也不尽相同，一般开放的表面需要更多的层数；<br>E）根据自己感兴趣的性质，选择合适的层数，也就是需要你去测试一番。</p>
-<p>4）Slab模型有两种，一种是上下表面对称的，一种是非对称的。对称性结构往往需要很多层，体系较大。 非对称的结构体系较小，但存在偶极矩的影响，要注意加LDIPOL 和IDIPOL这两个参数来消除，后面我们会介绍到。</p>
-<p>注意，为了更加顺利的进行下面的学习，参考书第4章的内容务必认真阅读。这会为你今后的表面研究打下坚实的基础</p>
-<h2 id="2-表面模型的搭建："><a href="#2-表面模型的搭建：" class="headerlink" title="2 表面模型的搭建："></a>2 表面模型的搭建：</h2><p><img src="/2018/08/25/ex42/ex42-1.jpeg" alt="">主要使用Material Studio进行切面操作，这一部分，本人不想做过多的解释，因为各大培训班，网上各种博客都有操作说明。本节大师兄通过Cu(111)面的例子给大家简单演示一下。</p>
-<p><strong>2.1 块体计算</strong><br>1) 搭建Cu单胞模型，用VESTA导出VASP计算使用的POSCAR文件，这部分不清楚的筒子们可以复习前面bulk计算的相关内容。</p>
-<p>2)  INCAR文件的准备<br>A) Cu是金属，ISMEAR=1， SIGMA=0.1<br>B) ENCUT=700， Cu单胞含有的原子数很少，可以把ENCUT设置大一点<br>C) EDIFF和EDIFFG控制电子步收敛和离子弛豫的精度<br>D) PREC=High  </p>
-<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">SYSTEM = Cu-Bulk calculation RELAX</span><br><span class="line">ISTART = <span class="number">0</span></span><br><span class="line">ICHARG = <span class="number">2</span></span><br><span class="line">ENCUT = <span class="number">700</span></span><br><span class="line">EDIFF = <span class="number">1e-6</span></span><br><span class="line">IBRION = <span class="number">1</span></span><br><span class="line">NSW = <span class="number">200</span></span><br><span class="line">EDIFFG = -<span class="number">0.01</span></span><br><span class="line">ISIF = <span class="number">3</span></span><br><span class="line">POTIM = <span class="number">0.1</span></span><br><span class="line">ISMEAR = <span class="number">1</span></span><br><span class="line">SIGMA = <span class="number">0.1</span></span><br><span class="line">PREC = H</span><br><span class="line">LREAL = Auto</span><br><span class="line">ALGO = Fast</span><br><span class="line">NCORE = <span class="number">4</span></span><br></pre></td></tr></table></figure>
-<p>E）这里LREAL设置为Auto，是为了和后面表面能计算统一。计算时要根据原子数的多少，以及后续的计算选择LREAL的值。不能拿LREAL=.FALSE.和LREAL=ON/.TRUE.计算的结果进行能量比较。看下面<br><img src="/2018/08/25/ex42/ex42-4.jpeg" alt=""><br>F) 注意：块体材料计算时，为了后续计算其他性质，常常要求整个计算中使用相同的ENCUT，ENAUG， PREC， LREAL， ROPT，这部分大家可以看看手册 8.3 What kind of “technical” errors do exist， overview<br><img src="/2018/08/25/ex42/ex42-5.jpeg" alt=""></p>
-<p>3) KPOINTS<br>a=b=c=3.6147 $\AA$， 根据前面的经验，这里设置为$13\times13\times13$的KPOINTS(Gamma  Centered).</p>
-<p>4) 准备POTCAR文件进行计算：见前面讲的相关脚本—Ex30 进阶前的准备（三）</p>
-<p>5) 最后计算完的Cu的晶格常数为 3.6370 $\AA$，实验值为3.615 $\AA$。大家可以去计算下。（计算例子可以QQ群中下载，也可通过该链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1dE84fhn">http://pan.baidu.com/s/1dE84fhn</a> 密码：nvwa）</p>
-<p><strong>2.2 结构优化的注意事项：</strong></p>
-<p>关于结构优化，大家在计算时要注意下面的部分，7.6.2 Accurate bulk relaxations with internal parameters (one)一定要详细的读。<br><img src="/2018/08/25/ex42/ex42-6.jpeg" alt=""></p>
-<p><strong>2.3 小结</strong><br>主要以金属Cu为例讲了块体材料的计算，以及块体材料计算时的一些注意事项：</p>
-<ul>
-<li>体材料计算时首先要对要了解材料的性质，根据材料是金属、非金属，还是半导体，选择不同的ISMEAR和SIGMA；</li>
-<li>计算时要根据原子数的多少，以及后续的计算选择LREAL的值，这方面不熟悉的朋友可以看看手册；</li>
-<li>精确进行块体计算的过程以及注意事项；</li>
-<li>回顾Ex36 Bulk的优化。</li>
-</ul>
-<h2 id="3-MS建立slab模型"><a href="#3-MS建立slab模型" class="headerlink" title="3   MS建立slab模型"></a>3   MS建立slab模型</h2><p><strong>3.1 具体步骤</strong></p>
-<ul>
-<li><p><code>VESTA</code>将<code>CONTCAR</code>转成<code>cif</code>格式，</p>
-</li>
-<li><p>MS导入cif文件，</p>
-</li>
-<li><p><code>build</code>→<code>surface</code>→<code>cleave surface</code>， 如下图所示，在<code>cleave plane(hkl)</code>可以输入要切的晶面，如（111）面，<img src="/2018/08/25/ex42/ex42-7.jpeg" alt=""></p>
-</li>
-<li><p>在<code>Surface Mesh</code>→<code>surface vectors</code>可以改变slab模型的vectors，之后选择Cleave进行切面，本例为（111）。这个时候也可以通过调节<code>Surface Box</code>→<code>top</code>和<code>thickness</code>，选择slab模型的表面终端和厚度。<img src="/2018/08/25/ex42/ex42-8.jpeg" alt="">     <img src="/2018/08/25/ex42/ex42-9.jpeg" alt=""></p>
-</li>
-<li><p>确定好表面终端和slab厚度之后，加真空层。<br><code>Build</code>→<code>Crystals</code>→<code>Build vacuum slab</code>，<code>Vacuum orientation</code>选择C指定真空层加在z方向上。可以通过改变<code>Vacuum thickness</code>设置真空层的厚度10 $\AA$，15 $\AA$或者更大。这可以参照之前的计算。最后选择Build完成slab模型的建立。<br><img src="/2018/08/25/ex42/ex42-10.jpeg" alt=""></p>
-</li>
-<li><p>可以通过<code>Lattice parameters</code>→<code>Advanced</code>→<code>Re-orient to standard</code>把真空层设置沿Z轴。<img src="/2018/08/25/ex42/ex42-11.jpeg" alt="">   <img src="/2018/08/25/ex42/ex42-12.jpeg" alt=""></p>
-</li>
-</ul>
-<h2 id="4-总结："><a href="#4-总结：" class="headerlink" title="4  总结："></a>4  总结：</h2><p>  从本节开始，大家开始步入表面相关的计算学习。请务必认真阅读参考书，重复计算示例。本节主要简单介绍了一下Slab模型以及基本的注意事项。通过Cu的计算复习了一下<code>Bulk</code>的计算以及展示了一下通过<code>Material Studio</code>进行Cu(111)表面的搭建过程。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/10/ex41/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/02/10/ex41/" class="post-title-link" itemprop="url">Ex-41 DOS 计算(五)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-02-10 15:30:16" itemprop="dateCreated datePublished" datetime="2018-02-10T15:30:16-05:00">2018-02-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/02/10/ex41/" class="post-meta-item leancloud_visitors" data-flag-title="Ex-41 DOS 计算(五)" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/02/10/ex41/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/10/ex41/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>前面我们讲解了手动求积分的原理，本节由QQ群中的小书童给大家演示一遍Origin求积分的操作，加深一下对积分原理的印象，也借此机会掌握另一项Origin的技能。Origin的 .opj文件和Excel数据已经打包上传到QQ群中，也可以百度网盘下载：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1bpvmXY3">http://pan.baidu.com/s/1bpvmXY3</a></p>
-<h2 id="1-求d带中心"><a href="#1-求d带中心" class="headerlink" title="1 求d带中心"></a><strong>1 求d带中心</strong></h2><p>1.1 复制粘贴能量、态密度、能量*态密度这三列数据到Origin中，数据见前一节练习：</p>
-<p>下面我们取了<code>d band</code> 的一小部分区间作为示例进行讲解，大家学习完之后自己主动练习，获取最终的<code>d band center</code>.</p>
-<p><img src="/2018/02/10/ex41/ex41-1.png" alt=""></p>
-<p>1.2 选中数据并作图：</p>
-<p><img src="/2018/02/10/ex41/ex41-2.png" alt=""></p>
-<p><strong>plot —&gt; Line —&gt; Line</strong></p>
-<p><img src="/2018/02/10/ex41/ex41-3.png" alt=""></p>
-<p><img src="/2018/02/10/ex41/ex41-4.png" alt=""></p>
-<p>1.3 求积分，先选中一条曲线，右键，<code>Ungroup</code>（将曲线从组中分离，便于选择）。</p>
-<p><img src="/2018/02/10/ex41/ex41-5.png" alt=""></p>
-<p>1.4 打开积分对话框：</p>
-<p><img src="/2018/02/10/ex41/ex41-6.png" alt=""></p>
-<p>1.5 再选择一条曲线进行积分，下图选择的是黑线。</p>
-<p><img src="/2018/02/10/ex41/ex41-7.png" alt=""></p>
-<p><img src="/2018/02/10/ex41/ex41-8.png" alt=""></p>
-<p>点击OK，截图中的area就是我们要的积分，这一面积对应下图公式中的分母部分。</p>
-<p><img src="/2018/02/10/ex41/ex41-9.png" alt=""></p>
-<p> <img src="/2018/02/10/ex41/ex41-10.png" alt=""></p>
-<p><code>d band center</code> 的积分区间为整个d带：即从负无穷到正无穷。本例我们用区间 [-6, 2]作为例子！有时候大家会对积分的区间产生疑问。一般来说积分区间是从负无穷到正无穷，但是：</p>
-<ul>
-<li><p>1）如上图，[-9,-8]这个区间Density为0，积分从[-9,4.0] 和[-8,4.0]结果没什么区别。</p>
-</li>
-<li><p>2）如果我们关心的是[-6,4.0]这一部分的性质，倘若4.0以后的部分会产生很大的噪音，那么我们也可以只从-6积分到4.0。</p>
-</li>
-<li><p>所以，积分区间也不是很绝对，大家要根据自己的体系合理选择。</p>
-</li>
-</ul>
-<p>1.6 同理，选中另一条红线（能量和密度乘积），进行积分计算（上图中的分子部分） </p>
-<p><img src="/2018/02/10/ex41/ex41-11.png" alt=""></p>
-<p> 结果如下:</p>
-<p> <img src="/2018/02/10/ex41/ex41-12.png" alt=""></p>
-<p>最终，我们计算的d带区间[-6,2]的中心果为：-34.035/ 17.428 = -1.953</p>
-<hr>
-<h2 id="2-求电子数目"><a href="#2-求电子数目" class="headerlink" title="2 求电子数目"></a><strong>2</strong> <strong>求电子数目</strong></h2><p>电子数目的积分是从负无穷到费米能级。本例中是从-10到0（费米能级）进行积分， 选择黑线，重复前面的操作：</p>
-<p>  <img src="/2018/02/10/ex41/ex41-15.png" alt=""></p>
-<p>计算结果如下，电子数为13.00</p>
-<p>  <img src="/2018/02/10/ex41/ex41-16.png" alt=""></p>
-<hr>
-<p><strong>3</strong> <strong>扩展练习：</strong></p>
-<p>3.1 熟练Get本节Origin求积分的技巧；</p>
-<p>3.2 阅读前面几节DOS计算的练习章节；熟练掌握DOS的提取，导出，作图和积分；</p>
-<p>3.3 <code>d band center</code> 是对整个区间求积分，电子数目的积分区间是从负无穷到费米能级。</p>
-<hr>
-<p><strong>4</strong> <strong>总结：</strong></p>
-<p>截止到本节，DOS的计算就暂时告一段落了，实际计算中，DOS的分析远远不止我们讲述的这么简单，而且网上DOS分析的脚本很多。大师兄了解到的有VTST的DOS处理脚本和vaspkit等，大家可以尝试练习使用下。如果你在科研工作中对DOS分析有自己的心得，DOS分析脚本的使用经验等，欢迎补充，分享给大家。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/02/09/ex40/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/02/09/ex40/" class="post-title-link" itemprop="url">Ex-40 DOS 计算(四)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-02-09 15:30:16" itemprop="dateCreated datePublished" datetime="2018-02-09T15:30:16-05:00">2018-02-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/02/09/ex40/" class="post-meta-item leancloud_visitors" data-flag-title="Ex-40 DOS 计算(四)" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/02/09/ex40/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/02/09/ex40/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>DOS积分的原理，积分公式相信大学的时候，大家已经掌握了，现在还有可能忘记了。不过没关系，虽然本节将积分，高等数学里面的暂时还用不到。对于DOS图来说，通过求积分可以得到相应的电子数。积分也就是求DOS曲线下的面积。但DOS图并不能通过一个函数的积分来获得，因为所对应的区域毫无规则可言。那么我们该怎么样积分呢？</p>
-<p><strong>1</strong> <strong>积分的原理</strong></p>
-<p>积分的原理就是把区域分成N个小块，计算每一块的面积，然后求和。如下图：</p>
-<p><img src="/2018/02/09/ex40/ex40-1.png" alt=""></p>
-<p>大师兄…..</p>
-<p><img src="/2018/02/09/ex40/ex40-2.png" alt=""></p>
-<p>好吧，言归正传，大师兄亲自画了一幅图，讲解积分的原理，如下：</p>
-<p><img src="/2018/02/09/ex40/ex40-3.png" alt=""></p>
-<p>1)将每一个小区间近似看成一个小的梯形，</p>
-<p>2) 梯形的上底和下底为：$y_2$ 和$y_1$，高为：$x_2-x_1$。</p>
-<p>3, 4)  也可以看成一个高为：$（y_1+y_2）/2$， 底为$x_2-x_1$ 的长方形。</p>
-<p>5）面积为两者的乘积：$ΔA =（x_2-x_1）* （y_1+y_2）/2$。</p>
-<p>6）将所有的小区间面积求和便得到了曲线所覆盖的面积，也就得到了我们所想要的电子数：$A =\sum\Delta A$</p>
-<hr>
-<p>注意：</p>
-<p>1）电子数的积分区间是从负无穷到费米能级；</p>
-<p>2）p4vasp的图中的0点就是费米能级，已经扣除过了。</p>
-<p>3）科学网的一个参考链接：<a href="&lt;&lt;http://blog.sciencenet.cn/blog-567091-736149.html">&lt;&lt;http://blog.sciencenet.cn/blog-567091-736149.html</a>/&gt;&gt;</p>
-<p><img src="/2018/02/09/ex40/ex40-4.png" alt=""></p>
-<p>注意： 图中的DOS，如果你计算了，发现和大师兄的不一样，不用担心，大师兄本人把这个例子再运行了一遍，跟上面的图也不一样。（原因正在调查中）</p>
-<hr>
-<h2 id="2-d-band-center-的公式"><a href="#2-d-band-center-的公式" class="headerlink" title="2 d-band center 的公式"></a>2 d-band center 的公式</h2><p><img src="/2018/02/09/ex40/ex40-5.png" alt=""></p>
-<p>在这里：</p>
-<p>ε为前面的我们提到的x， $n_d$(ε)为y。在DOS图中，ε为能量， $n_d$(ε)为电子的密度。</p>
-<p>注意： 积分区间是从 <strong>负无穷</strong> 到 <strong>正无穷</strong></p>
-<p>参考书籍： Fundamental Concepts in Heterogeneous Catalysis，Jens K. Nørskov, Felix Studt, Frank Abild-Pedersen, Thomas Bligaard， John Wiley &amp; Sons, Inc.</p>
-<p>!<img src="/2018/02/09/ex40/ex40-6.png" alt=""></p>
-<p>QQ群文件的Books文件夹中下载 </p>
-<p><img src="/2018/02/09/ex40/ex40-7.png" alt=""></p>
-<p>百度网盘下载链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1bWS2Gu">http://pan.baidu.com/s/1bWS2Gu</a></p>
-<p><img src="/2018/02/09/ex40/ex40-8.png" alt=""></p>
-<hr>
-<p>d 带穿过了费米能级，说明Ru是金属。（废话，等于白说！）</p>
-<p>d带的积分从最左面到最右面。</p>
-<p>关于d band 的介绍：知乎有个专栏，有兴趣的可以浏览一下：</p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/26230183">https://zhuanlan.zhihu.com/p/26230183</a> </p>
-<hr>
-<p><strong>3 Excel手动求积分：</strong></p>
-<p>对应的公式都写在第二行里面了，excel中计算完第一个数值，直接选中然后往下拽就可以得到后面的数据了。计算文件以及Excel表格已经上传到QQ群和百度网盘，大家可以下载仔细观看练习，掌握该技能。</p>
-<p>计算下载链接：<a target="_blank" rel="noopener" href="http://pan.baidu.com/s/1kVqWFQn">http://pan.baidu.com/s/1kVqWFQn</a> </p>
-<p><img src="/2018/02/09/ex40/ex40-9.png" alt=""></p>
-<p>Step1: p4vasp 的 d band 数据！</p>
-<p>Step2：A,B两列的乘积，也就是能量和密度的乘积：对应d band center公式中的<strong>分子</strong>：</p>
-<p><img src="/2018/02/09/ex40/ex40-10.png" alt=""></p>
-<p>Step3：</p>
-<p>1）A4-A3:  小区间的能量间隔，也就是 dε，或者 xdx，$\Delta$x， $x_2-x_1$;</p>
-<p>2）B4+B3: 小区间的两个起点和终点的高度：也就是对应的小区间两端的能量密度：$y_2+y_1$</p>
-<p>3）C4+C3：小区间两端能量和密度乘积的加和： $x_1<em>y_1 + x_2</em>y_2 $ </p>
-<p>4）Step4：求小区间的面积：</p>
-<p>​      $D4<em>E4</em>0.5$：$(x_2-x_1) * (y_2+y_1)/2$</p>
-<p>​      $D4<em>F4</em>0.5$: $ (x_2-x_1) <em> (x_1</em>y_1 + x_2*y_2)/2$</p>
-<p>5）Step5: 将所有小区间的面积求和：</p>
-<p>电子数：$\sum( (x_2-x_1) * (y_2+y_1)/2 ) $，从G4到G137(G137对应的是费米能级的那个点！！！)求和。</p>
-<p><strong>再次强调：电子数目是从负无穷积分到费米能级！</strong></p>
-<p>d带中心公式中的分子：从H4到H303求和</p>
-<p>d带中心公式中的分母：和电子数的积分一样，但积分区间不同，这里从G4到G303求加和。</p>
-<p><strong>再次强调：d带中心积分区间，按照公式，从负无穷积分到正无穷！</strong></p>
-<p><em>d</em>带中心公式中的分子：从H4到H303求和</p>
-<p><em>d</em>带中心公式中的分母：和电子数的积分一样，但积分区间不同，这里从G4到G303求加和。</p>
-<p>以上将公式分开写，是为了方便大家理解，实际操作中，直接使用导出来的数据，将所有的公式合并在一起就可以了。</p>
-<hr>
-<p><strong>4 扩展练习：</strong></p>
-<p>4.1 亲自上手操作，重现本节的结果；</p>
-<p>4.2 尝试使用其他软件，方法求积分；</p>
-<p>4.3 有好程序的，好脚本的分享给大家。</p>
-<hr>
-<p><strong>5</strong> <strong>总结：</strong></p>
-<p>学习完本节，大家对DOS积分的数学知识应该可以掌握了，后面不管用什么软件或者脚本，都是将这个积分的原理写成机器语言来执行。知道了原理和通过excel自己操作一遍之后，基本上DOS积分的东西就懂了。下一节，QQ群里的小书童给大家演示一下Origin的积分操作。</p>
 
       
     </div>

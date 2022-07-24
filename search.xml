@@ -150,7 +150,7 @@
       </tags>
   </entry>
   <entry>
-    <title>通过Ubuntu连接国科智算的方法</title>
+    <title>通过Ubuntu连接服务器的方法</title>
     <url>/2017/11/18/A01/</url>
     <content><![CDATA[<p>本教程主要讲述的是如何在Ubuntu16.04操作系统上连接国科智算超算。分3部分：</p>
 <ul>
@@ -2236,31 +2236,30 @@ suggested common fields:
       </categories>
   </entry>
   <entry>
-    <title>Ex1 VASP基本输入文件的准备（一）</title>
+    <title>Ex01 VASP基本输入文件的准备（壹）</title>
     <url>/2017/10/14/ex01/</url>
-    <content><![CDATA[<p>基本的输入文件，指的是VASP计算必不可少的输入文件，对新手来说先记住这四个：INCAR，KPOINTS，POSCAR，POTCAR。这几个不懂，不要紧，后面我们会结合例子，慢慢介绍这几个文件的准备工作。</p>
+    <content><![CDATA[<p>基本的输入文件，指的是VASP计算必不可少的输入文件，对新手来说先记住这四个文件的名字：INCAR，KPOINTS，POSCAR，POTCAR。具体是干嘛用的？不懂的话不要紧，后面我们会结合例子，慢慢介绍这几个文件的准备工作。</p>
 <h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>准备输入文件， 脑子里要有下面几个概念:</p>
 <ul>
-<li><p>Rubbish in，Rubbish out!  程序只负责算，对错由你决定!</p>
+<li><p>Rubbish in，Rubbish out!  程序只负责算，对错由你决定！错误主要有3类：</p>
+<ul>
+<li>模型错误：也就是建模这一块出错了，主要对应的是POSCAR；</li>
+<li>计算参数：INCAR，KPOINTS，POTCAR</li>
+<li>提交任务的脚本或者命令出错。</li>
+</ul>
 </li>
 <li><p>遇到不懂的参数： (思考 + 看官网)！ (思考 + 看官网)！ (思考 + 看官网)！</p>
 </li>
-<li><ul>
-<li>重要的话说三遍，不要去看网上那些乱七八糟的说明书。如果英语不好，那么这是一个锻炼你阅读能力的好机会。通过查阅官网解决问题，可以保证你的血统纯正，进而提高你的杀伤力。</li>
-</ul>
-</li>
-<li><p>所有的输入文件都只是文本而已。这句话的意思是：所有的输入文件都可以通过文本编辑器打开，比如：</p>
-</li>
+<li>重要的话说三遍，尽量不要去看网上那些乱七八糟的教程。如果英语不好，那么这是一个锻炼你阅读能力的好机会。通过查阅官网解决问题，可以保证你的血统纯正，进而提高你的杀伤力。</li>
+<li>所有的输入文件都只是文本而已。这句话的意思是：所有的输入文件都可以通过文本编辑器打开，比如：</li>
 <li><ul>
 <li>Linux下面可以用Vim</li>
 <li>Windows下用Notepad++</li>
 <li>杜绝使用Windows自带的文本编辑器：记事本，写字板。</li>
 </ul>
 </li>
-<li><p>所有的输入文本没有尾缀，Windows用户可能习惯了带各种各样尾缀的文件，但是vasp里面的输入文件，没有尾缀且都是文本。 比如你使用Notepad++这个文本编辑器写了一个输入文件，直接并保存成 INCAR就可以了。如果不小心保存成了 INCAR.txt，那么直接将尾缀.txt删除即可。</p>
-</li>
-<li><p>再次强调:对于Windows用户，本书中指的文本编辑器是:Notepad++。免费的软件，大家自己下载并安装。 请不要用写字板，记事本等编辑VASP的输入文件。如果你不听话，还是喜欢用它们，那么:</p>
-<ul>
+<li>所有的输入文本没有尾缀，Windows用户可能习惯了带各种各样尾缀的文件，但是vasp里面的输入文件，没有尾缀且都是文本。 比如你使用Notepad++这个文本编辑器写了一个输入文件，直接并保存成 INCAR就可以了。如果不小心保存成了 INCAR.txt，那么直接将尾缀.txt删除即可。</li>
+<li>再次强调:对于Windows用户，本书中指的文本编辑器是:Notepad++。免费的软件，大家自己下载并安装。 请不要用写字板，记事本等编辑VASP的输入文件。如果你不听话，还是喜欢用它们，那么:<ul>
 <li>出错，自己负责，有时候你会死的很惨，折腾很久可能都找不到哪里出错了；</li>
 <li>出错，自己检查有没有在提交任务前运行：dos2linux 这个命令转换下格式</li>
 </ul>
@@ -2268,16 +2267,16 @@ suggested common fields:
 <li>一步一步按照本书的练习进行操作，有问题，先记下来，如果后面没有得到解答，去<strong>《序言》</strong>找联系方式咨询大师兄。</li>
 </ul>
 <h3 id="VASP输入和输出文件"><a href="#VASP输入和输出文件" class="headerlink" title="VASP输入和输出文件"></a>VASP输入和输出文件</h3><ul>
-<li><p>有了上面的概念，我们就可以准备输入文件了。下面是官网列出VASP的输入和输出文件，in 代表输入，out代表输出。先声明一下:大家不要被下面这么多文件吓傻了，脑子里有个印象就行，很多文件可能穷奇你一生的计算都用不到，而且你以后会花很多时间在删这些乱七八糟的文件上面。所以，大家先简单过目一下即可:</p>
+<li><p>有了上面的概念，我们就可以准备输入文件了。下面是官网列出VASP的输入和输出文件，in 代表输入，out代表输出。先声明一下：大家不要被下面这么多文件吓傻了，脑子里有个印象就行，很多文件可能穷奇你一生的计算都用不到，而且你以后会花很多时间在删这些乱七八糟的文件上面。对于新手的话，大家先简单过目一下即可。可以理解为，从未开过车的你，一下子钻到车里，首先要做的就是熟悉车内部的环境，具体什么功能、怎么回事，后面慢慢摸索。</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">INCAR      in    **</span><br><span class="line">STOPCAR    in</span><br><span class="line">stout      out</span><br><span class="line">POTCAR     in     **</span><br><span class="line">KPOINTS    in     **</span><br><span class="line">IBZKPT     out</span><br><span class="line">POSCAR     in     **</span><br><span class="line">CONTCAR    out</span><br><span class="line">CHGCAR     in/out</span><br><span class="line">CHG        out</span><br><span class="line">WAVECAR    in/out</span><br><span class="line">TMPCAR     in/out</span><br><span class="line">EIGENVAL   out</span><br><span class="line">DOSCAR     out</span><br><span class="line">PROCAR     out</span><br><span class="line">OSZICAR    out</span><br><span class="line">PCDAT      out</span><br><span class="line">XDATCAR    out</span><br><span class="line">LOCPOT     out</span><br><span class="line">ELFCAR     out</span><br><span class="line">PROOUT     out</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>对于VASP计算来说，前面这一大堆中的 INCAR ， KPOINTS， POSCAR 和POTCAR 是必不可少的输入文件，必须有!</p>
-</li>
-<li><ul>
+<ul>
 <li>INCAR 告诉VASP算什么，怎么算。</li>
-<li>KPOINTS 包含计算的K点信息(K点是什么，这个问题很抽象，脑子里先记住，计算的时候必须有这个东西)。</li>
+<li>KPOINTS 包含计算的K点信息（K点是什么，这个问题很抽象，脑子里先记住，计算的时候必须有这个东西）。</li>
 <li>POSCAR是计算模型结构的文字描述，也就是各个原子在xyz方向的坐标信息。</li>
 <li>POTCAR对应的是计算过程中每个原子的平面波基组，描述体系中对应的原子核和电子的相关信息。</li>
+<li>提交任务的脚本或者命令，需要你自己准备，没有在列表里面。</li>
 </ul>
 </li>
 </ul>
@@ -2288,7 +2287,7 @@ suggested common fields:
 <ul>
 <li><p>INCAR 中有很多参数，改变参数来控制计算细节，从而得到我们期望的结果。所以，记住：Rubbish in， Rubbish out。自己算什么，心里要有数。</p>
 </li>
-<li><p>网上很多人发INCAR的教程，列了一堆参数进去，甚至长达两页，有些连默认值也放在里面了，恨不得把所有参数全部放进去。不过，请记住：那些令人眼花缭乱的只是唬人装逼用的，在实际计算中会严重拖你的后腿。 </p>
+<li><p>网上很多人发INCAR的教程，列了一堆参数进去，甚至长达两页，有些连默认值也放在里面了，恨不得把所有参数全部放进去。不过，请记住：那些令人眼花缭乱的只是唬人装逼用的，在实际计算中会严重拖你的后腿，占了那么多行，修改起来也费劲。</p>
 </li>
 <li><p>熟知各个参数的数值意义，以及在不同计算任务中的设置至关重要。</p>
 </li>
@@ -2301,26 +2300,26 @@ suggested common fields:
 </ul>
 </li>
 </ul>
-<h3 id="INCAR-的输入工作"><a href="#INCAR-的输入工作" class="headerlink" title="INCAR 的输入工作"></a>INCAR 的输入工作</h3><p>打开编辑器，把下面几行挨个输入进去: </p>
+<h3 id="INCAR-的输入工作"><a href="#INCAR-的输入工作" class="headerlink" title="INCAR 的输入工作"></a>INCAR 的输入工作</h3><p>打开编辑器，把下面几行挨个输入进去: （#以及后面的就不要输入了）</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SYSTEM = O atom       # 氧元素符号，不是零!</span><br><span class="line">ISMEAR = 0            # 是零，不是氧元素符号，对于分子或者原子，用0.</span><br><span class="line">SIGMA = 0.01          # 对于分子或者原子，用0.01</span><br></pre></td></tr></table></figure>
 <p><strong>INCAR的注意事项：</strong></p>
 <ul>
-<li><strong>#</strong>后面写的是汉语，是给大家展示用的，大家在写的时候，最好不要把汉语写进去，有可能会出错！</li>
-<li><p><strong>#</strong>号后面的内容对计算不会造成影响，可以不用输入；</p>
+<li><strong>#</strong>后面写的是汉语，是给大家展示用的。 大家在写INCAR的时候，最好不要把汉语写进去，有可能会出错！</li>
+<li><p><strong>#</strong>号后面的内容对计算不会造成影响，主要作为注释用，解释这个参数干嘛用的，可以不用输入；</p>
 </li>
 <li><p>每个参数后面跟着等号 <strong>=</strong> ， </p>
 </li>
-<li><p>等号（<strong>=</strong>）前后可以有空格，也可以没有。ISMEAR=0 和 ISMEAR = 0 是一样的，</p>
+<li><p>等号（<strong>=</strong>）前后可以有空格，也可以没有。<code>ISMEAR=0</code> 和 <code>ISMEAR = 0</code> 是一样的，</p>
 </li>
 <li><p>写INCAR的时候，<strong>不要使用 tab</strong>，用空格替换tab；</p>
 </li>
-<li><p>官网有些旧的文件可能用的不是 # 号，而是 !。 大家记住: ! 可能会出错。</p>
+<li><p>官网有些旧的文件可能用的不是 # 号，而是 !， ! 可能会出错。最好的办法就是记住参数是干嘛用的，# 和 ！ 都不写。</p>
 </li>
 </ul>
-<h3 id="INCAR的详解"><a href="#INCAR的详解" class="headerlink" title="INCAR的详解"></a>INCAR的详解</h3><h4 id="SYSTEM"><a href="#SYSTEM" class="headerlink" title="SYSTEM"></a>SYSTEM</h4><p>SYSTEM 后面是该计算的说明。你的这个任务算的是什么，目的是什么，体系是什么？等等，这写都可以<strong>随便</strong>写在里面。随便的意思就是可以任意写：</p>
+<h3 id="INCAR的详解"><a href="#INCAR的详解" class="headerlink" title="INCAR的详解"></a>INCAR的详解</h3><h4 id="SYSTEM"><a href="#SYSTEM" class="headerlink" title="SYSTEM"></a>SYSTEM</h4><p>SYSTEM 后面是该计算的说明。你的这个任务算的是什么，目的是什么，体系是什么？等等，这些都可以<strong>随便</strong>写在里面，<strong>随便</strong>的意思就是可以任意写。</p>
 <ul>
 <li>SYSTEM = O atom 和 SYSTEM = I LOVE BigBro  和 SYSTEM = VASP， 除了多出几个字符外，对计算没有什么影响。</li>
-<li>不建议大家在这一行里写一堆乱七八糟的东西。</li>
+<li>情诗，骂人的话也可以写在 = 后面。但不建议大家在这一行里写一堆乱七八糟的东西，另外还是得避免把中文写在这里；</li>
 <li>当然，这一行有或者没有，对计算结果不会有任何影响，看着不爽也可以直接删除。</li>
 </ul>
 <h4 id="ISMEAR"><a href="#ISMEAR" class="headerlink" title="ISMEAR"></a>ISMEAR</h4><p>ISMEAR这一项，目前需要记住的是：</p>
@@ -2331,12 +2330,12 @@ suggested common fields:
 <p>下面是VASP官网的一些解释，新手暂时看不懂不要紧，把需要记住的这两条死死记住就可以了。</p>
 <ul>
 <li>对于半导体和绝缘体体系，ISMEAR的值取绝对不能大于0， 一般用0；</li>
-<li>对所有体系，如果想获取更加精确能量的时候用-5：但使用-5的时候，K点数目小于3则程序会罢工；</li>
+<li>对所有体系，如果想获取更加精确能量的时候用-5，但这时候如果K点数目小于3，程序则会罢工；</li>
 <li>K 点少，半导体或者绝缘体，那么只能用 ISMEAR = 0；</li>
 <li>在DOS能带计算中，使用ISMEAR= -5 用于获取精确的信息。 </li>
-<li>对于金属来说，ISMEAR的取值一般为0，1；</li>
+<li>对于金属来说，ISMEAR的取值一般为&gt;=0 的数值（0,1,2）；</li>
 <li>保守地说，ISMEAR = 0 (Gaussian Smearing) 可以满足大部分的体系（金属，导体，半导体，分子）；</li>
-<li>如果不知道怎么取ISMEAR，1）直接用0；2）测试不同的值对计算的影响。</li>
+<li>如果不知道怎么取ISMEAR，直接用0是一个很保险的做法。也可以测试不同的值对计算的影响，但是新手的话，即使测试完了，也不知道根据什么去判断对结果的影响。</li>
 </ul>
 <h4 id="SIGMA"><a href="#SIGMA" class="headerlink" title="SIGMA:"></a>SIGMA:</h4><p>SIGMA的取值和ISMEAR息息相关，也就是和ISMEAR这个参数同时出现，设定。下面是一些基本的介绍：</p>
 <ul>
@@ -2351,17 +2350,26 @@ suggested common fields:
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">grep &#x27;entropy T&#x27;  OUTCAR </span><br></pre></td></tr></table></figure>
 <p><strong>注意1：</strong>这里有两个单引号，不要输入的时候漏掉。</p>
 <p>用这个命令，得出的能量除以体系中原子的数目（也就是平均到每个原子上），然后再和 0.001 eV 比较。如果小于，SIGMA取值OK，如果大于，再换个小点的数值进行测试。</p>
-<p><strong>注意2：</strong>这里的说的entropy，是因为ISMEAR展宽这个计算方法引入的，跟我们物理化学书里面的entropy完全是两码事。后面我们会介绍如何通过频率分析计算物理化学里面的Entropy。</p>
+<p><strong>注意2：</strong>这里的说的entropy，是因为ISMEAR展宽这个计算方法引入的，跟我们物理化学书里面的entropy完全是两码事。后面我们会介绍如何通过频率分析计算物理化学里面的Entropy。千万别把这个数值当成频率所对应的entropy。</p>
 <h3 id="INCAR的保存"><a href="#INCAR的保存" class="headerlink" title="INCAR的保存"></a>INCAR的保存</h3><p>输入完上面的几行，我们就可以保存INCAR文件了。这里需要注意的是：INCAR后面没有尾缀，<strong>所以：INCAR.txt是错误的。</strong>为避免这个问题：</p>
 <ul>
-<li>Notepad++ 保存的时候，文件名为: INCAR，保存类型选择 Alltypes (<em>.</em>)。</li>
-<li>用Vim的筒子们直接将前面的内容保存成INCAR即可。</li>
+<li><p>Notepad++ 保存的时候，文件名为: INCAR，保存类型选择 Alltypes (<em>.</em>)。</p>
+</li>
+<li><p>用Vim的筒子们直接将前面的内容保存成INCAR即可。</p>
+</li>
+<li><p>将INCAR.txt 通过<code>mv</code>命令重命名为INCAR。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mv INCAR.txt INCAR -f</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>前面说了很多，对新手，可能会犯晕。不过不用担心，<strong>只要记住关键三点，我们就圆满完成本节的任务</strong>：</p>
 <ul>
-<li>INCAR是纯文本没有尾缀; </li>
-<li>算原子或者分子时：ISMEAR = 0， SIGMA = 0.01</li>
-<li>Windows用户请使用Notepad++作为文本编辑器，不要使用自带的记事本或者写字板</li>
+<li><p>INCAR是纯文本没有尾缀; </p>
+</li>
+<li><p>算原子或者分子时：ISMEAR = 0， SIGMA = 0.01</p>
+</li>
+<li><p>Windows用户请使用Notepad++作为文本编辑器，不要使用自带的记事本或者写字板，如果使用了，计算前务必要通过<code>dos2unix</code>转换一下格式：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dos2unix INCAR </span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>上一节，我们学习了INCAR的简单准备工作。这一节，我们学习另外一个输入文件的写法：<strong><em>KPOINTS</em></strong></p>
 <h3 id="简单说明-1"><a href="#简单说明-1" class="headerlink" title="简单说明"></a>简单说明</h3><p>KPOINTS文件在计算中的作用，一方面决定了计算的精度，同时也影响计算所需要的时间。精度高，时间长，精度低，时间短。所以：合理设置KPOINTS文件，可以保证我们使用最少的时间，来获取准确可靠的结果。</p>
@@ -2403,7 +2411,6 @@ suggested common fields:
 </li>
 <li>前面看不懂，没事。<strong>记住这一点，本节就圆满完成任务</strong>：气体分子，原子计算的时候，使用gamma点即可。</li>
 </ul>
-<p>$\require{mediawiki-texvc}$</p>
 <p>这一节，我们学习VASP计算中模型的文件：<strong><em>POSCAR</em></strong></p>
 <h3 id="简单说明-2"><a href="#简单说明-2" class="headerlink" title="简单说明"></a>简单说明</h3><p>POSCAR 里面包含了你要进行计算的模型结构信息。也就是你要研究的对象。POSCAR有自己固定的格式，每一行都有特定的含义，认真掌握这些，对于搭建模型非常有帮助。对于本节的例子：O原子的计算中，我们要把O原子放到一个格子里面，格子大小为：8 $\times$ 8 $\times$ 8 $\AA{^3}$。那么POSCAR应该这样写。</p>
 <h4 id="POSCAR的输入"><a href="#POSCAR的输入" class="headerlink" title="POSCAR的输入"></a>POSCAR的输入</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">O atom in a box </span><br><span class="line">1.0             # universal scaling parameters </span><br><span class="line">8.0 0.0 0.0     # lattice vector a(1) </span><br><span class="line">0.0 8.0 0.0     # lattice vector a(2)  </span><br><span class="line">0.0 0.0 8.0     # lattice vector a(3)  </span><br><span class="line">O               # O element， not zero</span><br><span class="line">1               # number of atoms </span><br><span class="line">Cartesian       # positions in cartesian coordinates </span><br><span class="line">0 0 0           #</span><br></pre></td></tr></table></figure>
@@ -9687,5 +9694,352 @@ E_{ads} &= E_{slab+H_2O} – E_{slab} – E_{H_2O^{gas}} \\
         <tag>cif</tag>
         <tag>pymatgen</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>通过Ubuntu连接国科智算的方法</title>
+    <url>/2017/11/18/A01_not_used/</url>
+    <content><![CDATA[<p>本教程主要讲述的是如何在Ubuntu16.04操作系统上连接国科智算超算。分3部分：</p>
+<ul>
+<li>1）前期准备； </li>
+<li>2）连接和挂载超算中心； </li>
+<li>3）数据传输测试。</li>
+</ul>
+<p>在使用本教程前，首先确认已经收到了超算管理员分配的秘钥。通过Vim或者其他文本编辑工具，可以查看一下这个秘钥。超算中心好比是一个宝藏，这个宝藏的大门上有把锁，而开启这把锁的钥匙，就是管理员给我们的秘钥。</p>
+<h3 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h3><p>下面的工作，一步一步来，相信99.99% 的人都可以顺利完成。</p>
+<ul>
+<li>为了方便理解，本人将管理员给的秘钥重新命名了一下。将下面的999改成管理员给你的那个数字。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qli@bigbro:~$ cp  ~/Desktop/id_rsa_gkzshpc999.gkzshpc999  .ssh/my_key</span><br></pre></td></tr></table></figure>
+<p>经过上面的一步，管理员给的秘钥就被我们命名成：my_key了。这好比是我们在钥匙上贴了个标签，开门的时候直接找这个标签对应的钥匙就可以了。</p>
+<p>如果你的Ubuntu系统下没有 .ssh 文件夹，可以自己先建一个，然后再运行上面的命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qli@bigbro:~$ mkdir .ssh</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>安装sshfs </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qli@bigbro:~$ sudo apt-get install sshfs </span><br><span class="line">[sudo] password <span class="keyword">for</span> qli: </span><br><span class="line">Reading package lists... Done</span><br><span class="line">Building dependency tree       </span><br><span class="line">Reading state information... Done</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建挂载国科智算的文件目录：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qli@bigbro:~$ mkdir gkzs</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开~/.bashrc文件，并添加下面的两行：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">alias</span> gkzs=<span class="string">&#x27;ssh -i /home/qli/.ssh/my_key  gkzshpc999@59.49.37.9 -p 9236&#x27;</span></span><br><span class="line"><span class="built_in">alias</span> mgkzs=<span class="string">&#x27;sshfs -o IdentityFile=/home/qli/.ssh/my_key  -p 9236 gkzshpc999@59.49.37.9:  /home/qli/gkzs&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>上面我们的两行alias后面的内容主要为：</p>
+<ul>
+<li>我们的手（ssh）拿着钥匙（-i /home/qli/.ssh/my_key） 打开大门 （gkzshpc999@59.49.37.9 -p 9236）</li>
+<li>我们的手（sshfs）拿着钥匙 （-o IdentityFile=/home/qli/.ssh/my_key） 打开大门 （-p 9236 gkzshpc999@59.49.37.9）后，并将宝藏运回家（/home/qli/gkzs） </li>
+</ul>
+</li>
+<li><p>source 一下 ~/.bashrc 文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qli@bigbro:~$ . ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="连接超算中心"><a href="#连接超算中心" class="headerlink" title="连接超算中心"></a>连接超算中心</h3><p>上面的工作完成之后，剩下的就是命令操作的事情了：</p>
+<ul>
+<li><p>连接超算中心：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qli@bigbro:~$ ls</span><br><span class="line">Desktop  Documents  Downloads  gkzs  lvliang  Music  Pictures  Public  SCVPN  teklahome  Templates  Videos</span><br><span class="line">qli@bigbro:~$ gkzs</span><br><span class="line">Last login: Thu Nov 22 05:07:16 2018 from 80.29.50.15</span><br><span class="line">[gkzshpc999@login02 ~]$ ls</span><br><span class="line">perl5</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开新的一个Terminal，我们挂载超算中心到我们的电脑上面，以便传输数据。</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qli@bigbro:~$ ls</span><br><span class="line">Desktop  Documents  Downloads  gkzs  lvliang  Music  Pictures  Public  SCVPN  teklahome  Templates  Videos</span><br><span class="line">qli@bigbro:~$ ls gkzs/</span><br><span class="line"> </span><br><span class="line">qli@bigbro:~$ mgksz</span><br><span class="line">qli@bigbro:~$ ls gkzs/</span><br><span class="line">perl5</span><br></pre></td></tr></table></figure>
+<h3 id="数据传输测试"><a href="#数据传输测试" class="headerlink" title="数据传输测试"></a>数据传输测试</h3><ul>
+<li><p>在连接到服务器的界面：我们创建一个文件：mount_test。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[gkzshpc999@login02 ~]$ <span class="built_in">echo</span>  <span class="string">&#x27;I love BigBro&#x27;</span> &gt;  mount_test</span><br><span class="line">[gkzshpc999@login02 ~]$ ls</span><br><span class="line">mount_test  perl5</span><br><span class="line">[gkzshpc999@login02 ~]$ cat mount_test </span><br><span class="line">I love BigBro</span><br><span class="line">[gkzshpc999@login02 ~]$ </span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>在挂载的目录下查看：目录下多出来了刚刚创建的 mount_test文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qli@bigbro:~$ <span class="built_in">cd</span>  gkzs/</span><br><span class="line">qli@bigbro:~/gkzs$ ls</span><br><span class="line">mount_test  perl5</span><br><span class="line">qli@bigbro:~/gkzs$ cat mount_test </span><br><span class="line">I love BigBro</span><br><span class="line">qli@bigbro:~/gkzs$ </span><br><span class="line">qli@bigbro:~/gkzs$ cp ~/Desktop/CONTCAR  .</span><br><span class="line">qli@bigbro:~/gkzs$ ls</span><br><span class="line">CONTCAR  mount_test  perl5</span><br><span class="line">qli@bigbro:~/gkzs$ </span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>上面的最后操作中，我们从桌面上复制了一个CONTCAR到挂载的目录下，然后查看下服务器的终端：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[gkzshpc999@login02 ~]$ ls</span><br><span class="line">CONTCAR  mount_test  perl5</span><br><span class="line">[gkzshpc999@login02 ~]$ head -n 5 CONTCAR  </span><br><span class="line">Ru\(0\0\1)                              </span><br><span class="line">   1.00000000000000     </span><br><span class="line">     8.1377999784000004    0.0000000000000000    0.0000000000000000</span><br><span class="line">     4.0688999892000002    7.0475415119999996    0.0000000000000000</span><br><span class="line">     0.0000000000000000    0.0000000000000000   21.5631999968999999</span><br><span class="line">[gkzshpc999@login02 ~]$ </span><br></pre></td></tr></table></figure>
+<p>完成了上面的操作，下面你就可以将自己电脑上准备的一些计算文件或者文件夹通过命令复制到超算中心，然后就可以提交任务了。</p>
+]]></content>
+      <categories>
+        <category>LVASPTHW附录</category>
+      </categories>
+      <tags>
+        <tag>Ubuntu</tag>
+        <tag>超算中心</tag>
+        <tag>sshfs</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>A34 利用ASE的热力学模块计算气体的熵</title>
+    <url>/2022/07/23/A34/</url>
+    <content><![CDATA[<h3 id="简单说明："><a href="#简单说明：" class="headerlink" title="简单说明："></a>简单说明：</h3><p>ASE提供的热力学模块可以很方便地获取气体分子的热力学数据比如吉布斯自由能，熵等。具体参见：<a href="https://wiki.fysik.dtu.dk/ase/ase/thermochemistry/thermochemistry.html。本节介绍下气体分子熵的计算，用到的是**IdealGasThermo**这一个模块，例子为氨气分子（NH3）。**IdealGasThermo**计算气体分子的热力学自由能，除了VASP计算之外，要注意的有4点注意的，这些都要输入到对应的参数之中。">https://wiki.fysik.dtu.dk/ase/ase/thermochemistry/thermochemistry.html。本节介绍下气体分子熵的计算，用到的是**IdealGasThermo**这一个模块，例子为氨气分子（NH3）。**IdealGasThermo**计算气体分子的热力学自由能，除了VASP计算之外，要注意的有4点注意的，这些都要输入到对应的参数之中。</a></p>
+<p>1） 分子的对称数；</p>
+<p>2）分子的结构：线性或者非线性；</p>
+<p>3）分子中未成对的电子数目，或者多重度。</p>
+<p>4）温度，压强</p>
+<p>这些具体的输入，网站上都有相应的说明，自己根据分子的特性改下即可。比如对称数不会算的话，可以参考下面的这个表格。</p>
+<p><img src="/2022/07/23/A34/A34_1.png" alt=""></p>
+<h3 id="脚本部分："><a href="#脚本部分：" class="headerlink" title="脚本部分："></a>脚本部分：</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Created on Tue Jul 12 18:38:35 2022</span></span><br><span class="line"><span class="string">https://janaf.nist.gov/tables/H-083.html #Database</span></span><br><span class="line"><span class="string">Symmetry Number: Table 10.1 and Appendix B of C. Cramer “Essentials of Computational Chemistry”, 2nd Ed.</span></span><br><span class="line"><span class="string">spin:  0 for molecules in which all electrons are paired, 0.5 for a free radical with a single unpaired electron, 1.0 for a triplet with two unpaired electrons, such as O_2.</span></span><br><span class="line"><span class="string">@author: qli</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> ase.io <span class="keyword">import</span> read, write</span><br><span class="line"><span class="keyword">from</span> ase.thermochemistry <span class="keyword">import</span> IdealGasThermo</span><br><span class="line"><span class="keyword">from</span> scipy <span class="keyword">import</span> constants <span class="keyword">as</span> con</span><br><span class="line"></span><br><span class="line">atoms = read(<span class="string">&#x27;./freq/POSCAR&#x27;</span>)</span><br><span class="line">sym = <span class="number">3</span> <span class="comment"># symmetry number of NH3 </span></span><br><span class="line">spin = <span class="number">0</span> <span class="comment"># spin of NH3. </span></span><br><span class="line">tem = <span class="number">298.15</span> <span class="comment"># Temperature</span></span><br><span class="line">out = read(<span class="string">&#x27;./OUTCAR&#x27;</span>,  <span class="built_in">format</span>=<span class="string">&#x27;vasp-out&#x27;</span>)</span><br><span class="line">potentialenergy = out.get_potential_energy()</span><br><span class="line"></span><br><span class="line">model = read(<span class="string">&#x27;./freq/POSCAR&#x27;</span>)</span><br><span class="line"><span class="comment"># model_positions = model.get_positions()</span></span><br><span class="line"></span><br><span class="line">vib_energies = []</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./freq/OUTCAR&#x27;</span>) <span class="keyword">as</span> f_in:</span><br><span class="line">    lines = f_in.readlines()</span><br><span class="line">    <span class="keyword">for</span> num, line <span class="keyword">in</span> <span class="built_in">enumerate</span>(lines):</span><br><span class="line">        <span class="keyword">if</span> <span class="string">&#x27;cm-1&#x27;</span> <span class="keyword">in</span> line:</span><br><span class="line">            vib_e = <span class="built_in">float</span>(line.rstrip().split()[-<span class="number">2</span>])</span><br><span class="line">            vib_energies.append(vib_e)</span><br><span class="line"></span><br><span class="line">vib_energies = np.array(vib_energies[:-<span class="number">6</span>])/<span class="number">1000</span> <span class="comment"># For Gas, the last six are translation and rotation</span></span><br><span class="line"><span class="comment"># zpe = sum(vib_energies)/2</span></span><br><span class="line"></span><br><span class="line">thermo = IdealGasThermo(vib_energies=vib_energies,</span><br><span class="line">                        potentialenergy=potentialenergy,</span><br><span class="line">                        atoms=atoms,</span><br><span class="line">                        geometry=<span class="string">&#x27;nonlinear&#x27;</span>,</span><br><span class="line">                        symmetrynumber=<span class="number">3</span>, spin=spin)</span><br><span class="line"></span><br><span class="line">zpe = thermo.get_ZPE_correction()</span><br><span class="line">entropy = thermo.get_entropy(temperature=tem, pressure=<span class="number">101325</span>,verbose=<span class="literal">True</span>)  <span class="comment"># Unit eV/K</span></span><br><span class="line">TS = tem * entropy   </span><br><span class="line">G = potentialenergy + zpe - TS</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;G&#x27;</span>, G)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;S&#x27;</span>, con.Avogadro * con.electron_volt * entropy, <span class="string">&#x27;J/K/mol&#x27;</span>)  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="运行实例："><a href="#运行实例：" class="headerlink" title="运行实例："></a>运行实例：</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">qli@bigbro test_nh3 % ls</span><br><span class="line">CONTCAR             INCAR               OUTCAR              freq/</span><br><span class="line">H-083.txt           KPOINTS             POSCAR              get_gas_entropy.py*</span><br><span class="line">qli@bigbro test_nh3 % python3 get_gas_entropy.py </span><br><span class="line">Entropy components at T = 298.15 K and P = 101325.0 Pa:</span><br><span class="line">=================================================</span><br><span class="line">                           S               T*S</span><br><span class="line">S_trans (1 bar)    0.0014947 eV/K        0.446 eV</span><br><span class="line">S_rot              0.0004981 eV/K        0.149 eV</span><br><span class="line">S_elec             0.0000000 eV/K        0.000 eV</span><br><span class="line">S_vib              0.0000047 eV/K        0.001 eV</span><br><span class="line">S (1 bar -&gt; P)    -0.0000011 eV/K       -0.000 eV</span><br><span class="line">-------------------------------------------------</span><br><span class="line">S                  0.0019964 eV/K        0.595 eV</span><br><span class="line">=================================================</span><br><span class="line">G -19.220631915628093</span><br><span class="line">S 192.6230402411749 J/K/mol</span><br></pre></td></tr></table></figure>
+<h4 id="简单说明：-1"><a href="#简单说明：-1" class="headerlink" title="简单说明："></a>简单说明：</h4><p>1）目录里面H-083.txt是NIST-<em>JANAF</em>的热力学数据库的值。自己可以测试对比下。</p>
+<p>2）脚本所在目录是NH3分子优化的计算，脚本读取当前的OUTCAR获取能量，</p>
+<p>3）目录里面还有个<code>freq/</code>，对应的是NH3分子的频率计算，读取其中的POSCAR和OUTCAR获取分子结构和频率信息。对分子来说，VASP频率计算结果中的后面6个对应的是平动和转动部分，不能作为振动计算熵。平动和转动的熵是通过IdealGasThermo模块和分子结构来计算的，具体计算公式参考统计热力学、物理化学等。</p>
+<p>4）计算表面吸附物种的可以使用<code>Harmonic limit</code>这个模块。</p>
+<h3 id="示例下载："><a href="#示例下载：" class="headerlink" title="示例下载："></a>示例下载：</h3><p>关注公众号：大师兄科研网， 后台回复关键词： NH3 </p>
+<p><img src="/2022/07/23/A34/qrcode.png" alt=""></p>
+]]></content>
+      <categories>
+        <category>LVASPTHW</category>
+      </categories>
+      <tags>
+        <tag>ASE</tag>
+        <tag>气体</tag>
+        <tag>Entropy</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Ex01_V3 学习VASP的基本要求</title>
+    <url>/2022/07/23/ex01_v3/</url>
+    <content><![CDATA[<h6 id="在学习本书时，大师兄们会默认读者掌握了一些基本的电脑操作技能，以及化学的基本常识（结构化学，物理化学等）。本章列举出一些常用的计算工具和软件，以及假设大家掌握的一些技能。如果没有达到基本的要求，那么请在学习前面几章的同时，抓紧提升自己的能力。-化学的基本知识如果没有掌握，不建议学习本书。"><a href="#在学习本书时，大师兄们会默认读者掌握了一些基本的电脑操作技能，以及化学的基本常识（结构化学，物理化学等）。本章列举出一些常用的计算工具和软件，以及假设大家掌握的一些技能。如果没有达到基本的要求，那么请在学习前面几章的同时，抓紧提升自己的能力。-化学的基本知识如果没有掌握，不建议学习本书。" class="headerlink" title="在学习本书时，大师兄们会默认读者掌握了一些基本的电脑操作技能，以及化学的基本常识（结构化学，物理化学等）。本章列举出一些常用的计算工具和软件，以及假设大家掌握的一些技能。如果没有达到基本的要求，那么请在学习前面几章的同时，抓紧提升自己的能力。 化学的基本知识如果没有掌握，不建议学习本书。"></a>在学习本书时，大师兄们会默认读者掌握了一些基本的电脑操作技能，以及化学的基本常识（结构化学，物理化学等）。本章列举出一些常用的计算工具和软件，以及假设大家掌握的一些技能。如果没有达到基本的要求，那么请在学习前面几章的同时，抓紧提升自己的能力。 化学的基本知识如果没有掌握，不建议学习本书。</h6><h2 id="1-操作系统"><a href="#1-操作系统" class="headerlink" title="1  操作系统"></a>1  <strong>操作系统</strong></h2><p>做计算，有三个操作系统可以选择：</p>
+<ul>
+<li>Windows 系统：会使用Windows系统:会开机，打字，安装软件;</li>
+<li><p>Linux 系统，强烈推荐，大师兄本人一直用的是Ubuntu，但不局限于Ubuntu系统，自己喜欢什么就用什么。</p>
+</li>
+<li><p>Mac系统，兼顾Windows和Linux，一般比较贵，经济条件允许，也可以。</p>
+</li>
+</ul>
+<h5 id="给重点照顾对象：Windows用户的第一个提醒："><a href="#给重点照顾对象：Windows用户的第一个提醒：" class="headerlink" title="给重点照顾对象：Windows用户的第一个提醒："></a>给重点照顾对象：Windows用户的第一个提醒：</h5><p>Windows用户在进行计算的时候，只要计算出错了，就要本能地记起第一个解决的办法： dos2unix 。 这个命令干什么的不要紧，先死死记住即可。</p>
+<h2 id="2-文本编辑工具"><a href="#2-文本编辑工具" class="headerlink" title="2 文本编辑工具"></a>2 <strong>文本编辑工具</strong></h2><p>文本编辑工具主要用来编辑，查看VASP的输入（出）文件，要求会打开文件，打字，保存文件。</p>
+<h3 id="1）vim"><a href="#1）vim" class="headerlink" title="1）vim"></a>1）<a href="https://www.vim.org/">vim</a></h3><p>这个<strong>必须要学会</strong>，linux下面自带。原因是绝大多数的计算都是在linux下面进行的，学会vim的基本操作可以极大提高你的文字处理能力和工作效率。关于VIM的使用介绍，自己百度下或者搜一搜相关的视频，学习下。</p>
+<h3 id="2-notepad"><a href="#2-notepad" class="headerlink" title="2) notepad++"></a>2) <a href="https://notepad-plus-plus.org/">notepad++</a></h3><ul>
+<li>这个是对于Windows用户来说的，要求会创建文件，输入内容并保存文件，<strong>这个软件或者类似的必须学会使用!</strong></li>
+</ul>
+<p>原因在于：Windows下面自带的记事本保存的文件与linux下的文件格式不匹配，提交任务的时候经常出问题，用notepad++则不会出现这个问题。</p>
+<p><strong>因此</strong>，Windows的记事本杜绝使用。为了安全，即使用了notepad++，Windows用户在进行计算的时候，也需要注意下面两点：</p>
+<ul>
+<li><p>Windows下面编辑的输入文件，如果想在linux服务器上运行，最好先执行: dos2unix 这个命令。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dos2unix  INCAR</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Windows用户计算出错了，一定要首先想到 dos2linux 这个命令来解决问题!!!</p>
+</li>
+</ul>
+<h3 id="3）-Atom"><a href="#3）-Atom" class="headerlink" title="3） Atom"></a>3） <a href="https://atom.io/">Atom</a></h3><p>这个Atom是文本编辑工具，不是原子的意思。Windows，Linux，Mac系统均可使用。</p>
+<h2 id="3-常用建模相关软件"><a href="#3-常用建模相关软件" class="headerlink" title="3 常用建模相关软件:"></a>3 <strong>常用建模相关软件:</strong></h2><p>本书默认大家已经在自己的电脑里安装了下面三个软件：</p>
+<h3 id="1-Material-Studio"><a href="#1-Material-Studio" class="headerlink" title="1) Material Studio"></a><strong>1) Material Studio</strong></h3><ul>
+<li>这个软件，百度里面一大堆下载链接，安装教程，大家自行下载安装即可。</li>
+<li>本书默认大家已经安装成功，会不会使用暂且不要求；</li>
+<li>不要问我从哪里下载，安装出现问题也不要找我解决。</li>
+<li>另外，MS很贵，国内大部分人都是用的盗版软件，没有版权，不建议使用。</li>
+</ul>
+<h3 id="2）VESTA"><a href="#2）VESTA" class="headerlink" title="2）VESTA"></a>2）<strong><a href="http://jp-minerals.org/vesta/en/">VESTA</a></strong></h3><p>来自日本的良心软件，Linux，Windows，Mac系统均可使用。链接：<a href="http://jp-minerals.org/vesta/en/。无版权困扰，发文章的时候要注明下图是用VESTA做的，引用下对应的文章。">http://jp-minerals.org/vesta/en/。无版权困扰，发文章的时候要注明下图是用VESTA做的，引用下对应的文章。</a></p>
+<ul>
+<li><p>Windows下面安装就不再介绍了，下载程序，解压，双击图标即可运行，相信大家都能搞定。</p>
+</li>
+<li><p>Linux下安装: </p>
+<ul>
+<li><p>下载binary程序文件，本人解压后放到了/opt/VESTA-x86_64目录</p>
+</li>
+<li><p>编辑 ~/.bashrc 文件，在文件最后，添加下面2行。</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export VESTA=/opt/VESTA-x86_64 </span><br><span class="line">export PATH=&quot;$PATH:$VESTA&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在终端里面进行的操作如下：第一行打开~/.bashrc文件, 自己添加上面提到的两行即可，第二行更新下~/bashrc文件，第三行运行VESTA。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ vim ~/.bashrc</span><br><span class="line">$ . ~/.bashrc</span><br><span class="line">$ VESTA</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="3）p4vasp"><a href="#3）p4vasp" class="headerlink" title="3）p4vasp"></a>3）<a href="http://www.p4vasp.at"><strong>p4vasp</strong></a></h3><p>p4vasp主要有建模，可视化以及后处理的一些功能。</p>
+<ul>
+<li>链接：<a href="http://www.p4vasp.at/">http://www.p4vasp.at/</a></li>
+</ul>
+<ul>
+<li><p>Windows版本，很久没有更新了，点击此处下载，解压,双击图标即可运行。也可以在大师兄QQ群或者其他QQ群文件中下载。</p>
+</li>
+<li><p>Linux版本功能更加强大。也很久没更新了。 Ubuntu（18以及更老的版本）用户使用命令一键安装： <strong>sudo apt-get install p4vasp</strong></p>
+<p>Ubuntu 20以及后续的安装有些麻烦。p4vasp已经不更新了，很多功能可以用其他的软件替代。如果坚持使用p4vasp，可以联系大师兄付费安装（50块钱）。</p>
+</li>
+</ul>
+<h3 id="4）-ASE"><a href="#4）-ASE" class="headerlink" title="4） ASE"></a>4） <a href="https://wiki.fysik.dtu.dk/ase/index.html">ASE</a></h3><p>ASE 是Atomic Simulation Environment的缩写，可以实现搭建结构，读取VASP的输入和输出，以及一些后处理功能。如果p4vasp没办法安装，那么ASE必须要安装在你的电脑上。</p>
+<h3 id="5）其他软件"><a href="#5）其他软件" class="headerlink" title="5）其他软件"></a>5）其他软件</h3><p>这里说的软件主要是针对VASP计算的模型搭建这一方面，有兴趣的也可以试试<a href="https://avogadro.cc">Avogadro</a>. 值得一提的是，我们自己的国产建模软件那是相当得少，更别提计算软件了。而我们比较擅长的是写教程和后处理，然后发公众号割韭菜。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结:"></a><strong>总结:</strong></h2><ul>
+<li>初学者学习本书,所必须具有的技能:</li>
+<li><ul>
+<li>熟练使用一个操作系统；</li>
+<li>会编辑文本，写入和保存文件；</li>
+<li><ul>
+<li><strong>Windows 用户Notepad++必须掌握</strong>,</li>
+<li>linux用户可以vim或者其他编辑器，比如Atom</li>
+</ul>
+</li>
+<li>安装好或者会初步使用一款建模软件。-<ul>
+<li><strong>p4vasp </strong>，<strong>ASE</strong>安装在Windows和Ubuntu系统上；</li>
+<li><strong>VESTA</strong> 安装在Windows，Ubuntu，Mac系统上；</li>
+<li><strong>Materials Studio</strong> 安装在Windows上（没版权就别安装了）</li>
+</ul>
+</li>
+<li>会连接服务器，使用的vasp程序并且会提交任务<ul>
+<li>这个大师兄帮不了你，找师兄师姐，到时、自行找服务器商或者其他售后人员解决。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>LVASPTHW</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Ex00 为什么是&quot;The Hard Way&quot;</title>
+    <url>/2022/07/23/ex00_v3/</url>
+    <content><![CDATA[<h2 id="1）为什么Hard？"><a href="#1）为什么Hard？" class="headerlink" title="1）为什么Hard？"></a>1）为什么Hard？</h2><p>现如今浮躁的科研圈，社会风气下，速成思想，快餐文化害死人，图快的读者中，就有很多来自做实验的。现在大家普遍认为：实验+计算很好发文章。两者结合可以更深入地理解你的研究体系，发现并解决科研中有价值的科学问题。但很多老师却感觉计算就是动动鼠标，操作个软件的活，是个人就能做计算似的。在这种错误的理解，对计算难度过分低估，在高IF文章的诱惑下，安（suan）排（ji）自己的学生去搞计算。写到这里，很多脏话硬生生从嗓子眼憋回去了。骂是解决不了问题的。那么我们就理一理，一个实验的课题组，在没有任何计算背景的条件下，安（Po）排（Hai）一个学生做计算所遇到的问题吧：</p>
+<ul>
+<li>计算软件的选择：大千世界无奇不有，计算的软件也是多得数不过来，每个软件都有自己适用的体系，哪个更适合你的体系，你不会选择；</li>
+<li>软件的购买：比如你决定了使用VASP，你需要找代理商购买软件（有些还很贵，舍不得买，用盗版的，发文章的时候还担心版权问题）；</li>
+<li><p>服务器的购买：买了软件我们要安装啊。你可能说，这个容易，直接买几台电脑装上就可以了。这里的问题在于：用台电脑就可以算，就可以发文章的时代造就过去了，你可能被淘汰十几年了。所以，</p>
+<ul>
+<li>要买服务器，但服务器价格不菲，怎么选你也不知道；</li>
+<li>不买服务器，可以买超算中心的机时啊。好吧，就当这一关也过了。</li>
+</ul>
+</li>
+<li><p>软件安装：这也是个麻烦事。计算软件不是QQ，也不是360安全卫士，不是你下载个exe文件双击选择d盘就可以傻瓜式安装成功的。各种环境变量，依赖的库都是需要自己安装的。要不然那么多培训班上来就先给大家介绍软件是怎么安装的呢。</p>
+</li>
+<li><p>熟悉Linux系统：计算软件大部分都是在Linux系统下安装的，所以Linux系统的一些常用命令操作你得学会；而Linux的桌面之所以不如Windows，用户习惯是个难以突破的瓶颈，在没人陪伴的情况下，自己熟练Linux系统也是非常不易；</p>
+</li>
+<li>软件学习：这也是本书的重点，纯做计算的菜鸟，每天屁活都不干，就看本书，Linux系统下操练，有人指导的情况下差不多2个月能入门。对号入座，你一个做实验的，每天捣鼓设备，转转反应，就快累的嗝屁了，恨不得回到家或者宿舍就躺着歇会，还要跟朋友出去嗨，陪对象逛，当然还要玩把王者农药。真的能抽出时间来认真学习么？</li>
+<li>有些体系对软件参数依赖性很强，没人指导，你不会设置，软件出错不会解决，计算结果不会分析，算对算错都不知道，迷迷糊糊就这样得到了一些结果。</li>
+<li>计算的目的，肯定要跟实验对比啊？怎么对比，从哪方面下手，又没头绪，很多时候都是硬凑，结论反了也傻呵呵地跟别人说实验和理论吻合地很好，可以冲个大文章。</li>
+<li>折腾完了，要投文章了。因为计算太烂，XJB乱扯结论而被直接拒掉的又有一批；</li>
+<li>好不容易送审了， 最好去烧烧香，祈求不要落到做计算的人手里。真落到计算的人手里，算的太烂，也是很有可能因此丧命或者大修。</li>
+<li>就当你运气好，大修了。审稿人抛出来的专业计算问题你可能又答不上来，怎么补数据都无从下手。</li>
+<li>让你再幸运一把，补上数据，文章接受了。</li>
+<li>那下一篇还这样弄么？ 可以，但经过上面的折腾，小硕士估计要毕业了，小博士也要滚蛋了。又得找下一个垫背的，也就是因为这样，上一批的不知对和错的经验就传授给了下一代。</li>
+<li>总结：一个做实验的老师，不把自己在实验方面的专长传授给自己的学生，硬让人家自己去琢磨你什么都不懂的领域，最后造就了一个四不像的怪物出来，何为师道？</li>
+</ul>
+<p>这种情况到底怎么办？ 很多人在的课题组都是做实验的，老板头脑发热的时候，就安排做起了计算。但老板除了一颗乐观的心，屁都不懂啊。这时候的你，除非脑子很好用，否则就会陷入一种叫天天不应，叫地地不灵的境界。在这里,大师兄建议你：</p>
+<ul>
+<li>说服老板，找个计算靠谱的组，合作一下，避免自己直接算，自己专心做实验，计算可以跟国内相关领域的老师合作一下，各取所长。</li>
+<li>说服不了，找个计算靠谱的组，让老板派你去交流学习一段时间，别自己在那里瞎捣鼓。</li>
+<li>认真学习本书，看VASP的手册，以及各种网站上的教程，先摸索一阵子再算老板给你的体系。</li>
+<li>总之，时间和精力的成本，自己心里要有个数。</li>
+</ul>
+<p>在这里还要吐槽2点：</p>
+<ul>
+<li>有些做实验的跟计算合作，挂名的时候把计算放到不起眼位置的人，随意挪动计算作者的顺序，甚至是放到了通讯位置上，但没加*。生活不易，给做计算的留条活口，也给自己留个好名声。</li>
+<li>有些跟实验合作的计算工作者，随随便便优化个结构，做个漂亮的图就完事。只做锦上添花工作，而不深入研究课题机理。做计算的日子本来就难，请不要因为自己的不专业坏了计算的名声。</li>
+<li>如果想合作，就双方正儿八经地合作，真正意义的合作至少是通过计算解决了课题中的难点，机理，有助于组里课题的下一步进行，更高级点是实验验证了计算的假设，不过能做到这种程度的也没多少课题组。而对于这种良性的合作，实验和计算都给挂个一作，双方老板都挂个通讯，也无可厚非。</li>
+<li>不想合作，非让自己的学生做计算。这种情况就不要怕花钱，派学生到做计算的课题组学习上一两个月，然后再回来继续搞。如果有需要，也可以派出去参加参加一些高质量的培训班，暑期学校等，来弥补自己在学生指导方面的不足。</li>
+</ul>
+<p>虽然书名叫The hard Way，这本书还是给了很多人一种DFT极品快餐的感觉；更会越来越”毁了”专业做计算的，让各种做实验的做计算的扰乱市场。虽然有这种负面的作用，但我还是想尽自己可能，稍微提高我们做计算的平均水平。因此，<strong>认真声明一下</strong>：本教程的初衷是给专门做计算菜鸟准备的。对于那些以为靠本书就可以快速入门的筒子们（不管是做计算还是做实验的），劝你们还是趁早放弃本书的学习，科研的路上，从来就没有速成二字。</p>
+<p>在BB了这么多废话之后，感觉时候再强调下本书的重点了：The Hard Way。The Hard Way 在本人的眼里，类似于书山有路勤为径，学海无涯苦作舟的感觉，类似于经过无数瞎折腾终于尝到一点点小胜利甜头的感觉，类似于苦尽甘来，柳暗花明又一村的感觉。所以：Hard Way是本书的重点，也是痛苦学习的一个过程。别人耗费精力和时间开发出来的软件，短时间就精通是不可能的事情。所以，也别指望着一口气吃成个胖子，耐住寂寞。 </p>
+<p>本人学习和使用VASP已经快10年了，该教程差不多也5岁了。我进入课题组之前，不会用Ubuntu系统，也不会用脚本，也不会用python写脚本，也没用过VASP。我的VASP入门，是花了一个月看了Davide Sholl的书后，老板又手把手花了一个多月的时间学会的，学习的资料是老版本的Hand on Session系列。每天做的是系列中的练习，准备老板布置的作业，思考老板预留的问题，然后第二天听老板解释每个参数的含义，里面的关键点。而真正操作起来进入课题的时候，又有组里细心的博后专门帮忙指导答疑，也有很多人可以进行讨论学习。写这么多并不是在秀自己遇到了一个多好的老板，多好的课题组。在这样的环境中，经过了四年的学习，好几个课题的实战，才变成你们感觉很牛逼的大师兄（其实我只是经验比你们多一点点而已）。而这本书，也是本人这四年来学习到的精华，每一节都要花费差不多4个小时的样子才能完成，或者更多。而这四年的精华，岂能让你把这本书看一遍就掌握了?  到现在为止，瞎BB了76节。每节你花一天的时间去学习，加上其他参考书的学习，也需要2个月的时间。而2个月，对一个新手来说，完全在承受范围之内，<strong>请相信时间的力量</strong>。这里，我们澄清下对新手的定义：全职搞计算的菜鸟。所以，Hard Way 就是需要你花掉每一个整天的时间，一点点认真琢磨，反复操练，绝对不是什么速成。而现在我们搞科研都很浮躁，什么都喜欢图快，我们也有句古话：欲速则不达。因此，打算朝夕之内就学会VASP的读者，本书可能真的不适合你。</p>
+<h2 id="2）-计算-转行？"><a href="#2）-计算-转行？" class="headerlink" title="2） 计算 = 转行？"></a>2） 计算 = 转行？</h2><ul>
+<li>很多人吐槽计算化学是个坑告诉你，既然选择了这条路，就准备改行吧。请避开这些负能量的说法，拿出自己的主见。无论放弃或者坚持，都要拿出你自己的判断力出来，请不要再听别人在你耳边瞎磨。也就是我的人生我做主。</li>
+<li>每一行的人都会说自己这一行是个坑，不管你怎么跳，都是坑。引用我老婆的原话：之前带两个孩子的时候，感觉自己每天都很累，现在孩子父母帮忙看着，自己工作了，但每天还是很累。美好的生活，累总是一路同行。</li>
+<li>个人的理解是，学习理论计算可以使你的视野更加开阔，思维方式更加灵活，对事物本质的把握和理解上，比别人要更胜一筹。也就是一眼就能找到问题的关键所在。不论是否继续相关的研究，转行与否，对今后的发展总会有所帮助。当然，我这个穷酸书生说的话，大家也可以一笑了之。</li>
+</ul>
+<h2 id="3-心态"><a href="#3-心态" class="headerlink" title="3 心态"></a>3 心态</h2><h3 id="主动行动、思考"><a href="#主动行动、思考" class="headerlink" title="主动行动、思考"></a>主动行动、思考</h3><p>前面说的都没有阻挡你继续学习vasp的脚步，那么首先要注意的就是自己的心态：学习过程中要时刻抱着<strong>主动</strong>的心态去解决问题。</p>
+<ul>
+<li>遇到不会的问题,<strong>主动</strong>去查找解决方法;</li>
+<li>遇到不懂的基础知识,<strong>主动</strong>去找教科书;</li>
+<li>遇到什么好的资源,书籍,课件等,<strong>主动</strong>去网上搜索,下载;</li>
+<li>本书中的练习，看到别人有意思的计算，<strong>主动</strong>去重复重复。</li>
+<li>没事就<strong>主动</strong>去官网溜达,</li>
+<li>VASP计算出错，<strong>主动</strong>去google或者官网的论坛找答案! </li>
+</ul>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a><strong>注意</strong></h4><ul>
+<li><p>上面说的<strong>主动</strong>是对于你自己来说的，别碰到不会的就主动求助别人，这样你很难得到提升。</p>
+</li>
+<li><p>去google搜索遇到的问题，也就意味着你要学会科学上网。</p>
+</li>
+<li><p>如果遇到热心帮你解决问题的人，好好准备你的问题，千万不要一个劲的追问，因为这样显得你不动脑子，非常惹人烦。</p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结:"></a><strong>总结:</strong></h2><ul>
+<li><p>学习VASP所具有的心态：</p>
+<ul>
+<li>主动去面对遇到的问题和困难，冰冻三尺,非一日之寒，遇到问题，主动解决，日积月累就会收获良多；</li>
+<li>对自己要有自信，即使自己是彻头彻底的小白,也不必要担心。相对于那些积累了很多错误经验的人来说，什么都不知道则具有更好的可塑性。</li>
+<li>不要盲目相信他人，有自己的理解。如果你在网上搜索问题的答案，会找到很多人的回答，但实际熵很多人水平都可能没有你高，而你却把他们的话当成真理一般去相信，这是致命的。</li>
+</ul>
+</li>
+<li><p>大师兄的要求：</p>
+<ul>
+<li><p>新手认真阅读序言里面推荐的那本参考书；</p>
+</li>
+<li><p>尽可能多地浏览VASP官网，对某些参数有疑惑，认真查阅手册；</p>
+</li>
+<li><p>最重要的是不要偷懒，遇到不会的东西或者困难，立刻记下来或者去解决，否则明天你就会忘掉；</p>
+</li>
+<li><p>好东西要学会分享，可以在QQ群里分享自己的心得，帮助其他正在入门的小师弟，妹们。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="致谢："><a href="#致谢：" class="headerlink" title="致谢："></a><strong>致谢：</strong></h2><p>本教程在写作的过程中，得到了很多人的支持。 有些地方可能描述不清，当然书里面也肯定避免不了错误的出现，也收到了很多人的建议和批评指正。在这里，向他们表示诚挚的谢意。很多人认为，通过这个教程，学到了很多东西，但请不要过分把功劳归在我身上。引用佛系的观点：<strong>因果，完全是自作自受</strong>。你自己学习了，自己认真练习了，水平的提高完全是你自己辛苦付出的结果。<strong>教程就在这里，你学或者不学，都跟我没有关系。</strong>私以为，收获最大的还是本人。一方面把自己多年的学习的经验整理总结出来，另一方面，很多当时一知半解的地方，在写作的过程中，通过查阅资料，认真分析得到了解决。</p>
+<p>教程的宗旨在于快速带领大家入门VASP的使用，这里大师兄想起了金庸笔下的打狗棒法， 本书传授的只是招式，而心法口诀则是你扎实的科研基础功，是自己这些年（高中，大学，硕士，博士）通过坚持不懈学习来积累获得的，对次，本人确实无能为力，而这一点也恰恰是我们最欠缺的部分，希望可以引起大家的重视，在等待任务结束的时候，多多补习自己的基础知识。</p>
+]]></content>
+      <categories>
+        <category>LVASPTHW</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Ex02_V3 服务器和程序语言</title>
+    <url>/2022/07/24/ex02_v3/</url>
+    <content><![CDATA[<h2 id="服务器相关"><a href="#服务器相关" class="headerlink" title="服务器相关"></a>服务器相关</h2><p>VASP的计算就跟开车一样，设计到很多的内容，比如大街上的路怎么铺的？桥怎么建的？发动机怎么工作的？方向盘怎么工作的，刹车片什么材料做的？车身颜色怎么喷的？ 没有人会懂所有相关的知识。但是怎么打开车门，坐车里，启动发动机，踩油门，打方向盘，这是本教程所关心的，也就是类似驾校教练指导你学会如何开车，而不是关系如何去造车，去铺路。这里的车就是VASP。要开车，必须手头上有车，没车我瞎BB再多也是白搭。</p>
+<h3 id="1-知道怎么连接自己组内或者租赁的服务器"><a href="#1-知道怎么连接自己组内或者租赁的服务器" class="headerlink" title="1) 知道怎么连接自己组内或者租赁的服务器"></a>1) 知道怎么连接自己组内或者租赁的服务器</h3><p>后面大师兄会介绍一些挂载服务器的方法，但这些基本的连接服务器操作是基础。一般来说通过终端（terminal）来实现，Windows下有很多软件可以参考，比如：</p>
+<ul>
+<li>Winscp + Putty</li>
+<li><em>MobaXterm</em></li>
+</ul>
+<p>当然还有其他的软件，大师兄平时很少用Windows，推荐的就这两个。尤其是MobaXterm。 对于Ubuntu和Mac，则可以直接打开Terminal进行连接。</p>
+<h3 id="2-初步学习使用基本的linux命令"><a href="#2-初步学习使用基本的linux命令" class="headerlink" title="2) 初步学习使用基本的linux命令:"></a>2) 初步学习使用基本的linux命令:</h3><ul>
+<li><p>进入目录 : cd </p>
+</li>
+<li><p>移动文件(夹): mv </p>
+</li>
+<li>复制文件: cp </li>
+<li>复制文件夹用: cp -r ; 注意 cp 和 -r 之间有个或者N个空格</li>
+<li>创建文件夹:mkdir     </li>
+<li>删除文件: rm ;    </li>
+<li>删除文件夹: rm  -r    </li>
+<li>强制删除文件夹: rm -fr  或者 rm -rf  (f 和 r 的顺序可以颠倒 )        </li>
+<li>显示目录下文件: ls 等命令;   </li>
+<li>这里大师兄就不再啰嗦了，后面教程里会介绍一些命令的使用，老司机们自动略过，新手自行百度：linux 命令，你会得到铺天盖地的信息。</li>
+</ul>
+<h3 id="3-手上有可以正常运行的VASP程序"><a href="#3-手上有可以正常运行的VASP程序" class="headerlink" title="3) 手上有可以正常运行的VASP程序"></a>3) 手上有可以正常运行的VASP程序</h3><ul>
+<li><p>组里面已经安装好vasp程序，或者使用超算中心的VASP程序，只要手上有可以正常运行的VASP即可。因为我们在本书里，<strong>不讨论</strong>：</p>
+<ul>
+<li>去哪里下载VASP? 怎么安装VASP? 去哪里下载VASP的pseudo potentials?</li>
+</ul>
+<ul>
+<li>前面的问题可以在QQ群里面讨论，也可以付费求助别人解决。</li>
+<li>对于VASP的pseudo potentials，也就是POTCAR。<ul>
+<li>你老板买了VASP的版权，就直接问他要。</li>
+<li>用的盗版VASP，找其他人要一份，但是发文章的时候会很麻烦。国内很多人都是找有版权的老师挂名，其实这是非常学术不道德的事情。一方面涉及到版权，一方面涉及到瞎几把挂名。</li>
+<li>免费的可以用QE，CP2K，GPAW等开源的软件，没必要非得在VASP上面死磕。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>知道怎么提交VASP任务？</p>
+<ul>
+<li>自己组里都有提交任务的脚本，如果没有的话只能自行动手解决咯，可以<ul>
+<li>找组里的师兄师姐帮忙;</li>
+<li>第一个啃螃蟹的人，找老师解决，求助服务器商，求助超算管理员；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="程序语言学习"><a href="#程序语言学习" class="headerlink" title="程序语言学习"></a><strong>程序语言学习</strong></h2><p>建议大家学习两个语言: bash 和 python。主要是为了辅助计算，节省时间，并拓展自己的思维方式。现在机器学习，人工智能越来越热，学会使用Python或者其他语言，或许可以上升到以后能否生存的高度了。</p>
+<ul>
+<li>bash语言：日常terminal里面常用的基本命令，比如cd，ls这些，以及结合基本的逻辑语法，可以让你写出一些简单的小脚本。极大提高自己的工作效率；极大的意思就是别人一天或者N天的活，你可能几秒就完事。</li>
+<li>Python 语言：python是一款语法简单，很容易上手的程序，有着丰富的数据库支持，目前深受科研人员的喜爱。<strong>注意</strong>，这里我们不讨论类似：python是一门高级语言，运行的时候跟机器交互性差，需要时间比C++长这样的问题。因为这是专业程序员的事。不出意外，看这本书的大部分人，能够用python写个小脚本，方便地处理自己的任务和数据，就已经非常棒了，快和慢，对于我们来说，顶死了也就几秒的问题，完全可以接受。</li>
+<li>学习程序语言，一方面可以极大地提高自己的工作效率，另一方面也可以改变自己看待事物的思维方式。  </li>
+<li>如果不喜欢Python，当然也可以学习其他的程序语言，C++，R，Java等。</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>1）学习VASP前，先保证自己能顺利连接到服务器，然后运行VASP。这个大师兄没法帮忙，可以求助自己课题组中的师兄师姐，老板，或者群里咨询。</p>
+<p>2）新手有大把的时间，建议系统性学习bash，python语言。Python可以换成其他你自己感兴趣的。</p>
+]]></content>
+      <categories>
+        <category>LVASPTHW</category>
+      </categories>
   </entry>
 </search>

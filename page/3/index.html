@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -166,7 +166,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">166</span>
+        <span class="site-state-item-count">168</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -195,6 +195,568 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2019/03/29/ex80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/03/29/ex80/" class="post-title-link" itemprop="url">Ex80 nebmake.pl 的坑（一）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-03-29 15:30:16" itemprop="dateCreated datePublished" datetime="2019-03-29T15:30:16-04:00">2019-03-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2019/03/29/ex80/" class="post-meta-item leancloud_visitors" data-flag-title="Ex80 nebmake.pl 的坑（一）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/03/29/ex80/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/29/ex80/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>算过渡态，光知道检查虚频是不对的。如果算出来虚频多，很大程度是因为你的NEB初始结构有问题，也就是说你的过渡态路径背后的物理化学意义不是那么地理想。而对于NEB的初始结构，大部分人都是通过VTST的nebmake.pl脚本来实现的。</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nebmake.pl IS FS <span class="number">8</span> </span><br></pre></td></tr></table></figure>
+<p>分析上面这个命令：有4个关键的信息:</p>
+<ul>
+<li>脚本：nebmake.pl</li>
+<li>初始结构: IS</li>
+<li>末态结构: FS</li>
+<li>插的点数：8</li>
+</ul>
+<p>本节默认你优化好了IS，FS，并且插8个点，分析一下脚本nebmake.pl的2个坑。其实，在<strong>Density Functional Theory: A Practical Introduction</strong> 这本书的第6章，其中的一个坑已经讲过了。强烈建议新手，老手认真看看这一章。</p>
+<p>想知道这两个坑，首先我们先分析下nebmake.pl的工作原理。简举个化的一维例子：一个线段两端的坐标是x1和x2，我们把这个线段分成n份，并获得每一段的起始点的坐标。想必大家都知道怎么弄。</p>
+<p>x_i = x0 + i *(x2-x1)/(n+1)</p>
+<p>如果扩展到三维的xyz坐标，分别对y、z进行同样的处理。我们就得到了初始结构和末态结构之间这些的IMAGES的坐标。具体见：第六章的148页。</p>
+<p><img src="/2019/03/29/ex80/ex80-1.JPG" alt=""></p>
+<p>知道了原理，现在就可以分析其中的两个坑了。</p>
+<h4 id="坑1"><a href="#坑1" class="headerlink" title="坑1"></a>坑1</h4><p>前面讲的原子在表面扩散的例子，如果原子从fcc扩散到hcp。fcc和hcp的结构中，原子在z方向的坐标基本是相同的。如果运行nebmake.pl 这个命令，就会出现这样的一种情况，所有的IMAGE结构中，z的坐标几乎不变，也就是原子在表面横着走。而实际情况呢？原子在扩散的过程中，z方向的坐标也发生相应的变化。就如同你从山的一边爬到另一边，虽然海拔基本没变，但爬山这个过程，有升，下山过程，有降。所以，这种情况下，直接用nebmake.pl插的点在z方向上的物理意义并不准确。稍微扩展下，在x或者y方向上也可能会发生类似的情况，如果IS和FS在某一维度的变化很小时，一定要注意这一维度上的物理意义是否可以被表现出来。</p>
+<p><img src="/2019/03/29/ex80/ex80-2.JPG" alt=""></p>
+<p>既然知道了这个坑，我们该怎么填呢？</p>
+<h5 id="方法1："><a href="#方法1：" class="headerlink" title="方法1："></a>方法1：</h5><p>管它是不是坑，或者不知道这个坑，直接开车冲过去。这是很多新手常见的做法，虽然有时候可以开过去，但不推荐，毕竟也会溅一车泥，搞不好坑大了还会掉进去。</p>
+<h5 id="方法2："><a href="#方法2：" class="headerlink" title="方法2："></a>方法2：</h5><p>学习书中的例子，在计算之前先手动修改下结构。比如插了8个点，把第2和第7个IMAGES中的坐标向上移动0.1$\AA$。第3和6个向上移动0.15$\AA$，第4和5移动0.2$\AA$。这样做的好处就是，初始结构在z方向上具有更好的物理意义，使得计算收敛更快。</p>
+<h4 id=""><a href="#" class="headerlink" title=""></a><img src="/2019/03/29/ex80/ex80-3.JPG" alt=""></h4><p>上图是书中的一个例子，最上面的曲线是没有调节z坐标时，初始结构所对应的能量；中间的为调节初始结构的z坐标后，初始结构的能量；最下面的是NEB计算完成之后，各个IMAGE的能量。从能量上也可以看出来，如果z坐标我们不修改的话，体系能量与稳定的相差甚远，间接告诉我们可能需要更多的优化步数来收敛。这个强烈建议大家自己亲手算一算。体系简单，不耗费那么多机时，有助于加深对NEB的认识和学习。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2019/03/28/ex79/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/03/28/ex79/" class="post-title-link" itemprop="url">Ex 79 过渡态结构的确认</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-03-28 15:30:16" itemprop="dateCreated datePublished" datetime="2019-03-28T15:30:16-04:00">2019-03-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2019/03/28/ex79/" class="post-meta-item leancloud_visitors" data-flag-title="Ex 79 过渡态结构的确认" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/03/28/ex79/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/28/ex79/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面几节，我们从gamma点到3x3x1计算过渡态。首先复习一下计算的流程：</p>
+<p>1） 我们计算的是金属表面上H原子的扩散；</p>
+<p>2） 使用gamma点计算的时候，slab固定住了；</p>
+<p>3）gamma点计算结束后，检查结果：</p>
+<ul>
+<li>看到有一个漂亮的NEB图；</li>
+<li>能量变化也是稳稳妥妥滴；</li>
+<li>结构查看也没啥异常情况；</li>
+</ul>
+<p>4） 在确认第3)步检查OK之后，将gamma点的计算备份；增大K点至3x3x1继续算。</p>
+<p>5）计算结束后，重复第3）步的检查，确认没啥问题。</p>
+<h4 id="继续算"><a href="#继续算" class="headerlink" title="继续算"></a>继续算</h4><p>前面这么做很啰嗦（大师兄本人也很啰嗦），目的只有一个：用最少的机时获取最好的NEB初始结构。当我们完成这一步之后，就可以再继续下面的操作：</p>
+<ul>
+<li><p>备份3x3x1的计算；</p>
+</li>
+<li><p>增大K点至5x5x1；</p>
+</li>
+<li>放开表面的原子；（<code>POSCARtoolkit.py</code>）</li>
+<li>继续算，结果如下：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79$ ls</span><br><span class="line">00  02  04  06  08  INCAR    POTCAR    job_sub  movie       neb.dat    slurm-1133307.out  spline.dat  vasprun.xml 01  03  05  07  09  KPOINTS  exts.dat  mep.eps  movie.vasp  nebef.dat  slurm-1133315.out  vaspgr</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79$ cat KPOINTS</span><br><span class="line">K-POINTS</span><br><span class="line"> 0</span><br><span class="line">Gamma</span><br><span class="line">  5 5 1</span><br><span class="line">  0 0 0</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79$ tail 02/OUTCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79$ tail 02/OUTCAR</span><br><span class="line">                            User time (sec):     3864.268</span><br><span class="line">                          System time (sec):       15.316</span><br><span class="line">                         Elapsed time (sec):     3905.371</span><br><span class="line"></span><br><span class="line">                   Maximum memory used (kb):      466776.</span><br><span class="line">                   Average memory used (kb):           0.</span><br><span class="line"></span><br><span class="line">                          Minor page faults:       816554</span><br><span class="line">                          Major page faults:           29</span><br><span class="line">                 Voluntary context switches:        29864</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79$ tail 02/OSZICAR -n 1</span><br><span class="line">  10 F= -.32111627E+03 E0= -.32109808E+03  d E =-.130617E-03</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79$ ta.sh</span><br><span class="line">00       -321.15187450</span><br><span class="line">01       -321.13494327</span><br><span class="line">02       -321.09807672</span><br><span class="line">03       -321.06314408</span><br><span class="line">04       -321.03855868</span><br><span class="line">05       -321.02460382</span><br><span class="line">06       -321.01884134</span><br><span class="line">07       -321.02967204</span><br><span class="line">08       -321.06853536</span><br><span class="line">09       -321.09850728</span><br></pre></td></tr></table></figure>
+<p>从上面可以看到，顶点在06的位置，差不多就是过渡态了。</p>
+<h4 id="验证过渡态"><a href="#验证过渡态" class="headerlink" title="验证过渡态"></a>验证过渡态</h4><p>那么我们算出来的过渡态到底对不对呢? </p>
+<p>上面，我们通过能量分析，06这个Image就是过渡态了；但06就真的是过渡态吗？下面我们需要做2件事情：</p>
+<p>1） 查看结构：</p>
+<p><img src="/2019/03/28/ex79/ex79-1.png" alt=""></p>
+<p>为了区分明显，上图中桥式位置两端的Ru原子，用暗红色标记出来。可以看出，06结构中，H原子在桥式的位置上；是我们想要的过渡态。结构这一关也过了。</p>
+<p>2）频率分析：对于一个基元反应的过渡态来说，会有一个对应的虚频。因此，我们将06的CONTCAR单独取出来，做一个频率分析：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79$ mkdir freq &amp;&amp; cp 06/CONTCAR freq/POSCAR &amp;&amp; <span class="built_in">cd</span> freq &amp;&amp;sed -i <span class="string">&#x27;10,27s/T/F/g&#x27;</span> POSCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79/freq$ cp ../INCAR  .</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79/freq$ vi INCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79/freq$ kpoints.sh 1 1 1</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79/freq$ pospot.sh</span><br><span class="line">Generating NEW POTCAR...</span><br><span class="line">************************</span><br><span class="line">Done</span><br><span class="line">************************</span><br><span class="line">NEW POTCAR containes....</span><br><span class="line">Ru H</span><br><span class="line">************************</span><br><span class="line">Elements <span class="keyword">in</span> POSCAR</span><br><span class="line">************************</span><br><span class="line">   Ru   H</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79/freq$ qsub</span><br><span class="line">Submitted batch job 1179250</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79/freq$ ls</span><br><span class="line">CHG     CONTCAR  DYNMAT    IBZKPT  KPOINTS  OUTCAR  POSCAR  REPORT   XDATCAR  slurm-1179250.out CHGCAR  DOSCAR   EIGENVAL  INCAR   OSZICAR  PCDAT   POTCAR  WAVECAR  job_sub  vasprun.xml</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79/freq$ grep cm-1 OUTCAR</span><br><span class="line">   1 f  =   36.804765 THz   231.251161 2PiTHz 1227.674788 cm-1   152.212329 meV</span><br><span class="line">   2 f  =   30.534675 THz   191.855022 2PiTHz 1018.527097 cm-1   126.281311 meV</span><br><span class="line">   3 f/i=    9.822527 THz    61.716759 2PiTHz  327.644231 cm-1    40.622722 meV</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex79/freq$</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建freq文件夹，将06的CONTCAR复制到freq中；</li>
+<li>将表面的Ru原子固定住；</li>
+<li>复制NEB计算的INCAR过来，修改频率计算相应的参数；</li>
+<li>使用gamma点算频率；</li>
+<li>生成POTCAR；</li>
+<li>提交任务。</li>
+<li>查看结果，有一个虚频。计算完事！</li>
+</ul>
+<p>注意：</p>
+<ul>
+<li><p>不会算的看前面频率计算的内容；</p>
+</li>
+<li><p>自己测试下不同K点：2x2x1；3x3x1; 5x5x1计算出来的零点能有什么区别？频率大小有什么区别。</p>
+</li>
+</ul>
+<h4 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h4><p>拖拖拉拉，磨磨唧唧，终于把H原子在表面过渡态计算的NEB讲的差不多了。如果你一路沿着教程走过来，最终看到一个虚频对的结果时，会发自内心由衷地一笑：啊！啊！啊！过渡态原来这么简单。为避免这种情况的发生，我先给你脑勺拍一板凳，后面事还多着呢。还是那句话：做任何一个事情，从你认为它简单的那一刻起，你就输了。算过渡态，</p>
+<p>1）要把初始结构，末态结构优化好；</p>
+<p>2）合理采用粗糙的模型，来检查自己设想的反应路径；</p>
+<ul>
+<li>粗糙的模型：一方面指的是体系的大小，一方面是计算参数的设置；</li>
+<li>切忌直接上来硬算，要不然把服务器累个半死，却得不到多少好的结果。</li>
+</ul>
+<p>3） 从能量，结构，虚频等多个角度去分析你的结构。</p>
+<p>本节计算的文件已经打包上传到百度网盘，由于版权，压缩包里面的POTCAR就不放了，大家自己生成一下。下载链接：链接：<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1sfOLxTB5Rdr5Il7vNCOkyA">https://pan.baidu.com/s/1sfOLxTB5Rdr5Il7vNCOkyA</a> 提取码：m591 </p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2019/03/22/A13/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/03/22/A13/" class="post-title-link" itemprop="url">ASE的安装</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-03-22 02:06:48" itemprop="dateCreated datePublished" datetime="2019-03-22T02:06:48-04:00">2019-03-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW%E9%99%84%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW附录</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2019/03/22/A13/" class="post-meta-item leancloud_visitors" data-flag-title="ASE的安装" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/03/22/A13/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/22/A13/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="什么是ASE？"><a href="#什么是ASE？" class="headerlink" title="什么是ASE？"></a>什么是ASE？</h4><p>ASE 是Atomic Simulation Environment的简称。详细的介绍大家可以浏览官网：<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/about.html。ASE是一个基于python的程序库，可以做的事情很多，不同程序任务的设置，结构的搭建，结构分析都可以做。">https://wiki.fysik.dtu.dk/ase/about.html。ASE是一个基于python的程序库，可以做的事情很多，不同程序任务的设置，结构的搭建，结构分析都可以做。</a></p>
+<h4 id="为什么用ASE？"><a href="#为什么用ASE？" class="headerlink" title="为什么用ASE？"></a>为什么用ASE？</h4><ul>
+<li><p>ASE里面包含了很多的功能，其中个人认为最为方便地就是计算模型不同文件类型的转换。比如将cif文件转化为POSCAR，将POSCAR转化为xyz文件，等等；</p>
+</li>
+<li><p>可以在学习ASE的时候，顺便学习python的一些知识；</p>
+</li>
+<li><p>使用ASE分析计算结果；</p>
+</li>
+<li>使用ASE学习做计算；这里分享<code>江山</code>推荐的一本书：<a target="_blank" rel="noopener" href="https://github.com/jkitchin/dft-book">https://github.com/jkitchin/dft-book</a></li>
+</ul>
+<h4 id="怎么安装ASE？"><a href="#怎么安装ASE？" class="headerlink" title="怎么安装ASE？"></a>怎么安装ASE？</h4><p>如果你用的是国防科大吕梁超算中心，管理员已经安装好了ASE，那么需要你做的只有一步，添加ASE的路径到<code>.bashrc</code>文件中就可以直接用了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/opt/python3.6/bin$ ls ase*</span><br><span class="line">ase  ase-build  ase-db  ase-gui  ase-info  ase-run</span><br><span class="line">iciq-lq@ln3:/THFS/opt/python3.6/bin$ <span class="built_in">pwd</span></span><br><span class="line">/THFS/opt/python3.6/bin</span><br><span class="line">iciq-lq@ln3:/THFS/opt/python3.6/bin$ tail -n 1 ~/.bashrc</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/THFS/opt/python3.6/bin</span><br></pre></td></tr></table></figure>
+<p>如果你想在自己电脑上安装ASE。安装过程很简单，详细的信息请参考：<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/install.html。Mac太贵，没尝试过，Windows系统本人不太熟悉，下面附上在Windows10中Ubuntu寄生系统的安装过程（跟正儿八经Ubuntu系统的安装流程一样）；">https://wiki.fysik.dtu.dk/ase/install.html。Mac太贵，没尝试过，Windows系统本人不太熟悉，下面附上在Windows10中Ubuntu寄生系统的安装过程（跟正儿八经Ubuntu系统的安装流程一样）；</a> 总共就三步。</p>
+<ul>
+<li><p>安装pip：如果已经安装了pip，则就剩2步了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python-pip</span><br><span class="line">sudo apt install python3-pip</span><br></pre></td></tr></table></figure>
+<p>一个是基于python2，一个是python3的。</p>
+</li>
+<li><p><img src="/2019/03/22/A13/a13-1.png" alt=""></p>
+</li>
+</ul>
+<ul>
+<li><p>安装ASE：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install --upgrade --user ase</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/03/22/A13/a13-2.png" alt=""></p>
+</li>
+<li><p>添加ASE的路径到<code>.bashrc</code>文件。</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/home/bigbro/.<span class="built_in">local</span>/bin</span><br></pre></td></tr></table></figure>
+<p>在Terminal里面输入<code>ase</code>，然后摁下<code>tab</code>键：如果跟下面的输出一样，说明八九不离十了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bigbro@DESKTOP-S6R3TUP:~$ ase</span><br><span class="line">ase             ase-build       ase-db          ase-gui         ase-info        ase-run         ase_figures.sh  aselite.py      aselite.pyc</span><br><span class="line">bigbro@DESKTOP-S6R3TUP:~$ ase --version</span><br><span class="line">ase-3.17.0</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2019/02/13/ex78/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/02/13/ex78/" class="post-title-link" itemprop="url">Ex78 过渡态任务的提交与查看（二）</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-02-13 15:30:16" itemprop="dateCreated datePublished" datetime="2019-02-13T15:30:16-05:00">2019-02-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2019/02/13/ex78/" class="post-meta-item leancloud_visitors" data-flag-title="Ex78 过渡态任务的提交与查看（二）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2019/02/13/ex78/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/13/ex78/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>前面一节我们通过粗糙的方法演示了一遍怎么在超算上跑过渡态的NEB计算。一般来说，通过这一步我们可以大体上确定这个基元反应中的路径是不是靠谱的了。不论你得到一个粗糙的NEB能量曲线：<img src="/2019/02/13/ex78/ex78_01.png" alt=""></p>
+<p>亦或者一个比较精细的：</p>
+<p><img src="/2019/02/13/ex78/ex78_02.png" alt=""></p>
+<p>这都表明，你快要得到这个过渡态结构了。在进行后面操作讲解之前，我们先做2个事情：</p>
+<p>1） 由于本人也是老司机了，算过渡态的时候遇到的那些零零碎碎的问题一时也很难记起来，如果你正在算过渡态，并且遇到了问题和错误，可以将计算打包，以及遇到的问题发给我。如果本人有幸可以帮你解决问题，那么，作为交换条件，这个例子就写在后续的教程里面。有下面几点需要注意的：</p>
+<ul>
+<li><p>i）请使用邮件发送例子（lqcata@gmail.com），尽可能保证计算的文件完整，千万不要删掉某些文件后再打包发给我（CHG，CHGCAR，WAVECAR除外）。如果例子太大，可以上传到百度网盘，然后将链接和你遇到的问题发给我。</p>
+</li>
+<li><p>ii）本人最近很忙，可能回复有些慢，请见谅。如果你看到我在QQ群里面瞎BB的话，可以提醒下我去查看邮件。</p>
+</li>
+<li><p>iii）只想解决自己问题，不愿意分享自己例子的，请不要发邮件给我。</p>
+</li>
+</ul>
+<p>2）第二件事就是分享一个自己平时常用的脚本，这个脚本主要是将前面的计算步骤保存起来，然后将CONTCAR复制成POSCAR用以下一步的计算。脚本的名字为：<code>save_calculations.sh</code>. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash </span></span><br><span class="line"></span><br><span class="line">mv POSCAR POSCAR-<span class="variable">$1</span>  </span><br><span class="line">mv OUTCAR OUTCAR-<span class="variable">$1</span> </span><br><span class="line">mv OSZICAR OSZICAR-<span class="variable">$1</span></span><br><span class="line">mv vasprun.xml vasprun.xml-<span class="variable">$1</span></span><br><span class="line">mv EIGENVAL EIGENVAL-<span class="variable">$1</span></span><br><span class="line">mv IBZKPT IBZKPT-<span class="variable">$1</span></span><br><span class="line">cp CONTCAR CONTCAR-<span class="variable">$1</span></span><br><span class="line">mv CONTCAR POSCAR</span><br></pre></td></tr></table></figure>
+<p>脚本演示：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/<span class="built_in">test</span>$ ls</span><br><span class="line">CONTCAR  DOSCAR  DYNMAT  IBZKPT  INCAR  KPOINTS  OSZICAR  OUTCAR  p4vasp.log  POSCAR  POTCAR  sub12  sub24  vasprun.xml</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/<span class="built_in">test</span>$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/<span class="built_in">test</span>$ save_calculations.sh  gamma</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/<span class="built_in">test</span>$ ls</span><br><span class="line">DOSCAR  DYNMAT  IBZKPT  INCAR  KPOINTS  OSZICAR-gamma  OUTCAR-gamma  p4vasp.log  POSCAR  POSCAR-gamma  POTCAR  sub12  sub24  vasprun.xml-gamma</span><br></pre></td></tr></table></figure>
+<p>脚本说明：</p>
+<ul>
+<li>脚本内容很粗暴直接，大家嫌不好看也可以结合下for循环改进地更加简洁些，本人也懒得改，能实现目的就OK了；</li>
+<li>效果很简单，就是把之前计算的一些结果重新命名一下，大家可以根据自己的爱好或者习惯，将gamma换成其他的。 </li>
+</ul>
+<h3 id="提交任务"><a href="#提交任务" class="headerlink" title="提交任务"></a>提交任务</h3><p>我们把参数设置地稍微精细一下，然后再跑一遍NEB。</p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ ls</span><br><span class="line"><span class="number">00</span>  <span class="number">01</span>  <span class="number">02</span>  <span class="number">03</span>  <span class="number">04</span>  <span class="number">05</span>  <span class="number">06</span>  <span class="number">07</span>  <span class="number">08</span>  <span class="number">09</span>  INCAR  job_sub  KPOINTS  NEB.pdb  POTCAR  slurm-<span class="number">995085.</span><span class="keyword">out</span>  vasprun.xml</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ ls *</span><br><span class="line">INCAR  job_sub  KPOINTS  NEB.pdb  POTCAR  slurm-<span class="number">995085.</span><span class="keyword">out</span>  vasprun.xml</span><br><span class="line"></span><br><span class="line"><span class="number">00</span>:</span><br><span class="line">POSCAR</span><br><span class="line"></span><br><span class="line"><span class="number">01</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  WAVECAR  XDATCAR</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line"><span class="number">08</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR  DOSCAR  EIGENVAL  IBZKPT  OSZICAR  OUTCAR  PCDAT  POSCAR  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">09</span>:</span><br><span class="line">POSCAR</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ for i <span class="keyword">in</span> <span class="number">0</span>&#123;<span class="number">1.</span><span class="number">.8</span>&#125;; <span class="keyword">do</span> cd $i ; save_calculations.sh <span class="built_in">gamma</span> ; cd - ; done</span><br><span class="line">mv: cannot stat `vasprun.xml<span class="string">&#x27;: No such file or directory</span></span><br><span class="line"><span class="string">/THFS/home/iciq-lq/LVASPTHW/ex78</span></span><br><span class="line"><span class="string">.</span></span><br><span class="line"><span class="string">.</span></span><br><span class="line"><span class="string">.</span></span><br><span class="line"><span class="string">mv: cannot stat `vasprun.xml&#x27;</span>: No such <span class="keyword">file</span> or directory</span><br><span class="line">/THFS/home/iciq-lq/LVASPTHW/ex78</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ ls *</span><br><span class="line">INCAR  job_sub  KPOINTS  NEB.pdb  POTCAR  slurm-<span class="number">995085.</span><span class="keyword">out</span>  vasprun.xml</span><br><span class="line"></span><br><span class="line"><span class="number">00</span>:</span><br><span class="line">POSCAR</span><br><span class="line"></span><br><span class="line"><span class="number">01</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR-<span class="built_in">gamma</span>  DOSCAR  EIGENVAL-<span class="built_in">gamma</span>  IBZKPT-<span class="built_in">gamma</span>  OSZICAR-<span class="built_in">gamma</span>  OUTCAR-<span class="built_in">gamma</span>  PCDAT  POSCAR  POSCAR-<span class="built_in">gamma</span>  REPORT  WAVECAR  XDATCAR</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line">.</span><br><span class="line"><span class="number">08</span>:</span><br><span class="line">CHG  CHGCAR  CONTCAR-<span class="built_in">gamma</span>  DOSCAR  EIGENVAL-<span class="built_in">gamma</span>  IBZKPT-<span class="built_in">gamma</span>  OSZICAR-<span class="built_in">gamma</span>  OUTCAR-<span class="built_in">gamma</span>  PCDAT  POSCAR  POSCAR-<span class="built_in">gamma</span>  REPORT  stdout  WAVECAR  XDATCAR</span><br><span class="line"></span><br><span class="line"><span class="number">09</span>:</span><br><span class="line">POSCAR</span><br><span class="line"></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ kpoints.sh <span class="number">3</span> <span class="number">3</span> <span class="number">1</span> </span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ yhbatch -p gsc -N <span class="number">2</span> -J test job_sub</span><br><span class="line">Submitted batch job <span class="number">1133307</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>这里我们把01到08中的一些输出文件都保存了一下，然后将CONTCAR复制成POSCAR用来进行下一步的计算;</li>
+<li>运行的时候，会报错mv: cannot stat ‘vasprun.xml’: No such file or directory<code>，不用管就行，因为images的文件夹中没有</code>vasprun.xml`文件，嫌报错烦的可以自己加个if语句修改下脚本。</li>
+<li>我们将K点增加到331，继续计算。</li>
+</ul>
+<h3 id="查看计算结果"><a href="#查看计算结果" class="headerlink" title="查看计算结果"></a>查看计算结果</h3><p>查看结果的时候，有以下三个主要的方面：</p>
+<p>1） 看能量</p>
+<ul>
+<li>可以使用VTST的nebresults.pl 的小脚本，也可以使用自己写的小脚本（ta.sh）。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ ls</span><br><span class="line">00  01  02  03  04  05  06  07  08  09  exts.dat  INCAR  job_sub  KPOINTS  mep.eps  movie  movie.vasp  neb.dat  nebef.dat  POTCAR  slurm-1133307.out  spline.dat  vaspgr  vasprun.xml</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ nebresults.pl</span><br><span class="line"></span><br><span class="line">Unziping the OUTCARs ... done</span><br><span class="line">Do nebbarrier.pl ; nebspline.pl</span><br><span class="line">Do nebef.pl</span><br><span class="line">Do nebmovie.pl</span><br><span class="line">Do nebjmovie.pl</span><br><span class="line">Do nebconverge.pl</span><br><span class="line"></span><br><span class="line">Forces and Energy:</span><br><span class="line">   0         0.023782      -321.151800         0.000000</span><br><span class="line">   1         0.007650      -321.196900        -0.045100</span><br><span class="line">   2         0.009671      -321.160900        -0.009100</span><br><span class="line">   3         0.010446      -321.128300         0.023500</span><br><span class="line">   4         0.014498      -321.106600         0.045200</span><br><span class="line">   5         0.019054      -321.096100         0.055700</span><br><span class="line">   6         0.019424      -321.094300         0.057500</span><br><span class="line">   7         0.013325      -321.111700         0.040100</span><br><span class="line">   8         0.005225      -321.156900        -0.005100</span><br><span class="line">   9         0.011589      -321.098500         0.053300</span><br><span class="line"></span><br><span class="line">Extremum 1 found at image  0.910082 with energy: -0.046551</span><br><span class="line">Extremum 2 found at image  5.724723 with energy:  0.057913</span><br><span class="line">Extremum 3 found at image  8.102362 with energy: -0.007602</span><br><span class="line">Extremum 4 found at image  8.999187 with energy:  0.053367</span><br><span class="line"></span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ ta.sh</span><br><span class="line">00       -321.15187450</span><br><span class="line">01       -321.19698136</span><br><span class="line">02       -321.16098546</span><br><span class="line">03       -321.12832705</span><br><span class="line">04       -321.10664059</span><br><span class="line">05       -321.09613563</span><br><span class="line">06       -321.09434359</span><br><span class="line">07       -321.11177677</span><br><span class="line">08       -321.15691232</span><br><span class="line">09       -321.09850728</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>看到能量的时候，前面我们粗算的时候，已经知道能量随着路径的变化是怎么样的，这里我们就脑子自动画图，从01到08，看着能量慢慢上升，在05，06左右的时候达到最高点，然后继续下降。</p>
+</li>
+<li><p>注意：我们这是接着前面一节进行的计算， 00 和 09中的能量都是551K点下的能量，因此得到的能量随路径的变化是下面这样子的。如果看到这样的图片，不要慌张，跳过第一个和最后一个点，直接看中间的部分即可。</p>
+<p><img src="/2019/02/13/ex78/ex78_03.png" alt=""></p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ grep irre */OUTCAR</span><br><span class="line"><span class="number">00</span>/OUTCAR: Found      <span class="number">9</span> irreducible k-points:</span><br><span class="line"><span class="number">01</span>/OUTCAR: Found      <span class="number">5</span> irreducible k-points:</span><br><span class="line"><span class="number">02</span>/OUTCAR: Found      <span class="number">5</span> irreducible k-points:</span><br><span class="line"><span class="number">03</span>/OUTCAR: Found      <span class="number">4</span> irreducible k-points:</span><br><span class="line"><span class="number">04</span>/OUTCAR: Found      <span class="number">4</span> irreducible k-points:</span><br><span class="line"><span class="number">05</span>/OUTCAR: Found      <span class="number">4</span> irreducible k-points:</span><br><span class="line"><span class="number">06</span>/OUTCAR: Found      <span class="number">4</span> irreducible k-points:</span><br><span class="line"><span class="number">07</span>/OUTCAR: Found      <span class="number">4</span> irreducible k-points:</span><br><span class="line"><span class="number">08</span>/OUTCAR: Found      <span class="number">5</span> irreducible k-points:</span><br><span class="line"><span class="number">09</span>/OUTCAR: Found     <span class="number">13</span> irreducible k-points:</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>2） 看计算有没有正常结束。</p>
+<p>主要是查看：i) NEB跑了多少步，ii) 自己设置了多少步，iii) 通过OUTCAR中结构收敛的特定关键词。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ ls</span><br><span class="line">00  02  04  06  08  exts.dat  job_sub  mep.eps  movie       neb.dat    POTCAR             spline.dat  vasprun.xml</span><br><span class="line">01  03  05  07  09  INCAR     KPOINTS  mep.png  movie.vasp  nebef.dat  slurm-1133307.out  vaspgr</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ tail 03/OSZICAR -n 5</span><br><span class="line">RMM:   2    -0.318010871323E+03   -0.48063E-06   -0.15546E-06   134   0.370E-03    0.397E-03</span><br><span class="line">RMM:   3    -0.318010871353E+03   -0.29988E-07   -0.12836E-08    21   0.273E-03    0.402E-03</span><br><span class="line">RMM:   4    -0.318010871104E+03    0.24867E-06    0.00000E+00    17   0.260E-03    0.157E-03</span><br><span class="line">RMM:   5    -0.318010871201E+03   -0.96799E-07   -0.11232E-08    18   0.266E-03</span><br><span class="line">  14 F= -.32114179E+03 E0= -.32112833E+03  d E =-.102536E-03</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ grep NSW INCAR</span><br><span class="line">  NSW    = 200</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$ grep &#x27;reached re&#x27; 03/OUTCAR</span><br><span class="line"> reached required accuracy - stopping structural energy minimisation</span><br><span class="line">iciq-lq@ln3:/THFS/home/iciq-lq/LVASPTHW/ex78$</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>当然你可以写一个小脚本如下来避免每次都重读在终端里面打出来。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash </span></span><br><span class="line"></span><br><span class="line">tail 03/OSZICAR -n 5</span><br><span class="line">grep NSW INCAR</span><br><span class="line">grep <span class="string">&#x27;reached re&#x27;</span> 03/OUTCAR</span><br></pre></td></tr></table></figure>
+<p>也可以设置下alias来判断：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> check=<span class="string">&#x27;tail 03/OSZICAR -n 5 &amp;&amp; grep NSW INCAR &amp;&amp; grep &quot;reached re&quot; 03/OUTCAR &#x27;</span></span><br></pre></td></tr></table></figure>
+<p>有能力的可以写一些更高级点的，加些if，for语句智能判断NEB有没有算完，有没有收敛。</p>
+<p>3） 查看NEB中各个IMAGE中的结构有没有跑乱，散架，有没有物理化学意义。前面我们讲过了几种办法，本节我们简单复习一下，就不再啰嗦了。</p>
+<p>i) 通过vaspkit 结合 vmd实现看动画的效果（Windows用户）</p>
+<p>ii）使用ASE 和 p4vasp 批量打开所有的IMAGES中的CONTCAR，挨个查看。</p>
+<h3 id="小节"><a href="#小节" class="headerlink" title="小节"></a>小节</h3><p>本节，我们主要是在前面计算的基础上，把gamma点的输出结果备份了一下，在此基础上，增加K点（提高精度）继续优化。最近瞎忙了很多事情，让很多人等急了，给大家拜个晚年，祝大伙猪年都学会麻溜滴算过渡态。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2833,580 +3395,6 @@ E_{ads}(CO) = E_{slab+CO} - E_{slab} - E_{CO^{gas}}</script><p>前面我们还�
 <li>3）复习分子气相结构的优化过程。</li>
 </ul>
 <h2 id="7-总结："><a href="#7-总结：" class="headerlink" title="7. 总结："></a>7. 总结：</h2><p>本节，通过CO的吸附模型搭建，带领大家走出简单的单原子吸附，开始逐渐接触复杂的吸附计算。如果前面内容掌握了，本节就是一个水到渠成的事情。在多原子分子的吸附计算中，首先我们要知道分子的电子和几何结构，分子哪一部分（这里的C原子）和表面成键。在本节的例子中，如果你不知道C和金属作用，你还需要计算Metal-O-C这样的结构。可能还会计算CO横着吸附的结构，任务无形中就会增加一倍或者更多，从而造成机时的浪费。退一步来说，如果你真的不知道吸附是以什么方式进行的，想尝试N种初始的结构，我的建议是：把slab的原子全部固定住，然后用gamma点算一下它们的吸附能，先大体上判断一下，把那些吸附特别强的结构筛选出来，用作下一步的计算。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/11/ex63/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/10/11/ex63/" class="post-title-link" itemprop="url">Ex63 吸附能的计算（八）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-10-11 02:06:48" itemprop="dateCreated datePublished" datetime="2018-10-11T02:06:48-04:00">2018-10-11</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/10/11/ex63/" class="post-meta-item leancloud_visitors" data-flag-title="Ex63 吸附能的计算（八）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/10/11/ex63/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/11/ex63/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>在进行本文的内容之前，大家先玩个人尽皆知的小游戏：</p>
-<h2 id="找不同"><a href="#找不同" class="headerlink" title="找不同"></a>找不同</h2><p><strong>（一）</strong>找出下面两幅图中不同的部分。</p>
-<p><img src="/2018/10/11/ex63/ex63-1.jpeg" alt=""></p>
-<p>相信这个大家很快都能找出来，找不出来的话，不建议继续浏览下面的部分。</p>
-<p>（二）下面两个截图中，找出不同的部分</p>
-<p><img src="/2018/10/11/ex63/ex63-2.png" alt=""> </p>
-<p><img src="/2018/10/11/ex63/ex63-3.png" alt=""></p>
-<p>（三）下面两个截图中，找出不同的部分</p>
-<p><img src="/2018/10/11/ex63/ex63-4.png" alt="">  <img src="/2018/10/11/ex63/ex63-5.png" alt=""></p>
-<p>聪明美丽能干活泼善良可爱宇宙超级无敌的你会发现： </p>
-<p>在找不同2中，两个图中内容的区别在于：  POSCAR 的第6行<br>在找不同3中，两个图中内容的区别在于：  POTCAR 的第二个元素</p>
-<p>当你发现了这些不同之处，就应该差不多明白了，这是2个计算任务文件，一个是C原子在Cu(111), 另一个是O原子在Cu(111)上的计算。</p>
-<p>仔细分析不同的地方，你就应该想到: 既然我们有了O吸附相关的计算文件，那么就可以在此模板基础上，快速编辑C的吸附模型，然后进行计算。</p>
-<p>在进行下面的快速编辑模型的内容，先给大家介绍一个Linux下面常用的比较不同的命令：diff。简单操作如下，更高级的大家自由去百度学习，并加以发挥拓展。 </p>
-<p><img src="/2018/10/11/ex63/ex63-6.png" alt=""></p>
-<h2 id="批量搭结构"><a href="#批量搭结构" class="headerlink" title="批量搭结构"></a>批量搭结构</h2><p>快速准备C原子在Cu(111)上吸附的计算文件：</p>
-<p>1）<code>INCAR</code> 保持一样<br>2）<code>KPOINTS</code> 保持一样<br>3）<code>POSCAR</code>: 将 O 直接替换成C就OK了。<br>i）直接编辑，无数种编辑器任你选。不过 Windows下一定要记得编辑完后运行下: <code>dos2unix</code><br>ii）使用sed命令： <code>sed -i &#39;6s/O/C/g&#39; POSCAR</code></p>
-<p>4）<code>POTCAR</code>: </p>
-<p>i) 使用前面我们介绍的脚本：potcar.sh， 脚本运行例子如下图：（去本书的附录章节里面找脚本）</p>
-<p><a href="https://www.bigbrosci.com/2017/12/21/A05/">https://www.bigbrosci.com/2017/12/21/A05/</a></p>
-<p><img src="/2018/10/11/ex63/ex63-7.png" alt=""></p>
-<p>直接输入脚本名，后面跟你想要的元素名。</p>
-<p>看下本人在天河II号服务器上的设置。</p>
-<p>1） potcar.sh 在本人账号的： <code>~/bin</code> 目录下<br>2） VASP所有的POTCAR文件在： <code>~/bin/pot</code> 目录下<br>3） pot目录下，每个元素的文件夹中有2两个文件：<code>POTCAR</code> 和 <code>PSCTR</code> （PSCTR这个我也不知道有什么用。）<br>4）新手，没有经验，不会用超算的，不会Linux的，可以效仿下：</p>
-<p><img src="/2018/10/11/ex63/ex63-8.png" alt=""></p>
-<p>脚本下载后，将POTCAR所在的目录替换成你的： path=”你的目录”。<br>怎么知道目录呢？ 使用上图中的pwd 这个命令。</p>
-<p><img src="/2018/10/11/ex63/ex63-9.png" alt=""></p>
-<p>ii) 我很多时候都懒得去看POSCAR中的元素以及顺序，便打算根据POSCAR中的内容生成对应的POTCAR，于是便写了一个脚本：<code>pospot.sh</code>。使用方法如下： </p>
-<p><img src="/2018/10/11/ex63/ex63-10.png" alt=""></p>
-<p>上图运行了这个脚本两次：<br>1） 第一次运行的时候，目录下没有POTCAR，于是脚本直接生成新的<br>2） 第二次运行的时候，目录下有了一个POTCAR，于是脚本将POTCAR中的元素顺序读出来，然后删掉旧的POTCAR，重复1）的操作，生成新的POTCAR。（大师兄本人的扯淡逻辑，大家可以忽略，脚本文章末尾下载直接使用即可。）<br>3） 注意：这个脚本读取的仅仅是以 元素 命名文件夹中的POTCAR。什么意思呢？ 举个例子：Cu的POTCAR有：Cu，Cu_GW, Cu_pv，Cu_sv_GW这四种。脚本读取的仅仅是Cu中的POTCAR。如果你想用<code>Cu_pv</code>，那么请使用： <code>potcar.sh Cu_pv C H O</code>这个命令。<br>4） 脚本内容如下：大家可以自己手动敲一遍，找找感觉。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash  </span></span><br><span class="line"><span class="comment"># show old POTCAR </span></span><br><span class="line"><span class="keyword">if</span> [ -e POTCAR ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;old POTCAR containes....&#x27;</span></span><br><span class="line">  grep TIT POTCAR| awk <span class="string">&#x27;&#123;print $4&#125;&#x27;</span> | xargs</span><br><span class="line"><span class="comment"># Remove old POTCAR  </span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Removing OLD POTCAR.....&quot;</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line">  rm POTCAR -f</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># generate new POTCAR </span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Generating NEW POTCAR...&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line">potcar.sh $(sed -n 6p POSCAR)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Done&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># compare elements in new POTCAR and POSCAR</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;NEW POTCAR containes....&#x27;</span></span><br><span class="line">grep TIT POTCAR| awk <span class="string">&#x27;&#123;print $4&#125;&#x27;</span> | xargs</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;Elements in POSCAR&quot;</span> </span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;************************&#x27;</span></span><br><span class="line">sed -n 6p POSCAR</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>5）提交任务的脚本保持一样</p>
-<p>前面所说的都是一些具体的做法，用化学的思维来说，应该叫基元反应。当你掌握了这些具体的做法后，可以通过批处理的方式将它们集成起来。本人的做法如下：</p>
-<p>1）批量编辑POSCAR：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed  -i  &#x27;6s/O/C/g&#x27; */POSCAR </span><br></pre></td></tr></table></figure>
-<p><img src="/2018/10/11/ex63/ex63-12.png" alt=""></p>
-<p>i） 将O原子的计算直接复制成C原子的<br>ii）使用sed 批量编辑POSCAR中的元素行。</p>
-<p>2）完成前面的一步，直接批量提交任务： 提交任务的时候，脚本自动根据POSCAR生成对应的POTCAR.</p>
-<p><img src="/2018/10/11/ex63/ex63-13.png" alt=""><br><img src="/2018/10/11/ex63/ex63-14.png" alt=""></p>
-<p>我是怎么做的呢？</p>
-<p>在<code>~/.bashrc</code> 文件中 将<code>pospot.sh</code> 写到 <code>qsuball</code>里面了。大家可以看下我的<code>~/bashrc</code>文件：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">alias q=&#x27;yhqueue&#x27;</span><br><span class="line">alias qsuball=&#x27;for i in * ; do cd $i ; pospot.sh &amp;&amp; qsub ; cd $OLDPWD; done&#x27;</span><br><span class="line">alias qdel=&#x27;yhcancel&#x27;</span><br><span class="line">alias fenergy=&#x27;grep &quot;  without&quot; OUTCAR&#x27;</span><br><span class="line">alias ..=&#x27;cd ..&#x27;</span><br><span class="line">alias ...=&#x27;cd ../..&#x27;</span><br><span class="line">alias ....=&#x27;cd ../../..&#x27;</span><br><span class="line">alias gl=&#x27;grep LOOP OUTCAR&#x27;</span><br></pre></td></tr></table></figure>
-<h2 id="批量删除任务"><a href="#批量删除任务" class="headerlink" title="批量删除任务"></a>批量删除任务</h2><p>前面批量提交了任务，但这些任务已经算起来了，但这些结果对我没有用出，纯属浪费机时，所以我要杀死它们。这里介绍给大家一个简单的批量删除任务的命令： {..} 操作如下：</p>
-<p><img src="/2018/10/11/ex63/ex63-16.png" alt=""></p>
-<p><code>qdel</code> 就是天河II号中的<code>yhcancel</code>命令，本人根据自己的习惯，修改了一下<code>alias</code>中的内容（见前面<code>~/bashrc</code>文件的内容）</p>
-<p>如果你的任务不是连续的，也可以使用这个命令， 只要把第一个和最后一个任务的ID号写在花括号里两个点<code>..</code>的两端即可。非常简单，暴力和直接。</p>
-<p>中间如果有些任务不是你的，即使你想杀死也没有权限，系统会报错，直接忽视即可。</p>
-<h2 id="找不同-1"><a href="#找不同-1" class="headerlink" title="找不同"></a>找不同</h2><p>前面我们弄完了C原子的计算任务，下面我们再玩一次找不同的游戏</p>
-<p>找不同4：下面2个截图中找出不同的地方：</p>
-<p><img src="/2018/10/11/ex63/ex63-17.png" alt="">  <img src="/2018/10/11/ex63/ex63-18.png" alt=""></p>
-<p>师兄，这个题很简单，你要算H原子的吸附。跟前面的操作是一样的。</p>
-<p><strong>但是</strong>，请看最后一行。</p>
-<p>仔细的你会发现，这个题跟前面的有些不一样，原因在于最底部的坐标也稍微变化了一下，从<code>7.935</code>变成 <code>7.635</code>了。 这是为什么呢？<br>原因在于和C，O原子比起来，H原子很小，它在表面上吸附的时候，会更贴近表面。因此我们把z方向的坐标稍微修改了一下： 减小了 0.3 A。这样做的话可以保证我们的初始结构更<strong>具有合理的物理化学意义</strong>，从而加快计算的收敛，节约时间。大家在搭建模型的时候，结构合理是必须要考虑的，也是脑子里要时刻思考的事情。</p>
-<p>通过<code>sed</code>命令批量操作在H原子的吸附上，只能完成一半的任务，也就是把元素行中的C或者O改成H。而另一半的任务：坐标的修改，则需要大家自己手动操作一下（记得在<code>Cartesian</code>坐标下修改，如果你脑子转的很快，可以迅速将<code>Direct</code>转化为<code>Cartesian</code>的话，也可以直接编辑<code>Direct</code>坐标）。</p>
-<h2 id="扩展练习："><a href="#扩展练习：" class="headerlink" title="扩展练习："></a>扩展练习：</h2><p>1） 完成本节的所有操作；<br>2） 计算C,H，O在Cu(111)表面上，不同位点上的吸附；<br>3） 思考脚本的运行原理；<br>4） 思考如何通过：（找不同 + 写脚本）来节省自己的体力；<br>5） 思考自己平时常见的人工错误，并尝试用脚本来解决或者避免。</p>
-<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本文的题目是闭着眼算，不是让你真正闭着眼去提交任务，而是不通过可视化的界面进行结构的批量搭建，输入文件的批量处理以及提交任务。希望大家在搭结构的时候，多一些思考，少一些操作，在搭建合理结构的路上突飞猛进。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/10/ex62/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/10/10/ex62/" class="post-title-link" itemprop="url">Ex62 吸附能的计算（七）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-10-10 02:06:48" itemprop="dateCreated datePublished" datetime="2018-10-10T02:06:48-04:00">2018-10-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/10/10/ex62/" class="post-meta-item leancloud_visitors" data-flag-title="Ex62 吸附能的计算（七）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/10/10/ex62/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/10/ex62/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>前面我们得到了不同吸附位点上吸附能的顺序，但结构是什么样子的呢？我们优化完的结果对不对？这还是一个问题。因此我们需要查看一下优化完的结果。</p>
-<h2 id="1-获取（下载）CONTCAR"><a href="#1-获取（下载）CONTCAR" class="headerlink" title="1  获取（下载）CONTCAR"></a>1  获取（下载）CONTCAR</h2><p>没有结构，我们看个屁啊？所以第一步就是把超算中心的计算结果下载到自己的电脑里面。这里我们说获取或者下载CONTCAR，而不是OUTCAR等其他VASP的输入文件，原因在于本人这边网速传输太慢了。所以我的策略是能量等信息在服务器里面直接获取，结构的话只下载CONTCAR。如果网速允许的话，可以把所有的计算结果下载到自己电脑里面，这样查看更加方便。</p>
-<p><img src="/2018/10/10/ex62/ex62-1.png" alt=""></p>
-<p><img src="/2018/10/10/ex62/ex62-2.png" alt=""></p>
-<p>上图中，我们先挂载超算中心到本地电脑上，然后将计算目录下的CONTCAR复制到本地桌面上。（ccall 这个命令）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for i in * ; do if [ -e $i/CONTCAR ]; then mkdir ~/Desktop/$i; cp $i/CONTCAR ~/Desktop/$i ; fi; done</span><br></pre></td></tr></table></figure>
-<p>备注：<br>由于本人这边传输很慢，即使挂载了超算中心到本地电脑上，访问内容的时候，后台依然有数据传输。所以先下载再查看。</p>
-<h2 id="2-使用ASE查看结构："><a href="#2-使用ASE查看结构：" class="headerlink" title="2 使用ASE查看结构："></a>2 使用ASE查看结构：</h2><p>ASE 是Atomic Simulation Environment的简称，下载安装见：<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/">https://wiki.fysik.dtu.dk/ase/</a>  本人只会在Linux下面使用，Windows用户自行解决。解决不了，我也没有办法。如果Linux用户解决不了，那么使用后面的第二种方法：p4vasp查看结构。</p>
-<p>如果你的网速很给力，可以直接通过自己电脑进入超算中心的目录，进行下面的操作。</p>
-<p><img src="/2018/10/10/ex62/ex62-3.png" alt=""></p>
-<p>这个软件的<strong>优点</strong>就是： 我们可以一次性打开当前目录下，所有计算的CONTCAR， 从而避免了使用软件挨个导入结构查看。无形中会减少我们很多的工作量。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ase-gui  */CONTCAR </span><br></pre></td></tr></table></figure>
-<h2 id="3-使用p4vasp-查看结构"><a href="#3-使用p4vasp-查看结构" class="headerlink" title="3 使用p4vasp 查看结构"></a>3 使用p4vasp 查看结构</h2><p>Ubuntu下面唯一推荐的软件：下面图片拍的不是很好，大家凑活着看吧。</p>
-<p><img src="/2018/10/10/ex62/ex62-4.png" alt=""></p>
-<p>这里，p4vasp和前面说的ASE一样，也可以一个命令打开所有的计算结果。</p>
-<p><img src="/2018/10/10/ex62/ex62-5.png" alt=""></p>
-<p>作为<code>p4vasp</code>的忠实粉丝，这也是本人唯一推荐的<code>Ubuntu</code>系统下查看，搭建结构的软件。</p>
-<ul>
-<li>i）使用p4vasp可以非常容易地进行原子替换，平移，旋转等基本操作。</li>
-<li>ii）可以查看VASP的结算结果，DOS，能带，优化过程等等。</li>
-<li>iii）Windows 系统下p4vasp的功能有些弱，除了不能批量打开文件外（可能是本人不会用），其他的和Ubuntu差不多。</li>
-<li>iv）这个软件也有很多其他细微不尽人意的地方，但不影响我们的正常使用。</li>
-<li>如果你刚开始接触这个软件，认真用鼠标各个地方点点操作一下，查看各个功能按钮的作用。</li>
-<li>此外，VASP官网的<code>ppt</code>教程中也有一些零星的<code>p4vasp</code>操作教程，大家可以参考一下。</li>
-</ul>
-<h2 id="4-其他软件："><a href="#4-其他软件：" class="headerlink" title="4 其他软件："></a>4 其他软件：</h2><p>当然了， 不论在linux还是Windows下面，都有很多查看结构的软件，比如：<code>Jmol</code>，<code>Xcrysden</code>，<code>Molden</code>， <code>VESTA</code>， <code>Material Studio</code>等等。这里就不再详细介绍了，主要原因是本人不太会使用这些软件操作。目前大家需要做的就是根据自己的喜好，掌握一个软件：学会查看结构，键长，键角等信息即可。切记不可贪多，等一个软件掌握好了之后，有余力的话再去学习另一个的操作。</p>
-<h2 id="5-扩展练习："><a href="#5-扩展练习：" class="headerlink" title="5 扩展练习："></a>5 扩展练习：</h2><p>1） 自己优化O在Cu(111)表面上不同位点的吸附，计算吸附能<br>2） 选择一款自己喜欢的软件，查看不同的吸附结构。<br>3） 思考其他单原子在其他金属表面上的吸附，该如何计算？<br>4） 思考原子在表面上，为什么不同吸附位点的吸附能不一样？</p>
-<h2 id="6-总结："><a href="#6-总结：" class="headerlink" title="6 总结："></a>6 总结：</h2><p>本节没有什么技术难度，全靠自己亲自手动操作，使用一个软件并不是一蹴而就的过程，大家先把基本的简单操作掌握了，后面再逐渐提高自己的其他技能。此外，本节学习完之后，单原子在表面上的吸附对大家来说应该不是什么困难的事情了。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/09/ex61/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/10/09/ex61/" class="post-title-link" itemprop="url">Ex61 吸附能的计算（六）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-10-09 02:06:48" itemprop="dateCreated datePublished" datetime="2018-10-09T02:06:48-04:00">2018-10-09</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/10/09/ex61/" class="post-meta-item leancloud_visitors" data-flag-title="Ex61 吸附能的计算（六）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/10/09/ex61/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/09/ex61/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>前面一节我们搭建好了p(3x3)-Cu(111)表面上不同吸附位点的O原子吸附模型。（fcc, hcp, top以及bri）也就是我们有了4个<code>POSCAR</code>。下面我们计算O原子在不同位点上的吸附能。根据吸附能的公式，我们还要有Cu(111) slab的能量。总共5个计算。O$_2$的前面已经算了，这里就不重复了。</p>
-<p>强调一下吸附能的定义：就是物种吸附到表面上所放出的能量，放出能量意味着吸附能是负值。很多人把这个过程颠倒了，然后来定义吸附能，这是错误的！虽然数值一样，但表示的物理意义完全不一样。颠倒过来是脱附，而不是吸附！！！而基本概念搞不清楚，最直接的后果就是给审稿人留下一个坏印象，增加拒稿的几率。当然，基本概念正确也会被拒稿，概念搞错了文章也有可能会接收。</p>
-<h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1 准备工作:"></a>1 准备工作:</h2><p><code>INCAR</code>：和前面p(1x1)的计算一样<br><code>KPOINTS</code>：根据前面我们经常提到的经验规则：k*a=30 </p>
-<p>链接：<a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html">https://wiki.fysik.dtu.dk/gpaw/exercises/surface/surface.html</a><br><code>POSCAR</code>：已经准备好<br><code>POTCAR</code>: 根据POSCAR生成对应的POTCAR，脚本见本书的附录章节。<br>提交任务的脚本或者命令。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">A rule of thumb for choosing the initial k-point sampling is, that the product, ka, between the number of k-points, k, in any direction, and the length of the basis vector in this direction, a, should be:</span><br><span class="line"></span><br><span class="line">    ka ~ 30 Å, for d band metals</span><br><span class="line">    ka ~ 25 Å, for simple metals</span><br><span class="line">    ka ~ 20 Å, for semiconductors</span><br><span class="line">    ka ~ 15 Å, for insulators</span><br><span class="line"></span><br><span class="line">Remember that convergence in this parameter should always be checked.</span><br></pre></td></tr></table></figure>
-<h2 id="2-天河II号提交任务"><a href="#2-天河II号提交任务" class="headerlink" title="2 天河II号提交任务"></a>2 天河II号提交任务</h2><p>前面我们已经讲解了如何在天河2号上提交任务，Learn VASP 系列的前面几节也介绍了一些相关的批量操作知识。下面简单通过实例操作展示下批量提交任务的一个流程。</p>
-<p><img src="/2018/10/09/ex61/ex61-1.png" alt=""></p>
-<p>其中<code>qsuball</code>是本人在<code>~/.bashrc</code>文件中，给批量提交任务的命令行随便起的一个名字，详见前面关于alias的使用介绍。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias qsuball=&#x27;for i in *; do cd $i ; qsub ; cd $OLDPWD; done&#x27;</span><br></pre></td></tr></table></figure>
-<p><code>qsub</code> 是我们在超算中心提交单个任务的脚本，内容如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line">rm job_sub </span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;#!/bin/bash&#x27;</span> &gt;&gt; job_sub</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export LD_LIBRARY_PATH=/THFS/opt/intel/composer_xe_2013_sp1.3.174/mkl/lib/intel64:$LD_LIBRARY_PATH&#x27;</span> &gt;&gt; job_sub </span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;yhrun -p gsc -n 24 /THFS/opt/vasp/5.4.4/vasp.5.4.4/bin/vasp_std &#x27;</span> &gt;&gt; job_sub </span><br><span class="line">yhbatch -p gsc -N 1 -J <span class="built_in">test</span> job_sub </span><br></pre></td></tr></table></figure>
-<p>将上面内容复制到一个文件里面，将文件命名为<code>qsub</code>，然后走一遍下面的2个步骤。<br>1）<code>chmod u+x qsub</code> (赋予可执行权限)<br>2)  <code>mv  qsub  ~/bin</code>  （放到 ~/bin 文件夹下）</p>
-<h2 id="3-查看结果"><a href="#3-查看结果" class="headerlink" title="3 查看结果"></a>3 查看结果</h2><p>等待任务排队，计算，结束。一个任务结束后，我们需要做的肯定就是检查结果了。那么改怎么样检查结果呢？这里列举出本人常用的几个方法和步骤。</p>
-<h3 id="1）查看OSZICAR"><a href="#1）查看OSZICAR" class="headerlink" title="1）查看OSZICAR"></a>1）查看OSZICAR</h3><p>i)  在查看<code>OSZICAR</code>之前，我们回顾下前面的INCAR。</p>
-<p><img src="/2018/10/09/ex61/ex61-2.png" alt=""> </p>
-<p>这里我们设置了<code>NSW = 500</code>,也就是允许本计算最大的离子步数。</p>
-<p>ii） 再看下<code>OSZICAR</code>的末尾部分， 命令： <code>tail  OSZICAR</code></p>
-<p><img src="/2018/10/09/ex61/ex61-3.png" alt=""></p>
-<p>从这里可以看出来，经过25个离子步，我们的计算就已经停止了，说明收敛了。</p>
-<h2 id="2）-查看OUTCAR"><a href="#2）-查看OUTCAR" class="headerlink" title="2） 查看OUTCAR"></a>2） 查看OUTCAR</h2><p><img src="/2018/10/09/ex61/ex61-4.png" alt=""></p>
-<p>对于VASP的所有计算来说，只要你看到这样的结果，说明你的任务已经算完了。这里你要记住：算完和收敛不是一回事。比如你设置的<code>NSW = 500</code>， VASP优化了<code>500</code>步没有收敛的话，会自动停止，也会出现上图的结果。</p>
-<p><strong>怎么查看收敛呢？</strong> </p>
-<p>i) 可以对比计算的离子步和我们设置的离子步。如果实际计算得了离子步小于<code>INCAR</code>中的，任务就收敛了。这也是前面查看<code>OSZICAR</code>的目的。<br>ii）可以通过<code>OUTCAR</code>里面的关键词： <code>reached</code></p>
-<p><img src="/2018/10/09/ex61/ex61-5.png" alt=""></p>
-<p>如果你看到最后面的： <code>Stopping structural energy minimisation</code>  这就表明你的优化任务已经完成。<br>而事实上，的确有很多人把这句话误认为是计算出错了，然后在群里面求助，本人实在是想不通。</p>
-<h2 id="4-删除VASP乱七八糟的输出文件"><a href="#4-删除VASP乱七八糟的输出文件" class="headerlink" title="4 删除VASP乱七八糟的输出文件"></a>4 删除VASP乱七八糟的输出文件</h2><p><img src="/2018/10/09/ex61/ex61-6.png" alt=""></p>
-<p>计算完成之后，VASP会出现很多平时我们用不到的文件，<code>CHG</code> <code>CHGCAR</code> <code>WAVECAR</code> 这三个占用的空间很大，容易把应胖撑爆。</p>
-<p>由于计算目录下的存储空间有限，本人计算的时候，一般都默认VASP不写入这些文件。</p>
-<p>此外，在表面结构优化的时候，<code>EIGENCAL, IBZKPT, REPORT,DOSCAR``以及超算中心与任务相关的输出文件：slurm-XXX</code> 文件，一般来说正常计算结束后，我们也不需要。</p>
-<p>因此，本人写了一个小脚本，用来删除这些乱七八糟的文件。脚本运行效果如上，脚本内容如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"><span class="keyword">for</span>  i  <span class="keyword">in</span> $(find . -name INCAR); <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">cd</span> $(dirname <span class="variable">$i</span>)</span><br><span class="line">    rm CHG  CHGCAR  job_sub  PCDAT REPORT  slurm-*.out  WAVECAR  XDATCAR -f</span><br><span class="line">    <span class="built_in">cd</span> <span class="variable">$OLDPWD</span>;</span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-<p>大家可以针对自己的计算任务，修改<code>rm XXX</code> 哪一行中的文件名。</p>
-<p><img src="/2018/10/09/ex61/ex61-7.png" alt=""></p>
-<p>上图中还运行了一个脚本（ta.sh），就是提取当前目录下，所有计算结果的能量。也是本人临时写的。有兴趣的可以自己照着写一遍，然后运行下。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash </span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> *; <span class="keyword">do</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="variable">$i</span>/OUTCAR ]; <span class="keyword">then</span></span><br><span class="line"><span class="built_in">echo</span> -e  <span class="variable">$i</span> <span class="string">&quot;\t&quot;</span> $(grep <span class="string">&#x27;  without&#x27;</span> <span class="variable">$i</span>/OUTCAR |tail -n 1 | awk <span class="string">&#x27;&#123;print $7&#125;&#x27;</span>) </span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-<h2 id="5-获取能量，计算吸附能"><a href="#5-获取能量，计算吸附能" class="headerlink" title="5 获取能量，计算吸附能"></a>5 获取能量，计算吸附能</h2><p>有了上面的数据，我们就可以进行吸附能的计算，如下图：</p>
-<p><img src="/2018/10/09/ex61/ex61-8.png" alt=""></p>
-<p>一般来说，使用eV作为单位，精确到小数点后面2位即可。整理下表格：</p>
-<p><img src="/2018/10/09/ex61/ex61-9.png" alt=""></p>
-<p>从上图我们可以看出来，这四个位点的吸附能强弱顺序为： fcc ≈ hcp &gt; bridge &gt; top</p>
-<h2 id="6-扩展练习"><a href="#6-扩展练习" class="headerlink" title="6  扩展练习"></a>6  扩展练习</h2><p>1） 学会如何判断计算正常结束，并且优化达到收敛的标准了？<br>2） 总结并思考不同位点的吸附能的计算。<br>3） 学会判断稳定的吸附位点。<br>4） 思考下计算结束之后，除了我们讲的这些，还有那些需要检查的？<br>5） 本节的三个脚本：<br>i)   qsub （天河II号提交任务）<br>ii） rmvasp.sh (删除乱七八糟文件)<br>iii）ta.sh (获取当前目录下，所有计算任务的能量)</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2018/10/08/ex60/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="By BigBro(a)s">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Learn VASP The Hard Way">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/10/08/ex60/" class="post-title-link" itemprop="url">Ex60 吸附能的计算（五）</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2018-10-08 02:06:48" itemprop="dateCreated datePublished" datetime="2018-10-08T02:06:48-04:00">2018-10-08</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:55" itemprop="dateModified" datetime="2021-12-27T22:15:55-05:00">2021-12-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2018/10/08/ex60/" class="post-meta-item leancloud_visitors" data-flag-title="Ex60 吸附能的计算（五）" title="阅读次数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">阅读次数：</span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2018/10/08/ex60/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/10/08/ex60/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>前面我们发现将p(1x1)-Cu(111)的表面扩展成p(2x2)后，由于O的覆盖度降低了，O原子的吸附能能+1.2 eV降低到 0.2 eV作用，说明O原子更加容易吸附在表面上了。当你仔细观察p(2x2)的表面，你会发现，表面上不仅仅有Cu原子的上方可以放O原子，还有其他的位点。如下图：</p>
-<p><img src="/2018/10/08/ex60/ex60-1.png" alt=""></p>
-<p>如果我们想分析下不同位点对吸附能的影响，首先我们需要搭建模型，然后重复O原子的吸附优化步骤。本节主要简单介绍一下如何快速搭建不同的吸附位点模型。</p>
-<h2 id="1-不同表面位点："><a href="#1-不同表面位点：" class="headerlink" title="1 不同表面位点："></a>1 不同表面位点：</h2><p>观察不同位点的结构特征，在面心立方金属的(111)表面上有4种不同的位点:</p>
-<p>1) Top位，前面已经花了很多时间介绍了，本节就不再啰嗦<br>2) Bridge位：从名字大家就可以推断这个位点的吸附为两个Top原子的中间。<br>3) Fcc位和Hcp位：这两个吸附位点都是在三个原子的中心，为hollow位。</p>
-<p>那么这两个位点怎么区分呢？ </p>
-<p>如果表面的Hollow位正下方（即第二层，图中黄色的）有原子，为Hcp位，在第三层的话（图中红色的），则这个hollow为Fcc位。<br>由于Fcc位点的原子在第三层，离表面最远（far），大家把英文单词的far 和 Fcc位的第一个字母关联起来即可。远的那个就是Fcc，近的是Hcp。<br>注意： Fcc 和 Hcp 分别是 face centered cubic 和  hexagonal close-packed 的缩写。</p>
-<h2 id="2-不同位点的吸附模型"><a href="#2-不同位点的吸附模型" class="headerlink" title="2 不同位点的吸附模型"></a>2 不同位点的吸附模型</h2><p>怎么搭建Bridge和Fcc，以及Hcp位的吸附模型？</p>
-<p>1) Bridge位: </p>
-<p>这个位点在两个原子的中心。设两个原子的坐标分别为（x1，y1， z1）和（x2， y2， z2），它们中心得坐标为： （x1+x2）/ 2， （y1+y2）/ 2， （z1+z2）/ 2。在这里，z1和z2 是相等的。所以我们可以通过两个原子的坐标，计算一下中心的坐标，然后按照之前O原子搭建的步骤，添加O原子的Bridge位的坐标即可。<br>2) Fcc位和Hcp</p>
-<ul>
-<li><p>这两个位点就更容易了，前面我们知道它们正下方分别为第三层和第二层的原子。那么我们在这两层随便取个原子，x和y 方向的坐标就确定了。</p>
-</li>
-<li><p>关于z方向的坐标，大家可以想象一下，如果O原子从Top位移到Bridge，Fcc和Hcp，由于和O成键的原子多了，也就是O和表面结合地更强了，那么它在z方向的坐标肯定比在Top位上要小。所以在这三个构型的z坐标，我们可以在Top位O的基础上稍微调小一点。那么小多少呢？ 一般来说0.1-0.2Å就可以了。</p>
-</li>
-</ul>
-<h2 id="3-使用p4vasp搭结构"><a href="#3-使用p4vasp搭结构" class="headerlink" title="3 使用p4vasp搭结构"></a>3 使用p4vasp搭结构</h2><p>前面介绍的方法是直接修改POSCAR来搭建模型，对于O原子的吸附这种简单的模型，大家都还可以胜任，但如果体系复杂了，比如一个苯环，乙醇分子等等，这样我们的计算坐标的工作量就有点大了。此时，p4vasp的优势就开始慢慢显示出来了。</p>
-<h3 id="3-1-从Top到Bri"><a href="#3-1-从Top到Bri" class="headerlink" title="3.1 从Top到Bri"></a>3.1 从Top到Bri</h3><p>1） 首先，我们要有一个O原子在Top位上的吸附结构<br>2） 然后选择Top位的原子和相邻的那个原子，（p4vasp选中的结构看起来不是很清楚，见黄圈标出来的那两个）</p>
-<p><img src="/2018/10/08/ex60/ex60-2.png" alt=""></p>
-<p>3） 选则 Edit –&gt; Move Atoms 后会弹出这样的界面：</p>
-<p><img src="/2018/10/08/ex60/ex60-3.png" alt=""></p>
-<p>按照图中的1 2 3依次点击， 你便会获得一个<code>Vector</code>。也就是从5到7号原子的一个向量。</p>
-<p>但我们如果按照这个向量平移O原子的话，只会把它从5号原子移动到7号原子上，而不是Bridge的位点。 </p>
-<p>前面我们说了，Bridge的坐标就是这两个原子连线的中心。所以，我们把Vector减小一半就可以了。</p>
-<p><img src="/2018/10/08/ex60/ex60-4.png" alt=""></p>
-<p>修改完Vector之后，我们便可以移动O原子了。</p>
-<p><strong>这里注意</strong></p>
-<p>要把前面选中的5 和 7 号原子换成 O，要不然你移动的是 5和7 号原子而不是O。最后点move，效果如下：</p>
-<p><img src="/2018/10/08/ex60/ex60-5.png" alt=""></p>
-<p>这样我们便获得了Bridge的吸附结构。</p>
-<p>前面提到，我们在搭建Bridge结构的时候，O原子的坐标可以比Top位的稍微低一些，这个操作怎么实现呢？<br>1） 首先选中氧原子，<br>2） 在Vector那一行修改移动的位置即可。如下图：</p>
-<p><img src="/2018/10/08/ex60/ex60-6.png" alt=""></p>
-<p>点击move ，保存POSCAR即可。</p>
-<h3 id="3-2-从Bridge-到-Hcp："><a href="#3-2-从Bridge-到-Hcp：" class="headerlink" title="3.2 从Bridge 到 Hcp："></a>3.2 从Bridge 到 Hcp：</h3><p>1） 选中O原子和Hcp位下面的Cu原子，并获取Vector</p>
-<p><img src="/2018/10/08/ex60/ex60-7.png" alt=""></p>
-<p>2） 修改Vector在z方向的大小。</p>
-<p><img src="/2018/10/08/ex60/ex60-8.png" alt=""></p>
-<p>点击 Move，效果如下：</p>
-<p><img src="/2018/10/08/ex60/ex60-9.png" alt=""></p>
-<p>保存成Hcp对应的POSCAR即可。</p>
-<h3 id="3-3-从Hcp到Fcc"><a href="#3-3-从Hcp到Fcc" class="headerlink" title="3.3 从Hcp到Fcc"></a>3.3 从Hcp到Fcc</h3><p>1）选中O原子和Fcc的一个原子，获取Vector：</p>
-<p><img src="/2018/10/08/ex60/ex60-10.png" alt=""></p>
-<p>2）修改Vector在z方向的大小，由于Fcc和Hcp的吸附很接近，直接平移即可，也就是z方向大小为0</p>
-<p><img src="/2018/10/08/ex60/ex60-11.png" alt=""></p>
-<p>点击move，最终的Fcc结构，如下图，保存POSCAR。</p>
-<p><img src="/2018/10/08/ex60/ex60-12.png" alt=""></p>
-<p><strong>注意：</strong></p>
-<p>保存结构的时候，可以自己建对应的文件夹，在文件夹里面将结构保存成POSCAR，也可以保存成类似<code>POSCAR-Fcc</code>， <code>POSCAR-Hcp</code>， <code>POSCAR-Top</code>这一种的名字，计算的时候，将它们重新命名为<code>POSCAR</code>就行了。</p>
-<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>本节，大师兄主要给大家介绍了如何在表面上，使用<code>p4vasp</code>平移原子来搭建不同的吸附位点模型。使用p4vasp搭结构非常方便简单，也会加深你对模型结构的理解，另一方面，使用这一种操作的话准确性更高，搭建出来的模型比自己手动放原子要合理很多。所以强烈推荐大家使用<code>p4vasp</code>。</p>
 
       
     </div>

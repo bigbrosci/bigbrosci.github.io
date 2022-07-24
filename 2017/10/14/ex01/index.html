@@ -20,15 +20,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="基本的输入文件，指的是VASP计算必不可少的输入文件，对新手来说先记住这四个：INCAR，KPOINTS，POSCAR，POTCAR。这几个不懂，不要紧，后面我们会结合例子，慢慢介绍这几个文件的准备工作。 基本概念准备输入文件， 脑子里要有下面几个概念:  Rubbish in，Rubbish out!  程序只负责算，对错由你决定!  遇到不懂的参数： (思考 + 看官网)！ (思考 + 看官网">
+<meta name="description" content="基本的输入文件，指的是VASP计算必不可少的输入文件，对新手来说先记住这四个文件的名字：INCAR，KPOINTS，POSCAR，POTCAR。具体是干嘛用的？不懂的话不要紧，后面我们会结合例子，慢慢介绍这几个文件的准备工作。 基本概念准备输入文件， 脑子里要有下面几个概念:  Rubbish in，Rubbish out!  程序只负责算，对错由你决定！错误主要有3类：  模型错误：也就是建模这">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ex1 VASP基本输入文件的准备（一）">
+<meta property="og:title" content="Ex01 VASP基本输入文件的准备（壹）">
 <meta property="og:url" content="http://www.bigbrosci.com/2017/10/14/ex01/index.html">
 <meta property="og:site_name" content="Learn VASP The Hard Way">
-<meta property="og:description" content="基本的输入文件，指的是VASP计算必不可少的输入文件，对新手来说先记住这四个：INCAR，KPOINTS，POSCAR，POTCAR。这几个不懂，不要紧，后面我们会结合例子，慢慢介绍这几个文件的准备工作。 基本概念准备输入文件， 脑子里要有下面几个概念:  Rubbish in，Rubbish out!  程序只负责算，对错由你决定!  遇到不懂的参数： (思考 + 看官网)！ (思考 + 看官网">
+<meta property="og:description" content="基本的输入文件，指的是VASP计算必不可少的输入文件，对新手来说先记住这四个文件的名字：INCAR，KPOINTS，POSCAR，POTCAR。具体是干嘛用的？不懂的话不要紧，后面我们会结合例子，慢慢介绍这几个文件的准备工作。 基本概念准备输入文件， 脑子里要有下面几个概念:  Rubbish in，Rubbish out!  程序只负责算，对错由你决定！错误主要有3类：  模型错误：也就是建模这">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-10-14T19:30:00.000Z">
-<meta property="article:modified_time" content="2021-12-28T04:26:07.182Z">
+<meta property="article:modified_time" content="2022-07-24T13:44:02.063Z">
 <meta property="article:author" content="By BigBro(a)s">
 <meta property="article:tag" content="VASP 输入文件">
 <meta name="twitter:card" content="summary">
@@ -38,10 +38,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/10/14/ex01/","path":"2017/10/14/ex01/","title":"Ex1 VASP基本输入文件的准备（一）"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/10/14/ex01/","path":"2017/10/14/ex01/","title":"Ex01 VASP基本输入文件的准备（壹）"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Ex1 VASP基本输入文件的准备（一） | Learn VASP The Hard Way</title>
+<title>Ex01 VASP基本输入文件的准备（壹） | Learn VASP The Hard Way</title>
   
 
 
@@ -161,7 +161,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -172,7 +172,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">166</span>
+        <span class="site-state-item-count">168</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -224,7 +224,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Ex1 VASP基本输入文件的准备（一）
+          Ex01 VASP基本输入文件的准备（壹）
         </h1>
 
         <div class="post-meta-container">
@@ -242,7 +242,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 23:26:07" itemprop="dateModified" datetime="2021-12-27T23:26:07-05:00">2021-12-27</time>
+      <time title="修改时间：2022-07-24 09:44:02" itemprop="dateModified" datetime="2022-07-24T09:44:02-04:00">2022-07-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -255,7 +255,7 @@
     </span>
 
   
-    <span id="/2017/10/14/ex01/" class="post-meta-item leancloud_visitors" data-flag-title="Ex1 VASP基本输入文件的准备（一）" title="阅读次数">
+    <span id="/2017/10/14/ex01/" class="post-meta-item leancloud_visitors" data-flag-title="Ex01 VASP基本输入文件的准备（壹）" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -285,29 +285,28 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>基本的输入文件，指的是VASP计算必不可少的输入文件，对新手来说先记住这四个：INCAR，KPOINTS，POSCAR，POTCAR。这几个不懂，不要紧，后面我们会结合例子，慢慢介绍这几个文件的准备工作。</p>
+        <p>基本的输入文件，指的是VASP计算必不可少的输入文件，对新手来说先记住这四个文件的名字：INCAR，KPOINTS，POSCAR，POTCAR。具体是干嘛用的？不懂的话不要紧，后面我们会结合例子，慢慢介绍这几个文件的准备工作。</p>
 <h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>准备输入文件， 脑子里要有下面几个概念:</p>
 <ul>
-<li><p>Rubbish in，Rubbish out!  程序只负责算，对错由你决定!</p>
+<li><p>Rubbish in，Rubbish out!  程序只负责算，对错由你决定！错误主要有3类：</p>
+<ul>
+<li>模型错误：也就是建模这一块出错了，主要对应的是POSCAR；</li>
+<li>计算参数：INCAR，KPOINTS，POTCAR</li>
+<li>提交任务的脚本或者命令出错。</li>
+</ul>
 </li>
 <li><p>遇到不懂的参数： (思考 + 看官网)！ (思考 + 看官网)！ (思考 + 看官网)！</p>
 </li>
-<li><ul>
-<li>重要的话说三遍，不要去看网上那些乱七八糟的说明书。如果英语不好，那么这是一个锻炼你阅读能力的好机会。通过查阅官网解决问题，可以保证你的血统纯正，进而提高你的杀伤力。</li>
-</ul>
-</li>
-<li><p>所有的输入文件都只是文本而已。这句话的意思是：所有的输入文件都可以通过文本编辑器打开，比如：</p>
-</li>
+<li>重要的话说三遍，尽量不要去看网上那些乱七八糟的教程。如果英语不好，那么这是一个锻炼你阅读能力的好机会。通过查阅官网解决问题，可以保证你的血统纯正，进而提高你的杀伤力。</li>
+<li>所有的输入文件都只是文本而已。这句话的意思是：所有的输入文件都可以通过文本编辑器打开，比如：</li>
 <li><ul>
 <li>Linux下面可以用Vim</li>
 <li>Windows下用Notepad++</li>
 <li>杜绝使用Windows自带的文本编辑器：记事本，写字板。</li>
 </ul>
 </li>
-<li><p>所有的输入文本没有尾缀，Windows用户可能习惯了带各种各样尾缀的文件，但是vasp里面的输入文件，没有尾缀且都是文本。 比如你使用Notepad++这个文本编辑器写了一个输入文件，直接并保存成 INCAR就可以了。如果不小心保存成了 INCAR.txt，那么直接将尾缀.txt删除即可。</p>
-</li>
-<li><p>再次强调:对于Windows用户，本书中指的文本编辑器是:Notepad++。免费的软件，大家自己下载并安装。 请不要用写字板，记事本等编辑VASP的输入文件。如果你不听话，还是喜欢用它们，那么:</p>
-<ul>
+<li>所有的输入文本没有尾缀，Windows用户可能习惯了带各种各样尾缀的文件，但是vasp里面的输入文件，没有尾缀且都是文本。 比如你使用Notepad++这个文本编辑器写了一个输入文件，直接并保存成 INCAR就可以了。如果不小心保存成了 INCAR.txt，那么直接将尾缀.txt删除即可。</li>
+<li>再次强调:对于Windows用户，本书中指的文本编辑器是:Notepad++。免费的软件，大家自己下载并安装。 请不要用写字板，记事本等编辑VASP的输入文件。如果你不听话，还是喜欢用它们，那么:<ul>
 <li>出错，自己负责，有时候你会死的很惨，折腾很久可能都找不到哪里出错了；</li>
 <li>出错，自己检查有没有在提交任务前运行：dos2linux 这个命令转换下格式</li>
 </ul>
@@ -315,16 +314,16 @@
 <li>一步一步按照本书的练习进行操作，有问题，先记下来，如果后面没有得到解答，去<strong>《序言》</strong>找联系方式咨询大师兄。</li>
 </ul>
 <h3 id="VASP输入和输出文件"><a href="#VASP输入和输出文件" class="headerlink" title="VASP输入和输出文件"></a>VASP输入和输出文件</h3><ul>
-<li><p>有了上面的概念，我们就可以准备输入文件了。下面是官网列出VASP的输入和输出文件，in 代表输入，out代表输出。先声明一下:大家不要被下面这么多文件吓傻了，脑子里有个印象就行，很多文件可能穷奇你一生的计算都用不到，而且你以后会花很多时间在删这些乱七八糟的文件上面。所以，大家先简单过目一下即可:</p>
+<li><p>有了上面的概念，我们就可以准备输入文件了。下面是官网列出VASP的输入和输出文件，in 代表输入，out代表输出。先声明一下：大家不要被下面这么多文件吓傻了，脑子里有个印象就行，很多文件可能穷奇你一生的计算都用不到，而且你以后会花很多时间在删这些乱七八糟的文件上面。对于新手的话，大家先简单过目一下即可。可以理解为，从未开过车的你，一下子钻到车里，首先要做的就是熟悉车内部的环境，具体什么功能、怎么回事，后面慢慢摸索。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">INCAR      in    **</span><br><span class="line">STOPCAR    in</span><br><span class="line">stout      out</span><br><span class="line">POTCAR     in     **</span><br><span class="line">KPOINTS    in     **</span><br><span class="line">IBZKPT     out</span><br><span class="line">POSCAR     in     **</span><br><span class="line">CONTCAR    out</span><br><span class="line">CHGCAR     in/out</span><br><span class="line">CHG        out</span><br><span class="line">WAVECAR    in/out</span><br><span class="line">TMPCAR     in/out</span><br><span class="line">EIGENVAL   out</span><br><span class="line">DOSCAR     out</span><br><span class="line">PROCAR     out</span><br><span class="line">OSZICAR    out</span><br><span class="line">PCDAT      out</span><br><span class="line">XDATCAR    out</span><br><span class="line">LOCPOT     out</span><br><span class="line">ELFCAR     out</span><br><span class="line">PROOUT     out</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>对于VASP计算来说，前面这一大堆中的 INCAR ， KPOINTS， POSCAR 和POTCAR 是必不可少的输入文件，必须有!</p>
-</li>
-<li><ul>
+<ul>
 <li>INCAR 告诉VASP算什么，怎么算。</li>
-<li>KPOINTS 包含计算的K点信息(K点是什么，这个问题很抽象，脑子里先记住，计算的时候必须有这个东西)。</li>
+<li>KPOINTS 包含计算的K点信息（K点是什么，这个问题很抽象，脑子里先记住，计算的时候必须有这个东西）。</li>
 <li>POSCAR是计算模型结构的文字描述，也就是各个原子在xyz方向的坐标信息。</li>
 <li>POTCAR对应的是计算过程中每个原子的平面波基组，描述体系中对应的原子核和电子的相关信息。</li>
+<li>提交任务的脚本或者命令，需要你自己准备，没有在列表里面。</li>
 </ul>
 </li>
 </ul>
@@ -335,7 +334,7 @@
 <ul>
 <li><p>INCAR 中有很多参数，改变参数来控制计算细节，从而得到我们期望的结果。所以，记住：Rubbish in， Rubbish out。自己算什么，心里要有数。</p>
 </li>
-<li><p>网上很多人发INCAR的教程，列了一堆参数进去，甚至长达两页，有些连默认值也放在里面了，恨不得把所有参数全部放进去。不过，请记住：那些令人眼花缭乱的只是唬人装逼用的，在实际计算中会严重拖你的后腿。 </p>
+<li><p>网上很多人发INCAR的教程，列了一堆参数进去，甚至长达两页，有些连默认值也放在里面了，恨不得把所有参数全部放进去。不过，请记住：那些令人眼花缭乱的只是唬人装逼用的，在实际计算中会严重拖你的后腿，占了那么多行，修改起来也费劲。</p>
 </li>
 <li><p>熟知各个参数的数值意义，以及在不同计算任务中的设置至关重要。</p>
 </li>
@@ -348,26 +347,26 @@
 </ul>
 </li>
 </ul>
-<h3 id="INCAR-的输入工作"><a href="#INCAR-的输入工作" class="headerlink" title="INCAR 的输入工作"></a>INCAR 的输入工作</h3><p>打开编辑器，把下面几行挨个输入进去: </p>
+<h3 id="INCAR-的输入工作"><a href="#INCAR-的输入工作" class="headerlink" title="INCAR 的输入工作"></a>INCAR 的输入工作</h3><p>打开编辑器，把下面几行挨个输入进去: （#以及后面的就不要输入了）</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SYSTEM = O atom       # 氧元素符号，不是零!</span><br><span class="line">ISMEAR = 0            # 是零，不是氧元素符号，对于分子或者原子，用0.</span><br><span class="line">SIGMA = 0.01          # 对于分子或者原子，用0.01</span><br></pre></td></tr></table></figure>
 <p><strong>INCAR的注意事项：</strong></p>
 <ul>
-<li><strong>#</strong>后面写的是汉语，是给大家展示用的，大家在写的时候，最好不要把汉语写进去，有可能会出错！</li>
-<li><p><strong>#</strong>号后面的内容对计算不会造成影响，可以不用输入；</p>
+<li><strong>#</strong>后面写的是汉语，是给大家展示用的。 大家在写INCAR的时候，最好不要把汉语写进去，有可能会出错！</li>
+<li><p><strong>#</strong>号后面的内容对计算不会造成影响，主要作为注释用，解释这个参数干嘛用的，可以不用输入；</p>
 </li>
 <li><p>每个参数后面跟着等号 <strong>=</strong> ， </p>
 </li>
-<li><p>等号（<strong>=</strong>）前后可以有空格，也可以没有。ISMEAR=0 和 ISMEAR = 0 是一样的，</p>
+<li><p>等号（<strong>=</strong>）前后可以有空格，也可以没有。<code>ISMEAR=0</code> 和 <code>ISMEAR = 0</code> 是一样的，</p>
 </li>
 <li><p>写INCAR的时候，<strong>不要使用 tab</strong>，用空格替换tab；</p>
 </li>
-<li><p>官网有些旧的文件可能用的不是 # 号，而是 !。 大家记住: ! 可能会出错。</p>
+<li><p>官网有些旧的文件可能用的不是 # 号，而是 !， ! 可能会出错。最好的办法就是记住参数是干嘛用的，# 和 ！ 都不写。</p>
 </li>
 </ul>
-<h3 id="INCAR的详解"><a href="#INCAR的详解" class="headerlink" title="INCAR的详解"></a>INCAR的详解</h3><h4 id="SYSTEM"><a href="#SYSTEM" class="headerlink" title="SYSTEM"></a>SYSTEM</h4><p>SYSTEM 后面是该计算的说明。你的这个任务算的是什么，目的是什么，体系是什么？等等，这写都可以<strong>随便</strong>写在里面。随便的意思就是可以任意写：</p>
+<h3 id="INCAR的详解"><a href="#INCAR的详解" class="headerlink" title="INCAR的详解"></a>INCAR的详解</h3><h4 id="SYSTEM"><a href="#SYSTEM" class="headerlink" title="SYSTEM"></a>SYSTEM</h4><p>SYSTEM 后面是该计算的说明。你的这个任务算的是什么，目的是什么，体系是什么？等等，这些都可以<strong>随便</strong>写在里面，<strong>随便</strong>的意思就是可以任意写。</p>
 <ul>
 <li>SYSTEM = O atom 和 SYSTEM = I LOVE BigBro  和 SYSTEM = VASP， 除了多出几个字符外，对计算没有什么影响。</li>
-<li>不建议大家在这一行里写一堆乱七八糟的东西。</li>
+<li>情诗，骂人的话也可以写在 = 后面。但不建议大家在这一行里写一堆乱七八糟的东西，另外还是得避免把中文写在这里；</li>
 <li>当然，这一行有或者没有，对计算结果不会有任何影响，看着不爽也可以直接删除。</li>
 </ul>
 <h4 id="ISMEAR"><a href="#ISMEAR" class="headerlink" title="ISMEAR"></a>ISMEAR</h4><p>ISMEAR这一项，目前需要记住的是：</p>
@@ -378,12 +377,12 @@
 <p>下面是VASP官网的一些解释，新手暂时看不懂不要紧，把需要记住的这两条死死记住就可以了。</p>
 <ul>
 <li>对于半导体和绝缘体体系，ISMEAR的值取绝对不能大于0， 一般用0；</li>
-<li>对所有体系，如果想获取更加精确能量的时候用-5：但使用-5的时候，K点数目小于3则程序会罢工；</li>
+<li>对所有体系，如果想获取更加精确能量的时候用-5，但这时候如果K点数目小于3，程序则会罢工；</li>
 <li>K 点少，半导体或者绝缘体，那么只能用 ISMEAR = 0；</li>
 <li>在DOS能带计算中，使用ISMEAR= -5 用于获取精确的信息。 </li>
-<li>对于金属来说，ISMEAR的取值一般为0，1；</li>
+<li>对于金属来说，ISMEAR的取值一般为&gt;=0 的数值（0,1,2）；</li>
 <li>保守地说，ISMEAR = 0 (Gaussian Smearing) 可以满足大部分的体系（金属，导体，半导体，分子）；</li>
-<li>如果不知道怎么取ISMEAR，1）直接用0；2）测试不同的值对计算的影响。</li>
+<li>如果不知道怎么取ISMEAR，直接用0是一个很保险的做法。也可以测试不同的值对计算的影响，但是新手的话，即使测试完了，也不知道根据什么去判断对结果的影响。</li>
 </ul>
 <h4 id="SIGMA"><a href="#SIGMA" class="headerlink" title="SIGMA:"></a>SIGMA:</h4><p>SIGMA的取值和ISMEAR息息相关，也就是和ISMEAR这个参数同时出现，设定。下面是一些基本的介绍：</p>
 <ul>
@@ -398,17 +397,26 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep &#x27;entropy T&#x27;  OUTCAR </span><br></pre></td></tr></table></figure>
 <p><strong>注意1：</strong>这里有两个单引号，不要输入的时候漏掉。</p>
 <p>用这个命令，得出的能量除以体系中原子的数目（也就是平均到每个原子上），然后再和 0.001 eV 比较。如果小于，SIGMA取值OK，如果大于，再换个小点的数值进行测试。</p>
-<p><strong>注意2：</strong>这里的说的entropy，是因为ISMEAR展宽这个计算方法引入的，跟我们物理化学书里面的entropy完全是两码事。后面我们会介绍如何通过频率分析计算物理化学里面的Entropy。</p>
+<p><strong>注意2：</strong>这里的说的entropy，是因为ISMEAR展宽这个计算方法引入的，跟我们物理化学书里面的entropy完全是两码事。后面我们会介绍如何通过频率分析计算物理化学里面的Entropy。千万别把这个数值当成频率所对应的entropy。</p>
 <h3 id="INCAR的保存"><a href="#INCAR的保存" class="headerlink" title="INCAR的保存"></a>INCAR的保存</h3><p>输入完上面的几行，我们就可以保存INCAR文件了。这里需要注意的是：INCAR后面没有尾缀，<strong>所以：INCAR.txt是错误的。</strong>为避免这个问题：</p>
 <ul>
-<li>Notepad++ 保存的时候，文件名为: INCAR，保存类型选择 Alltypes (<em>.</em>)。</li>
-<li>用Vim的筒子们直接将前面的内容保存成INCAR即可。</li>
+<li><p>Notepad++ 保存的时候，文件名为: INCAR，保存类型选择 Alltypes (<em>.</em>)。</p>
+</li>
+<li><p>用Vim的筒子们直接将前面的内容保存成INCAR即可。</p>
+</li>
+<li><p>将INCAR.txt 通过<code>mv</code>命令重命名为INCAR。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv INCAR.txt INCAR -f</span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>前面说了很多，对新手，可能会犯晕。不过不用担心，<strong>只要记住关键三点，我们就圆满完成本节的任务</strong>：</p>
 <ul>
-<li>INCAR是纯文本没有尾缀; </li>
-<li>算原子或者分子时：ISMEAR = 0， SIGMA = 0.01</li>
-<li>Windows用户请使用Notepad++作为文本编辑器，不要使用自带的记事本或者写字板</li>
+<li><p>INCAR是纯文本没有尾缀; </p>
+</li>
+<li><p>算原子或者分子时：ISMEAR = 0， SIGMA = 0.01</p>
+</li>
+<li><p>Windows用户请使用Notepad++作为文本编辑器，不要使用自带的记事本或者写字板，如果使用了，计算前务必要通过<code>dos2unix</code>转换一下格式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dos2unix INCAR </span><br></pre></td></tr></table></figure>
+</li>
 </ul>
 <p>上一节，我们学习了INCAR的简单准备工作。这一节，我们学习另外一个输入文件的写法：<strong><em>KPOINTS</em></strong></p>
 <h3 id="简单说明-1"><a href="#简单说明-1" class="headerlink" title="简单说明"></a>简单说明</h3><p>KPOINTS文件在计算中的作用，一方面决定了计算的精度，同时也影响计算所需要的时间。精度高，时间长，精度低，时间短。所以：合理设置KPOINTS文件，可以保证我们使用最少的时间，来获取准确可靠的结果。</p>
@@ -450,7 +458,6 @@
 </li>
 <li>前面看不懂，没事。<strong>记住这一点，本节就圆满完成任务</strong>：气体分子，原子计算的时候，使用gamma点即可。</li>
 </ul>
-<p>$\require{mediawiki-texvc}$</p>
 <p>这一节，我们学习VASP计算中模型的文件：<strong><em>POSCAR</em></strong></p>
 <h3 id="简单说明-2"><a href="#简单说明-2" class="headerlink" title="简单说明"></a>简单说明</h3><p>POSCAR 里面包含了你要进行计算的模型结构信息。也就是你要研究的对象。POSCAR有自己固定的格式，每一行都有特定的含义，认真掌握这些，对于搭建模型非常有帮助。对于本节的例子：O原子的计算中，我们要把O原子放到一个格子里面，格子大小为：8 $\times$ 8 $\times$ 8 $\AA{^3}$。那么POSCAR应该这样写。</p>
 <h4 id="POSCAR的输入"><a href="#POSCAR的输入" class="headerlink" title="POSCAR的输入"></a>POSCAR的输入</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">O atom in a box </span><br><span class="line">1.0             # universal scaling parameters </span><br><span class="line">8.0 0.0 0.0     # lattice vector a(1) </span><br><span class="line">0.0 8.0 0.0     # lattice vector a(2)  </span><br><span class="line">0.0 0.0 8.0     # lattice vector a(3)  </span><br><span class="line">O               # O element， not zero</span><br><span class="line">1               # number of atoms </span><br><span class="line">Cartesian       # positions in cartesian coordinates </span><br><span class="line">0 0 0           #</span><br></pre></td></tr></table></figure>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="在学习本书时，大师兄们会默认读者掌握了一些基本的电脑操作技能，以及化学的基本常识（结构化学，物理化学等）。本章列举出一些常用的计算工具和软件，以及假设大家掌握的一些技能。如果没有达到基本的要求，那么请在学习前面几章的同时，抓紧提升自己的能力。 化学的基本知识如果没有掌握，不建议学习本书。1  操作系统做计算，有三个操作系统可以选择：  Windows 系统：会使用Windows系统:会开机，打字，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex01_V3 学习VASP的基本要求">
+<meta property="og:url" content="http://www.bigbrosci.com/2022/07/23/ex01_v3/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="在学习本书时，大师兄们会默认读者掌握了一些基本的电脑操作技能，以及化学的基本常识（结构化学，物理化学等）。本章列举出一些常用的计算工具和软件，以及假设大家掌握的一些技能。如果没有达到基本的要求，那么请在学习前面几章的同时，抓紧提升自己的能力。 化学的基本知识如果没有掌握，不建议学习本书。1  操作系统做计算，有三个操作系统可以选择：  Windows 系统：会使用Windows系统:会开机，打字，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-23T07:06:48.000Z">
+<meta property="article:modified_time" content="2022-07-24T14:13:14.718Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2022/07/23/ex01_v3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2022/07/23/ex01_v3/","path":"2022/07/23/ex01_v3/","title":"Ex01_V3 学习VASP的基本要求"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex01_V3 学习VASP的基本要求 | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%9C%A8%E5%AD%A6%E4%B9%A0%E6%9C%AC%E4%B9%A6%E6%97%B6%EF%BC%8C%E5%A4%A7%E5%B8%88%E5%85%84%E4%BB%AC%E4%BC%9A%E9%BB%98%E8%AE%A4%E8%AF%BB%E8%80%85%E6%8E%8C%E6%8F%A1%E4%BA%86%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E7%9A%84%E7%94%B5%E8%84%91%E6%93%8D%E4%BD%9C%E6%8A%80%E8%83%BD%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%8C%96%E5%AD%A6%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%B8%B8%E8%AF%86%EF%BC%88%E7%BB%93%E6%9E%84%E5%8C%96%E5%AD%A6%EF%BC%8C%E7%89%A9%E7%90%86%E5%8C%96%E5%AD%A6%E7%AD%89%EF%BC%89%E3%80%82%E6%9C%AC%E7%AB%A0%E5%88%97%E4%B8%BE%E5%87%BA%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84%E8%AE%A1%E7%AE%97%E5%B7%A5%E5%85%B7%E5%92%8C%E8%BD%AF%E4%BB%B6%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%81%87%E8%AE%BE%E5%A4%A7%E5%AE%B6%E6%8E%8C%E6%8F%A1%E7%9A%84%E4%B8%80%E4%BA%9B%E6%8A%80%E8%83%BD%E3%80%82%E5%A6%82%E6%9E%9C%E6%B2%A1%E6%9C%89%E8%BE%BE%E5%88%B0%E5%9F%BA%E6%9C%AC%E7%9A%84%E8%A6%81%E6%B1%82%EF%BC%8C%E9%82%A3%E4%B9%88%E8%AF%B7%E5%9C%A8%E5%AD%A6%E4%B9%A0%E5%89%8D%E9%9D%A2%E5%87%A0%E7%AB%A0%E7%9A%84%E5%90%8C%E6%97%B6%EF%BC%8C%E6%8A%93%E7%B4%A7%E6%8F%90%E5%8D%87%E8%87%AA%E5%B7%B1%E7%9A%84%E8%83%BD%E5%8A%9B%E3%80%82-%E5%8C%96%E5%AD%A6%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86%E5%A6%82%E6%9E%9C%E6%B2%A1%E6%9C%89%E6%8E%8C%E6%8F%A1%EF%BC%8C%E4%B8%8D%E5%BB%BA%E8%AE%AE%E5%AD%A6%E4%B9%A0%E6%9C%AC%E4%B9%A6%E3%80%82"><span class="nav-number">1.</span> <span class="nav-text">在学习本书时，大师兄们会默认读者掌握了一些基本的电脑操作技能，以及化学的基本常识（结构化学，物理化学等）。本章列举出一些常用的计算工具和软件，以及假设大家掌握的一些技能。如果没有达到基本的要求，那么请在学习前面几章的同时，抓紧提升自己的能力。 化学的基本知识如果没有掌握，不建议学习本书。</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number"></span> <span class="nav-text">1  操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%99%E9%87%8D%E7%82%B9%E7%85%A7%E9%A1%BE%E5%AF%B9%E8%B1%A1%EF%BC%9AWindows%E7%94%A8%E6%88%B7%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%8F%90%E9%86%92%EF%BC%9A"><span class="nav-number"></span> <span class="nav-text">给重点照顾对象：Windows用户的第一个提醒：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%B7%A5%E5%85%B7"><span class="nav-number"></span> <span class="nav-text">2 文本编辑工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%EF%BC%89vim"><span class="nav-number"></span> <span class="nav-text">1）vim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-notepad"><span class="nav-number"></span> <span class="nav-text">2) notepad++</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89-Atom"><span class="nav-number"></span> <span class="nav-text">3） Atom</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%B8%B8%E7%94%A8%E5%BB%BA%E6%A8%A1%E7%9B%B8%E5%85%B3%E8%BD%AF%E4%BB%B6"><span class="nav-number"></span> <span class="nav-text">3 常用建模相关软件:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Material-Studio"><span class="nav-number"></span> <span class="nav-text">1) Material Studio</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%EF%BC%89VESTA"><span class="nav-number"></span> <span class="nav-text">2）VESTA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%EF%BC%89p4vasp"><span class="nav-number"></span> <span class="nav-text">3）p4vasp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%89-ASE"><span class="nav-number"></span> <span class="nav-text">4） ASE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%89%E5%85%B6%E4%BB%96%E8%BD%AF%E4%BB%B6"><span class="nav-number"></span> <span class="nav-text">5）其他软件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number"></span> <span class="nav-text">总结:</span></a></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">168</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2022/07/23/ex01_v3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex01_V3 学习VASP的基本要求
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-23 03:06:48" itemprop="dateCreated datePublished" datetime="2022-07-23T03:06:48-04:00">2022-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-24 10:13:14" itemprop="dateModified" datetime="2022-07-24T10:13:14-04:00">2022-07-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/07/23/ex01_v3/" class="post-meta-item leancloud_visitors" data-flag-title="Ex01_V3 学习VASP的基本要求" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/07/23/ex01_v3/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/07/23/ex01_v3/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h6 id="在学习本书时，大师兄们会默认读者掌握了一些基本的电脑操作技能，以及化学的基本常识（结构化学，物理化学等）。本章列举出一些常用的计算工具和软件，以及假设大家掌握的一些技能。如果没有达到基本的要求，那么请在学习前面几章的同时，抓紧提升自己的能力。-化学的基本知识如果没有掌握，不建议学习本书。"><a href="#在学习本书时，大师兄们会默认读者掌握了一些基本的电脑操作技能，以及化学的基本常识（结构化学，物理化学等）。本章列举出一些常用的计算工具和软件，以及假设大家掌握的一些技能。如果没有达到基本的要求，那么请在学习前面几章的同时，抓紧提升自己的能力。-化学的基本知识如果没有掌握，不建议学习本书。" class="headerlink" title="在学习本书时，大师兄们会默认读者掌握了一些基本的电脑操作技能，以及化学的基本常识（结构化学，物理化学等）。本章列举出一些常用的计算工具和软件，以及假设大家掌握的一些技能。如果没有达到基本的要求，那么请在学习前面几章的同时，抓紧提升自己的能力。 化学的基本知识如果没有掌握，不建议学习本书。"></a>在学习本书时，大师兄们会默认读者掌握了一些基本的电脑操作技能，以及化学的基本常识（结构化学，物理化学等）。本章列举出一些常用的计算工具和软件，以及假设大家掌握的一些技能。如果没有达到基本的要求，那么请在学习前面几章的同时，抓紧提升自己的能力。 化学的基本知识如果没有掌握，不建议学习本书。</h6><h2 id="1-操作系统"><a href="#1-操作系统" class="headerlink" title="1  操作系统"></a>1  <strong>操作系统</strong></h2><p>做计算，有三个操作系统可以选择：</p>
+<ul>
+<li>Windows 系统：会使用Windows系统:会开机，打字，安装软件;</li>
+<li><p>Linux 系统，强烈推荐，大师兄本人一直用的是Ubuntu，但不局限于Ubuntu系统，自己喜欢什么就用什么。</p>
+</li>
+<li><p>Mac系统，兼顾Windows和Linux，一般比较贵，经济条件允许，也可以。</p>
+</li>
+</ul>
+<h5 id="给重点照顾对象：Windows用户的第一个提醒："><a href="#给重点照顾对象：Windows用户的第一个提醒：" class="headerlink" title="给重点照顾对象：Windows用户的第一个提醒："></a>给重点照顾对象：Windows用户的第一个提醒：</h5><p>Windows用户在进行计算的时候，只要计算出错了，就要本能地记起第一个解决的办法： dos2unix 。 这个命令干什么的不要紧，先死死记住即可。</p>
+<h2 id="2-文本编辑工具"><a href="#2-文本编辑工具" class="headerlink" title="2 文本编辑工具"></a>2 <strong>文本编辑工具</strong></h2><p>文本编辑工具主要用来编辑，查看VASP的输入（出）文件，要求会打开文件，打字，保存文件。</p>
+<h3 id="1）vim"><a href="#1）vim" class="headerlink" title="1）vim"></a>1）<a target="_blank" rel="noopener" href="https://www.vim.org/">vim</a></h3><p>这个<strong>必须要学会</strong>，linux下面自带。原因是绝大多数的计算都是在linux下面进行的，学会vim的基本操作可以极大提高你的文字处理能力和工作效率。关于VIM的使用介绍，自己百度下或者搜一搜相关的视频，学习下。</p>
+<h3 id="2-notepad"><a href="#2-notepad" class="headerlink" title="2) notepad++"></a>2) <a target="_blank" rel="noopener" href="https://notepad-plus-plus.org/">notepad++</a></h3><ul>
+<li>这个是对于Windows用户来说的，要求会创建文件，输入内容并保存文件，<strong>这个软件或者类似的必须学会使用!</strong></li>
+</ul>
+<p>原因在于：Windows下面自带的记事本保存的文件与linux下的文件格式不匹配，提交任务的时候经常出问题，用notepad++则不会出现这个问题。</p>
+<p><strong>因此</strong>，Windows的记事本杜绝使用。为了安全，即使用了notepad++，Windows用户在进行计算的时候，也需要注意下面两点：</p>
+<ul>
+<li><p>Windows下面编辑的输入文件，如果想在linux服务器上运行，最好先执行: dos2unix 这个命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dos2unix  INCAR</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Windows用户计算出错了，一定要首先想到 dos2linux 这个命令来解决问题!!!</p>
+</li>
+</ul>
+<h3 id="3）-Atom"><a href="#3）-Atom" class="headerlink" title="3） Atom"></a>3） <a target="_blank" rel="noopener" href="https://atom.io/">Atom</a></h3><p>这个Atom是文本编辑工具，不是原子的意思。Windows，Linux，Mac系统均可使用。</p>
+<h2 id="3-常用建模相关软件"><a href="#3-常用建模相关软件" class="headerlink" title="3 常用建模相关软件:"></a>3 <strong>常用建模相关软件:</strong></h2><p>本书默认大家已经在自己的电脑里安装了下面三个软件：</p>
+<h3 id="1-Material-Studio"><a href="#1-Material-Studio" class="headerlink" title="1) Material Studio"></a><strong>1) Material Studio</strong></h3><ul>
+<li>这个软件，百度里面一大堆下载链接，安装教程，大家自行下载安装即可。</li>
+<li>本书默认大家已经安装成功，会不会使用暂且不要求；</li>
+<li>不要问我从哪里下载，安装出现问题也不要找我解决。</li>
+<li>另外，MS很贵，国内大部分人都是用的盗版软件，没有版权，不建议使用。</li>
+</ul>
+<h3 id="2）VESTA"><a href="#2）VESTA" class="headerlink" title="2）VESTA"></a>2）<strong><a target="_blank" rel="noopener" href="http://jp-minerals.org/vesta/en/">VESTA</a></strong></h3><p>来自日本的良心软件，Linux，Windows，Mac系统均可使用。链接：<a target="_blank" rel="noopener" href="http://jp-minerals.org/vesta/en/。无版权困扰，发文章的时候要注明下图是用VESTA做的，引用下对应的文章。">http://jp-minerals.org/vesta/en/。无版权困扰，发文章的时候要注明下图是用VESTA做的，引用下对应的文章。</a></p>
+<ul>
+<li><p>Windows下面安装就不再介绍了，下载程序，解压，双击图标即可运行，相信大家都能搞定。</p>
+</li>
+<li><p>Linux下安装: </p>
+<ul>
+<li><p>下载binary程序文件，本人解压后放到了/opt/VESTA-x86_64目录</p>
+</li>
+<li><p>编辑 ~/.bashrc 文件，在文件最后，添加下面2行。</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export VESTA=/opt/VESTA-x86_64 </span><br><span class="line">export PATH=&quot;$PATH:$VESTA&quot;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在终端里面进行的操作如下：第一行打开~/.bashrc文件, 自己添加上面提到的两行即可，第二行更新下~/bashrc文件，第三行运行VESTA。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ vim ~/.bashrc</span><br><span class="line">$ . ~/.bashrc</span><br><span class="line">$ VESTA</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="3）p4vasp"><a href="#3）p4vasp" class="headerlink" title="3）p4vasp"></a>3）<a target="_blank" rel="noopener" href="http://www.p4vasp.at"><strong>p4vasp</strong></a></h3><p>p4vasp主要有建模，可视化以及后处理的一些功能。</p>
+<ul>
+<li>链接：<a target="_blank" rel="noopener" href="http://www.p4vasp.at/">http://www.p4vasp.at/</a></li>
+</ul>
+<ul>
+<li><p>Windows版本，很久没有更新了，点击此处下载，解压,双击图标即可运行。也可以在大师兄QQ群或者其他QQ群文件中下载。</p>
+</li>
+<li><p>Linux版本功能更加强大。也很久没更新了。 Ubuntu（18以及更老的版本）用户使用命令一键安装： <strong>sudo apt-get install p4vasp</strong></p>
+<p>Ubuntu 20以及后续的安装有些麻烦。p4vasp已经不更新了，很多功能可以用其他的软件替代。如果坚持使用p4vasp，可以联系大师兄付费安装（50块钱）。</p>
+</li>
+</ul>
+<h3 id="4）-ASE"><a href="#4）-ASE" class="headerlink" title="4） ASE"></a>4） <a target="_blank" rel="noopener" href="https://wiki.fysik.dtu.dk/ase/index.html">ASE</a></h3><p>ASE 是Atomic Simulation Environment的缩写，可以实现搭建结构，读取VASP的输入和输出，以及一些后处理功能。如果p4vasp没办法安装，那么ASE必须要安装在你的电脑上。</p>
+<h3 id="5）其他软件"><a href="#5）其他软件" class="headerlink" title="5）其他软件"></a>5）其他软件</h3><p>这里说的软件主要是针对VASP计算的模型搭建这一方面，有兴趣的也可以试试<a target="_blank" rel="noopener" href="https://avogadro.cc">Avogadro</a>. 值得一提的是，我们自己的国产建模软件那是相当得少，更别提计算软件了。而我们比较擅长的是写教程和后处理，然后发公众号割韭菜。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结:"></a><strong>总结:</strong></h2><ul>
+<li>初学者学习本书,所必须具有的技能:</li>
+<li><ul>
+<li>熟练使用一个操作系统；</li>
+<li>会编辑文本，写入和保存文件；</li>
+<li><ul>
+<li><strong>Windows 用户Notepad++必须掌握</strong>,</li>
+<li>linux用户可以vim或者其他编辑器，比如Atom</li>
+</ul>
+</li>
+<li>安装好或者会初步使用一款建模软件。-<ul>
+<li><strong>p4vasp </strong>，<strong>ASE</strong>安装在Windows和Ubuntu系统上；</li>
+<li><strong>VESTA</strong> 安装在Windows，Ubuntu，Mac系统上；</li>
+<li><strong>Materials Studio</strong> 安装在Windows上（没版权就别安装了）</li>
+</ul>
+</li>
+<li>会连接服务器，使用的vasp程序并且会提交任务<ul>
+<li>这个大师兄帮不了你，找师兄师姐，到时、自行找服务器商或者其他售后人员解决。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/23/ex00_v3/" rel="prev" title="Ex00 为什么是"The Hard Way"">
+                  <i class="fa fa-chevron-left"></i> Ex00 为什么是"The Hard Way"
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/07/23/A34/" rel="next" title="A34 利用ASE的热力学模块计算气体的熵">
+                  A34 利用ASE的热力学模块计算气体的熵 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

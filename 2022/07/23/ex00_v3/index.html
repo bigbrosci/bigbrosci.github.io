@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="1）为什么Hard？现如今浮躁的科研圈，社会风气下，速成思想，快餐文化害死人，图快的读者中，就有很多来自做实验的。现在大家普遍认为：实验+计算很好发文章。两者结合可以更深入地理解你的研究体系，发现并解决科研中有价值的科学问题。但很多老师却感觉计算就是动动鼠标，操作个软件的活，是个人就能做计算似的。在这种错误的理解，对计算难度过分低估，在高IF文章的诱惑下，安（suan）排（ji）自己的学生去搞计算">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ex00 为什么是&quot;The Hard Way&quot;">
+<meta property="og:url" content="http://www.bigbrosci.com/2022/07/23/ex00_v3/index.html">
+<meta property="og:site_name" content="Learn VASP The Hard Way">
+<meta property="og:description" content="1）为什么Hard？现如今浮躁的科研圈，社会风气下，速成思想，快餐文化害死人，图快的读者中，就有很多来自做实验的。现在大家普遍认为：实验+计算很好发文章。两者结合可以更深入地理解你的研究体系，发现并解决科研中有价值的科学问题。但很多老师却感觉计算就是动动鼠标，操作个软件的活，是个人就能做计算似的。在这种错误的理解，对计算难度过分低估，在高IF文章的诱惑下，安（suan）排（ji）自己的学生去搞计算">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-23T06:06:48.000Z">
+<meta property="article:modified_time" content="2022-07-24T14:13:26.643Z">
+<meta property="article:author" content="By BigBro(a)s">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.bigbrosci.com/2022/07/23/ex00_v3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2022/07/23/ex00_v3/","path":"2022/07/23/ex00_v3/","title":"Ex00 为什么是\"The Hard Way\""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Ex00 为什么是"The Hard Way" | Learn VASP The Hard Way</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Learn VASP The Hard Way</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The 2nd edition</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%EF%BC%89%E4%B8%BA%E4%BB%80%E4%B9%88Hard%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">1）为什么Hard？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%EF%BC%89-%E8%AE%A1%E7%AE%97-%E8%BD%AC%E8%A1%8C%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">2） 计算 &#x3D; 转行？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E5%BF%83%E6%80%81"><span class="nav-number">3.</span> <span class="nav-text">3 心态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E5%8A%A8%E8%A1%8C%E5%8A%A8%E3%80%81%E6%80%9D%E8%80%83"><span class="nav-number">3.1.</span> <span class="nav-text">主动行动、思考</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-number">3.1.1.</span> <span class="nav-text">注意</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%B4%E8%B0%A2%EF%BC%9A"><span class="nav-number">5.</span> <span class="nav-text">致谢：</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">By BigBro(a)s</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">132</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">168</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.bigbrosci.com/2022/07/23/ex00_v3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="By BigBro(a)s">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Learn VASP The Hard Way">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Ex00 为什么是"The Hard Way"
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-23 02:06:48" itemprop="dateCreated datePublished" datetime="2022-07-23T02:06:48-04:00">2022-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-07-24 10:13:26" itemprop="dateModified" datetime="2022-07-24T10:13:26-04:00">2022-07-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LVASPTHW/" itemprop="url" rel="index"><span itemprop="name">LVASPTHW</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/07/23/ex00_v3/" class="post-meta-item leancloud_visitors" data-flag-title="Ex00 为什么是"The Hard Way"" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2022/07/23/ex00_v3/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2022/07/23/ex00_v3/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="1）为什么Hard？"><a href="#1）为什么Hard？" class="headerlink" title="1）为什么Hard？"></a>1）为什么Hard？</h2><p>现如今浮躁的科研圈，社会风气下，速成思想，快餐文化害死人，图快的读者中，就有很多来自做实验的。现在大家普遍认为：实验+计算很好发文章。两者结合可以更深入地理解你的研究体系，发现并解决科研中有价值的科学问题。但很多老师却感觉计算就是动动鼠标，操作个软件的活，是个人就能做计算似的。在这种错误的理解，对计算难度过分低估，在高IF文章的诱惑下，安（suan）排（ji）自己的学生去搞计算。写到这里，很多脏话硬生生从嗓子眼憋回去了。骂是解决不了问题的。那么我们就理一理，一个实验的课题组，在没有任何计算背景的条件下，安（Po）排（Hai）一个学生做计算所遇到的问题吧：</p>
+<ul>
+<li>计算软件的选择：大千世界无奇不有，计算的软件也是多得数不过来，每个软件都有自己适用的体系，哪个更适合你的体系，你不会选择；</li>
+<li>软件的购买：比如你决定了使用VASP，你需要找代理商购买软件（有些还很贵，舍不得买，用盗版的，发文章的时候还担心版权问题）；</li>
+<li><p>服务器的购买：买了软件我们要安装啊。你可能说，这个容易，直接买几台电脑装上就可以了。这里的问题在于：用台电脑就可以算，就可以发文章的时代造就过去了，你可能被淘汰十几年了。所以，</p>
+<ul>
+<li>要买服务器，但服务器价格不菲，怎么选你也不知道；</li>
+<li>不买服务器，可以买超算中心的机时啊。好吧，就当这一关也过了。</li>
+</ul>
+</li>
+<li><p>软件安装：这也是个麻烦事。计算软件不是QQ，也不是360安全卫士，不是你下载个exe文件双击选择d盘就可以傻瓜式安装成功的。各种环境变量，依赖的库都是需要自己安装的。要不然那么多培训班上来就先给大家介绍软件是怎么安装的呢。</p>
+</li>
+<li><p>熟悉Linux系统：计算软件大部分都是在Linux系统下安装的，所以Linux系统的一些常用命令操作你得学会；而Linux的桌面之所以不如Windows，用户习惯是个难以突破的瓶颈，在没人陪伴的情况下，自己熟练Linux系统也是非常不易；</p>
+</li>
+<li>软件学习：这也是本书的重点，纯做计算的菜鸟，每天屁活都不干，就看本书，Linux系统下操练，有人指导的情况下差不多2个月能入门。对号入座，你一个做实验的，每天捣鼓设备，转转反应，就快累的嗝屁了，恨不得回到家或者宿舍就躺着歇会，还要跟朋友出去嗨，陪对象逛，当然还要玩把王者农药。真的能抽出时间来认真学习么？</li>
+<li>有些体系对软件参数依赖性很强，没人指导，你不会设置，软件出错不会解决，计算结果不会分析，算对算错都不知道，迷迷糊糊就这样得到了一些结果。</li>
+<li>计算的目的，肯定要跟实验对比啊？怎么对比，从哪方面下手，又没头绪，很多时候都是硬凑，结论反了也傻呵呵地跟别人说实验和理论吻合地很好，可以冲个大文章。</li>
+<li>折腾完了，要投文章了。因为计算太烂，XJB乱扯结论而被直接拒掉的又有一批；</li>
+<li>好不容易送审了， 最好去烧烧香，祈求不要落到做计算的人手里。真落到计算的人手里，算的太烂，也是很有可能因此丧命或者大修。</li>
+<li>就当你运气好，大修了。审稿人抛出来的专业计算问题你可能又答不上来，怎么补数据都无从下手。</li>
+<li>让你再幸运一把，补上数据，文章接受了。</li>
+<li>那下一篇还这样弄么？ 可以，但经过上面的折腾，小硕士估计要毕业了，小博士也要滚蛋了。又得找下一个垫背的，也就是因为这样，上一批的不知对和错的经验就传授给了下一代。</li>
+<li>总结：一个做实验的老师，不把自己在实验方面的专长传授给自己的学生，硬让人家自己去琢磨你什么都不懂的领域，最后造就了一个四不像的怪物出来，何为师道？</li>
+</ul>
+<p>这种情况到底怎么办？ 很多人在的课题组都是做实验的，老板头脑发热的时候，就安排做起了计算。但老板除了一颗乐观的心，屁都不懂啊。这时候的你，除非脑子很好用，否则就会陷入一种叫天天不应，叫地地不灵的境界。在这里,大师兄建议你：</p>
+<ul>
+<li>说服老板，找个计算靠谱的组，合作一下，避免自己直接算，自己专心做实验，计算可以跟国内相关领域的老师合作一下，各取所长。</li>
+<li>说服不了，找个计算靠谱的组，让老板派你去交流学习一段时间，别自己在那里瞎捣鼓。</li>
+<li>认真学习本书，看VASP的手册，以及各种网站上的教程，先摸索一阵子再算老板给你的体系。</li>
+<li>总之，时间和精力的成本，自己心里要有个数。</li>
+</ul>
+<p>在这里还要吐槽2点：</p>
+<ul>
+<li>有些做实验的跟计算合作，挂名的时候把计算放到不起眼位置的人，随意挪动计算作者的顺序，甚至是放到了通讯位置上，但没加*。生活不易，给做计算的留条活口，也给自己留个好名声。</li>
+<li>有些跟实验合作的计算工作者，随随便便优化个结构，做个漂亮的图就完事。只做锦上添花工作，而不深入研究课题机理。做计算的日子本来就难，请不要因为自己的不专业坏了计算的名声。</li>
+<li>如果想合作，就双方正儿八经地合作，真正意义的合作至少是通过计算解决了课题中的难点，机理，有助于组里课题的下一步进行，更高级点是实验验证了计算的假设，不过能做到这种程度的也没多少课题组。而对于这种良性的合作，实验和计算都给挂个一作，双方老板都挂个通讯，也无可厚非。</li>
+<li>不想合作，非让自己的学生做计算。这种情况就不要怕花钱，派学生到做计算的课题组学习上一两个月，然后再回来继续搞。如果有需要，也可以派出去参加参加一些高质量的培训班，暑期学校等，来弥补自己在学生指导方面的不足。</li>
+</ul>
+<p>虽然书名叫The hard Way，这本书还是给了很多人一种DFT极品快餐的感觉；更会越来越”毁了”专业做计算的，让各种做实验的做计算的扰乱市场。虽然有这种负面的作用，但我还是想尽自己可能，稍微提高我们做计算的平均水平。因此，<strong>认真声明一下</strong>：本教程的初衷是给专门做计算菜鸟准备的。对于那些以为靠本书就可以快速入门的筒子们（不管是做计算还是做实验的），劝你们还是趁早放弃本书的学习，科研的路上，从来就没有速成二字。</p>
+<p>在BB了这么多废话之后，感觉时候再强调下本书的重点了：The Hard Way。The Hard Way 在本人的眼里，类似于书山有路勤为径，学海无涯苦作舟的感觉，类似于经过无数瞎折腾终于尝到一点点小胜利甜头的感觉，类似于苦尽甘来，柳暗花明又一村的感觉。所以：Hard Way是本书的重点，也是痛苦学习的一个过程。别人耗费精力和时间开发出来的软件，短时间就精通是不可能的事情。所以，也别指望着一口气吃成个胖子，耐住寂寞。 </p>
+<p>本人学习和使用VASP已经快10年了，该教程差不多也5岁了。我进入课题组之前，不会用Ubuntu系统，也不会用脚本，也不会用python写脚本，也没用过VASP。我的VASP入门，是花了一个月看了Davide Sholl的书后，老板又手把手花了一个多月的时间学会的，学习的资料是老版本的Hand on Session系列。每天做的是系列中的练习，准备老板布置的作业，思考老板预留的问题，然后第二天听老板解释每个参数的含义，里面的关键点。而真正操作起来进入课题的时候，又有组里细心的博后专门帮忙指导答疑，也有很多人可以进行讨论学习。写这么多并不是在秀自己遇到了一个多好的老板，多好的课题组。在这样的环境中，经过了四年的学习，好几个课题的实战，才变成你们感觉很牛逼的大师兄（其实我只是经验比你们多一点点而已）。而这本书，也是本人这四年来学习到的精华，每一节都要花费差不多4个小时的样子才能完成，或者更多。而这四年的精华，岂能让你把这本书看一遍就掌握了?  到现在为止，瞎BB了76节。每节你花一天的时间去学习，加上其他参考书的学习，也需要2个月的时间。而2个月，对一个新手来说，完全在承受范围之内，<strong>请相信时间的力量</strong>。这里，我们澄清下对新手的定义：全职搞计算的菜鸟。所以，Hard Way 就是需要你花掉每一个整天的时间，一点点认真琢磨，反复操练，绝对不是什么速成。而现在我们搞科研都很浮躁，什么都喜欢图快，我们也有句古话：欲速则不达。因此，打算朝夕之内就学会VASP的读者，本书可能真的不适合你。</p>
+<h2 id="2）-计算-转行？"><a href="#2）-计算-转行？" class="headerlink" title="2） 计算 = 转行？"></a>2） 计算 = 转行？</h2><ul>
+<li>很多人吐槽计算化学是个坑告诉你，既然选择了这条路，就准备改行吧。请避开这些负能量的说法，拿出自己的主见。无论放弃或者坚持，都要拿出你自己的判断力出来，请不要再听别人在你耳边瞎磨。也就是我的人生我做主。</li>
+<li>每一行的人都会说自己这一行是个坑，不管你怎么跳，都是坑。引用我老婆的原话：之前带两个孩子的时候，感觉自己每天都很累，现在孩子父母帮忙看着，自己工作了，但每天还是很累。美好的生活，累总是一路同行。</li>
+<li>个人的理解是，学习理论计算可以使你的视野更加开阔，思维方式更加灵活，对事物本质的把握和理解上，比别人要更胜一筹。也就是一眼就能找到问题的关键所在。不论是否继续相关的研究，转行与否，对今后的发展总会有所帮助。当然，我这个穷酸书生说的话，大家也可以一笑了之。</li>
+</ul>
+<h2 id="3-心态"><a href="#3-心态" class="headerlink" title="3 心态"></a>3 心态</h2><h3 id="主动行动、思考"><a href="#主动行动、思考" class="headerlink" title="主动行动、思考"></a>主动行动、思考</h3><p>前面说的都没有阻挡你继续学习vasp的脚步，那么首先要注意的就是自己的心态：学习过程中要时刻抱着<strong>主动</strong>的心态去解决问题。</p>
+<ul>
+<li>遇到不会的问题,<strong>主动</strong>去查找解决方法;</li>
+<li>遇到不懂的基础知识,<strong>主动</strong>去找教科书;</li>
+<li>遇到什么好的资源,书籍,课件等,<strong>主动</strong>去网上搜索,下载;</li>
+<li>本书中的练习，看到别人有意思的计算，<strong>主动</strong>去重复重复。</li>
+<li>没事就<strong>主动</strong>去官网溜达,</li>
+<li>VASP计算出错，<strong>主动</strong>去google或者官网的论坛找答案! </li>
+</ul>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a><strong>注意</strong></h4><ul>
+<li><p>上面说的<strong>主动</strong>是对于你自己来说的，别碰到不会的就主动求助别人，这样你很难得到提升。</p>
+</li>
+<li><p>去google搜索遇到的问题，也就意味着你要学会科学上网。</p>
+</li>
+<li><p>如果遇到热心帮你解决问题的人，好好准备你的问题，千万不要一个劲的追问，因为这样显得你不动脑子，非常惹人烦。</p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结:"></a><strong>总结:</strong></h2><ul>
+<li><p>学习VASP所具有的心态：</p>
+<ul>
+<li>主动去面对遇到的问题和困难，冰冻三尺,非一日之寒，遇到问题，主动解决，日积月累就会收获良多；</li>
+<li>对自己要有自信，即使自己是彻头彻底的小白,也不必要担心。相对于那些积累了很多错误经验的人来说，什么都不知道则具有更好的可塑性。</li>
+<li>不要盲目相信他人，有自己的理解。如果你在网上搜索问题的答案，会找到很多人的回答，但实际熵很多人水平都可能没有你高，而你却把他们的话当成真理一般去相信，这是致命的。</li>
+</ul>
+</li>
+<li><p>大师兄的要求：</p>
+<ul>
+<li><p>新手认真阅读序言里面推荐的那本参考书；</p>
+</li>
+<li><p>尽可能多地浏览VASP官网，对某些参数有疑惑，认真查阅手册；</p>
+</li>
+<li><p>最重要的是不要偷懒，遇到不会的东西或者困难，立刻记下来或者去解决，否则明天你就会忘掉；</p>
+</li>
+<li><p>好东西要学会分享，可以在QQ群里分享自己的心得，帮助其他正在入门的小师弟，妹们。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="致谢："><a href="#致谢：" class="headerlink" title="致谢："></a><strong>致谢：</strong></h2><p>本教程在写作的过程中，得到了很多人的支持。 有些地方可能描述不清，当然书里面也肯定避免不了错误的出现，也收到了很多人的建议和批评指正。在这里，向他们表示诚挚的谢意。很多人认为，通过这个教程，学到了很多东西，但请不要过分把功劳归在我身上。引用佛系的观点：<strong>因果，完全是自作自受</strong>。你自己学习了，自己认真练习了，水平的提高完全是你自己辛苦付出的结果。<strong>教程就在这里，你学或者不学，都跟我没有关系。</strong>私以为，收获最大的还是本人。一方面把自己多年的学习的经验整理总结出来，另一方面，很多当时一知半解的地方，在写作的过程中，通过查阅资料，认真分析得到了解决。</p>
+<p>教程的宗旨在于快速带领大家入门VASP的使用，这里大师兄想起了金庸笔下的打狗棒法， 本书传授的只是招式，而心法口诀则是你扎实的科研基础功，是自己这些年（高中，大学，硕士，博士）通过坚持不懈学习来积累获得的，对次，本人确实无能为力，而这一点也恰恰是我们最欠缺的部分，希望可以引起大家的重视，在等待任务结束的时候，多多补习自己的基础知识。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/18/ex00/" rel="prev" title="Ex00 为什么是"The Hard Way"">
+                  <i class="fa fa-chevron-left"></i> Ex00 为什么是"The Hard Way"
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/07/23/ex01_v3/" rel="next" title="Ex01_V3 学习VASP的基本要求">
+                  Ex01_V3 学习VASP的基本要求 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  <div class="comments" id="disqus_thread">
+    <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+  </div>
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">By BigBro(a)s</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"OWE4jcfK8IWkx4zaWuOloxKU-gzGzoHsz","app_key":"MRBwViAFCsPSOnnRF9LW7bdo","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="disqus" type="application/json">{"enable":true,"shortname":"bigbrosci-com","count":true,"i18n":{"disqus":"disqus"}}</script>
+<script src="/js/third-party/comments/disqus.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="{{ src }}">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

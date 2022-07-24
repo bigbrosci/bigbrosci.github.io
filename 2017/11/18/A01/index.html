@@ -22,13 +22,13 @@
 <script class="next-config" data-name="main" type="application/json">{"hostname":"www.bigbrosci.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.8.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 <meta name="description" content="本教程主要讲述的是如何在Ubuntu16.04操作系统上连接国科智算超算。分3部分：  1）前期准备；  2）连接和挂载超算中心；  3）数据传输测试。  在使用本教程前，首先确认已经收到了超算管理员分配的秘钥。通过Vim或者其他文本编辑工具，可以查看一下这个秘钥。超算中心好比是一个宝藏，这个宝藏的大门上有把锁，而开启这把锁的钥匙，就是管理员给我们的秘钥。 前期准备下面的工作，一步一步来，相信99">
 <meta property="og:type" content="article">
-<meta property="og:title" content="通过Ubuntu连接国科智算的方法">
+<meta property="og:title" content="通过Ubuntu连接服务器的方法">
 <meta property="og:url" content="http://www.bigbrosci.com/2017/11/18/A01/index.html">
 <meta property="og:site_name" content="Learn VASP The Hard Way">
 <meta property="og:description" content="本教程主要讲述的是如何在Ubuntu16.04操作系统上连接国科智算超算。分3部分：  1）前期准备；  2）连接和挂载超算中心；  3）数据传输测试。  在使用本教程前，首先确认已经收到了超算管理员分配的秘钥。通过Vim或者其他文本编辑工具，可以查看一下这个秘钥。超算中心好比是一个宝藏，这个宝藏的大门上有把锁，而开启这把锁的钥匙，就是管理员给我们的秘钥。 前期准备下面的工作，一步一步来，相信99">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2017-11-18T20:30:16.000Z">
-<meta property="article:modified_time" content="2021-12-28T03:15:54.170Z">
+<meta property="article:modified_time" content="2022-07-24T13:22:12.606Z">
 <meta property="article:author" content="By BigBro(a)s">
 <meta property="article:tag" content="Ubuntu">
 <meta property="article:tag" content="超算中心">
@@ -40,10 +40,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/11/18/A01/","path":"2017/11/18/A01/","title":"通过Ubuntu连接国科智算的方法"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://www.bigbrosci.com/2017/11/18/A01/","path":"2017/11/18/A01/","title":"通过Ubuntu连接服务器的方法"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>通过Ubuntu连接国科智算的方法 | Learn VASP The Hard Way</title>
+<title>通过Ubuntu连接服务器的方法 | Learn VASP The Hard Way</title>
   
 
 
@@ -163,7 +163,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">127</span>
+          <span class="site-state-item-count">132</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -174,7 +174,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">166</span>
+        <span class="site-state-item-count">168</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -226,7 +226,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          通过Ubuntu连接国科智算的方法
+          通过Ubuntu连接服务器的方法
         </h1>
 
         <div class="post-meta-container">
@@ -244,7 +244,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2021-12-27 22:15:54" itemprop="dateModified" datetime="2021-12-27T22:15:54-05:00">2021-12-27</time>
+      <time title="修改时间：2022-07-24 09:22:12" itemprop="dateModified" datetime="2022-07-24T09:22:12-04:00">2022-07-24</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -257,7 +257,7 @@
     </span>
 
   
-    <span id="/2017/11/18/A01/" class="post-meta-item leancloud_visitors" data-flag-title="通过Ubuntu连接国科智算的方法" title="阅读次数">
+    <span id="/2017/11/18/A01/" class="post-meta-item leancloud_visitors" data-flag-title="通过Ubuntu连接服务器的方法" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -361,8 +361,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2017/10/30/ex08/" rel="prev" title="Ex08 氧原子能量的正确计算">
-                  <i class="fa fa-chevron-left"></i> Ex08 氧原子能量的正确计算
+                <a href="/2017/11/18/A01_not_used/" rel="prev" title="通过Ubuntu连接国科智算的方法">
+                  <i class="fa fa-chevron-left"></i> 通过Ubuntu连接国科智算的方法
                 </a>
             </div>
             <div class="post-nav-item">
